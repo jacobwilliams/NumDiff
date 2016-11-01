@@ -38,6 +38,9 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
+        procedure(info_f),pointer :: info_function => null()  !! a function the user can define
+                                                              !! which is called when each column of the jacobian is computed.
+                                                              !! It can be used to perform any setup operations.
 
     contains
 
@@ -58,14 +61,12 @@
 
         ! internal routines:
         procedure :: destroy_sparsity            !! destroy the sparsity pattern
-        procedure :: compute_sparsity_column     !! gets a columns from the sparsity pattern
-        procedure :: pack_jacobian_column        !! pack a column of the jacobian into the sparse vector
         procedure :: compute_perturbation_vector !! computes the variable perturbation factor
-
+        procedure :: print_sparsity_pattern      !! print the sparsity pattern to a file
     end type numdiff_type
 
     abstract interface
-        subroutine func(me,x,f,funcs_to_compute)
+        subroutine func(me,x,f,indices_to_compute)
             !! The function (vector array of output functions `f`, computed
             !! from a vector of input variables `x`).
             !! This must be defined for all computations.
@@ -74,10 +75,10 @@
             class(numdiff_type),intent(inout) :: me
             real(wp),dimension(:),intent(in) :: x !! array of variables (size `n`)
             real(wp),dimension(:),intent(out) :: f !! array of functions (size `m`)
-            logical,dimension(:),intent(in) :: funcs_to_compute !! the elements of `f` that
-                                                            !! need to be computed (size `m`).
-                                                            !! This is computed from the sparsity
-                                                            !! pattern.
+            integer,dimension(:),intent(in) :: indices_to_compute !! the elements of the
+                                                                  !! function vector that need
+                                                                  !! to be computed (the other
+                                                                  !! are ignored)
         end subroutine func
         subroutine spars_f(me,x)
             !! The function to compute the sparsity pattern.
@@ -87,19 +88,29 @@
             class(numdiff_type),intent(inout) :: me
             real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
         end subroutine spars_f
-        subroutine jac_f(me,x,dx,column,funcs_to_compute,dfdx)
+        subroutine jac_f(me,x,dx,column,indices_to_compute,dfdx)
             !! The function to compute a column of jacobian.
             import :: numdiff_type,wp
             implicit none
             class(numdiff_type),intent(inout)  :: me
             real(wp),dimension(:),intent(in)   :: x       !! vector of variables (size `n`)
-            real(wp),dimension(:),intent(in)   :: dx      !! absolute perturbation (>0) for each variable
+            real(wp),dimension(:),intent(in)   :: dx      !! absolute perturbation (>0)
+                                                          !! for each variable
             integer,intent(in)                 :: column  !! column number to compute
-            logical,dimension(me%m),intent(in) :: funcs_to_compute   !! the elements in the
+            integer,dimension(:),intent(in)    :: indices_to_compute !! the indices in the
                                                                      !! column of the Jacobian
                                                                      !! to compute
-            real(wp),dimension(me%m),intent(out)  :: dfdx  !! the column of the full Jacobian
+            real(wp),dimension(:),intent(out)  :: dfdx  !! the non-zero elements
+                                                        !! in the Jacobian column
+                                                        !! length is `size(indices_to_compute)`
         end subroutine jac_f
+        subroutine info_f(me,column)
+            !! User-defined info function (optional)
+            import :: numdiff_type
+            implicit none
+            class(numdiff_type),intent(inout)  :: me
+            integer,intent(in) :: column  !! the column about to be computed
+        end subroutine info_f
     end interface
 
     contains
@@ -109,7 +120,7 @@
 !>
 !  initialize the class. This must be called first.
 
-    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert)
+    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,info)
 
     implicit none
 
@@ -120,6 +131,9 @@
     real(wp),dimension(n),intent(in)    :: xhigh        !! upper bounds on `x`
     integer,intent(in)                  :: perturb_mode !! perturbation mode (1,2,3)
     real(wp),dimension(n),intent(in)    :: dpert        !! perturbation vector for `x`
+    procedure(info_f),optional          :: info         !! a function the user can define
+                                                        !! which is called when each column of the jacobian is computed.
+                                                        !! It can be used to perform any setup operations.
 
     ! size of the problem:
     me%n = n
@@ -138,6 +152,13 @@
     if (allocated(me%dpert)) deallocate(me%dpert)
     allocate(me%dpert(n))
     me%dpert = dpert
+
+    ! optional:
+    if (present(info)) then
+        me%info_function => info
+    else
+        me%info_function => null()
+    end if
 
     end subroutine initialize_numdiff_type
 !*******************************************************************************
@@ -241,70 +262,36 @@
 
 !*******************************************************************************
 !>
-!  Given the column number (variable number), compute the
-!  functions that need to be computed, based on the sparsity pattern.
-
-    subroutine compute_sparsity_column(me,ivar,funcs_to_compute)
-
-    implicit none
-
-    class(numdiff_type),intent(inout) :: me
-    integer,intent(in) :: ivar !! column number to compute
-    logical,dimension(me%m),intent(out) :: funcs_to_compute !! the functions that need
-                                                            !! to be computed (non-zero)
-                                                            !! elements of the sparsity pattern.
-
-    integer :: i !! counter
-
-    ! initialize:
-    funcs_to_compute = .false.
-
-    ! locate the elements for this column:
-    do i = 1, me%num_nonzero_elements
-        if (me%icol(i)==ivar) then
-            funcs_to_compute(me%irow(i)) = .true.
-        elseif (me%icol(i)>ivar) then
-            ! all the elements in this columns have
-            ! been found (data is stored by column)
-            exit
-        end if
-    end do
-
-    end subroutine compute_sparsity_column
-!*******************************************************************************
-
-!*******************************************************************************
-!>
 !  Compute a column of the Jacobian matrix using basic forward differences.
 
-    subroutine forward_diff(me,x,dx,column,funcs_to_compute,dfdx)
+    subroutine forward_diff(me,x,dx,column,idx,dfdx)
 
     implicit none
 
     class(numdiff_type),intent(inout)  :: me
-    real(wp),dimension(:),intent(in)   :: x       !! vector of variables (size `n`)
-    real(wp),dimension(:),intent(in)   :: dx      !! absolute perturbation (>0) for each variable
-    integer,intent(in)                 :: column  !! column number to compute
-    logical,dimension(me%m),intent(in) :: funcs_to_compute   !! the elements in the
-                                                             !! column of the Jacobian
-                                                             !! to compute
-    real(wp),dimension(me%m),intent(out)  :: dfdx  !! the column of the full Jacobian
+    real(wp),dimension(:),intent(in)   :: x           !! vector of variables (size `n`)
+    real(wp),dimension(:),intent(in)   :: dx          !! absolute perturbation (>0)
+                                                      !! for each variable
+    integer,intent(in)                 :: column      !! column number to compute
+    integer,dimension(:),intent(in)    :: idx         !! the elements in the
+                                                      !! column of the Jacobian
+                                                      !! to compute
+    real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
+                                                      !! column of the Jacobian matrix.
 
     real(wp),dimension(me%n) :: xp  !! perturbed `x` vector
     real(wp),dimension(me%m) :: f0  !! function evaluation `f(x)`
     real(wp),dimension(me%m) :: f1  !! function evaluation `f(x+dx)`
 
+    ! function evaluations:
     xp = x
-    call me%compute_function(xp,f0,funcs_to_compute)
+    call me%compute_function(xp,f0,idx)
 
     xp(column) = x(column) + dx(column)
-    call me%compute_function(xp,f1,funcs_to_compute)
+    call me%compute_function(xp,f1,idx)
 
-    ! note: we do the subtraction for all elements,
-    ! although we only need to do them for the non-zero
-    ! elements .... maybe change this ...
-
-    dfdx = (f1 - f0) / dx(column)
+    ! forward difference:
+    dfdx = (f1(idx) - f0(idx)) / dx(column)
 
     end subroutine forward_diff
 !*******************************************************************************
@@ -313,28 +300,36 @@
 !>
 !  Compute the Jacobian using forward differences.
 
-    subroutine compute_jacobian(me,x,j)
+    subroutine compute_jacobian(me,x,jac)
 
     implicit none
 
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(:),intent(in)  :: x  !! vector of variables (size `n`)
-    real(wp),dimension(:),allocatable,intent(out) :: j  !! sparse jacobian vector
+    real(wp),dimension(:),allocatable,intent(out) :: jac  !! sparse jacobian vector
 
-    real(wp),dimension(me%m) :: dfdx !! a column of the full Jacobian
+    real(wp),dimension(:),allocatable :: dfdx    !! the non-zero elements of a
+                                                 !! column of the Jacobian matrix
     logical,dimension(me%m) :: funcs_to_compute  !! the elements in a given
                                                  !! column of the Jacobian
                                                  !! that are non-zero
     integer :: i  !! column counter
     integer :: nf !! number of functions to compute in a column
     real(wp),dimension(me%n) :: dx !! absolute perturbation (>0) for each variable
+    integer,dimension(:),allocatable :: nonzero_elements_in_col !! the indices of the
+                                                                !! nonzero Jacobian
+                                                                !! elements in a column
+    integer,dimension(:),allocatable :: indices  !! index vector
+                                                 !! `[1,2,...,num_nonzero_elements]`
+                                                 !! for putting `dfdx` into `jac`
 
     ! if we don't have a sparsity pattern yet then compute it:
     if (.not. me%sparsity_computed) call me%compute_sparsity(x)
 
     ! initialize:
-    allocate(j(me%num_nonzero_elements))
-    j = 0.0_wp
+    allocate(jac(me%num_nonzero_elements))
+    jac = 0.0_wp
+    indices = [(i,i=1,me%num_nonzero_elements)]
 
     ! compute dx vector:
     call me%compute_perturbation_vector(x,dx)
@@ -343,15 +338,21 @@
     do i=1,me%n
 
         ! determine functions to compute for this column:
-        call me%compute_sparsity_column(i,funcs_to_compute)
-        nf = count(funcs_to_compute)  ! number of functions to compute
+        nonzero_elements_in_col = pack(me%irow,mask=me%icol==i)
+        nf = size(nonzero_elements_in_col)  ! number of functions to compute
         if (nf/=0) then
 
+            ! possibly inform caller what is happening:
+            if (associated(me%info_function)) call me%info_function(i)
+
+            ! size the output array:
+            allocate(dfdx(nf))
+
             ! compute this column of the Jacobian:
-            call me%jacobian_method(x,dx,i,funcs_to_compute,dfdx)
+            call me%jacobian_method(x,dx,i,nonzero_elements_in_col,dfdx)
 
             ! put result into the output vector:
-            call me%pack_jacobian_column(i,dfdx,nf,j)
+            jac(pack(indices,mask=me%icol==i)) = dfdx
 
         end if
 
@@ -392,36 +393,24 @@
 
 !*******************************************************************************
 !>
-!  Take a column of the Jacobian, and put it
-!  in the sparse `j` jacobian vector
+!  Print the sparsity pattern in matrix form.
 
-    subroutine pack_jacobian_column(me,column_number,dfdx_column,num_nonzero_funcs,j)
+    subroutine print_sparsity_pattern(me,iunit)
 
     implicit none
 
     class(numdiff_type),intent(inout) :: me
-    integer,intent(in)                :: column_number     !! the columns number
-    real(wp),dimension(:)             :: dfdx_column       !! a column of the full Jacobian
-    integer,intent(in)                :: num_nonzero_funcs !! number of non-zero Jacobian
-                                                           !! elements in this column
-    real(wp),dimension(:),intent(inout) :: j               !! the full sparse jacobian vector
+    integer,intent(in) :: iunit !! file unit to write to.
+                                !! (assumed to be already opened)
 
-    integer :: k !! counter
-    integer :: n_accumulated !! for determing when all elements of
-                             !! a Jacobian column have been
-                             !! accumulated into `j`
+    if (allocated(me%irow) .and. allocated(me%icol)) then
+        write(iunit,'(A,1X,*(I3,","))') 'irow=',me%irow
+        write(iunit,'(A,1X,*(I3,","))') 'icol=',me%icol
+    else
+        error stop 'Error: sparsity pattern not available.'
+    end if
 
-    ! put result into the output vector:
-    n_accumulated = 0
-    do k=1,me%num_nonzero_elements
-        if (me%icol(k)==column_number) then
-            n_accumulated = n_accumulated + 1
-            j(k) = dfdx_column(me%irow(k))
-            if (n_accumulated==num_nonzero_funcs) exit !done with this column
-        end if
-    end do
-
-    end subroutine pack_jacobian_column
+    end subroutine print_sparsity_pattern
 !*******************************************************************************
 
 !*******************************************************************************
