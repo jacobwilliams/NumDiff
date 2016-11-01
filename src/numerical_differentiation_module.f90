@@ -6,15 +6,13 @@
 
     module numerical_differentiation_module
 
-    use iso_fortran_env, only: real64
+    use iso_fortran_env, only: wp => real64
 
     implicit none
 
     private
 
-    integer,parameter,public :: wp = real64  !! default real kind
-
-    type,abstract,public :: numdiff_type
+    type,public :: numdiff_type
 
         !! base type for sparsity and Jacobian computations.
 
@@ -38,6 +36,12 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
+        ! these are required to be defined by the user:
+        procedure(func),pointer    :: compute_function => null() !! the user-defined function
+        procedure(spars_f),pointer :: compute_sparsity => null() !! for computing the sparsity pattern
+        procedure(jac_f),pointer   :: jacobian_method  => null() !! for computing the Jacobian matrix
+
+        ! optional:
         procedure(info_f),pointer :: info_function => null()  !! a function the user can define
                                                               !! which is called when each column of the jacobian is computed.
                                                               !! It can be used to perform any setup operations.
@@ -53,16 +57,11 @@
         procedure,public :: compute_jacobian_dense  !! return the dense `size(m,n)`
                                                     !! matrix form of the Jacobian.
         procedure,public :: destroy => destroy_numdiff_type  !! destroy the class
-
-        ! these are required to be defined when the class is defined:
-        procedure(func),deferred,public    :: compute_function  !! the user-defined function
-        procedure(spars_f),deferred,public :: compute_sparsity  !! for computing the sparsity pattern
-        procedure(jac_f),deferred,public   :: jacobian_method   !! for computing the Jacobian matrix
+        procedure,public :: print_sparsity_pattern      !! print the sparsity pattern to a file
 
         ! internal routines:
         procedure :: destroy_sparsity            !! destroy the sparsity pattern
         procedure :: compute_perturbation_vector !! computes the variable perturbation factor
-        procedure :: print_sparsity_pattern      !! print the sparsity pattern to a file
     end type numdiff_type
 
     abstract interface
@@ -97,12 +96,11 @@
             real(wp),dimension(:),intent(in)   :: dx      !! absolute perturbation (>0)
                                                           !! for each variable
             integer,intent(in)                 :: column  !! column number to compute
-            integer,dimension(:),intent(in)    :: indices_to_compute !! the indices in the
-                                                                     !! column of the Jacobian
-                                                                     !! to compute
-            real(wp),dimension(:),intent(out)  :: dfdx  !! the non-zero elements
-                                                        !! in the Jacobian column
-                                                        !! length is `size(indices_to_compute)`
+            integer,dimension(:),intent(in)    :: indices_to_compute
+                            !! the indices in the column of the Jacobian to compute
+            real(wp),dimension(size(indices_to_compute)),intent(out)  :: dfdx
+                            !! the non-zero elements in the Jacobian column.
+                            !! length is `size(indices_to_compute)`
         end subroutine jac_f
         subroutine info_f(me,column)
             !! User-defined info function (optional)
@@ -113,6 +111,12 @@
         end subroutine info_f
     end interface
 
+    ! gradient methods:
+    public :: forward_diff
+
+    ! sparsity methods:
+    public :: compute_sparsity_dense
+
     contains
 !*******************************************************************************
 
@@ -120,7 +124,8 @@
 !>
 !  initialize the class. This must be called first.
 
-    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,info)
+    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
+                        problem_func,sparsity_func,jacobian_func,info)
 
     implicit none
 
@@ -131,9 +136,17 @@
     real(wp),dimension(n),intent(in)    :: xhigh        !! upper bounds on `x`
     integer,intent(in)                  :: perturb_mode !! perturbation mode (1,2,3)
     real(wp),dimension(n),intent(in)    :: dpert        !! perturbation vector for `x`
+    procedure(func)                     :: problem_func  !!
+    procedure(spars_f)                  :: sparsity_func !!
+    procedure(jac_f)                    :: jacobian_func !!
     procedure(info_f),optional          :: info         !! a function the user can define
                                                         !! which is called when each column of the jacobian is computed.
                                                         !! It can be used to perform any setup operations.
+
+    ! functions:
+    me%compute_function => problem_func
+    me%compute_sparsity => sparsity_func
+    me%jacobian_method  => jacobian_func
 
     ! size of the problem:
     me%n = n
@@ -346,7 +359,14 @@
             if (associated(me%info_function)) call me%info_function(i)
 
             ! size the output array:
-            allocate(dfdx(nf))
+            if (allocated(dfdx)) then
+                if (size(dfdx)/=nf) then
+                    deallocate(dfdx)
+                    allocate(dfdx(nf))
+                end if
+            else                
+                allocate(dfdx(nf))
+            end if
 
             ! compute this column of the Jacobian:
             call me%jacobian_method(x,dx,i,nonzero_elements_in_col,dfdx)
