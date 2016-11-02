@@ -113,9 +113,11 @@
 
     ! gradient methods:
     public :: forward_diff
+    public :: central_diff
 
     ! sparsity methods:
     public :: compute_sparsity_dense
+    public :: compute_sparsity_random
 
     contains
 !*******************************************************************************
@@ -245,6 +247,82 @@
 
 !*******************************************************************************
 !>
+!  Compute the sparsity pattern by computing the function at three
+!  "random" points in the [xlow,xhigh] interval and checking if the
+!  function values are the same.
+!
+!@note The input `x` is not used here.
+
+    subroutine compute_sparsity_random(me,x)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
+
+    integer :: i !! column counter
+    integer :: j !! row counter
+    integer,dimension(me%m) :: idx !! indices to compute [1,2,...,m]
+    real(wp),dimension(me%n) :: x1 !! perturbed variable vector
+    real(wp),dimension(me%n) :: x2 !! perturbed variable vector
+    real(wp),dimension(me%n) :: x3 !! perturbed variable vector
+    real(wp),dimension(me%m) :: f1 !! function evaluation
+    real(wp),dimension(me%m) :: f2 !! function evaluation
+    real(wp),dimension(me%m) :: f3 !! function evaluation
+
+    ! initialize:
+    call me%destroy_sparsity()
+
+    ! we will compute all the functions:
+    idx = [(i,i=1,me%m)]
+
+    ! define a nominal point roughly in the middle:
+    x2 = me%xlow + (me%xhigh-me%xlow)*0.512345678_wp
+    call me%compute_function(x2,f2,idx)
+
+    do i = 1, me%n  !columns
+
+        ! Pick three points roughly equally spaced:
+        ! (add some noise in attempt to avoid freak zeros)
+        !
+        ! xlow---|----|--x--|---xhigh
+        !        1    2     3
+
+        ! restore nominal:
+        x1 = x2
+        x3 = x2
+
+        x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*0.251234567_wp
+        x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*0.751234567_wp
+
+        call me%compute_function(x1,f1,idx)
+        call me%compute_function(x3,f3,idx)
+
+        do j = 1, me%m ! each function (rows of Jacobian)
+            if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
+                ! a nonzero element in the jacobian
+                !TODO allocate this in chunks to speed it up
+                if (allocated(me%icol)) then
+                    me%icol = [me%icol,i]
+                    me%irow = [me%irow,j]
+                else
+                    me%icol = [i]
+                    me%irow = [j]
+                end if
+            end if
+        end do
+
+    end do
+
+    ! finished:
+    me%sparsity_computed = .true.
+    me%num_nonzero_elements = size(me%irow)
+
+    end subroutine compute_sparsity_random
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  just a wrapper for `compute_jacobian`, that return a dense matrix.
 
     subroutine compute_jacobian_dense(me,x,jac)
@@ -275,7 +353,8 @@
 
 !*******************************************************************************
 !>
-!  Compute a column of the Jacobian matrix using basic forward differences.
+!  Compute a column of the Jacobian matrix using
+!  basic two-point forward differences.
 
     subroutine forward_diff(me,x,dx,column,idx,dfdx)
 
@@ -303,10 +382,47 @@
     xp(column) = x(column) + dx(column)
     call me%compute_function(xp,f1,idx)
 
-    ! forward difference:
     dfdx = (f1(idx) - f0(idx)) / dx(column)
 
     end subroutine forward_diff
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute a column of the Jacobian matrix using
+!  basic two-point central differences.
+
+    subroutine central_diff(me,x,dx,column,idx,dfdx)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)  :: me
+    real(wp),dimension(:),intent(in)   :: x           !! vector of variables (size `n`)
+    real(wp),dimension(:),intent(in)   :: dx          !! absolute perturbation (>0)
+                                                      !! for each variable
+    integer,intent(in)                 :: column      !! column number to compute
+    integer,dimension(:),intent(in)    :: idx         !! the elements in the
+                                                      !! column of the Jacobian
+                                                      !! to compute
+    real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
+                                                      !! column of the Jacobian matrix.
+
+    real(wp),dimension(me%n) :: xp  !! perturbed `x` vector
+    real(wp),dimension(me%m) :: fp  !! function evaluation `f(x+dx)`
+    real(wp),dimension(me%m) :: fm  !! function evaluation `f(x-dx)`
+
+    ! function evaluations:
+    xp = x
+    xp(column) = x(column) + dx(column)
+    call me%compute_function(xp,fp,idx)
+
+    xp = x
+    xp(column) = x(column) - dx(column)
+    call me%compute_function(xp,fm,idx)
+
+    dfdx = (fp(idx) - fm(idx)) / (2.0_wp * dx(column))
+
+    end subroutine central_diff
 !*******************************************************************************
 
 !*******************************************************************************
@@ -364,7 +480,7 @@
                     deallocate(dfdx)
                     allocate(dfdx(nf))
                 end if
-            else                
+            else
                 allocate(dfdx(nf))
             end if
 

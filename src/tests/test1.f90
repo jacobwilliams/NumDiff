@@ -25,14 +25,14 @@
 
     call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                             problem_func=my_func,&
-                            sparsity_func=compute_sparsity_dense,&
+                            sparsity_func=compute_sparsity_random,&
                             jacobian_func=forward_diff)
 
     call my_prob%compute_jacobian(x,jac)
 
     write(*,*) ''
     call my_prob%print_sparsity_pattern(output_unit)
-    write(output_unit,'(A,1X,*(F10.3,","))') 'jac =',jac
+    write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
 
 contains
 
