@@ -4,7 +4,7 @@ NumDiff provides a modern Fortran interface for computing the Jacobian (derivati
 
 # Status
 
-This is a work in progress...
+This is currently an experimental work in progress and is not production ready. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation.
 
 # License
 
