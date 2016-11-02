@@ -20,6 +20,8 @@ This is currently an experimental work in progress and is not production ready. 
   - [ ] Higher-order differences...
 - [ ] Perturbations should respect variable bounds
 - [ ] Add other gradient methods?
+- [ ] Jacobian partitioning to compute multiple columns at the same time
+- [ ] Also compute Hessian matrix?
 - [ ] OpenMP or Coarrays for parallelization
 - [ ] Testing for computational efficiency
 
