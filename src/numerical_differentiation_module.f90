@@ -37,14 +37,19 @@
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
         ! these are required to be defined by the user:
-        procedure(func),pointer    :: compute_function => null() !! the user-defined function
-        procedure(spars_f),pointer :: compute_sparsity => null() !! for computing the sparsity pattern
-        procedure(jac_f),pointer   :: jacobian_method  => null() !! for computing the Jacobian matrix
+        procedure(func),pointer    :: compute_function => null()
+            !! the user-defined function
 
-        ! optional:
-        procedure(info_f),pointer :: info_function => null()  !! a function the user can define
-                                                              !! which is called when each column of the jacobian is computed.
-                                                              !! It can be used to perform any setup operations.
+        procedure(spars_f),pointer :: compute_sparsity => null()
+            !! for computing the sparsity pattern
+
+        procedure(jac_f),pointer   :: jacobian_method  => null()
+            !! for computing the Jacobian matrix
+
+        procedure(info_f),pointer :: info_function => null()
+            !! an optional function the user can define
+            !! which is called when each column of the jacobian is computed.
+            !! It can be used to perform any setup operations.
 
     contains
 
@@ -57,11 +62,13 @@
         procedure,public :: compute_jacobian_dense  !! return the dense `size(m,n)`
                                                     !! matrix form of the Jacobian.
         procedure,public :: destroy => destroy_numdiff_type  !! destroy the class
-        procedure,public :: print_sparsity_pattern      !! print the sparsity pattern to a file
+        procedure,public :: print_sparsity_pattern  !! print the sparsity pattern to a file
+        procedure,public :: set_sparsity_pattern    !! manually set the sparsity pattern
 
         ! internal routines:
         procedure :: destroy_sparsity            !! destroy the sparsity pattern
         procedure :: compute_perturbation_vector !! computes the variable perturbation factor
+
     end type numdiff_type
 
     abstract interface
@@ -207,6 +214,32 @@
     if (allocated(me%icol)) deallocate(me%icol)
 
     end subroutine destroy_sparsity
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  To specify the sparsity pattern directly if it is already known.
+
+    subroutine set_sparsity_pattern(me,irow,icol)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,dimension(:),intent(in) :: irow
+    integer,dimension(:),intent(in) :: icol
+
+    call me%destroy_sparsity()
+
+    if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
+        error stop 'Error: invalid inputs to set_sparsity_pattern'
+    else
+        me%sparsity_computed = .true.
+        me%num_nonzero_elements = size(irow)
+        me%irow = irow
+        me%icol = icol
+    end if
+
+    end subroutine set_sparsity_pattern
 !*******************************************************************************
 
 !*******************************************************************************
