@@ -68,6 +68,7 @@
         ! internal routines:
         procedure :: destroy_sparsity            !! destroy the sparsity pattern
         procedure :: compute_perturbation_vector !! computes the variable perturbation factor
+        procedure :: perturb_x_and_compute_f
 
     end type numdiff_type
 
@@ -119,8 +120,7 @@
     end interface
 
     ! gradient methods:
-    public :: forward_diff
-    public :: central_diff
+    public :: forward_diff,backward_diff,central_diff
 
     ! sparsity methods:
     public :: compute_sparsity_dense
@@ -356,7 +356,7 @@
 
 !*******************************************************************************
 !>
-!  just a wrapper for `compute_jacobian`, that return a dense matrix.
+!  just a wrapper for `compute_jacobian`, that returns a dense matrix.
 
     subroutine compute_jacobian_dense(me,x,jac)
 
@@ -386,6 +386,43 @@
 
 !*******************************************************************************
 !>
+!  Perturb the specified optimization variable, and compute the function.
+!  This routine is designed so that `df` is accumulated as each function
+!  evaluation is done, to avoid having to allocate more temporary storage.
+
+    subroutine perturb_x_and_compute_f(me,x,dx_factor,dx,df_factor,column,idx,df,df_den_factor)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: x         !! nominal variable vector
+    real(wp),intent(in)               :: dx_factor !! factor to multiply `dx`
+    real(wp),dimension(:),intent(in)  :: dx        !! the perturbation value for this column
+    real(wp),intent(in)               :: df_factor !! factor to multiply function value
+    integer,intent(in)                :: column    !! the variable to perturb
+    integer,dimension(:),intent(in)   :: idx       !! the elements in this
+                                                   !! column of the Jacobian
+                                                   !! to compute (passed to function)
+    real(wp),dimension(me%m),intent(inout) :: df   !! the accumulated function value
+                                                   !! note: for the first call, this
+                                                   !! should be set to 0.0_wp
+    real(wp),intent(in),optional :: df_den_factor  !! if present, `df` is divided by
+                                                   !! `df_den_factor*dx(column)`
+
+    real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
+    real(wp),dimension(me%m) :: f   !! function evaluation
+
+    xp = x
+    if (dx_factor/=0.0_wp) xp(column) = xp(column) + dx_factor * dx(column)
+    call me%compute_function(xp,f,idx)
+    df(idx) = df(idx) + df_factor * f(idx)
+    if (present(df_den_factor)) df(idx) = df(idx) / (df_den_factor*dx(column))
+
+    end subroutine perturb_x_and_compute_f
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Compute a column of the Jacobian matrix using
 !  basic two-point forward differences.
 
@@ -404,20 +441,48 @@
     real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
                                                       !! column of the Jacobian matrix.
 
-    real(wp),dimension(me%n) :: xp  !! perturbed `x` vector
-    real(wp),dimension(me%m) :: f0  !! function evaluation `f(x)`
-    real(wp),dimension(me%m) :: f1  !! function evaluation `f(x+dx)`
+    real(wp),dimension(me%m) :: df  !! accumulated function
 
-    ! function evaluations:
-    xp = x
-    call me%compute_function(xp,f0,idx)
+    ! dfdx = (f(x+dx) - f(x)) / dx
 
-    xp(column) = x(column) + dx(column)
-    call me%compute_function(xp,f1,idx)
-
-    dfdx = (f1(idx) - f0(idx)) / dx(column)
+    df = 0.0_wp
+    call me%perturb_x_and_compute_f(x,1.0_wp,dx,1.0_wp,column,idx,df)
+    call me%perturb_x_and_compute_f(x,0.0_wp,dx,-1.0_wp,column,idx,df,1.0_wp)
+    dfdx = df(idx)
 
     end subroutine forward_diff
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute a column of the Jacobian matrix using
+!  basic two-point backward differences.
+
+    subroutine backward_diff(me,x,dx,column,idx,dfdx)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)  :: me
+    real(wp),dimension(:),intent(in)   :: x           !! vector of variables (size `n`)
+    real(wp),dimension(:),intent(in)   :: dx          !! absolute perturbation (>0)
+                                                      !! for each variable
+    integer,intent(in)                 :: column      !! column number to compute
+    integer,dimension(:),intent(in)    :: idx         !! the elements in the
+                                                      !! column of the Jacobian
+                                                      !! to compute
+    real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
+                                                      !! column of the Jacobian matrix.
+
+    real(wp),dimension(me%m) :: df  !! accumulated function
+
+    ! dfdx = (f(x) - f(x-dx)) / dx
+
+    df = 0.0_wp
+    call me%perturb_x_and_compute_f(x,0.0_wp,dx,1.0_wp,column,idx,df)
+    call me%perturb_x_and_compute_f(x,-1.0_wp,dx,-1.0_wp,column,idx,df,1.0_wp)
+    dfdx = df(idx)
+
+    end subroutine backward_diff
 !*******************************************************************************
 
 !*******************************************************************************
@@ -440,20 +505,14 @@
     real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
                                                       !! column of the Jacobian matrix.
 
-    real(wp),dimension(me%n) :: xp  !! perturbed `x` vector
-    real(wp),dimension(me%m) :: fp  !! function evaluation `f(x+dx)`
-    real(wp),dimension(me%m) :: fm  !! function evaluation `f(x-dx)`
+    real(wp),dimension(me%m) :: df  !! accumulated function
 
-    ! function evaluations:
-    xp = x
-    xp(column) = x(column) + dx(column)
-    call me%compute_function(xp,fp,idx)
+    ! dfdx = (f(x+dx) - f(x-dx)) / (2*dx)
 
-    xp = x
-    xp(column) = x(column) - dx(column)
-    call me%compute_function(xp,fm,idx)
-
-    dfdx = (fp(idx) - fm(idx)) / (2.0_wp * dx(column))
+    df = 0.0_wp
+    call me%perturb_x_and_compute_f(x,1.0_wp,dx,1.0_wp,column,idx,df)
+    call me%perturb_x_and_compute_f(x,-1.0_wp,dx,-1.0_wp,column,idx,df,2.0_wp)
+    dfdx = df(idx)
 
     end subroutine central_diff
 !*******************************************************************************
@@ -491,7 +550,7 @@
     ! initialize:
     allocate(jac(me%num_nonzero_elements))
     jac = 0.0_wp
-    indices = [(i,i=1,me%num_nonzero_elements)]
+    indices = [(i,i=1,me%num_nonzero_elements)] !NOTE could save this in the class so we don't have to keep allocating it
 
     ! compute dx vector:
     call me%compute_perturbation_vector(x,dx)

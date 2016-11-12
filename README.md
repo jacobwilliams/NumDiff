@@ -16,7 +16,7 @@ This is currently an experimental work in progress and is not production ready. 
 - [ ] Add additional finite different gradient methods
   - [x] Forward differences
   - [x] Central differences
-  - [ ] Backward differences
+  - [x] Backward differences
   - [ ] Higher-order differences...
 - [ ] Perturbations should respect variable bounds
 - [ ] Add other gradient methods?
