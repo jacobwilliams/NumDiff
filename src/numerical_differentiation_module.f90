@@ -67,8 +67,9 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
-        type(finite_diff_method) :: meth    !! the finite difference method to use to
-                                            !! compute the Jacobian
+        type(finite_diff_method),dimension(:),allocatable :: meth    !! the finite difference method to use
+                                                                     !! compute the `n`th column of the Jacobian
+                                                                     !! `size(n)`.
 
         ! these are required to be defined by the user:
         procedure(func),pointer    :: compute_function => null()
@@ -312,7 +313,8 @@
 !  Initialize a [[numdiff_type]] class. This must be called first.
 
     subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
-                        problem_func,sparsity_func,jacobian_method,info,chunk_size)
+                        problem_func,sparsity_func,jacobian_method,jacobian_methods,&
+                        info,chunk_size)
 
     implicit none
 
@@ -325,8 +327,16 @@
     real(wp),dimension(n),intent(in)    :: dpert           !! perturbation vector for `x`
     procedure(func)                     :: problem_func    !!
     procedure(spars_f)                  :: sparsity_func   !!
-    integer,intent(in)                  :: jacobian_method !! `id` code for the finite difference method
+    integer,intent(in),optional         :: jacobian_method !! `id` code for the finite difference method
+                                                           !! to use for all `n` variables.
                                                            !! see [[get_finite_difference_method]]
+                                                           !! *Note:* either this or `jacobian_methods`
+                                                           !! must be present, but not both.
+    integer,dimension(n),intent(in),optional :: jacobian_methods !! `id` codes for the finite difference method
+                                                                 !! to use for each variable.
+                                                                 !! see [[get_finite_difference_method]]
+                                                                 !! *Note:* either this or `jacobian_method`
+                                                                 !! must be present, but not both.
     procedure(info_f),optional          :: info            !! a function the user can define
                                                            !! which is called when each column
                                                            !! of the jacobian is computed.
@@ -335,13 +345,31 @@
     integer,intent(in),optional         :: chunk_size      !! chunk size for allocating the arrays
                                                            !! (must be >0) [default is 100]
 
+    integer :: i !! counter
+
     ! functions:
     me%compute_function => problem_func
     me%compute_sparsity => sparsity_func
 
     ! method:
-    call get_finite_difference_method(jacobian_method,me%meth)
-
+    if (allocated(me%meth)) deallocate(me%meth)
+    allocate(me%meth(n))
+    if (present(jacobian_method) .eqv. present(jacobian_methods)) then
+        error stop 'Error: must specify one of either jacobian_method or jacobian_methods.'
+    else
+        if (present(jacobian_method)) then
+            ! use the same for all variable
+            do i=1,n
+                call get_finite_difference_method(jacobian_method,me%meth(i))
+            end do
+        else
+            ! specify a separate method for each variable
+            do i=1,n
+                call get_finite_difference_method(jacobian_methods(i),me%meth(i))
+            end do
+        end if
+    end if
+    
     ! size of the problem:
     me%n = n
     me%m = m
@@ -707,18 +735,18 @@ contains
 
             ! compute this column of the Jacobian:
             df = zero
-            do j = 1, size(me%meth%dx_factors)-1
+            do j = 1, size(me%meth(i)%dx_factors)-1
                 if (associated(me%info_function)) call me%info_function(i,j)
-                call me%perturb_x_and_compute_f(x,me%meth%dx_factors(j),&
-                                                dx,me%meth%df_factors(j),&
+                call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
+                                                dx,me%meth(i)%df_factors(j),&
                                                 i,nonzero_elements_in_col,df)
             end do
             ! the last one has the denominator:
             if (associated(me%info_function)) call me%info_function(i,j)
-            call me%perturb_x_and_compute_f(x,me%meth%dx_factors(j),&
-                                            dx,me%meth%df_factors(j),&
+            call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
+                                            dx,me%meth(i)%df_factors(j),&
                                             i,nonzero_elements_in_col,df,&
-                                            me%meth%df_den_factor)
+                                            me%meth(i)%df_den_factor)
 
             ! put result into the output vector:
             jac(pack(indices,mask=me%icol==i)) = df(nonzero_elements_in_col)
