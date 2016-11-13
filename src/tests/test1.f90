@@ -26,13 +26,16 @@
     call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                             problem_func=my_func,&
                             sparsity_func=compute_sparsity_random,&
-                            jacobian_func=forward_diff)
+                            jacobian_method=1)  ! 1= forward diffs
 
     call my_prob%compute_jacobian(x,jac)
 
-    write(*,*) ''
+    write(output_unit,'(A)') ''
     call my_prob%print_sparsity_pattern(output_unit)
     write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+    write(output_unit,'(A)') ''
+    call my_prob%print_sparsity_matrix(output_unit)
+    write(output_unit,'(A)') ''
 
 contains
 

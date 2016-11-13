@@ -2,7 +2,9 @@
 !> author: Jacob Williams
 !  date: October 29, 2016
 !
-!  Numerical differentiation module.
+!  Numerical differentiation module for computing the Jacobian matrix
+!  (the derivative matrix of `m` functions w.r.t. `n` variables) using
+!  finite differences.
 
     module numerical_differentiation_module
 
@@ -11,6 +13,32 @@
     implicit none
 
     private
+
+    real(wp),parameter :: zero = 0.0_wp
+
+    type :: finite_diff_method
+
+        !! defines the finite difference method
+        !! used to compute the Jacobian.
+        !!
+        !! See: [[get_finite_difference_method]]
+        !! for the different methods.
+
+        private
+
+        integer :: id = 0 !! unique ID for the method
+        character(len=:),allocatable :: name  !! the name of the method
+        character(len=:),allocatable :: formula  !! the formula for the method
+        integer :: class = 0 !! 2=backward diffs, 3=central diffs, etc...
+        real(wp),dimension(:),allocatable :: dx_factors  !! multiplicative factors for `dx` perturbation
+        real(wp),dimension(:),allocatable :: df_factors  !! multiplicative factors for accumulating function evaluations
+        real(wp)                          :: df_den_factor = zero  !! denominator factor for finite difference equation (times `dx`)
+
+    end type finite_diff_method
+    interface finite_diff_method
+        !! constructor
+        module procedure initialize_finite_difference_method
+    end interface
 
     type,public :: numdiff_type
 
@@ -24,6 +52,8 @@
         real(wp),dimension(:),allocatable :: xlow  !! lower bounds on `x`
         real(wp),dimension(:),allocatable :: xhigh !! upper bounds on `x`
 
+        integer :: chunk_size = 100  !! chuck size for allocating the arrays (>0)
+
         integer :: perturb_mode = 1  !! perturbation mode
                                      !! 1 - perturbation is `dx=dpert`
                                      !! 2 - perturbation is `dx=dpert*x`
@@ -36,15 +66,15 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
+        type(finite_diff_method) :: meth    !! the finite difference method to use to
+                                            !! compute the Jacobian
+
         ! these are required to be defined by the user:
         procedure(func),pointer    :: compute_function => null()
             !! the user-defined function
 
         procedure(spars_f),pointer :: compute_sparsity => null()
             !! for computing the sparsity pattern
-
-        procedure(jac_f),pointer   :: jacobian_method  => null()
-            !! for computing the Jacobian matrix
 
         procedure(info_f),pointer :: info_function => null()
             !! an optional function the user can define
@@ -62,7 +92,8 @@
         procedure,public :: compute_jacobian_dense  !! return the dense `size(m,n)`
                                                     !! matrix form of the Jacobian.
         procedure,public :: destroy => destroy_numdiff_type  !! destroy the class
-        procedure,public :: print_sparsity_pattern  !! print the sparsity pattern to a file
+        procedure,public :: print_sparsity_pattern  !! print the sparsity pattern in vector form to a file
+        procedure,public :: print_sparsity_matrix   !! print the sparsity pattern in matrix form to a file
         procedure,public :: set_sparsity_pattern    !! manually set the sparsity pattern
 
         ! internal routines:
@@ -95,67 +126,124 @@
             class(numdiff_type),intent(inout) :: me
             real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
         end subroutine spars_f
-        subroutine jac_f(me,x,dx,column,indices_to_compute,dfdx)
-            !! The function to compute a column of jacobian.
-            import :: numdiff_type,wp
-            implicit none
-            class(numdiff_type),intent(inout)  :: me
-            real(wp),dimension(:),intent(in)   :: x       !! vector of variables (size `n`)
-            real(wp),dimension(:),intent(in)   :: dx      !! absolute perturbation (>0)
-                                                          !! for each variable
-            integer,intent(in)                 :: column  !! column number to compute
-            integer,dimension(:),intent(in)    :: indices_to_compute
-                            !! the indices in the column of the Jacobian to compute
-            real(wp),dimension(size(indices_to_compute)),intent(out)  :: dfdx
-                            !! the non-zero elements in the Jacobian column.
-                            !! length is `size(indices_to_compute)`
-        end subroutine jac_f
-        subroutine info_f(me,column)
-            !! User-defined info function (optional)
+        subroutine info_f(me,column,i)
+            !! User-defined info function (optional).
+            !! Informs user what is being done during Jacobian computation.
+            !! It can be used to perform any setup operations that need to
+            !! done on the user's end.
             import :: numdiff_type
             implicit none
             class(numdiff_type),intent(inout)  :: me
-            integer,intent(in) :: column  !! the column about to be computed
+            integer,intent(in) :: column !! the column being computed.
+            integer,intent(in) :: i      !! perturbing this column for the `i`th time (1,2,...)
         end subroutine info_f
     end interface
 
-    ! gradient methods:
-    public :: forward_diff,backward_diff,central_diff
-
     ! sparsity methods:
-    public :: compute_sparsity_dense
-    public :: compute_sparsity_random
+    public :: compute_sparsity_dense,compute_sparsity_random
 
     contains
 !*******************************************************************************
 
 !*******************************************************************************
 !>
-!  initialize the class. This must be called first.
+!  Constructor for a [[finite_diff_method]].
+!
+!@note factors are input as integers for convienence, but are converted
+!      to reals for the actual computations. (note: this means we can't
+!      currently define methods that have non-integer factors).
 
-    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
-                        problem_func,sparsity_func,jacobian_func,info)
+    function initialize_finite_difference_method(id,name,formula,class,dx_factors,&
+                                                 df_factors,df_den_factor) result(me)
 
     implicit none
 
-    class(numdiff_type),intent(inout)   :: me
-    integer,intent(in)                  :: n            !! number of `x` variables
-    integer,intent(in)                  :: m            !! number of `f` functions
-    real(wp),dimension(n),intent(in)    :: xlow         !! lower bounds on `x`
-    real(wp),dimension(n),intent(in)    :: xhigh        !! upper bounds on `x`
-    integer,intent(in)                  :: perturb_mode !! perturbation mode (1,2,3)
-    real(wp),dimension(n),intent(in)    :: dpert        !! perturbation vector for `x`
-    procedure(func)                     :: problem_func  !!
-    procedure(spars_f)                  :: sparsity_func !!
-    procedure(jac_f)                    :: jacobian_func !!
-    procedure(info_f),optional          :: info         !! a function the user can define
-                                                        !! which is called when each column of the jacobian is computed.
-                                                        !! It can be used to perform any setup operations.
+    type(finite_diff_method)        :: me
+    integer,intent(in)              :: id            !! unique ID for the method
+    character(len=*),intent(in)     :: name          !! the name of the method
+    character(len=*),intent(in)     :: formula       !! the formulat for the method
+    integer,intent(in)              :: class         !! 2=backward diffs, 3=central diffs, etc...
+    integer,dimension(:),intent(in) :: dx_factors    !! multiplicative factors for dx perturbation
+    integer,dimension(:),intent(in) :: df_factors    !! multiplicative factors for accumulating function evaluations
+    integer,intent(in)              :: df_den_factor !! denominator factor for finite difference equation (times dx)
+
+    if (size(dx_factors)/=size(df_factors)) then
+        error stop 'Error: dx_factors and df_factors arrays must be the same size.'
+    else
+
+        me%id            = id
+        me%name          = trim(name)
+        me%formula       = trim(formula)
+        me%class         = class
+        me%dx_factors    = real(dx_factors,wp)
+        me%df_factors    = real(df_factors,wp)
+        me%df_den_factor = real(df_den_factor,wp)
+
+    end if
+
+    end function initialize_finite_difference_method
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Return a [[finite_diff_method]] given the `id` code.
+!  (the `id` codes begin at 1, are sequential, and uniquely define the method).
+!
+!@note This is the only routine that has to be changed if a new
+!      finite difference method is added.
+
+    subroutine get_finite_difference_method(id,fd)
+
+    implicit none
+
+    integer,intent(in) :: id  !! the id code for the method
+    type(finite_diff_method),intent(out) :: fd !! this method (can be used in [[compute_jacobian]])
+
+    select case (id)
+    case(1); fd = finite_diff_method(id,'forward diff', '(f(x+d) - f(x)) / d',     2,[1,0],[1,-1],1)
+    case(2); fd = finite_diff_method(id,'backward diff','(f(x) - f(x-d)) / d',     2,[0,-1],[1,-1],1)
+    case(3); fd = finite_diff_method(id,'central diff', '(f(x+d) - f(x-d)) / (2d)',3,[1,-1],[1,-1],2)
+    case default
+        error stop 'Error: invalid id.'
+    end select
+
+    end subroutine get_finite_difference_method
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Initialize a [[numdiff_type]] class. This must be called first.
+
+    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
+                        problem_func,sparsity_func,jacobian_method,info,chunk_size)
+
+    implicit none
+
+    class(numdiff_type),intent(out)     :: me
+    integer,intent(in)                  :: n               !! number of `x` variables
+    integer,intent(in)                  :: m               !! number of `f` functions
+    real(wp),dimension(n),intent(in)    :: xlow            !! lower bounds on `x`
+    real(wp),dimension(n),intent(in)    :: xhigh           !! upper bounds on `x`
+    integer,intent(in)                  :: perturb_mode    !! perturbation mode (1,2,3)
+    real(wp),dimension(n),intent(in)    :: dpert           !! perturbation vector for `x`
+    procedure(func)                     :: problem_func    !!
+    procedure(spars_f)                  :: sparsity_func   !!
+    integer,intent(in)                  :: jacobian_method !! `id` code for the finite difference method
+                                                           !! see [[get_finite_difference_method]]
+    procedure(info_f),optional          :: info            !! a function the user can define
+                                                           !! which is called when each column
+                                                           !! of the jacobian is computed.
+                                                           !! It can be used to perform any
+                                                           !! setup operations.
+    integer,intent(in),optional         :: chunk_size      !! chunk size for allocating the arrays
+                                                           !! (must be >0) [default is 100]
 
     ! functions:
     me%compute_function => problem_func
     me%compute_sparsity => sparsity_func
-    me%jacobian_method  => jacobian_func
+
+    ! method:
+    call get_finite_difference_method(jacobian_method,me%meth)
 
     ! size of the problem:
     me%n = n
@@ -176,11 +264,8 @@
     me%dpert = dpert
 
     ! optional:
-    if (present(info)) then
-        me%info_function => info
-    else
-        me%info_function => null()
-    end if
+    if (present(info))       me%info_function => info
+    if (present(chunk_size)) me%chunk_size = chunk_size
 
     end subroutine initialize_numdiff_type
 !*******************************************************************************
@@ -285,6 +370,8 @@
 !  function values are the same.
 !
 !@note The input `x` is not used here.
+!
+!@note Could also allow the three coefficients to be user inputs.
 
     subroutine compute_sparsity_random(me,x)
 
@@ -295,6 +382,8 @@
 
     integer :: i !! column counter
     integer :: j !! row counter
+    integer :: n_icol  !! `icol` size counter
+    integer :: n_irow  !! `irow` size counter
     integer,dimension(me%m) :: idx !! indices to compute [1,2,...,m]
     real(wp),dimension(me%n) :: x1 !! perturbed variable vector
     real(wp),dimension(me%n) :: x2 !! perturbed variable vector
@@ -303,53 +392,104 @@
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
 
+    real(wp),dimension(3),parameter :: coeffs = [0.251234567_wp,&
+                                                 0.512345678_wp,&
+                                                 0.751234567_wp]
+        !! Pick three points roughly equally spaced.
+        !! (add some noise in attempt to avoid freak zeros)
+        !!````
+        !! xlow---|----|--x--|---xhigh
+        !!        1    2     3
+        !!````
+
     ! initialize:
     call me%destroy_sparsity()
 
     ! we will compute all the functions:
     idx = [(i,i=1,me%m)]
 
+    n_icol = 0  ! initialize vector size counters
+    n_irow = 0
+
     ! define a nominal point roughly in the middle:
-    x2 = me%xlow + (me%xhigh-me%xlow)*0.512345678_wp
+    x2 = me%xlow + (me%xhigh-me%xlow)*coeffs(2)
     call me%compute_function(x2,f2,idx)
 
-    do i = 1, me%n  !columns
-
-        ! Pick three points roughly equally spaced:
-        ! (add some noise in attempt to avoid freak zeros)
-        !
-        ! xlow---|----|--x--|---xhigh
-        !        1    2     3
+    do i = 1, me%n  ! columns
 
         ! restore nominal:
         x1 = x2
         x3 = x2
 
-        x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*0.251234567_wp
-        x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*0.751234567_wp
+        x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(1)
+        x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(3)
 
         call me%compute_function(x1,f1,idx)
         call me%compute_function(x3,f3,idx)
 
         do j = 1, me%m ! each function (rows of Jacobian)
             if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
-                ! a nonzero element in the jacobian
-                !TODO allocate this in chunks to speed it up
-                if (allocated(me%icol)) then
-                    me%icol = [me%icol,i]
-                    me%irow = [me%irow,j]
-                else
-                    me%icol = [i]
-                    me%irow = [j]
-                end if
+                call expand_vector(me%icol,n_icol,me%chunk_size,val=i)
+                call expand_vector(me%irow,n_irow,me%chunk_size,val=j)
             end if
         end do
+        ! resize to correct size:
+        call expand_vector(me%icol,n_icol,me%chunk_size,finished=.true.)
+        call expand_vector(me%irow,n_irow,me%chunk_size,finished=.true.)
 
     end do
 
     ! finished:
     me%sparsity_computed = .true.
     me%num_nonzero_elements = size(me%irow)
+
+contains
+
+    pure subroutine expand_vector(vec,n,chunk_size,val,finished)
+
+    !! add elements to the vector in chunks.
+
+    implicit none
+
+    integer,dimension(:),allocatable,intent(inout) :: vec !! the vector to add element to
+    integer,intent(inout) :: n     !! counter for last element added to `vec`.
+                                   !! must be initialized to `size(vec)`
+                                   !! (or 0 if not allocated) before first call
+    integer,intent(in) :: chunk_size  !! allocate `vec` in blocks of this size (>0)
+    integer,intent(in),optional :: val !! the value to add to `vec`
+    logical,intent(in),optional :: finished !! set to true to return `vec`
+                                            !! as its correct size (`n`)
+
+    integer,dimension(:),allocatable :: tmp  !! temporary array
+
+    if (present(val)) then
+        if (allocated(vec)) then
+            if (n==size(vec)) then
+                ! have to add another chunk:
+                allocate(tmp(size(vec)+chunk_size))
+                tmp(1:size(vec)) = vec
+                call move_alloc(tmp,vec)
+            end if
+            n = n + 1
+        else
+            ! the first element:
+            allocate(vec(chunk_size))
+            n = 1
+        end if
+        vec(n) = val
+    end if
+
+    if (present(finished)) then
+        if (finished) then
+            ! set vec to actual size (n):
+            if (allocated(tmp)) deallocate(tmp)
+            allocate(tmp(n))
+            tmp = vec(1:n)
+            call move_alloc(tmp,vec)
+        end if
+    end if
+
+    end subroutine expand_vector
 
     end subroutine compute_sparsity_random
 !*******************************************************************************
@@ -376,7 +516,7 @@
     allocate(jac(me%m,me%n))
 
     ! convert to dense form:
-    jac = 0.0_wp
+    jac = zero
     do i = 1, me%num_nonzero_elements
         jac(me%irow(i),me%icol(i)) = jac_vec(i)
     end do
@@ -390,7 +530,8 @@
 !  This routine is designed so that `df` is accumulated as each function
 !  evaluation is done, to avoid having to allocate more temporary storage.
 
-    subroutine perturb_x_and_compute_f(me,x,dx_factor,dx,df_factor,column,idx,df,df_den_factor)
+    subroutine perturb_x_and_compute_f(me,x,dx_factor,dx,&
+                                       df_factor,column,idx,df,df_den_factor)
 
     implicit none
 
@@ -405,7 +546,7 @@
                                                    !! to compute (passed to function)
     real(wp),dimension(me%m),intent(inout) :: df   !! the accumulated function value
                                                    !! note: for the first call, this
-                                                   !! should be set to 0.0_wp
+                                                   !! should be set to zero
     real(wp),intent(in),optional :: df_den_factor  !! if present, `df` is divided by
                                                    !! `df_den_factor*dx(column)`
 
@@ -413,108 +554,12 @@
     real(wp),dimension(me%m) :: f   !! function evaluation
 
     xp = x
-    if (dx_factor/=0.0_wp) xp(column) = xp(column) + dx_factor * dx(column)
+    if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
     call me%compute_function(xp,f,idx)
     df(idx) = df(idx) + df_factor * f(idx)
     if (present(df_den_factor)) df(idx) = df(idx) / (df_den_factor*dx(column))
 
     end subroutine perturb_x_and_compute_f
-!*******************************************************************************
-
-!*******************************************************************************
-!>
-!  Compute a column of the Jacobian matrix using
-!  basic two-point forward differences.
-
-    subroutine forward_diff(me,x,dx,column,idx,dfdx)
-
-    implicit none
-
-    class(numdiff_type),intent(inout)  :: me
-    real(wp),dimension(:),intent(in)   :: x           !! vector of variables (size `n`)
-    real(wp),dimension(:),intent(in)   :: dx          !! absolute perturbation (>0)
-                                                      !! for each variable
-    integer,intent(in)                 :: column      !! column number to compute
-    integer,dimension(:),intent(in)    :: idx         !! the elements in the
-                                                      !! column of the Jacobian
-                                                      !! to compute
-    real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
-                                                      !! column of the Jacobian matrix.
-
-    real(wp),dimension(me%m) :: df  !! accumulated function
-
-    ! dfdx = (f(x+dx) - f(x)) / dx
-
-    df = 0.0_wp
-    call me%perturb_x_and_compute_f(x,1.0_wp,dx,1.0_wp,column,idx,df)
-    call me%perturb_x_and_compute_f(x,0.0_wp,dx,-1.0_wp,column,idx,df,1.0_wp)
-    dfdx = df(idx)
-
-    end subroutine forward_diff
-!*******************************************************************************
-
-!*******************************************************************************
-!>
-!  Compute a column of the Jacobian matrix using
-!  basic two-point backward differences.
-
-    subroutine backward_diff(me,x,dx,column,idx,dfdx)
-
-    implicit none
-
-    class(numdiff_type),intent(inout)  :: me
-    real(wp),dimension(:),intent(in)   :: x           !! vector of variables (size `n`)
-    real(wp),dimension(:),intent(in)   :: dx          !! absolute perturbation (>0)
-                                                      !! for each variable
-    integer,intent(in)                 :: column      !! column number to compute
-    integer,dimension(:),intent(in)    :: idx         !! the elements in the
-                                                      !! column of the Jacobian
-                                                      !! to compute
-    real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
-                                                      !! column of the Jacobian matrix.
-
-    real(wp),dimension(me%m) :: df  !! accumulated function
-
-    ! dfdx = (f(x) - f(x-dx)) / dx
-
-    df = 0.0_wp
-    call me%perturb_x_and_compute_f(x,0.0_wp,dx,1.0_wp,column,idx,df)
-    call me%perturb_x_and_compute_f(x,-1.0_wp,dx,-1.0_wp,column,idx,df,1.0_wp)
-    dfdx = df(idx)
-
-    end subroutine backward_diff
-!*******************************************************************************
-
-!*******************************************************************************
-!>
-!  Compute a column of the Jacobian matrix using
-!  basic two-point central differences.
-
-    subroutine central_diff(me,x,dx,column,idx,dfdx)
-
-    implicit none
-
-    class(numdiff_type),intent(inout)  :: me
-    real(wp),dimension(:),intent(in)   :: x           !! vector of variables (size `n`)
-    real(wp),dimension(:),intent(in)   :: dx          !! absolute perturbation (>0)
-                                                      !! for each variable
-    integer,intent(in)                 :: column      !! column number to compute
-    integer,dimension(:),intent(in)    :: idx         !! the elements in the
-                                                      !! column of the Jacobian
-                                                      !! to compute
-    real(wp),dimension(size(idx)),intent(out) :: dfdx !! the non-zero elements in the
-                                                      !! column of the Jacobian matrix.
-
-    real(wp),dimension(me%m) :: df  !! accumulated function
-
-    ! dfdx = (f(x+dx) - f(x-dx)) / (2*dx)
-
-    df = 0.0_wp
-    call me%perturb_x_and_compute_f(x,1.0_wp,dx,1.0_wp,column,idx,df)
-    call me%perturb_x_and_compute_f(x,-1.0_wp,dx,-1.0_wp,column,idx,df,2.0_wp)
-    dfdx = df(idx)
-
-    end subroutine central_diff
 !*******************************************************************************
 
 !*******************************************************************************
@@ -535,7 +580,6 @@
                                                  !! column of the Jacobian
                                                  !! that are non-zero
     integer :: i  !! column counter
-    integer :: nf !! number of functions to compute in a column
     real(wp),dimension(me%n) :: dx !! absolute perturbation (>0) for each variable
     integer,dimension(:),allocatable :: nonzero_elements_in_col !! the indices of the
                                                                 !! nonzero Jacobian
@@ -543,13 +587,15 @@
     integer,dimension(:),allocatable :: indices  !! index vector
                                                  !! `[1,2,...,num_nonzero_elements]`
                                                  !! for putting `dfdx` into `jac`
+    integer :: j !! function evaluation counter
+    real(wp),dimension(me%m) :: df  !! accumulated function
 
     ! if we don't have a sparsity pattern yet then compute it:
     if (.not. me%sparsity_computed) call me%compute_sparsity(x)
 
     ! initialize:
     allocate(jac(me%num_nonzero_elements))
-    jac = 0.0_wp
+    jac = zero
     indices = [(i,i=1,me%num_nonzero_elements)] !NOTE could save this in the class so we don't have to keep allocating it
 
     ! compute dx vector:
@@ -560,27 +606,25 @@
 
         ! determine functions to compute for this column:
         nonzero_elements_in_col = pack(me%irow,mask=me%icol==i)
-        nf = size(nonzero_elements_in_col)  ! number of functions to compute
-        if (nf/=0) then
-
-            ! possibly inform caller what is happening:
-            if (associated(me%info_function)) call me%info_function(i)
-
-            ! size the output array:
-            if (allocated(dfdx)) then
-                if (size(dfdx)/=nf) then
-                    deallocate(dfdx)
-                    allocate(dfdx(nf))
-                end if
-            else
-                allocate(dfdx(nf))
-            end if
+        if (size(nonzero_elements_in_col)/=0) then ! there are functions to compute
 
             ! compute this column of the Jacobian:
-            call me%jacobian_method(x,dx,i,nonzero_elements_in_col,dfdx)
+            df = zero
+            do j = 1, size(me%meth%dx_factors)-1
+                if (associated(me%info_function)) call me%info_function(i,j)
+                call me%perturb_x_and_compute_f(x,me%meth%dx_factors(j),&
+                                                dx,me%meth%df_factors(j),&
+                                                i,nonzero_elements_in_col,df)
+            end do
+            ! the last one has the denominator:
+            if (associated(me%info_function)) call me%info_function(i,j)
+            call me%perturb_x_and_compute_f(x,me%meth%dx_factors(j),&
+                                            dx,me%meth%df_factors(j),&
+                                            i,nonzero_elements_in_col,df,&
+                                            me%meth%df_den_factor)
 
             ! put result into the output vector:
-            jac(pack(indices,mask=me%icol==i)) = dfdx
+            jac(pack(indices,mask=me%icol==i)) = df(nonzero_elements_in_col)
 
         end if
 
@@ -602,6 +646,8 @@
     real(wp),dimension(me%n),intent(in)  :: x  !! vector of variables (size `n`)
     real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0) for each variable
 
+    real(wp),parameter :: eps = epsilon(1.0_wp) !! the smallest allowed absolute step
+
     select case (me%perturb_mode)
     case(1)
         dx = abs(me%dpert)
@@ -613,15 +659,15 @@
         error stop 'Error: invalid value for perturb_mode (must be 1, 2, or 3)'
     end select
 
-    ! make sure none are zero:
-    where (dx<=0.0_wp) dx = epsilon(1.0_wp)
+    ! make sure none are too small:
+    where (dx<eps) dx = eps
 
     end subroutine compute_perturbation_vector
 !*******************************************************************************
 
 !*******************************************************************************
 !>
-!  Print the sparsity pattern in matrix form.
+!  Print the sparsity pattern in vector form (`irow`, `icol`).
 
     subroutine print_sparsity_pattern(me,iunit)
 
@@ -639,6 +685,35 @@
     end if
 
     end subroutine print_sparsity_pattern
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Print the sparsity pattern in matrix form.
+
+    subroutine print_sparsity_matrix(me,iunit)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,intent(in) :: iunit !! file unit to write to.
+                                !! (assumed to be already opened)
+
+    integer :: r   !! row counter
+    character(len=1),dimension(me%n) :: row  !! a row of the sparsity matrix
+
+    if (allocated(me%irow) .and. allocated(me%icol)) then
+        ! print by row:
+        do r = 1,me%m
+            row = '0'
+            row(pack(me%icol,mask=me%irow==r)) = 'X'
+            write(iunit,'(*(A1))') row
+        end do
+    else
+        error stop 'Error: sparsity pattern not available.'
+    end if
+
+    end subroutine print_sparsity_matrix
 !*******************************************************************************
 
 !*******************************************************************************
