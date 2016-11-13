@@ -21,21 +21,35 @@
     real(wp),dimension(n),parameter :: dpert = [1.0e-6_wp,1.0e-6_wp,1.0e-6_wp]
     integer,parameter :: perturb_mode = 1
 
+    integer :: i !! counter
     real(wp),dimension(:),allocatable :: jac
+    character(len=:),allocatable :: formula
 
-    call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
-                            problem_func=my_func,&
-                            sparsity_func=compute_sparsity_random,&
-                            jacobian_method=1)  ! 1= forward diffs
+    do i=1,5  ! try different finite diff methods
 
-    call my_prob%compute_jacobian(x,jac)
+        write(output_unit,'(A)') ''
+        write(output_unit,'(A)') '-------------------'
 
-    write(output_unit,'(A)') ''
-    call my_prob%print_sparsity_pattern(output_unit)
-    write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
-    write(output_unit,'(A)') ''
-    call my_prob%print_sparsity_matrix(output_unit)
-    write(output_unit,'(A)') ''
+        call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
+                                problem_func=my_func,&
+                                sparsity_func=compute_sparsity_random,&
+                                jacobian_method=i)  ! 1 = forward diffs
+
+        call get_finite_diff_formula(i,formula)
+        write(output_unit,'(A)') ''
+        write(*,*) formula
+        write(output_unit,'(A)') ''
+
+        call my_prob%compute_jacobian(x,jac)
+
+        write(output_unit,'(A)') ''
+        call my_prob%print_sparsity_pattern(output_unit)
+        write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+        write(output_unit,'(A)') ''
+        call my_prob%print_sparsity_matrix(output_unit)
+        write(output_unit,'(A)') ''
+
+    end do
 
 contains
 

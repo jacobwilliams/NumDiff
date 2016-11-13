@@ -28,12 +28,13 @@
 
         integer :: id = 0 !! unique ID for the method
         character(len=:),allocatable :: name  !! the name of the method
-        character(len=:),allocatable :: formula  !! the formula for the method
         integer :: class = 0 !! 2=backward diffs, 3=central diffs, etc...
         real(wp),dimension(:),allocatable :: dx_factors  !! multiplicative factors for `dx` perturbation
         real(wp),dimension(:),allocatable :: df_factors  !! multiplicative factors for accumulating function evaluations
         real(wp)                          :: df_den_factor = zero  !! denominator factor for finite difference equation (times `dx`)
-
+    contains
+        private
+        procedure,public :: get_formula
     end type finite_diff_method
     interface finite_diff_method
         !! constructor
@@ -142,6 +143,9 @@
     ! sparsity methods:
     public :: compute_sparsity_dense,compute_sparsity_random
 
+    ! other:
+    public :: get_finite_diff_formula
+
     contains
 !*******************************************************************************
 
@@ -153,7 +157,7 @@
 !      to reals for the actual computations. (note: this means we can't
 !      currently define methods that have non-integer factors).
 
-    function initialize_finite_difference_method(id,name,formula,class,dx_factors,&
+    function initialize_finite_difference_method(id,name,class,dx_factors,&
                                                  df_factors,df_den_factor) result(me)
 
     implicit none
@@ -161,7 +165,6 @@
     type(finite_diff_method)        :: me
     integer,intent(in)              :: id            !! unique ID for the method
     character(len=*),intent(in)     :: name          !! the name of the method
-    character(len=*),intent(in)     :: formula       !! the formulat for the method
     integer,intent(in)              :: class         !! 2=backward diffs, 3=central diffs, etc...
     integer,dimension(:),intent(in) :: dx_factors    !! multiplicative factors for dx perturbation
     integer,dimension(:),intent(in) :: df_factors    !! multiplicative factors for accumulating function evaluations
@@ -173,7 +176,6 @@
 
         me%id            = id
         me%name          = trim(name)
-        me%formula       = trim(formula)
         me%class         = class
         me%dx_factors    = real(dx_factors,wp)
         me%df_factors    = real(df_factors,wp)
@@ -182,6 +184,98 @@
     end if
 
     end function initialize_finite_difference_method
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Return a string with the finite difference formula.
+!
+!### Example
+!  * For 3-point backward: `dfdx = (f(x-2h)-4f(x-h)+3f(x)) / (2h)`
+
+    subroutine get_formula(me,formula)
+
+    class(finite_diff_method),intent(in) :: me
+    character(len=:),allocatable,intent(out) :: formula
+
+    integer :: i !! counter
+    integer :: istat !! write `iostat` flag
+    character(len=10) :: x !! temp variable for integer to string conversion
+    character(len=10) :: f !! temp variable for integer to string conversion
+
+    if (allocated(me%dx_factors) .and. allocated(me%df_factors)) then
+
+        formula = 'dfdx = ('
+
+        do i = 1, size(me%dx_factors)
+
+            if (int(me%df_factors(i))==1) then
+                if (i==1) then
+                    formula = formula//'f('
+                else
+                    formula = formula//'+f('
+                end if
+            elseif (int(me%df_factors(i))==-1) then
+                formula = formula//'-f('
+            else
+                if (i==1) then
+                    write(f,'(I10)',iostat=istat) int(me%df_factors(i))    ! integer to string
+                else
+                    write(f,'(SP,I10)',iostat=istat) int(me%df_factors(i)) ! integer to string (with sign)
+                end if
+                formula = formula//trim(adjustl(f))//'f('
+            end if
+
+            if (int(me%dx_factors(i))==0) then
+                formula = formula//'x'
+            elseif (int(me%dx_factors(i))==1) then
+                formula = formula//'x+h'
+            elseif (int(me%dx_factors(i))==-1) then
+                formula = formula//'x-h'
+            else
+                write(x,'(SP,I10)',iostat=istat) int(me%dx_factors(i)) ! integer to string (with sign)
+                formula = formula//'x'//trim(adjustl(x))//'h'
+            end if
+
+            formula = formula//')'
+
+        end do
+
+        write(f,'(I10)',iostat=istat) int(me%df_den_factor) ! integer to string
+        if (int(me%df_den_factor)==1) then
+            formula = formula//') / h'
+        else
+            formula = formula//') / ('//trim(adjustl(f))//'h)'
+        end if
+
+    else
+        formula = ''
+    end if
+
+    end subroutine get_formula
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Return a string with the finite difference formula.
+!  Input is the method `id` code.
+!
+!###See also:
+!  * [[get_formula]]
+
+    subroutine get_finite_diff_formula(id,formula)
+
+    implicit none
+
+    integer,intent(in) :: id  !! the id code for the method
+    character(len=:),allocatable,intent(out) :: formula !! the formula string
+
+    type(finite_diff_method) :: fd
+
+    call get_finite_difference_method(id,fd)
+    call get_formula(fd,formula)
+
+    end subroutine get_finite_diff_formula
 !*******************************************************************************
 
 !*******************************************************************************
@@ -200,9 +294,12 @@
     type(finite_diff_method),intent(out) :: fd !! this method (can be used in [[compute_jacobian]])
 
     select case (id)
-    case(1); fd = finite_diff_method(id,'forward diff', '(f(x+d) - f(x)) / d',     2,[1,0],[1,-1],1)
-    case(2); fd = finite_diff_method(id,'backward diff','(f(x) - f(x-d)) / d',     2,[0,-1],[1,-1],1)
-    case(3); fd = finite_diff_method(id,'central diff', '(f(x+d) - f(x-d)) / (2d)',3,[1,-1],[1,-1],2)
+    case(1); fd = finite_diff_method(id,'2-point forward',  2,[1,0],[1,-1],1)      ! (f(x+h) - f(x)) / h
+    case(2); fd = finite_diff_method(id,'2-point backward', 2,[0,-1],[1,-1],1)     ! (f(x) - f(x-h)) / h
+    case(3); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)
+    case(4); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)
+    case(5); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)     ! (f(x+h) - f(x-h)) / (2h)
+
     case default
         error stop 'Error: invalid id.'
     end select
