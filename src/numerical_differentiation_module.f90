@@ -8,7 +8,7 @@
 
     module numerical_differentiation_module
 
-    use iso_fortran_env, only: wp => real64
+    use iso_fortran_env, only: error_unit, wp => real64
 
     implicit none
 
@@ -16,7 +16,7 @@
 
     real(wp),parameter :: zero = 0.0_wp
 
-    type :: finite_diff_method
+    type,public :: finite_diff_method
 
         !! defines the finite difference method
         !! used to compute the Jacobian.
@@ -67,9 +67,14 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
+        integer :: mode = 1 !! 1 = use `meth` (specified methods),
+                            !! 2 = use `class` (specified class, method is selected on-the-fly).
+        integer,dimension(:),allocatable :: class  !! the class of method to use to
+                                                   !! compute the `n`th column of the Jacobian
+                                                   !! `size(n)`. Either this or `meth` is used
         type(finite_diff_method),dimension(:),allocatable :: meth    !! the finite difference method to use
                                                                      !! compute the `n`th column of the Jacobian
-                                                                     !! `size(n)`.
+                                                                     !! `size(n)`.  Either this or `class` is used
 
         ! these are required to be defined by the user:
         procedure(func),pointer    :: compute_function => null()
@@ -97,6 +102,9 @@
         procedure,public :: print_sparsity_pattern  !! print the sparsity pattern in vector form to a file
         procedure,public :: print_sparsity_matrix   !! print the sparsity pattern in matrix form to a file
         procedure,public :: set_sparsity_pattern    !! manually set the sparsity pattern
+        procedure,public :: select_finite_diff_method  !! select a method in a specified class so
+                                                       !! that the variable bounds are not violated
+                                                       !! when by the perturbations.
 
         ! internal routines:
         procedure :: destroy_sparsity            !! destroy the sparsity pattern
@@ -272,8 +280,9 @@
     character(len=:),allocatable,intent(out) :: formula !! the formula string
 
     type(finite_diff_method) :: fd
+    logical :: found
 
-    call get_finite_difference_method(id,fd)
+    call get_finite_difference_method(id,fd,found)
     call get_formula(fd,formula)
 
     end subroutine get_finite_diff_formula
@@ -286,26 +295,120 @@
 !
 !@note This is the only routine that has to be changed if a new
 !      finite difference method is added.
+!
+!@note The order within a class is assumed to be the order that we would perfer
+!      to use them (e.g., central diffs are first, etc.) This is used in
+!      the [[select_finite_diff_method]] routine.
 
-    subroutine get_finite_difference_method(id,fd)
+    subroutine get_finite_difference_method(id,fd,found)
 
     implicit none
 
-    integer,intent(in) :: id  !! the id code for the method
-    type(finite_diff_method),intent(out) :: fd !! this method (can be used in [[compute_jacobian]])
+    integer,intent(in)                   :: id     !! the id code for the method
+    type(finite_diff_method),intent(out) :: fd     !! this method (can be used in [[compute_jacobian]])
+    logical,intent(out)                  :: found  !! true if it was found
+
+    found = .true.
 
     select case (id)
     case(1); fd = finite_diff_method(id,'2-point forward',  2,[1,0],[1,-1],1)      ! (f(x+h) - f(x)) / h
     case(2); fd = finite_diff_method(id,'2-point backward', 2,[0,-1],[1,-1],1)     ! (f(x) - f(x-h)) / h
-    case(3); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)
-    case(4); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)
-    case(5); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)     ! (f(x+h) - f(x-h)) / (2h)
-
+    case(3); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)     ! (f(x+h) - f(x-h)) / (2h)
+    case(4); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)
+    case(5); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)
     case default
-        error stop 'Error: invalid id.'
+        found = .false.
     end select
 
     end subroutine get_finite_difference_method
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Select a finite diff method of a given `class` so that the perturbations
+!  of `x` will not violate the variable bounds.
+
+    subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,class,fd,status_ok)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)    :: me
+    real(wp),intent(in)                  :: x         !! the variable value
+    real(wp),intent(in)                  :: xlow      !! the variable lower bound
+    real(wp),intent(in)                  :: xhigh     !! the variable upper bound
+    real(wp),intent(in)                  :: dx        !! the perturbation value (>0)
+    integer,intent(in)                   :: class     !! the class of method to use (2,3...)
+                                                      !! see [[get_finite_difference_method]]
+    type(finite_diff_method),intent(out) :: fd        !! this method can be used
+    logical,intent(out)                  :: status_ok !! true if it really doesn't violate the bounds
+                                                      !! (say, the bounds are very close to each other)
+                                                      !! if `status_ok=False`, then the first method in
+                                                      !! the given class is returned in `fd`.
+
+    type(finite_diff_method),dimension(:),allocatable :: list_of_methods  !! list of available methods in the input class
+    integer  :: id     !! method id counter
+    logical  :: found  !! if the method was found
+    integer  :: i      !! counter
+    integer  :: j      !! counter
+    real(wp) :: xp     !! perturbed `x` value
+
+    ! initialize:
+    status_ok = .false.
+
+    ! first, get a list of all the methods in this class:
+    ! currently, the only way to do this is to call the
+    ! routine and see if there is one available.
+    id = 0
+    do
+        id = id + 1
+        call get_finite_difference_method(id,fd,found)
+        if (found) then
+            if (fd%class==class) then
+                if (allocated(list_of_methods)) then
+                    list_of_methods = [list_of_methods,fd]  ! add to the list
+                else
+                    list_of_methods = [fd]
+                end if
+            elseif (fd%class>class) then
+                exit
+            end if
+        else
+            exit ! done
+        end if
+    end do
+
+    if (allocated(list_of_methods)) then
+
+        ! try all the methods in the class:
+        do i = 1, size(list_of_methods)
+            status_ok = .true. ! will be set to false if any
+                               ! perturbation violates the bounds
+            ! check each of the perturbations:
+            do j = 1, size(list_of_methods(i)%dx_factors)
+                xp = x + list_of_methods(i)%dx_factors(j)*dx
+                if (xp < xlow .or. xp > xhigh) then
+                    status_ok = .false.
+                    exit
+                end if
+            end do
+            if (status_ok) then   ! this one is OK to use
+                fd = list_of_methods(i)
+                exit
+            end if
+        end do
+
+        if (.not. status_ok) then
+            ! no method was found that doesn't violate the bounds,
+            ! so just return the first one in the list.
+            fd = list_of_methods(1)
+        end if
+
+        ! clean up:
+        deallocate(list_of_methods)
+
+    end if
+
+    end subroutine select_finite_diff_method
 !*******************************************************************************
 
 !*******************************************************************************
@@ -314,7 +417,7 @@
 
     subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_func,jacobian_method,jacobian_methods,&
-                        info,chunk_size)
+                        class,classes,info,chunk_size)
 
     implicit none
 
@@ -337,6 +440,8 @@
                                                                  !! see [[get_finite_difference_method]]
                                                                  !! *Note:* either this or `jacobian_method`
                                                                  !! must be present, but not both.
+    integer,intent(in),optional              :: class      !!
+    integer,dimension(n),intent(in),optional :: classes    !!
     procedure(info_f),optional          :: info            !! a function the user can define
                                                            !! which is called when each column
                                                            !! of the jacobian is computed.
@@ -346,6 +451,7 @@
                                                            !! (must be >0) [default is 100]
 
     integer :: i !! counter
+    logical :: found
 
     ! functions:
     me%compute_function => problem_func
@@ -353,23 +459,41 @@
 
     ! method:
     if (allocated(me%meth)) deallocate(me%meth)
-    allocate(me%meth(n))
-    if (present(jacobian_method) .eqv. present(jacobian_methods)) then
-        error stop 'Error: must specify one of either jacobian_method or jacobian_methods.'
+    if (allocated(me%class)) deallocate(me%class)
+
+    if (      present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
+        .not. present(class) .and. .not. present(classes)) then
+        ! use the same for all variable
+        me%mode = 1
+        allocate(me%meth(n))
+        do i=1,n
+            call get_finite_difference_method(jacobian_method,me%meth(i),found)
+            if (.not. found) error stop 'Error: invalid jacobian_method'
+        end do
+    elseif (.not. present(jacobian_method) .and. present(jacobian_methods) .and. &
+            .not. present(class) .and. .not. present(classes)) then
+        ! specify a separate method for each variable
+        me%mode = 1
+        allocate(me%meth(n))
+        do i=1,n
+            call get_finite_difference_method(jacobian_methods(i),me%meth(i),found)
+            if (.not. found) error stop 'Error: invalid jacobian_methods'
+        end do
+    elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
+                  present(class) .and. .not. present(classes)) then
+        ! use the class for all variables
+        me%mode = 2
+        allocate(me%class(n))
+        me%class = class
+    elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
+            .not. present(class) .and. present(classes)) then
+        ! specify a separate class for each variable
+        me%mode = 2
+        me%class = classes
     else
-        if (present(jacobian_method)) then
-            ! use the same for all variable
-            do i=1,n
-                call get_finite_difference_method(jacobian_method,me%meth(i))
-            end do
-        else
-            ! specify a separate method for each variable
-            do i=1,n
-                call get_finite_difference_method(jacobian_methods(i),me%meth(i))
-            end do
-        end if
+        error stop 'Error: must specify one of either jacobian_method, jacobian_methods, class, or classes.'
     end if
-    
+
     ! size of the problem:
     me%n = n
     me%m = m
@@ -689,7 +813,7 @@ contains
 
 !*******************************************************************************
 !>
-!  Compute the Jacobian using forward differences.
+!  Compute the Jacobian using finite differences.
 
     subroutine compute_jacobian(me,x,jac)
 
@@ -714,6 +838,9 @@ contains
                                                  !! for putting `dfdx` into `jac`
     integer :: j !! function evaluation counter
     real(wp),dimension(me%m) :: df  !! accumulated function
+    type(finite_diff_method) :: fd  !! a finite different method (when
+                                    !! specifying class rather than the method)
+    logical :: status_ok  !! error flag
 
     ! if we don't have a sparsity pattern yet then compute it:
     if (.not. me%sparsity_computed) call me%compute_sparsity(x)
@@ -721,7 +848,8 @@ contains
     ! initialize:
     allocate(jac(me%num_nonzero_elements))
     jac = zero
-    indices = [(i,i=1,me%num_nonzero_elements)] !NOTE could save this in the class so we don't have to keep allocating it
+    indices = [(i,i=1,me%num_nonzero_elements)] !NOTE could save this in the class
+                                                ! so we don't have to keep allocating it
 
     ! compute dx vector:
     call me%compute_perturbation_vector(x,dx)
@@ -733,20 +861,49 @@ contains
         nonzero_elements_in_col = pack(me%irow,mask=me%icol==i)
         if (size(nonzero_elements_in_col)/=0) then ! there are functions to compute
 
-            ! compute this column of the Jacobian:
-            df = zero
-            do j = 1, size(me%meth(i)%dx_factors)-1
+            select case (me%mode)
+            case(1) ! use the specified methods
+
+                ! compute this column of the Jacobian:
+                df = zero
+                do j = 1, size(me%meth(i)%dx_factors)-1
+                    if (associated(me%info_function)) call me%info_function(i,j)
+                    call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
+                                                    dx,me%meth(i)%df_factors(j),&
+                                                    i,nonzero_elements_in_col,df)
+                end do
+                ! the last one has the denominator:
                 if (associated(me%info_function)) call me%info_function(i,j)
                 call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
                                                 dx,me%meth(i)%df_factors(j),&
-                                                i,nonzero_elements_in_col,df)
-            end do
-            ! the last one has the denominator:
-            if (associated(me%info_function)) call me%info_function(i,j)
-            call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
-                                            dx,me%meth(i)%df_factors(j),&
-                                            i,nonzero_elements_in_col,df,&
-                                            me%meth(i)%df_den_factor)
+                                                i,nonzero_elements_in_col,df,&
+                                                me%meth(i)%df_den_factor)
+
+            case(2) ! select the method from the class so as not to violate the bounds
+
+                call me%select_finite_diff_method(x(i),me%xlow(i),me%xhigh(i),&
+                                                  dx(i),me%class(i),fd,status_ok)
+                if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
+                    'Error: variable bounds violated for column: ',i
+
+                ! compute this column of the Jacobian:
+                df = zero
+                do j = 1, size(fd%dx_factors)-1
+                    if (associated(me%info_function)) call me%info_function(i,j)
+                    call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
+                                                    dx,fd%df_factors(j),&
+                                                    i,nonzero_elements_in_col,df)
+                end do
+                ! the last one has the denominator:
+                if (associated(me%info_function)) call me%info_function(i,j)
+                call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
+                                                dx,fd%df_factors(j),&
+                                                i,nonzero_elements_in_col,df,&
+                                                fd%df_den_factor)
+
+            case default
+                error stop 'Error: invalid mode'
+            end select
 
             ! put result into the output vector:
             jac(pack(indices,mask=me%icol==i)) = df(nonzero_elements_in_col)
@@ -769,7 +926,8 @@ contains
 
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(me%n),intent(in)  :: x  !! vector of variables (size `n`)
-    real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0) for each variable
+    real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0)
+                                               !! for each variable
 
     real(wp),parameter :: eps = epsilon(1.0_wp) !! the smallest allowed absolute step
 

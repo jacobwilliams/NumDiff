@@ -24,11 +24,16 @@
     integer :: i !! counter
     real(wp),dimension(:),allocatable :: jac
     character(len=:),allocatable :: formula
+    type(finite_diff_method) :: fd
+    logical :: status_ok
 
     do i=1,5  ! try different finite diff methods
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'
+        write(output_unit,'(A)') ' specify method'
+        write(output_unit,'(A)') '-------------------'
+        write(output_unit,'(A)') ''
 
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
@@ -47,6 +52,38 @@
         write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
         write(output_unit,'(A)') ''
         call my_prob%print_sparsity_matrix(output_unit)
+        write(output_unit,'(A)') ''
+
+    end do
+
+    write(output_unit,'(A)') ''
+    write(output_unit,'(A)') 'select_finite_diff_method'
+    write(output_unit,'(A)') ''
+    call my_prob%select_finite_diff_method(0.0_wp,0.0_wp,1.0_wp,0.001_wp,3,fd,status_ok)
+    call fd%get_formula(formula)
+    write(output_unit,'(A)') formula
+    write(output_unit,'(A)') ''
+
+    call my_prob%select_finite_diff_method(0.9999_wp,0.0_wp,1.0_wp,0.001_wp,3,fd,status_ok)
+    call fd%get_formula(formula)
+    write(output_unit,'(A)') formula
+    write(output_unit,'(A)') ''
+
+    do i=2,3
+
+        write(output_unit,'(A)') ''
+        write(output_unit,'(A)') '-------------------'
+        write(output_unit,'(A)') ' specify class'
+        write(output_unit,'(A)') '-------------------'
+        write(output_unit,'(A)') ''
+
+        call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
+                                problem_func=my_func,&
+                                sparsity_func=compute_sparsity_random,&
+                                class=i)
+
+        call my_prob%compute_jacobian(x,jac)
+        write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
         write(output_unit,'(A)') ''
 
     end do
