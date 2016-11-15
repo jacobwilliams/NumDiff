@@ -41,6 +41,14 @@
         module procedure initialize_finite_difference_method
     end interface
 
+    type,public :: meth_array
+        !! to store an array of [[finite_diff_method]] types
+        !! this is used when the `mode=2` option is used
+        !! in [[numdiff_type]]
+        private
+        type(finite_diff_method),dimension(:),allocatable :: meth
+    end type meth_array
+
     type,public :: numdiff_type
 
         !! base type for sparsity and Jacobian computations.
@@ -69,12 +77,14 @@
 
         integer :: mode = 1 !! 1 = use `meth` (specified methods),
                             !! 2 = use `class` (specified class, method is selected on-the-fly).
+        type(finite_diff_method),dimension(:),allocatable :: meth   !! the finite difference method to use
+                                                                    !! compute the `n`th column of the Jacobian
+                                                                    !! `size(n)`.  Either this or `class` is used
         integer,dimension(:),allocatable :: class  !! the class of method to use to
                                                    !! compute the `n`th column of the Jacobian
                                                    !! `size(n)`. Either this or `meth` is used
-        type(finite_diff_method),dimension(:),allocatable :: meth    !! the finite difference method to use
-                                                                     !! compute the `n`th column of the Jacobian
-                                                                     !! `size(n)`.  Either this or `class` is used
+        type(meth_array),dimension(:),allocatable :: class_meths !! array of methods for the specified classes.
+                                                                 !! used with `class` when `mode=2`
 
         ! these are required to be defined by the user:
         procedure(func),pointer    :: compute_function => null()
@@ -154,6 +164,7 @@
 
     ! other:
     public :: get_finite_diff_formula
+    public :: get_all_methods_in_class
 
     contains
 !*******************************************************************************
@@ -166,7 +177,7 @@
 !      to reals for the actual computations. (note: this means we can't
 !      currently define methods that have non-integer factors).
 
-    function initialize_finite_difference_method(id,name,class,dx_factors,&
+    pure function initialize_finite_difference_method(id,name,class,dx_factors,&
                                                  df_factors,df_den_factor) result(me)
 
     implicit none
@@ -202,7 +213,7 @@
 !### Example
 !  * For 3-point backward: `dfdx = (f(x-2h)-4f(x-h)+3f(x)) / (2h)`
 
-    subroutine get_formula(me,formula)
+    pure subroutine get_formula(me,formula)
 
     class(finite_diff_method),intent(in) :: me
     character(len=:),allocatable,intent(out) :: formula
@@ -272,7 +283,7 @@
 !###See also:
 !  * [[get_formula]]
 
-    subroutine get_finite_diff_formula(id,formula)
+    pure subroutine get_finite_diff_formula(id,formula)
 
     implicit none
 
@@ -300,7 +311,7 @@
 !      to use them (e.g., central diffs are first, etc.) This is used in
 !      the [[select_finite_diff_method]] routine.
 
-    subroutine get_finite_difference_method(id,fd,found)
+    pure subroutine get_finite_difference_method(id,fd,found)
 
     implicit none
 
@@ -325,10 +336,50 @@
 
 !*******************************************************************************
 !>
+!  Returns all the methods with the given `class`.
+
+    pure elemental function get_all_methods_in_class(class) result(list_of_methods)
+
+    implicit none
+
+    integer,intent(in) :: class
+    type(meth_array) :: list_of_methods
+
+    type(finite_diff_method) :: fd  !! temp variable for getting a method from [[get_finite_difference_method]]
+    integer :: id     !! method id counter
+    logical :: found  !! status flag
+
+    ! currently, the only way to do this is to call the
+    ! get_finite_difference_method routine and see if there
+    ! is one available.
+    id = 0
+    do
+        id = id + 1
+        call get_finite_difference_method(id,fd,found)
+        if (found) then
+            if (fd%class==class) then
+                if (allocated(list_of_methods%meth)) then
+                    list_of_methods%meth = [list_of_methods%meth,fd]  ! add to the list
+                else
+                    list_of_methods%meth = [fd]
+                end if
+            elseif (fd%class>class) then ! we assume they are in increasing order
+                exit
+            end if
+        else
+            exit ! done
+        end if
+    end do
+
+    end function get_all_methods_in_class
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Select a finite diff method of a given `class` so that the perturbations
 !  of `x` will not violate the variable bounds.
 
-    subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,class,fd,status_ok)
+    subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,list_of_methods,fd,status_ok)
 
     implicit none
 
@@ -337,17 +388,13 @@
     real(wp),intent(in)                  :: xlow      !! the variable lower bound
     real(wp),intent(in)                  :: xhigh     !! the variable upper bound
     real(wp),intent(in)                  :: dx        !! the perturbation value (>0)
-    integer,intent(in)                   :: class     !! the class of method to use (2,3...)
-                                                      !! see [[get_finite_difference_method]]
+    type(meth_array),intent(in)          :: list_of_methods  !! list of available methods to choose from
     type(finite_diff_method),intent(out) :: fd        !! this method can be used
     logical,intent(out)                  :: status_ok !! true if it really doesn't violate the bounds
                                                       !! (say, the bounds are very close to each other)
                                                       !! if `status_ok=False`, then the first method in
                                                       !! the given class is returned in `fd`.
 
-    type(finite_diff_method),dimension(:),allocatable :: list_of_methods  !! list of available methods in the input class
-    integer  :: id     !! method id counter
-    logical  :: found  !! if the method was found
     integer  :: i      !! counter
     integer  :: j      !! counter
     real(wp) :: xp     !! perturbed `x` value
@@ -355,57 +402,28 @@
     ! initialize:
     status_ok = .false.
 
-    ! first, get a list of all the methods in this class:
-    ! currently, the only way to do this is to call the
-    ! routine and see if there is one available.
-    id = 0
-    do
-        id = id + 1
-        call get_finite_difference_method(id,fd,found)
-        if (found) then
-            if (fd%class==class) then
-                if (allocated(list_of_methods)) then
-                    list_of_methods = [list_of_methods,fd]  ! add to the list
-                else
-                    list_of_methods = [fd]
-                end if
-            elseif (fd%class>class) then
-                exit
-            end if
-        else
-            exit ! done
-        end if
-    end do
-
-    if (allocated(list_of_methods)) then
-
-        ! try all the methods in the class:
-        do i = 1, size(list_of_methods)
-            status_ok = .true. ! will be set to false if any
-                               ! perturbation violates the bounds
-            ! check each of the perturbations:
-            do j = 1, size(list_of_methods(i)%dx_factors)
-                xp = x + list_of_methods(i)%dx_factors(j)*dx
-                if (xp < xlow .or. xp > xhigh) then
-                    status_ok = .false.
-                    exit
-                end if
-            end do
-            if (status_ok) then   ! this one is OK to use
-                fd = list_of_methods(i)
+    ! try all the methods in the class:
+    do i = 1, size(list_of_methods%meth)
+        status_ok = .true. ! will be set to false if any
+                           ! perturbation violates the bounds
+        ! check each of the perturbations:
+        do j = 1, size(list_of_methods%meth(i)%dx_factors)
+            xp = x + list_of_methods%meth(i)%dx_factors(j)*dx
+            if (xp < xlow .or. xp > xhigh) then
+                status_ok = .false.
                 exit
             end if
         end do
-
-        if (.not. status_ok) then
-            ! no method was found that doesn't violate the bounds,
-            ! so just return the first one in the list.
-            fd = list_of_methods(1)
+        if (status_ok) then   ! this one is OK to use
+            fd = list_of_methods%meth(i)
+            exit
         end if
+    end do
 
-        ! clean up:
-        deallocate(list_of_methods)
-
+    if (.not. status_ok) then
+        ! no method was found that doesn't violate the bounds,
+        ! so just return the first one in the list.
+        fd = list_of_methods%meth(1)
     end if
 
     end subroutine select_finite_diff_method
@@ -460,6 +478,7 @@
     ! method:
     if (allocated(me%meth)) deallocate(me%meth)
     if (allocated(me%class)) deallocate(me%class)
+    if (allocated(me%class_meths)) deallocate(me%class_meths)
 
     if (      present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
         .not. present(class) .and. .not. present(classes)) then
@@ -485,11 +504,16 @@
         me%mode = 2
         allocate(me%class(n))
         me%class = class
+        allocate(me%class_meths(n))
+        me%class_meths(1) = get_all_methods_in_class(class)
+        if (n>1) me%class_meths(2:n) = me%class_meths(1)  ! just copy them over
     elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
             .not. present(class) .and. present(classes)) then
         ! specify a separate class for each variable
         me%mode = 2
         me%class = classes
+        allocate(me%class_meths(n))
+        me%class_meths = get_all_methods_in_class(me%class) ! elemental
     else
         error stop 'Error: must specify one of either jacobian_method, jacobian_methods, class, or classes.'
     end if
@@ -745,7 +769,7 @@ contains
 
 !*******************************************************************************
 !>
-!  just a wrapper for `compute_jacobian`, that returns a dense matrix.
+!  just a wrapper for [[compute_jacobian]], that returns a dense (`m x n`) matrix.
 
     subroutine compute_jacobian_dense(me,x,jac)
 
@@ -882,7 +906,7 @@ contains
             case(2) ! select the method from the class so as not to violate the bounds
 
                 call me%select_finite_diff_method(x(i),me%xlow(i),me%xhigh(i),&
-                                                  dx(i),me%class(i),fd,status_ok)
+                                                  dx(i),me%class_meths(i),fd,status_ok)
                 if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
                     'Error: variable bounds violated for column: ',i
 

@@ -26,6 +26,7 @@
     character(len=:),allocatable :: formula
     type(finite_diff_method) :: fd
     logical :: status_ok
+    type(meth_array) :: meths
 
     do i=1,5  ! try different finite diff methods
 
@@ -56,15 +57,19 @@
 
     end do
 
+    meths = get_all_methods_in_class(3)
+
     write(output_unit,'(A)') ''
+    write(output_unit,'(A)') '-------------------'
     write(output_unit,'(A)') 'select_finite_diff_method'
+    write(output_unit,'(A)') '-------------------'
     write(output_unit,'(A)') ''
-    call my_prob%select_finite_diff_method(0.0_wp,0.0_wp,1.0_wp,0.001_wp,3,fd,status_ok)
+    call my_prob%select_finite_diff_method(0.0_wp,0.0_wp,1.0_wp,0.001_wp,meths,fd,status_ok)
     call fd%get_formula(formula)
     write(output_unit,'(A)') formula
     write(output_unit,'(A)') ''
 
-    call my_prob%select_finite_diff_method(0.9999_wp,0.0_wp,1.0_wp,0.001_wp,3,fd,status_ok)
+    call my_prob%select_finite_diff_method(0.9999_wp,0.0_wp,1.0_wp,0.001_wp,meths,fd,status_ok)
     call fd%get_formula(formula)
     write(output_unit,'(A)') formula
     write(output_unit,'(A)') ''

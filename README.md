@@ -9,7 +9,8 @@ This is currently an experimental work in progress and is not production ready. 
 #### To Do:
 
 - [ ] General code cleanup
-- [ ] Computing the nonlinear sparsity pattern
+- [x] Computing the nonlinear sparsity pattern
+  - [x] Specified by the user
   - [x] Assume all elements `true`
   - [x] Three random points within variable bounds
 - [ ] Computing the linear sparsity pattern
@@ -18,9 +19,10 @@ This is currently an experimental work in progress and is not production ready. 
   - [x] Central differences
   - [x] Backward differences
   - [ ] Higher-order differences...
-- [ ] Perturbations should respect variable bounds
-- [ ] Add other gradient methods?
+- [x] Perturbations should respect variable bounds
+- [x] Ability to use different methods for different columns
 - [ ] Jacobian partitioning to compute multiple columns at the same time
+- [ ] Add other gradient methods?
 - [ ] Also compute Hessian matrix?
 - [ ] OpenMP or Coarrays for parallelization
 - [ ] Testing for computational efficiency
