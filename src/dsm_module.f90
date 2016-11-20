@@ -12,6 +12,8 @@
 
     module dsm_module
 
+    use kinds_module
+
     implicit none
 
     private
@@ -1169,147 +1171,122 @@
 
       end subroutine srtdat
 
-      subroutine fdjs(m,n,Col,Ind,Npntr,Ngrp,Numgrp,d,Fjacd,Fjac)
+!*******************************************************************************
+!>
+!  Given a consistent partition of the columns of an `m` by `n`
+!  jacobian matrix into groups, this subroutine computes
+!  approximations to those columns in a given group.  the
+!  approximations are stored into either a column-oriented
+!  or a row-oriented pattern.
+!
+!  a partition is consistent if the columns in any group
+!  do not have a non-zero in the same row position.
+!
+!  approximations to the columns of the jacobian matrix in a
+!  given group can be obtained by specifying a difference
+!  parameter array `d` with `d(jcol)` non-zero if and only if
+!  `jcol` is a column in the group, and an approximation to
+!  `jac*d` where `jac` denotes the jacobian matrix of a mapping f.
+!
+!  `d` can be defined with the following segment of code.
+!```fortran
+!  do jcol = 1, n
+!     d(jcol) = 0.0
+!     if (ngrp(jcol) == numgrp) d(jcol) = eta(jcol)
+!  end do
+!```
+!  in the above code `numgrp` is the given group number,
+!  `ngrp(jcol)` is the group number of column `jcol`, and
+!  `eta(jcol)` is the difference parameter used to
+!  approximate column `jcol` of the jacobian matrix.
+!  suitable values for the array `eta` must be provided.
+!
+!  as mentioned above, an approximation to `jac*d` must
+!  also be provided. for example, the approximation
+!```fortran
+!  f(x+d) - f(x)
+!```
+!  corresponds to the forward difference formula at `x`.
 
-      use iso_fortran_env, only: wp => real64
+    subroutine fdjs(m,n,Col,Ind,Npntr,Ngrp,Numgrp,d,Fjacd,Fjac)
 
-      implicit none
+    implicit none
 
-      integer m , n , Numgrp
-      integer Ind(*) , Npntr(*) , Ngrp(n)
-      real(wp) :: d(n) , Fjacd(m) , Fjac(*)
-      logical Col
+    integer,intent(in)    :: m        !! a positive integer input variable set to the number
+                                      !! of rows of the jacobian matrix.
+    integer,intent(in)    :: n        !! a positive integer input variable set to the number
+                                      !! of columns of the jacobian matrix.
+    integer               :: Numgrp   !! a positive integer input variable set to a group
+                                      !! number in the partition. the columns of the jacobian
+                                      !! matrix in this group are to be estimated on this call.
+    integer,dimension(*)  :: Ind      !! an integer input array which contains the row
+                                      !! indices for the non-zeroes in the jacobian matrix
+                                      !! if `col` is true, and contains the column indices for
+                                      !! the non-zeroes in the jacobian matrix if `col` is false.
+    integer,dimension(*)  :: Npntr    !! an integer input array which specifies the
+                                      !! locations of the row indices in `ind` if `col` is true, and
+                                      !! specifies the locations of the column indices in `ind` if
+                                      !! `col` is false. if `col` is true, the indices for column `j` are
+                                      !!       `ind(k), k = npntr(j),...,npntr(j+1)-1`.
+                                      !! if `col` is false, the indices for row `i` are
+                                      !!       `ind(k), k = npntr(i),...,npntr(i+1)-1`.
+                                      !! ***Note*** that `npntr(n+1)-1` if `col` is true, or `npntr(m+1)-1`
+                                      !! if `col` is false, is then the number of non-zero elements
+                                      !! of the jacobian matrix.
+    integer,dimension(n)  :: Ngrp     !! an integer input array of length `n` which specifies
+                                      !! the partition of the columns of the jacobian matrix.
+                                      !! column `jcol` belongs to group `ngrp(jcol)`.
+    real(wp),dimension(n) :: d        !! an input array of length `n` which contains the
+                                      !! difference parameter vector for the estimate of
+                                      !! the jacobian matrix columns in group `numgrp`.
+    real(wp),dimension(m) :: Fjacd    !! an input array of length `m` which contains
+                                      !! an approximation to the difference vector `jac*d`,
+                                      !! where `jac` denotes the jacobian matrix.
+    real(wp),dimension(*) :: Fjac     !! an output array of length `nnz`, where `nnz` is the
+                                      !! number of its non-zero elements. at each call of `fdjs`,
+                                      !! `fjac` is updated to include the non-zero elements of the
+                                      !! jacobian matrix for those columns in group `numgrp`. `fjac`
+                                      !! should not be altered between successive calls to `fdjs`.
+    logical,intent(in)    :: Col      !! a logical input variable. if `col` is set true, then the
+                                      !! jacobian approximations are stored into a column-oriented
+                                      !! pattern. if `col` is set false, then the jacobian
+                                      !! approximations are stored into a row-oriented pattern.
 
-!     GIVEN A CONSISTENT PARTITION OF THE COLUMNS OF AN M BY N
-!     JACOBIAN MATRIX INTO GROUPS, THIS SUBROUTINE COMPUTES
-!     APPROXIMATIONS TO THOSE COLUMNS IN A GIVEN GROUP.  THE
-!     APPROXIMATIONS ARE STORED INTO EITHER A COLUMN-ORIENTED
-!     OR A ROW-ORIENTED PATTERN.
-!
-!     A PARTITION IS CONSISTENT IF THE COLUMNS IN ANY GROUP
-!     DO NOT HAVE A NON-ZERO IN THE SAME ROW POSITION.
-!
-!     APPROXIMATIONS TO THE COLUMNS OF THE JACOBIAN MATRIX IN A
-!     GIVEN GROUP CAN BE OBTAINED BY SPECIFYING A DIFFERENCE
-!     PARAMETER ARRAY D WITH D(JCOL) NON-ZERO IF AND ONLY IF
-!     JCOL IS A COLUMN IN THE GROUP, AND AN APPROXIMATION TO
-!     JAC*D WHERE JAC DENOTES THE JACOBIAN MATRIX OF A MAPPING F.
-!
-!     D CAN BE DEFINED WITH THE FOLLOWING SEGMENT OF CODE.
-!
-!           DO 10 JCOL = 1, N
-!              D(JCOL) = 0.0
-!              IF (NGRP(JCOL) .EQ. NUMGRP) D(JCOL) = ETA(JCOL)
-!        10    CONTINUE
-!
-!     IN THE ABOVE CODE NUMGRP IS THE GIVEN GROUP NUMBER,
-!     NGRP(JCOL) IS THE GROUP NUMBER OF COLUMN JCOL, AND
-!     ETA(JCOL) IS THE DIFFERENCE PARAMETER USED TO
-!     APPROXIMATE COLUMN JCOL OF THE JACOBIAN MATRIX.
-!     SUITABLE VALUES FOR THE ARRAY ETA MUST BE PROVIDED.
-!
-!     AS MENTIONED ABOVE, AN APPROXIMATION TO JAC*D MUST
-!     ALSO BE PROVIDED. FOR EXAMPLE, THE APPROXIMATION
-!
-!           F(X+D) - F(X)
-!
-!     CORRESPONDS TO THE FORWARD DIFFERENCE FORMULA AT X.
-!
-!     THE SUBROUTINE STATEMENT IS
-!
-!       SUBROUTINE FDJS(M,N,COL,IND,NPNTR,NGRP,NUMGRP,D,FJACD,FJAC)
-!
-!     WHERE
-!
-!       M IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!         OF ROWS OF THE JACOBIAN MATRIX.
-!
-!       N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!         OF COLUMNS OF THE JACOBIAN MATRIX.
-!
-!       COL IS A LOGICAL INPUT VARIABLE. IF COL IS SET TRUE, THEN THE
-!         JACOBIAN APPROXIMATIONS ARE STORED INTO A COLUMN-ORIENTED
-!         PATTERN. IF COL IS SET FALSE, THEN THE JACOBIAN
-!         APPROXIMATIONS ARE STORED INTO A ROW-ORIENTED PATTERN.
-!
-!       IND IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE ROW
-!         INDICES FOR THE NON-ZEROES IN THE JACOBIAN MATRIX
-!         IF COL IS TRUE, AND CONTAINS THE COLUMN INDICES FOR
-!         THE NON-ZEROES IN THE JACOBIAN MATRIX IF COL IS FALSE.
-!
-!       NPNTR IS AN INTEGER INPUT ARRAY WHICH SPECIFIES THE
-!         LOCATIONS OF THE ROW INDICES IN IND IF COL IS TRUE, AND
-!         SPECIFIES THE LOCATIONS OF THE COLUMN INDICES IN IND IF
-!         COL IS FALSE. IF COL IS TRUE, THE INDICES FOR COLUMN J ARE
-!
-!               IND(K), K = NPNTR(J),...,NPNTR(J+1)-1.
-!
-!         IF COL IS FALSE, THE INDICES FOR ROW I ARE
-!
-!               IND(K), K = NPNTR(I),...,NPNTR(I+1)-1.
-!
-!         NOTE THAT NPNTR(N+1)-1 IF COL IS TRUE, OR NPNTR(M+1)-1
-!         IF COL IS FALSE, IS THEN THE NUMBER OF NON-ZERO ELEMENTS
-!         OF THE JACOBIAN MATRIX.
-!
-!       NGRP IS AN INTEGER INPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!         THE PARTITION OF THE COLUMNS OF THE JACOBIAN MATRIX.
-!         COLUMN JCOL BELONGS TO GROUP NGRP(JCOL).
-!
-!       NUMGRP IS A POSITIVE INTEGER INPUT VARIABLE SET TO A GROUP
-!         NUMBER IN THE PARTITION. THE COLUMNS OF THE JACOBIAN
-!         MATRIX IN THIS GROUP ARE TO BE ESTIMATED ON THIS CALL.
-!
-!       D IS AN INPUT ARRAY OF LENGTH N WHICH CONTAINS THE
-!         DIFFERENCE PARAMETER VECTOR FOR THE ESTIMATE OF
-!         THE JACOBIAN MATRIX COLUMNS IN GROUP NUMGRP.
-!
-!       FJACD IS AN INPUT ARRAY OF LENGTH M WHICH CONTAINS
-!         AN APPROXIMATION TO THE DIFFERENCE VECTOR JAC*D,
-!         WHERE JAC DENOTES THE JACOBIAN MATRIX.
-!
-!       FJAC IS AN OUTPUT ARRAY OF LENGTH NNZ, WHERE NNZ IS THE
-!         NUMBER OF ITS NON-ZERO ELEMENTS. AT EACH CALL OF FDJS,
-!         FJAC IS UPDATED TO INCLUDE THE NON-ZERO ELEMENTS OF THE
-!         JACOBIAN MATRIX FOR THOSE COLUMNS IN GROUP NUMGRP. FJAC
-!         SHOULD NOT BE ALTERED BETWEEN SUCCESSIVE CALLS TO FDJS.
+    integer :: ip , irow , jcol , jp
 
-      integer ip , irow , jcol , jp
-!
-!     COMPUTE ESTIMATES OF JACOBIAN MATRIX COLUMNS IN GROUP
-!     NUMGRP. THE ARRAY FJACD MUST CONTAIN AN APPROXIMATION
-!     TO JAC*D, WHERE JAC DENOTES THE JACOBIAN MATRIX AND D
-!     IS A DIFFERENCE PARAMETER VECTOR WITH D(JCOL) NON-ZERO
-!     IF AND ONLY IF JCOL IS A COLUMN IN GROUP NUMGRP.
-!
-      if ( Col ) then
-!
-!        COLUMN ORIENTATION.
-!
-         do jcol = 1 , n
+    ! compute estimates of jacobian matrix columns in group
+    ! numgrp. the array fjacd must contain an approximation
+    ! to jac*d, where jac denotes the jacobian matrix and d
+    ! is a difference parameter vector with d(jcol) non-zero
+    ! if and only if jcol is a column in group numgrp.
+
+    if ( Col ) then  ! column orientation.
+
+        do jcol = 1 , n
             if ( Ngrp(jcol)==Numgrp ) then
-               do jp = Npntr(jcol) , Npntr(jcol+1) - 1
-                  irow = Ind(jp)
-                  Fjac(jp) = Fjacd(irow)/d(jcol)
-               enddo
+                do jp = Npntr(jcol) , Npntr(jcol+1) - 1
+                    irow = Ind(jp)
+                    Fjac(jp) = Fjacd(irow)/d(jcol)
+                enddo
             endif
-         enddo
-      else
-!
-!        ROW ORIENTATION.
-!
-         do irow = 1 , m
-            do ip = Npntr(irow) , Npntr(irow+1) - 1
-               jcol = Ind(ip)
-               if ( Ngrp(jcol)==Numgrp ) then
-                  Fjac(ip) = Fjacd(irow)/d(jcol)
-                  exit
-               endif
-            enddo
-         enddo
-      endif
+        enddo
 
-      end subroutine fdjs
+    else  ! row orientation.
+
+        do irow = 1 , m
+            do ip = Npntr(irow) , Npntr(irow+1) - 1
+                jcol = Ind(ip)
+                if ( Ngrp(jcol)==Numgrp ) then
+                    Fjac(ip) = Fjacd(irow)/d(jcol)
+                    exit
+                endif
+            enddo
+        enddo
+
+    endif
+
+    end subroutine fdjs
+!*******************************************************************************
 
 !*******************************************************************************
     end module dsm_module

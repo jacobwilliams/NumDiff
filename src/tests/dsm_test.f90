@@ -16,16 +16,16 @@
 
     implicit none
 
-      integer,parameter :: nwrite = output_unit
+      integer,parameter :: nwrite = output_unit  !! unit for printing
 
       integer i , info , ip , j , jp , l , m , maxgrp , maxrow , &
-            & mingrp , minrow , n , nnz , numgrp
+              mingrp , minrow , n , nnz , numgrp
       integer indcol(6000) , indrow(6000) , ipntr(1201) , jpntr(1201) , &
-            & ngrp(1200)
+              ngrp(1200)
       logical col
       real(wp) :: dnsm , errij , errmax , fjact , fjactr , sum
       real(wp) :: d(1200) , fjac(6000) , fjacd(1200) , fvec(1200) , x(1200) ,  &
-         & xd(1200)
+                  xd(1200)
 
       col = .true.
 !

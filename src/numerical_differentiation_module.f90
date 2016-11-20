@@ -8,8 +8,9 @@
 
     module numerical_differentiation_module
 
-    use iso_fortran_env, only: error_unit, wp => real64
+    use kinds_module
     use dsm_module, only: dsm
+    use iso_fortran_env, only: error_unit
 
     implicit none
 
@@ -126,7 +127,7 @@
         procedure,public :: initialize => initialize_numdiff_type  !! initialize the class
         procedure,public :: compute_jacobian        !! main routine to compute the Jacobian
                                                     !! using the selected options. It
-                                                    !! return the sparse (vector) form.
+                                                    !! returns the sparse (vector) form.
         procedure,public :: compute_jacobian_dense  !! return the dense `size(m,n)`
                                                     !! matrix form of the Jacobian.
         procedure,public :: destroy => destroy_numdiff_type  !! destroy the class
