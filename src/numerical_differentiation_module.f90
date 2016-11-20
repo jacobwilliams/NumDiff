@@ -73,6 +73,7 @@
         contains
         private
         procedure,public :: destroy => destroy_sparsity
+        procedure,public :: print => print_sparsity
     end type sparsity_pattern
 
     type,public :: numdiff_type
@@ -712,7 +713,7 @@
     if (me%sparsity%partition_sparsity_pattern) then
         ! generate a "dense" partition
         me%sparsity%maxgrp = me%n
-        allocate(me%sparsity%ngrp(me%n))
+        !allocate(me%sparsity%ngrp(me%n))
         me%sparsity%ngrp = [(i, i=1,me%n)]
     end if
 
@@ -944,24 +945,19 @@ contains
 
     implicit none
 
-    class(numdiff_type),intent(inout) :: me
-    real(wp),dimension(:),intent(in)  :: x  !! vector of variables (size `n`)
+    class(numdiff_type),intent(inout)             :: me
+    real(wp),dimension(:),intent(in)              :: x    !! vector of variables (size `n`)
     real(wp),dimension(:),allocatable,intent(out) :: jac  !! sparse jacobian vector
 
-    real(wp),dimension(:),allocatable :: dfdx    !! the non-zero elements of a
-                                                 !! column of the Jacobian matrix
-    logical,dimension(me%m) :: funcs_to_compute  !! the elements in a given
-                                                 !! column of the Jacobian
-                                                 !! that are non-zero
     integer :: i  !! column counter
-    real(wp),dimension(me%n) :: dx !! absolute perturbation (>0) for each variable
-    integer,dimension(:),allocatable :: nonzero_elements_in_col !! the indices of the
-                                                                !! nonzero Jacobian
-                                                                !! elements in a column
+    real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
+    integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
+                                                                 !! nonzero Jacobian
+                                                                 !! elements in a column
     integer,dimension(:),allocatable :: indices  !! index vector
                                                  !! `[1,2,...,num_nonzero_elements]`
-                                                 !! for putting `dfdx` into `jac`
-    integer :: j !! function evaluation counter
+                                                 !! for putting `df` into `jac`
+    integer :: j  !! function evaluation counter
     real(wp),dimension(me%m) :: df  !! accumulated function
     type(finite_diff_method) :: fd  !! a finite different method (when
                                     !! specifying class rather than the method)
@@ -1075,6 +1071,66 @@ contains
 
 !*******************************************************************************
 !>
+!  Print the sparsity pattern.
+
+    subroutine print_sparsity(me,n,m,iunit,dense)
+
+    implicit none
+
+    class(sparsity_pattern),intent(inout) :: me
+    integer,intent(in) :: n  !! number of variables (columns of jacobian)
+    integer,intent(in) :: m  !! number of functions (rows of jacobian)
+    integer,intent(in) :: iunit !! file unit to write to.
+                                !! (assumed to be already opened)
+    logical,intent(in),optional :: dense  !! if present and true, the matrix form
+                                          !! of the sparsity pattern is printed
+                                          !! (default is vector form)
+
+    logical :: print_matrix !! if the matrix form is to be printed
+    integer :: r   !! row counter
+    character(len=1),dimension(n) :: row  !! a row of the sparsity matrix
+
+    if (allocated(me%irow) .and. allocated(me%icol)) then
+
+        if (present(dense)) then
+            print_matrix = dense
+        else
+            print_matrix = .false.  ! default
+        end if
+
+        write(iunit,'(A)') '---Sparsity pattern---'
+        if (print_matrix) then
+            do r = 1,m    ! print by row
+                row = '0'
+                row(pack(me%icol,mask=me%irow==r)) = 'X'
+                write(iunit,'(*(A1))') row
+            end do
+        else
+            write(iunit,'(A,1X,*(I3,","))') 'irow:',me%irow
+            write(iunit,'(A,1X,*(I3,","))') 'icol:',me%icol
+        end if
+        write(iunit,'(A)') ''
+
+        if (me%partition_sparsity_pattern) then
+            if (allocated(me%ngrp)) then
+                write(iunit,'(A)') '---Sparsity partition---'
+                write(iunit,'(A,1x,I5)')       'Number of groups:',me%maxgrp
+                write(iunit,'(A,1x,*(I5,1X))') 'Group array:     ',me%ngrp
+                write(iunit,'(A)') ''
+            else
+                error stop 'Error: sparsity partition not available.'
+            end if
+        end if
+
+    else
+        error stop 'Error: sparsity pattern not available.'
+    end if
+
+    end subroutine print_sparsity
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Print the sparsity pattern in vector form (`irow`, `icol`).
 
     subroutine print_sparsity_pattern(me,iunit)
@@ -1085,12 +1141,7 @@ contains
     integer,intent(in) :: iunit !! file unit to write to.
                                 !! (assumed to be already opened)
 
-    if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
-        write(iunit,'(A,1X,*(I3,","))') 'irow=',me%sparsity%irow
-        write(iunit,'(A,1X,*(I3,","))') 'icol=',me%sparsity%icol
-    else
-        error stop 'Error: sparsity pattern not available.'
-    end if
+    call me%sparsity%print(me%n,me%m,iunit,dense=.false.)
 
     end subroutine print_sparsity_pattern
 !*******************************************************************************
@@ -1107,19 +1158,7 @@ contains
     integer,intent(in) :: iunit !! file unit to write to.
                                 !! (assumed to be already opened)
 
-    integer :: r   !! row counter
-    character(len=1),dimension(me%n) :: row  !! a row of the sparsity matrix
-
-    if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
-        ! print by row:
-        do r = 1,me%m
-            row = '0'
-            row(pack(me%sparsity%icol,mask=me%sparsity%irow==r)) = 'X'
-            write(iunit,'(*(A1))') row
-        end do
-    else
-        error stop 'Error: sparsity pattern not available.'
-    end if
+    call me%sparsity%print(me%n,me%m,iunit,dense=.true.)
 
     end subroutine print_sparsity_matrix
 !*******************************************************************************
