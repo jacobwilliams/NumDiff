@@ -10,6 +10,7 @@ predocmark: <
 docmark_alt:
 docmark: !
 display: public
+         protected
 source: true
 graph: true
 exclude_dir: ./src/tests

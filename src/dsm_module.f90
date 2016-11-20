@@ -16,6 +16,9 @@
 
     private
 
+    type,public :: dsm_partition
+    end type dsm_partition
+
     public :: dsm
     public :: fdjs
 
@@ -44,8 +47,8 @@
 !  columns of `a` with this property is consistent with the
 !  direct determination of `a`.
 
-      subroutine dsm(m,n,Npairs,Indrow,Indcol,Ngrp,Maxgrp,Mingrp,Info,&
-                     Ipntr,Jpntr,Iwa,Liwa)
+      subroutine dsm(m,n,Npairs,Indrow,Indcol,Ngrp,Maxgrp,Mingrp,Info,Ipntr,Jpntr)
+
       implicit none
 
       integer,intent(in)  :: m       !! number of rows of `a` (>0)
@@ -58,14 +61,12 @@
                                      !! in any consistent partition of the
                                      !! columns of `a`.
       integer,intent(out) :: info    !! for normal termination `info = 1`.
-                                     !! if `m`, `n`, or `npairs` is not positive or
-                                     !! `liwa` is less than `max(m,6*n)`,
+                                     !! if `m`, `n`, or `npairs` is not positive,
                                      !! then `info = 0`. if the k-th element of
                                      !! `indrow` is not an integer between
                                      !! 1 and m or the k-th element of `indcol`
                                      !! is not an integer between 1 and n,
                                      !! then `info = -k`.
-      integer,intent(in) :: liwa     !! positive variable not less than `max(m,6*n)`.
       integer,dimension(npairs),intent(inout) :: indrow  !! an integer array of length `npairs`. on input `indrow`
                                                          !! must contain the row indices of the non-zero elements of `a`.
                                                          !! on output `indrow` is permuted so that the corresponding
@@ -90,14 +91,14 @@
                                                     !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
                                                     !! note that `jpntr(n+1)-1` is then the number of non-zero
                                                     !! elements of the matrix `a`.
-      integer,dimension(liwa) :: iwa     !! an integer work array of length `liwa`
 
+      integer,dimension(max(m,6*n)) :: iwa     !! an integer work array
       integer :: i , ir , j , jp , k , maxclq , nnz , numgrp
 
 !     check the input data.
 
       Info = 0
-      if ( m<1 .or. n<1 .or. Npairs<1 .or. Liwa<max(m,6*n) ) return
+      if ( m<1 .or. n<1 .or. Npairs<1 ) return
       do k = 1 , Npairs
          Info = -k
          if ( Indrow(k)<1 .or. Indrow(k)>m .or. Indcol(k)<1 .or. Indcol(k)>n ) return
@@ -722,6 +723,7 @@
 !
 !     INITIALIZATION BLOCK.
 !
+
       Maxgrp = 0
       do jp = 1 , n
          Ngrp(jp) = n

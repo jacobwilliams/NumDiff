@@ -9,6 +9,7 @@
     module numerical_differentiation_module
 
     use iso_fortran_env, only: error_unit, wp => real64
+    use dsm_module, only: dsm
 
     implicit none
 
@@ -49,6 +50,30 @@
         type(finite_diff_method),dimension(:),allocatable :: meth
     end type meth_array
 
+    type,public :: sparsity_pattern
+
+        !! A sparsity pattern
+
+        private
+
+        logical :: sparsity_computed = .false. !! has the sparsity pattern already been computed?
+        integer :: num_nonzero_elements = 0 !! number of nonzero elements in the jacobian
+                                            !! (will be the dimension of `irow` and `icol`)
+        integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
+        integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
+
+        logical :: partition_sparsity_pattern = .false.  !! to partition the sparsity pattern using [[dsm]]
+        integer :: maxgrp = 0 !! the number of groups in the partition
+                              !! of the columns of `a`.
+        integer,dimension(:),allocatable :: ngrp !! specifies the partition of the columns of `a`.
+                                                 !! column `jcol` belongs to group `ngrp(jcol)`.
+                                                 !! `size(n)`
+
+        contains
+        private
+        procedure,public :: destroy => destroy_sparsity
+    end type sparsity_pattern
+
     type,public :: numdiff_type
 
         !! base type for sparsity and Jacobian computations.
@@ -69,11 +94,7 @@
                                      !! 3 - perturbation is `dx=dpert*(1+x)`
         real(wp),dimension(:),allocatable :: dpert !! perturbation vector for `x`
 
-        logical :: sparsity_computed = .false. !! has the sparsity pattern already been computed?
-        integer :: num_nonzero_elements = 0 !! number of nonzero elements in the jacobian
-                                            !! (will be the dimension of `irow` and `icol`)
-        integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
-        integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
+        type(sparsity_pattern) :: sparsity  !! the sparsity pattern
 
         integer :: mode = 1 !! 1 = use `meth` (specified methods),
                             !! 2 = use `class` (specified class, method is selected on-the-fly).
@@ -117,7 +138,7 @@
                                                        !! when by the perturbations.
 
         ! internal routines:
-        procedure :: destroy_sparsity            !! destroy the sparsity pattern
+        procedure :: destroy_sparsity_pattern            !! destroy the sparsity pattern
         procedure :: compute_perturbation_vector !! computes the variable perturbation factor
         procedure :: perturb_x_and_compute_f
 
@@ -435,7 +456,7 @@
 
     subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_func,jacobian_method,jacobian_methods,&
-                        class,classes,info,chunk_size)
+                        class,classes,info,chunk_size,partition_sparsity_pattern)
 
     implicit none
 
@@ -467,6 +488,9 @@
                                                            !! setup operations.
     integer,intent(in),optional         :: chunk_size      !! chunk size for allocating the arrays
                                                            !! (must be >0) [default is 100]
+    logical,intent(in),optional :: partition_sparsity_pattern !! if the sparisty pattern is to
+                                                              !! be partitioned using DSM
+                                                              !! [default is False]
 
     integer :: i !! counter
     logical :: found
@@ -474,6 +498,12 @@
     ! functions:
     me%compute_function => problem_func
     me%compute_sparsity => sparsity_func
+
+    if (present(partition_sparsity_pattern)) then
+        me%sparsity%partition_sparsity_pattern = partition_sparsity_pattern
+    else
+        me%sparsity%partition_sparsity_pattern = .false.
+    end if
 
     ! method:
     if (allocated(me%meth)) deallocate(me%meth)
@@ -498,6 +528,8 @@
             call get_finite_difference_method(jacobian_methods(i),me%meth(i),found)
             if (.not. found) error stop 'Error: invalid jacobian_methods'
         end do
+        if (me%sparsity%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
+            'sparsity pattern, all columns must use the same finite diff method.'
     elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
                   present(class) .and. .not. present(classes)) then
         ! use the class for all variables
@@ -514,6 +546,8 @@
         me%class = classes
         allocate(me%class_meths(n))
         me%class_meths = get_all_methods_in_class(me%class) ! elemental
+        if (me%sparsity%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
+            'sparsity pattern, all columns must use the same finite diff method.'
     else
         error stop 'Error: must specify one of either jacobian_method, jacobian_methods, class, or classes.'
     end if
@@ -535,6 +569,11 @@
     if (allocated(me%dpert)) deallocate(me%dpert)
     allocate(me%dpert(n))
     me%dpert = dpert
+
+    ! sparsity partition:
+    if (me%sparsity%partition_sparsity_pattern) then
+        allocate(me%sparsity%ngrp(me%n))
+    end if
 
     ! optional:
     if (present(info))       me%info_function => info
@@ -558,20 +597,40 @@
 
 !*******************************************************************************
 !>
-!  destroy the sparsity pattern in the class.
+!  destroy a [[sparsity_pattern]] type.
 
     subroutine destroy_sparsity(me)
 
     implicit none
 
-    class(numdiff_type),intent(inout) :: me
-
-    me%sparsity_computed = .false.
-    me%num_nonzero_elements = 0
-    if (allocated(me%irow)) deallocate(me%irow)
-    if (allocated(me%icol)) deallocate(me%icol)
+    class(sparsity_pattern),intent(out) :: me
 
     end subroutine destroy_sparsity
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  destroy the sparsity pattern in the class.
+
+    subroutine destroy_sparsity_pattern(me)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+
+    logical :: partition  !! to preserve this setting when it's destroyed
+
+    partition = me%sparsity%partition_sparsity_pattern
+
+    call me%sparsity%destroy()
+
+    me%sparsity%partition_sparsity_pattern = partition
+
+    if (me%sparsity%partition_sparsity_pattern) then
+        allocate(me%sparsity%ngrp(me%n))
+    end if
+
+    end subroutine destroy_sparsity_pattern
 !*******************************************************************************
 
 !*******************************************************************************
@@ -586,15 +645,32 @@
     integer,dimension(:),intent(in) :: irow
     integer,dimension(:),intent(in) :: icol
 
-    call me%destroy_sparsity()
+    integer :: Mingrp
+    integer :: Info
+    integer,dimension(me%m+1) :: ipntr
+    integer,dimension(me%n+1) :: jpntr
+
+    call me%destroy_sparsity_pattern()
 
     if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
         error stop 'Error: invalid inputs to set_sparsity_pattern'
     else
-        me%sparsity_computed = .true.
-        me%num_nonzero_elements = size(irow)
-        me%irow = irow
-        me%icol = icol
+
+        me%sparsity%sparsity_computed = .true.
+        me%sparsity%num_nonzero_elements = size(irow)
+        me%sparsity%irow = irow
+        me%sparsity%icol = icol
+
+        if (me%sparsity%partition_sparsity_pattern) then
+            associate( s => me%sparsity )
+                call dsm(me%m,me%n,s%num_nonzero_elements,&
+                         s%irow,s%icol,&
+                         s%ngrp,s%maxgrp,&
+                         mingrp,info,ipntr,jpntr)
+                if (info/=1) error stop 'Error partitioning sparsity pattern.'
+            end associate
+        end if
+
     end if
 
     end subroutine set_sparsity_pattern
@@ -615,23 +691,31 @@
     integer :: r !! row counter
     integer :: c !! column counter
 
-    call me%destroy_sparsity()
+    call me%destroy_sparsity_pattern()
 
-    me%num_nonzero_elements = me%m * me%n
-    allocate(me%irow(me%num_nonzero_elements))
-    allocate(me%icol(me%num_nonzero_elements))
+    me%sparsity%num_nonzero_elements = me%m * me%n
+    allocate(me%sparsity%irow(me%sparsity%num_nonzero_elements))
+    allocate(me%sparsity%icol(me%sparsity%num_nonzero_elements))
 
     ! create the dense matrix:
     i = 0
     do c = 1, me%n
         do r = 1, me%m
             i = i + 1
-            me%irow(i) = r
-            me%icol(i) = c
+            me%sparsity%irow(i) = r
+            me%sparsity%icol(i) = c
         end do
     end do
 
-    me%sparsity_computed = .true.
+! ... no real need for this, since it can't be partitioned (all elements are true)
+    if (me%sparsity%partition_sparsity_pattern) then
+        ! generate a "dense" partition
+        me%sparsity%maxgrp = me%n
+        allocate(me%sparsity%ngrp(me%n))
+        me%sparsity%ngrp = [(i, i=1,me%n)]
+    end if
+
+    me%sparsity%sparsity_computed = .true.
 
     end subroutine compute_sparsity_dense
 !*******************************************************************************
@@ -665,6 +749,11 @@
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
 
+    integer :: Mingrp
+    integer :: Info
+    integer,dimension(me%m+1) :: ipntr
+    integer,dimension(me%n+1) :: jpntr
+
     real(wp),dimension(3),parameter :: coeffs = [0.251234567_wp,&
                                                  0.512345678_wp,&
                                                  0.751234567_wp]
@@ -676,7 +765,7 @@
         !!````
 
     ! initialize:
-    call me%destroy_sparsity()
+    call me%destroy_sparsity_pattern()
 
     ! we will compute all the functions:
     idx = [(i,i=1,me%m)]
@@ -702,19 +791,30 @@
 
         do j = 1, me%m ! each function (rows of Jacobian)
             if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
-                call expand_vector(me%icol,n_icol,me%chunk_size,val=i)
-                call expand_vector(me%irow,n_irow,me%chunk_size,val=j)
+                call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
+                call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
             end if
         end do
         ! resize to correct size:
-        call expand_vector(me%icol,n_icol,me%chunk_size,finished=.true.)
-        call expand_vector(me%irow,n_irow,me%chunk_size,finished=.true.)
+        call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
+        call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
 
     end do
 
+    me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
+
+    if (me%sparsity%partition_sparsity_pattern) then
+        associate( s => me%sparsity )
+            call dsm(me%m,me%n,s%num_nonzero_elements,&
+                     s%irow,s%icol,&
+                     s%ngrp,s%maxgrp,&
+                     mingrp,info,ipntr,jpntr)
+            if (info/=1) error stop 'Error partitioning sparsity pattern.'
+        end associate
+    end if
+
     ! finished:
-    me%sparsity_computed = .true.
-    me%num_nonzero_elements = size(me%irow)
+    me%sparsity%sparsity_computed = .true.
 
 contains
 
@@ -790,8 +890,8 @@ contains
 
     ! convert to dense form:
     jac = zero
-    do i = 1, me%num_nonzero_elements
-        jac(me%irow(i),me%icol(i)) = jac_vec(i)
+    do i = 1, me%sparsity%num_nonzero_elements
+        jac(me%sparsity%irow(i),me%sparsity%icol(i)) = jac_vec(i)
     end do
 
     end subroutine compute_jacobian_dense
@@ -867,13 +967,13 @@ contains
     logical :: status_ok  !! error flag
 
     ! if we don't have a sparsity pattern yet then compute it:
-    if (.not. me%sparsity_computed) call me%compute_sparsity(x)
+    if (.not. me%sparsity%sparsity_computed) call me%compute_sparsity(x)
 
     ! initialize:
-    allocate(jac(me%num_nonzero_elements))
+    allocate(jac(me%sparsity%num_nonzero_elements))
     jac = zero
-    indices = [(i,i=1,me%num_nonzero_elements)] !NOTE could save this in the class
-                                                ! so we don't have to keep allocating it
+    indices = [(i,i=1,me%sparsity%num_nonzero_elements)] !NOTE could save this in the class
+                                                         ! so we don't have to keep allocating it
 
     ! compute dx vector:
     call me%compute_perturbation_vector(x,dx)
@@ -882,7 +982,7 @@ contains
     do i=1,me%n
 
         ! determine functions to compute for this column:
-        nonzero_elements_in_col = pack(me%irow,mask=me%icol==i)
+        nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
         if (size(nonzero_elements_in_col)/=0) then ! there are functions to compute
 
             select case (me%mode)
@@ -930,7 +1030,7 @@ contains
             end select
 
             ! put result into the output vector:
-            jac(pack(indices,mask=me%icol==i)) = df(nonzero_elements_in_col)
+            jac(pack(indices,mask=me%sparsity%icol==i)) = df(nonzero_elements_in_col)
 
         end if
 
@@ -984,9 +1084,9 @@ contains
     integer,intent(in) :: iunit !! file unit to write to.
                                 !! (assumed to be already opened)
 
-    if (allocated(me%irow) .and. allocated(me%icol)) then
-        write(iunit,'(A,1X,*(I3,","))') 'irow=',me%irow
-        write(iunit,'(A,1X,*(I3,","))') 'icol=',me%icol
+    if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
+        write(iunit,'(A,1X,*(I3,","))') 'irow=',me%sparsity%irow
+        write(iunit,'(A,1X,*(I3,","))') 'icol=',me%sparsity%icol
     else
         error stop 'Error: sparsity pattern not available.'
     end if
@@ -1009,11 +1109,11 @@ contains
     integer :: r   !! row counter
     character(len=1),dimension(me%n) :: row  !! a row of the sparsity matrix
 
-    if (allocated(me%irow) .and. allocated(me%icol)) then
+    if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
         ! print by row:
         do r = 1,me%m
             row = '0'
-            row(pack(me%icol,mask=me%irow==r)) = 'X'
+            row(pack(me%sparsity%icol,mask=me%sparsity%irow==r)) = 'X'
             write(iunit,'(*(A1))') row
         end do
     else

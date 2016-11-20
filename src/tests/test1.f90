@@ -39,7 +39,8 @@
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_func=compute_sparsity_random,&
-                                jacobian_method=i)  ! 1 = forward diffs
+                                jacobian_method=i,&
+                                partition_sparsity_pattern=.true.)  ! 1 = forward diffs
 
         call get_finite_diff_formula(i,formula)
         write(output_unit,'(A)') ''
