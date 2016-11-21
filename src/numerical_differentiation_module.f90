@@ -63,7 +63,6 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
-        logical :: partition_sparsity_pattern = .false.  !! to partition the sparsity pattern using [[dsm]]
         integer :: maxgrp = 0 !! the number of groups in the partition
                               !! of the columns of `a`.
         integer,dimension(:),allocatable :: ngrp !! specifies the partition of the columns of `a`.
@@ -97,6 +96,7 @@
                                      !! 3 - perturbation is `dx=dpert*(1+x)`
         real(wp),dimension(:),allocatable :: dpert !! perturbation vector for `x`
 
+        logical :: partition_sparsity_pattern = .false.  !! to partition the sparsity pattern using [[dsm]]
         type(sparsity_pattern) :: sparsity  !! the sparsity pattern
 
         integer :: mode = 1 !! 1 = use `meth` (specified methods),
@@ -366,10 +366,12 @@
 
     implicit none
 
-    integer,intent(in) :: class
-    type(meth_array) :: list_of_methods
+    integer,intent(in) :: class  !! the `class` is the number of points in the
+                                 !! finite different computation
+    type(meth_array) :: list_of_methods  !! all the methods with the specified `class`
 
-    type(finite_diff_method) :: fd  !! temp variable for getting a method from [[get_finite_difference_method]]
+    type(finite_diff_method) :: fd  !! temp variable for getting a
+                                    !! method from [[get_finite_difference_method]]
     integer :: id     !! method id counter
     logical :: found  !! status flag
 
@@ -456,6 +458,8 @@
 !*******************************************************************************
 !>
 !  Initialize a [[numdiff_type]] class. This must be called first.
+!  ***Note:*** Only one of the following inputs can be used: `jacobian_method`,
+!  `jacobian_methods`, `class`, or `classes`.
 
     subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_func,jacobian_method,jacobian_methods,&
@@ -470,30 +474,31 @@
     real(wp),dimension(n),intent(in)    :: xhigh           !! upper bounds on `x`
     integer,intent(in)                  :: perturb_mode    !! perturbation mode (1,2,3)
     real(wp),dimension(n),intent(in)    :: dpert           !! perturbation vector for `x`
-    procedure(func)                     :: problem_func    !!
-    procedure(spars_f)                  :: sparsity_func   !!
+    procedure(func)                     :: problem_func    !! the user function that defines the problem
+                                                           !! (returns `m` functions)
+    procedure(spars_f)                  :: sparsity_func   !! the sparsity computation function
     integer,intent(in),optional         :: jacobian_method !! `id` code for the finite difference method
                                                            !! to use for all `n` variables.
                                                            !! see [[get_finite_difference_method]]
-                                                           !! *Note:* either this or `jacobian_methods`
-                                                           !! must be present, but not both.
     integer,dimension(n),intent(in),optional :: jacobian_methods !! `id` codes for the finite difference method
                                                                  !! to use for each variable.
                                                                  !! see [[get_finite_difference_method]]
-                                                                 !! *Note:* either this or `jacobian_method`
-                                                                 !! must be present, but not both.
-    integer,intent(in),optional              :: class      !!
-    integer,dimension(n),intent(in),optional :: classes    !!
-    procedure(info_f),optional          :: info            !! a function the user can define
-                                                           !! which is called when each column
-                                                           !! of the jacobian is computed.
-                                                           !! It can be used to perform any
-                                                           !! setup operations.
-    integer,intent(in),optional         :: chunk_size      !! chunk size for allocating the arrays
-                                                           !! (must be >0) [default is 100]
-    logical,intent(in),optional :: partition_sparsity_pattern !! if the sparisty pattern is to
-                                                              !! be partitioned using DSM
-                                                              !! [default is False]
+    integer,intent(in),optional :: class  !! method class for the finite difference method
+                                          !! to use for all `n` variables.
+                                          !! see [[get_finite_difference_method]]
+    integer,dimension(n),intent(in),optional :: classes   !! method class for the finite difference methods
+                                                          !! to use for each variable.
+                                                          !! see [[get_finite_difference_method]]
+    procedure(info_f),optional :: info  !! a function the user can define
+                                        !! which is called when each column
+                                        !! of the jacobian is computed.
+                                        !! It can be used to perform any
+                                        !! setup operations.
+    integer,intent(in),optional :: chunk_size  !! chunk size for allocating the arrays
+                                               !! (must be >0) [default is 100]
+    logical,intent(in),optional :: partition_sparsity_pattern  !! if the sparisty pattern is to
+                                                               !! be partitioned using DSM
+                                                               !! [default is False]
 
     integer :: i !! counter
     logical :: found
@@ -503,9 +508,9 @@
     me%compute_sparsity => sparsity_func
 
     if (present(partition_sparsity_pattern)) then
-        me%sparsity%partition_sparsity_pattern = partition_sparsity_pattern
+        me%partition_sparsity_pattern = partition_sparsity_pattern
     else
-        me%sparsity%partition_sparsity_pattern = .false.
+        me%partition_sparsity_pattern = .false.
     end if
 
     ! method:
@@ -531,7 +536,7 @@
             call get_finite_difference_method(jacobian_methods(i),me%meth(i),found)
             if (.not. found) error stop 'Error: invalid jacobian_methods'
         end do
-        if (me%sparsity%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
+        if (me%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
             'sparsity pattern, all columns must use the same finite diff method.'
     elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
                   present(class) .and. .not. present(classes)) then
@@ -549,7 +554,7 @@
         me%class = classes
         allocate(me%class_meths(n))
         me%class_meths = get_all_methods_in_class(me%class) ! elemental
-        if (me%sparsity%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
+        if (me%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
             'sparsity pattern, all columns must use the same finite diff method.'
     else
         error stop 'Error: must specify one of either jacobian_method, jacobian_methods, class, or classes.'
@@ -560,6 +565,7 @@
     me%m = m
 
     ! input variable bounds:
+    if (any(xlow>=xhigh)) error stop 'Error: all xlow must be < xhigh'
     if (allocated(me%xlow)) deallocate(me%xlow)
     if (allocated(me%xhigh)) deallocate(me%xhigh)
     allocate(me%xlow(n))
@@ -571,16 +577,11 @@
     me%perturb_mode = perturb_mode
     if (allocated(me%dpert)) deallocate(me%dpert)
     allocate(me%dpert(n))
-    me%dpert = dpert
-
-    ! sparsity partition:
-    if (me%sparsity%partition_sparsity_pattern) then
-        allocate(me%sparsity%ngrp(me%n))
-    end if
+    me%dpert = abs(dpert)
 
     ! optional:
     if (present(info))       me%info_function => info
-    if (present(chunk_size)) me%chunk_size = chunk_size
+    if (present(chunk_size)) me%chunk_size = abs(chunk_size)
 
     end subroutine initialize_numdiff_type
 !*******************************************************************************
@@ -650,17 +651,7 @@
 
     class(numdiff_type),intent(inout) :: me
 
-    logical :: partition  !! to preserve this setting when it's destroyed
-
-    partition = me%sparsity%partition_sparsity_pattern
-
     call me%sparsity%destroy()
-
-    me%sparsity%partition_sparsity_pattern = partition
-
-    if (me%sparsity%partition_sparsity_pattern) then
-        allocate(me%sparsity%ngrp(me%n))
-    end if
 
     end subroutine destroy_sparsity_pattern
 !*******************************************************************************
@@ -693,8 +684,9 @@
         me%sparsity%irow = irow
         me%sparsity%icol = icol
 
-        if (me%sparsity%partition_sparsity_pattern) then
+        if (me%partition_sparsity_pattern) then
             associate( s => me%sparsity )
+                allocate(s%ngrp(me%n))
                 call dsm(me%m,me%n,s%num_nonzero_elements,&
                          s%irow,s%icol,&
                          s%ngrp,s%maxgrp,&
@@ -740,10 +732,10 @@
     end do
 
 ! ... no real need for this, since it can't be partitioned (all elements are true)
-    if (me%sparsity%partition_sparsity_pattern) then
+    if (me%partition_sparsity_pattern) then
         ! generate a "dense" partition
         me%sparsity%maxgrp = me%n
-        !allocate(me%sparsity%ngrp(me%n))
+        allocate(me%sparsity%ngrp(me%n))
         me%sparsity%ngrp = [(i, i=1,me%n)]
     end if
 
@@ -761,6 +753,8 @@
 !@note The input `x` is not used here.
 !
 !@note Could also allow the three coefficients to be user inputs.
+!
+!@note Instead of three points, the number of points could be a user input.
 
     subroutine compute_sparsity_random(me,x)
 
@@ -835,8 +829,9 @@
 
     me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
 
-    if (me%sparsity%partition_sparsity_pattern) then
+    if (me%partition_sparsity_pattern) then
         associate( s => me%sparsity )
+            allocate(s%ngrp(me%n))
             call dsm(me%m,me%n,s%num_nonzero_elements,&
                      s%irow,s%icol,&
                      s%ngrp,s%maxgrp,&
@@ -1141,15 +1136,11 @@ contains
         end if
         write(iunit,'(A)') ''
 
-        if (me%partition_sparsity_pattern) then
-            if (allocated(me%ngrp)) then
-                write(iunit,'(A)') '---Sparsity partition---'
-                write(iunit,'(A,1x,I5)')       'Number of groups:',me%maxgrp
-                write(iunit,'(A,1x,*(I5,1X))') 'Group array:     ',me%ngrp
-                write(iunit,'(A)') ''
-            else
-                error stop 'Error: sparsity partition not available.'
-            end if
+        if (allocated(me%ngrp)) then
+            write(iunit,'(A)') '---Sparsity partition---'
+            write(iunit,'(A,1x,I5)')       'Number of groups:',me%maxgrp
+            write(iunit,'(A,1x,*(I5,1X))') 'Group array:     ',me%ngrp
+            write(iunit,'(A)') ''
         end if
 
     else
