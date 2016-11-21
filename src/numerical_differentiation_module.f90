@@ -74,6 +74,7 @@
         private
         procedure,public :: destroy => destroy_sparsity
         procedure,public :: print => print_sparsity
+        procedure,public :: columns_in_partition_group
     end type sparsity_pattern
 
     type,public :: numdiff_type
@@ -608,6 +609,35 @@
     class(sparsity_pattern),intent(out) :: me
 
     end subroutine destroy_sparsity
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns the columns in a sparsity partition group.
+!
+!@note This is just a wrapper to get data from `ngrp`.
+
+    subroutine columns_in_partition_group(me,igroup,n_cols,cols)
+
+    implicit none
+
+    class(sparsity_pattern),intent(in) :: me
+    integer,intent(in) :: igroup    !! group number. Should be `>0` and `<=me%mxgrp`
+    integer,intent(out) :: n_cols   !! number of columns in the `igroup` group.
+    integer,dimension(:),allocatable,intent(out) :: cols  !! the column numbers in the `igroup` group.
+                                                          !! (if none, then it is not allocated)
+
+    if (me%maxgrp>0 .and. allocated(me%ngrp)) then
+        n_cols = count(me%ngrp==igroup)
+        if (n_cols>0) then
+            allocate(cols(n_cols))
+            cols = pack(me%ngrp,mask=me%ngrp==igroup)
+        end if
+    else
+        error stop 'Error: the partition has not been computed.'
+    end if
+
+    end subroutine columns_in_partition_group
 !*******************************************************************************
 
 !*******************************************************************************

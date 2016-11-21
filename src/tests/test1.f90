@@ -11,22 +11,21 @@
 
     implicit none
 
-    type(numdiff_type) :: my_prob
-
-    integer,parameter :: n = 3
-    integer,parameter :: m = 2
-    real(wp),dimension(n),parameter :: x = [1.0_wp,2.0_wp,3.0_wp]
-    real(wp),dimension(n),parameter :: xlow = [-10.0_wp,-10.0_wp,-10.0_wp]
-    real(wp),dimension(n),parameter :: xhigh = [10.0_wp,10.0_wp,10.0_wp]
-    real(wp),dimension(n),parameter :: dpert = [1.0e-6_wp,1.0e-6_wp,1.0e-6_wp]
+    integer,parameter :: n = 6
+    integer,parameter :: m = 4
+    real(wp),dimension(n),parameter :: x     = 1.0_wp
+    real(wp),dimension(n),parameter :: xlow  = -10.0_wp
+    real(wp),dimension(n),parameter :: xhigh = 10.0_wp
+    real(wp),dimension(n),parameter :: dpert = 1.0e-6_wp
     integer,parameter :: perturb_mode = 1
 
-    integer :: i !! counter
+    type(numdiff_type)                :: my_prob
+    integer                           :: i          !! counter
     real(wp),dimension(:),allocatable :: jac
-    character(len=:),allocatable :: formula
-    type(finite_diff_method) :: fd
-    logical :: status_ok
-    type(meth_array) :: meths
+    character(len=:),allocatable      :: formula
+    type(finite_diff_method)          :: fd
+    logical                           :: status_ok
+    type(meth_array)                  :: meths
 
     do i=1,5  ! try different finite diff methods
 
@@ -109,6 +108,8 @@ contains
 
     if (any(indices_to_compute==1)) f(1) = x(1)*x(2) - x(3)
     if (any(indices_to_compute==2)) f(2) = x(3) - 1.0_wp
+    if (any(indices_to_compute==3)) f(3) = x(4)*x(5)
+    if (any(indices_to_compute==4)) f(4) = 2.0_wp*x(6)
 
     end subroutine my_func
 
