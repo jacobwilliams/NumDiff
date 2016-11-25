@@ -106,7 +106,7 @@
 !>
 !  Sorts an integer array `ivec` in increasing order.
 !  Uses a basic recursive quicksort
-!  (with insertion sort for partitions with <= 20 elements).
+!  (with insertion sort for partitions with \(\le\) 20 elements).
 
     subroutine sort_ascending(ivec)
 

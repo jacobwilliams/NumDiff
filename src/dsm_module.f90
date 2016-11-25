@@ -9,6 +9,9 @@
 !    FORTRAN subroutines for estimating sparse Jacobian Matrices",
 !    ACM Transactions on Mathematical Software (TOMS),
 !    Volume 10 Issue 3, Sept. 1984, Pages 346-347
+!
+!### History
+!  * Jacob Williams, Dec. 2016, extensive refactoring into modern Fortran.
 
     module dsm_module
 
@@ -17,9 +20,6 @@
     implicit none
 
     private
-
-    type,public :: dsm_partition
-    end type dsm_partition
 
     public :: dsm
     public :: fdjs
@@ -37,7 +37,7 @@
 !  the arrays `indrow` and `indcol`. on input the indices
 !  for the non-zero elements of `a` are
 !
-!     `indrow(k),indcol(k), k = 1,2,...,npairs`.
+!  `indrow(k),indcol(k), k = 1,2,...,npairs`.
 !
 !  the (`indrow`,`indcol`) pairs may be specified in any order.
 !  duplicate input pairs are permitted, but the subroutine
@@ -289,112 +289,93 @@
     end subroutine degr
 !*******************************************************************************
 
-      subroutine ido(m,n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq,    &
-                     Iwa1,Iwa2,Iwa3,Iwa4)
+!*******************************************************************************
+!>
+!  given the sparsity pattern of an `m` by `n` matrix `a`, this
+!  subroutine determines an incidence-degree ordering of the
+!  columns of `a`.
+!
+!  the incidence-degree ordering is defined for the loopless
+!  graph `g` with vertices `a(j), j = 1,2,...,n` where `a(j)` is the
+!  `j`-th column of `a` and with edge `(a(i),a(j))` if and only if
+!  columns `i` and `j` have a non-zero in the same row position.
+!
+!  the incidence-degree ordering is determined recursively by
+!  letting `list(k), k = 1,...,n` be a column with maximal
+!  incidence to the subgraph spanned by the ordered columns.
+!  among all the columns of maximal incidence, `ido` chooses a
+!  column of maximal degree.
+
+    subroutine ido(m,n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq, &
+                   Iwa1,Iwa2,Iwa3,Iwa4)
 
       implicit none
 
-      integer m , n , Maxclq
-      integer Indrow(*) , Jpntr(n+1) , Indcol(*) , Ipntr(m+1) , Ndeg(n) &
-              , List(n) , Iwa1(0:n-1) , Iwa2(n) , Iwa3(n) , Iwa4(n)
+      integer,intent(in)       :: m         !! a positive integer input variable set to the number
+                                            !! of rows of `a`.
+      integer,intent(in)       :: n         !! a positive integer input variable set to the number
+                                            !! of columns of `a`.
+      integer,intent(out)      :: Maxclq    !! an integer output variable set to the size
+                                            !! of the largest clique found during the ordering.
+      integer,dimension(*),intent(in) :: Indrow    !! an integer input array which contains the row
+                                                   !! indices for the non-zeroes in the matrix `a`.
+      integer,dimension(n+1),intent(in) :: Jpntr   !! an integer input array of length `n + 1` which
+                                                   !! specifies the locations of the row indices in `indrow`.
+                                                   !! the row indices for column `j` are
+                                                   !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                                   !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                                   !! elements of the matrix `a`.
+      integer,dimension(*),intent(in)     :: Indcol     !! an integer input array which contains the
+                                                        !! column indices for the non-zeroes in the matrix `a`.
+      integer,dimension(m+1),intent(in)   :: Ipntr      !! an integer input array of length `m + 1` which
+                                                        !! specifies the locations of the column indices in `indcol`.
+                                                        !! the column indices for row `i` are
+                                                        !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                                        !! **note** that `ipntr(m+1)-1` is then the number of non-zero
+                                                        !! elements of the matrix `a`.
+      integer,dimension(n),intent(in)     :: Ndeg       !! an integer input array of length `n` which specifies
+                                                        !! the degree sequence. the degree of the `j`-th column
+                                                        !! of `a` is `ndeg(j)`.
+      integer,dimension(n),intent(out)     :: List      !! an integer output array of length `n` which specifies
+                                                        !! the incidence-degree ordering of the columns of `a`. the `j`-th
+                                                        !! column in this order is `list(j)`.
+      integer,dimension(0:n-1) :: Iwa1      !! integer work array of length `n`.
+      integer,dimension(n)     :: Iwa2      !! integer work array of length `n`.
+      integer,dimension(n)     :: Iwa3      !! integer work array of length `n`.
+      integer,dimension(n)     :: Iwa4      !! integer work array of length `n`.
 
-!  GIVEN THE SPARSITY PATTERN OF AN M BY N MATRIX A, THIS
-!  SUBROUTINE DETERMINES AN INCIDENCE-DEGREE ORDERING OF THE
-!  COLUMNS OF A.
-!
-!  THE INCIDENCE-DEGREE ORDERING IS DEFINED FOR THE LOOPLESS
-!  GRAPH G WITH VERTICES A(J), J = 1,2,...,N WHERE A(J) IS THE
-!  J-TH COLUMN OF A AND WITH EDGE (A(I),A(J)) IF AND ONLY IF
-!  COLUMNS I AND J HAVE A NON-ZERO IN THE SAME ROW POSITION.
-!
-!  THE INCIDENCE-DEGREE ORDERING IS DETERMINED RECURSIVELY BY
-!  LETTING LIST(K), K = 1,...,N BE A COLUMN WITH MAXIMAL
-!  INCIDENCE TO THE SUBGRAPH SPANNED BY THE ORDERED COLUMNS.
-!  AMONG ALL THE COLUMNS OF MAXIMAL INCIDENCE, IDO CHOOSES A
-!  COLUMN OF MAXIMAL DEGREE.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE IDO(M,N,INDROW,JPNTR,INDCOL,IPNTR,NDEG,LIST,
-!                   MAXCLQ,IWA1,IWA2,IWA3,IWA4)
-!
-!  WHERE
-!
-!    M IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF ROWS OF A.
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF COLUMNS OF A.
-!
-!    INDROW IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE ROW
-!      INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    JPNTR IS AN INTEGER INPUT ARRAY OF LENGTH N + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE ROW INDICES IN INDROW.
-!      THE ROW INDICES FOR COLUMN J ARE
-!
-!            INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!      NOTE THAT JPNTR(N+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    INDCOL IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE
-!      COLUMN INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    IPNTR IS AN INTEGER INPUT ARRAY OF LENGTH M + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE COLUMN INDICES IN INDCOL.
-!      THE COLUMN INDICES FOR ROW I ARE
-!
-!            INDCOL(K), K = IPNTR(I),...,IPNTR(I+1)-1.
-!
-!      NOTE THAT IPNTR(M+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    NDEG IS AN INTEGER INPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!      THE DEGREE SEQUENCE. THE DEGREE OF THE J-TH COLUMN
-!      OF A IS NDEG(J).
-!
-!    LIST IS AN INTEGER OUTPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!      THE INCIDENCE-DEGREE ORDERING OF THE COLUMNS OF A. THE J-TH
-!      COLUMN IN THIS ORDER IS LIST(J).
-!
-!    MAXCLQ IS AN INTEGER OUTPUT VARIABLE SET TO THE SIZE
-!      OF THE LARGEST CLIQUE FOUND DURING THE ORDERING.
-!
-!    IWA1,IWA2,IWA3, AND IWA4 ARE INTEGER WORK ARRAYS OF LENGTH N.
-
-      integer ic , ip , ir , jcol , jp , maxinc , maxlst , ncomp ,      &
+      integer :: ic , ip , ir , jcol , jp , maxinc , maxlst , ncomp , &
               numinc , numlst , numord , numwgt
-!
-!  SORT THE DEGREE SEQUENCE.
-!
+
+!  sort the degree sequence.
+
       call numsrt(n,n-1,Ndeg,-1,Iwa4,Iwa2,Iwa3)
+
+!  initialization block.
 !
-!  INITIALIZATION BLOCK.
+!  create a doubly-linked list to access the incidences of the
+!  columns. the pointers for the linked list are as follows.
 !
-!  CREATE A DOUBLY-LINKED LIST TO ACCESS THE INCIDENCES OF THE
-!  COLUMNS. THE POINTERS FOR THE LINKED LIST ARE AS FOLLOWS.
+!  each un-ordered column ic is in a list (the incidence list)
+!  of columns with the same incidence.
 !
-!  EACH UN-ORDERED COLUMN IC IS IN A LIST (THE INCIDENCE LIST)
-!  OF COLUMNS WITH THE SAME INCIDENCE.
+!  iwa1(numinc) is the first column in the numinc list
+!  unless iwa1(numinc) = 0. in this case there are
+!  no columns in the numinc list.
 !
-!  IWA1(NUMINC) IS THE FIRST COLUMN IN THE NUMINC LIST
-!  UNLESS IWA1(NUMINC) = 0. IN THIS CASE THERE ARE
-!  NO COLUMNS IN THE NUMINC LIST.
+!  iwa2(ic) is the column before ic in the incidence list
+!  unless iwa2(ic) = 0. in this case ic is the first
+!  column in this incidence list.
 !
-!  IWA2(IC) IS THE COLUMN BEFORE IC IN THE INCIDENCE LIST
-!  UNLESS IWA2(IC) = 0. IN THIS CASE IC IS THE FIRST
-!  COLUMN IN THIS INCIDENCE LIST.
+!  iwa3(ic) is the column after ic in the incidence list
+!  unless iwa3(ic) = 0. in this case ic is the last
+!  column in this incidence list.
 !
-!  IWA3(IC) IS THE COLUMN AFTER IC IN THE INCIDENCE LIST
-!  UNLESS IWA3(IC) = 0. IN THIS CASE IC IS THE LAST
-!  COLUMN IN THIS INCIDENCE LIST.
-!
-!  IF IC IS AN UN-ORDERED COLUMN, THEN LIST(IC) IS THE
-!  INCIDENCE OF IC TO THE GRAPH INDUCED BY THE ORDERED
-!  COLUMNS. IF JCOL IS AN ORDERED COLUMN, THEN LIST(JCOL)
-!  IS THE INCIDENCE-DEGREE ORDER OF COLUMN JCOL.
-!
+!  if ic is an un-ordered column, then list(ic) is the
+!  incidence of ic to the graph induced by the ordered
+!  columns. if jcol is an ordered column, then list(jcol)
+!  is the incidence-degree order of column jcol.
+
       maxinc = 0
       do jp = n , 1 , -1
          ic = Iwa4(jp)
@@ -406,10 +387,10 @@
          Iwa4(jp) = 0
          List(jp) = 0
       enddo
-!
+
 !  DETERMINE THE MAXIMAL SEARCH LENGTH FOR THE LIST
 !  OF COLUMNS OF MAXIMAL INCIDENCE.
-!
+
       maxlst = 0
       do ir = 1 , m
          maxlst = maxlst + (Ipntr(ir+1)-Ipntr(ir))**2
@@ -417,20 +398,19 @@
       maxlst = maxlst/n
       Maxclq = 0
       numord = 1
-!
+
 !  BEGINNING OF ITERATION LOOP.
-!
-!
-!     UPDATE THE SIZE OF THE LARGEST CLIQUE
-!     FOUND DURING THE ORDERING.
-!
+
+! UPDATE THE SIZE OF THE LARGEST CLIQUE
+! FOUND DURING THE ORDERING.
+
  100  if ( maxinc==0 ) ncomp = 0
       ncomp = ncomp + 1
       if ( maxinc+1==ncomp ) Maxclq = max(Maxclq,ncomp)
-!
-!     CHOOSE A COLUMN JCOL OF MAXIMAL DEGREE AMONG THE
-!     COLUMNS OF MAXIMAL INCIDENCE MAXINC.
-!
+
+! CHOOSE A COLUMN JCOL OF MAXIMAL DEGREE AMONG THE
+! COLUMNS OF MAXIMAL INCIDENCE MAXINC.
+
  200  jp = Iwa1(maxinc)
       if ( jp>0 ) then
          numwgt = -1
@@ -444,69 +424,70 @@
          enddo
          List(jcol) = numord
          numord = numord + 1
-!
-!     TERMINATION TEST.
-!
+
+         ! TERMINATION TEST.
+
          if ( numord>n ) then
-!
-!  INVERT THE ARRAY LIST.
-!
+
+            ! INVERT THE ARRAY LIST.
+
             do jcol = 1 , n
                Iwa2(List(jcol)) = jcol
             enddo
             do jp = 1 , n
                List(jp) = Iwa2(jp)
             enddo
+
          else
-!
-!     DELETE COLUMN JCOL FROM THE MAXINC LIST.
-!
+
+            ! DELETE COLUMN JCOL FROM THE MAXINC LIST.
+
             if ( Iwa2(jcol)==0 ) then
                Iwa1(maxinc) = Iwa3(jcol)
             else
                Iwa3(Iwa2(jcol)) = Iwa3(jcol)
             endif
             if ( Iwa3(jcol)>0 ) Iwa2(Iwa3(jcol)) = Iwa2(jcol)
-!
-!     FIND ALL COLUMNS ADJACENT TO COLUMN JCOL.
-!
+
+            ! FIND ALL COLUMNS ADJACENT TO COLUMN JCOL.
+
             Iwa4(jcol) = n
-!
-!     DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND
-!     TO NON-ZEROES IN THE MATRIX.
-!
+
+            ! DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND
+            ! TO NON-ZEROES IN THE MATRIX.
+
             do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
                ir = Indrow(jp)
-!
-!        FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
-!        WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
-!
+
+                ! FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
+                ! WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
+
                do ip = Ipntr(ir) , Ipntr(ir+1) - 1
                   ic = Indcol(ip)
-!
-!           ARRAY IWA4 MARKS COLUMNS WHICH ARE ADJACENT TO
-!           COLUMN JCOL.
-!
+
+                    ! ARRAY IWA4 MARKS COLUMNS WHICH ARE ADJACENT TO
+                    ! COLUMN JCOL.
+
                   if ( Iwa4(ic)<numord ) then
                      Iwa4(ic) = numord
-!
-!              UPDATE THE POINTERS TO THE CURRENT INCIDENCE LISTS.
-!
+
+                     ! UPDATE THE POINTERS TO THE CURRENT INCIDENCE LISTS.
+
                      numinc = List(ic)
                      List(ic) = List(ic) + 1
                      maxinc = max(maxinc,List(ic))
-!
-!              DELETE COLUMN IC FROM THE NUMINC LIST.
-!
+
+                     ! DELETE COLUMN IC FROM THE NUMINC LIST.
+
                      if ( Iwa2(ic)==0 ) then
                         Iwa1(numinc) = Iwa3(ic)
                      else
                         Iwa3(Iwa2(ic)) = Iwa3(ic)
                      endif
                      if ( Iwa3(ic)>0 ) Iwa2(Iwa3(ic)) = Iwa2(ic)
-!
-!              ADD COLUMN IC TO THE NUMINC+1 LIST.
-!
+
+                     ! ADD COLUMN IC TO THE NUMINC+1 LIST.
+
                      Iwa2(ic) = 0
                      Iwa3(ic) = Iwa1(numinc+1)
                      if ( Iwa1(numinc+1)>0 ) Iwa2(Iwa1(numinc+1)) = ic
@@ -514,9 +495,9 @@
                   endif
                enddo
             enddo
-!
-!     END OF ITERATION LOOP.
-!
+
+            ! END OF ITERATION LOOP.
+
             goto 100
          endif
       else
@@ -524,393 +505,324 @@
          goto 200
       endif
 
-      end subroutine ido
+    end subroutine ido
+!*******************************************************************************
 
-      subroutine numsrt(n,Nmax,Num,Mode,Index,Last,Next)
+!*******************************************************************************
+!>
+!  Given a sequence of integers, this subroutine groups
+!  together those indices with the same sequence value
+!  and, optionally, sorts the sequence into either
+!  ascending or descending order.
+!
+!  The sequence of integers is defined by the array `num`,
+!  and it is assumed that the integers are each from the set
+!  `0,1,...,nmax`. on output the indices `k` such that `num(k) = l`
+!  for any `l = 0,1,...,nmax` can be obtained from the arrays
+!  last and next as follows.
+!```fortran
+!  k = last(l)
+!  while (k /= 0) k = next(k)
+!```
+!  Optionally, the subroutine produces an array index so that
+!  the sequence `num(index(i)), i = 1,2,...,n` is sorted.
 
-      implicit none
+    subroutine numsrt(n,Nmax,Num,Mode,Index,Last,Next)
 
-      integer n , Nmax , Mode
-      integer Num(n) , Index(n) , Last(0:Nmax) , Next(n)
+    implicit none
 
-!  GIVEN A SEQUENCE OF INTEGERS, THIS SUBROUTINE GROUPS
-!  TOGETHER THOSE INDICES WITH THE SAME SEQUENCE VALUE
-!  AND, OPTIONALLY, SORTS THE SEQUENCE INTO EITHER
-!  ASCENDING OR DESCENDING ORDER.
-!
-!  THE SEQUENCE OF INTEGERS IS DEFINED BY THE ARRAY NUM,
-!  AND IT IS ASSUMED THAT THE INTEGERS ARE EACH FROM THE SET
-!  0,1,...,NMAX. ON OUTPUT THE INDICES K SUCH THAT NUM(K) = L
-!  FOR ANY L = 0,1,...,NMAX CAN BE OBTAINED FROM THE ARRAYS
-!  LAST AND NEXT AS FOLLOWS.
-!
-!        K = LAST(L)
-!        WHILE (K /= 0) K = NEXT(K)
-!
-!  OPTIONALLY, THE SUBROUTINE PRODUCES AN ARRAY INDEX SO THAT
-!  THE SEQUENCE NUM(INDEX(I)), I = 1,2,...,N IS SORTED.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE NUMSRT(N,NMAX,NUM,MODE,INDEX,LAST,NEXT)
-!
-!  WHERE
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE.
-!
-!    NMAX IS A POSITIVE INTEGER INPUT VARIABLE.
-!
-!    NUM IS AN INPUT ARRAY OF LENGTH N WHICH CONTAINS THE
-!      SEQUENCE OF INTEGERS TO BE GROUPED AND SORTED. IT
-!      IS ASSUMED THAT THE INTEGERS ARE EACH FROM THE SET
-!      0,1,...,NMAX.
-!
-!    MODE IS AN INTEGER INPUT VARIABLE. THE SEQUENCE NUM IS
-!      SORTED IN ASCENDING ORDER IF MODE IS POSITIVE AND IN
-!      DESCENDING ORDER IF MODE IS NEGATIVE. IF MODE IS 0,
-!      NO SORTING IS DONE.
-!
-!    INDEX IS AN INTEGER OUTPUT ARRAY OF LENGTH N SET SO
-!      THAT THE SEQUENCE
-!
-!            NUM(INDEX(I)), I = 1,2,...,N
-!
-!      IS SORTED ACCORDING TO THE SETTING OF MODE. IF MODE
-!      IS 0, INDEX IS NOT REFERENCED.
-!
-!    LAST IS AN INTEGER OUTPUT ARRAY OF LENGTH NMAX + 1. THE
-!      INDEX OF NUM FOR THE LAST OCCURRENCE OF L IS LAST(L)
-!      FOR ANY L = 0,1,...,NMAX UNLESS LAST(L) = 0. IN
-!      THIS CASE L DOES NOT APPEAR IN NUM.
-!
-!    NEXT IS AN INTEGER OUTPUT ARRAY OF LENGTH N. IF
-!      NUM(K) = L, THEN THE INDEX OF NUM FOR THE PREVIOUS
-!      OCCURRENCE OF L IS NEXT(K) FOR ANY L = 0,1,...,NMAX
-!      UNLESS NEXT(K) = 0. IN THIS CASE THERE IS NO PREVIOUS
-!      OCCURRENCE OF L IN NUM.
+    integer,intent(in)        :: n      !! a positive integer input variable.
+    integer                   :: Nmax   !! a positive integer input variable.
+    integer                   :: Mode   !! an integer input variable. the sequence `num` is
+                                        !! sorted in ascending order if `mode` is positive and in
+                                        !! descending order if `mode` is negative. if `mode` is 0,
+                                        !! no sorting is done.
+    integer,dimension(n)      :: Num    !! an input array of length `n` which contains the
+                                        !! sequence of integers to be grouped and sorted. it
+                                        !! is assumed that the integers are each from the set
+                                        !! `0,1,...,nmax`.
+    integer,dimension(n)      :: Index  !! an integer output array of length `n` set so
+                                        !! that the sequence
+                                        !! `num(index(i)), i = 1,2,...,n`
+                                        !! is sorted according to the setting of mode.
+                                        !! if `mode` is 0, `index` is not referenced.
+    integer,dimension(0:Nmax) :: Last   !! an integer output array of length `nmax + 1`. the
+                                        !! index of `num` for the last occurrence of `l` is `last(l)`
+                                        !! for any `l = 0,1,...,nmax` unless `last(l) = 0`. in
+                                        !! this case `l` does not appear in `num`.
+    integer,dimension(n)      :: Next   !! an integer output array of length `n`. if
+                                        !! `num(k) = l`, then the index of `num` for the previous
+                                        !! occurrence of `l` is `next(k)` for any `l = 0,1,...,nmax`
+                                        !! unless `next(k) = 0`. in this case there is no previous
+                                        !! occurrence of `l` in `num`.
 
-      integer i , j , jinc , jl , ju , k , l
-!
-!  DETERMINE THE ARRAYS NEXT AND LAST.
-!
-      do i = 0 , Nmax
-         Last(i) = 0
-      enddo
-      do k = 1 , n
-         l = Num(k)
-         Next(k) = Last(l)
-         Last(l) = k
-      enddo
-      if ( Mode==0 ) return
-!
-!  STORE THE POINTERS TO THE SORTED ARRAY IN INDEX.
-!
-      i = 1
-      if ( Mode>0 ) then
-         jl = 0
-         ju = Nmax
-         jinc = 1
-      else
-         jl = Nmax
-         ju = 0
-         jinc = -1
-      endif
-      do j = jl , ju , jinc
-         k = Last(j)
- 50      if ( k/=0 ) then
-            Index(i) = k
-            i = i + 1
-            k = Next(k)
-            goto 50
-         endif
-      enddo
+    integer :: i , j , jinc , jl , ju , k , l
 
-      end subroutine numsrt
+    ! determine the arrays next and last.
 
-      subroutine seq(n,Indrow,Jpntr,Indcol,Ipntr,List,Ngrp,Maxgrp,Iwa)
+    do i = 0 , Nmax
+        Last(i) = 0
+    enddo
 
-      implicit none
+    do k = 1 , n
+        l = Num(k)
+        Next(k) = Last(l)
+        Last(l) = k
+    enddo
 
-      integer n , Maxgrp
-      integer Indrow(*) , Jpntr(n+1) , Indcol(*) , Ipntr(*) , List(n) , &
-              Ngrp(n) , Iwa(n)
+    if ( Mode/=0 ) then
 
-!  GIVEN THE SPARSITY PATTERN OF AN M BY N MATRIX A, THIS
-!  SUBROUTINE DETERMINES A CONSISTENT PARTITION OF THE
-!  COLUMNS OF A BY A SEQUENTIAL ALGORITHM.
-!
-!  A CONSISTENT PARTITION IS DEFINED IN TERMS OF THE LOOPLESS
-!  GRAPH G WITH VERTICES A(J), J = 1,2,...,N WHERE A(J) IS THE
-!  J-TH COLUMN OF A AND WITH EDGE (A(I),A(J)) IF AND ONLY IF
-!  COLUMNS I AND J HAVE A NON-ZERO IN THE SAME ROW POSITION.
-!
-!  A PARTITION OF THE COLUMNS OF A INTO GROUPS IS CONSISTENT
-!  IF THE COLUMNS IN ANY GROUP ARE NOT ADJACENT IN THE GRAPH G.
-!  IN GRAPH-THEORY TERMINOLOGY, A CONSISTENT PARTITION OF THE
-!  COLUMNS OF A CORRESPONDS TO A COLORING OF THE GRAPH G.
-!
-!  THE SUBROUTINE EXAMINES THE COLUMNS IN THE ORDER SPECIFIED
-!  BY THE ARRAY LIST, AND ASSIGNS THE CURRENT COLUMN TO THE
-!  GROUP WITH THE SMALLEST POSSIBLE NUMBER.
-!
-!  NOTE THAT THE VALUE OF M IS NOT NEEDED BY SEQ AND IS
-!  THEREFORE NOT PRESENT IN THE SUBROUTINE STATEMENT.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE SEQ(N,INDROW,JPNTR,INDCOL,IPNTR,LIST,NGRP,MAXGRP,
-!                   IWA)
-!
-!  WHERE
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF COLUMNS OF A.
-!
-!    INDROW IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE ROW
-!      INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    JPNTR IS AN INTEGER INPUT ARRAY OF LENGTH N + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE ROW INDICES IN INDROW.
-!      THE ROW INDICES FOR COLUMN J ARE
-!
-!            INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!      NOTE THAT JPNTR(N+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    INDCOL IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE
-!      COLUMN INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    IPNTR IS AN INTEGER INPUT ARRAY OF LENGTH M + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE COLUMN INDICES IN INDCOL.
-!      THE COLUMN INDICES FOR ROW I ARE
-!
-!            INDCOL(K), K = IPNTR(I),...,IPNTR(I+1)-1.
-!
-!      NOTE THAT IPNTR(M+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    LIST IS AN INTEGER INPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!      THE ORDER TO BE USED BY THE SEQUENTIAL ALGORITHM.
-!      THE J-TH COLUMN IN THIS ORDER IS LIST(J).
-!
-!    NGRP IS AN INTEGER OUTPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!      THE PARTITION OF THE COLUMNS OF A. COLUMN JCOL BELONGS
-!      TO GROUP NGRP(JCOL).
-!
-!    MAXGRP IS AN INTEGER OUTPUT VARIABLE WHICH SPECIFIES THE
-!      NUMBER OF GROUPS IN THE PARTITION OF THE COLUMNS OF A.
-!
-!    IWA IS AN INTEGER WORK ARRAY OF LENGTH N.
-
-      integer ic , ip , ir , j , jcol , jp
-!
-!  INITIALIZATION BLOCK.
-!
-
-      Maxgrp = 0
-      do jp = 1 , n
-         Ngrp(jp) = n
-         Iwa(jp) = 0
-      enddo
-!
-!  BEGINNING OF ITERATION LOOP.
-!
-      do j = 1 , n
-         jcol = List(j)
-!
-!     FIND ALL COLUMNS ADJACENT TO COLUMN JCOL.
-!
-!     DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND
-!     TO NON-ZEROES IN THE MATRIX.
-!
-         do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
-            ir = Indrow(jp)
-!
-!        FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
-!        WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
-!
-            do ip = Ipntr(ir) , Ipntr(ir+1) - 1
-               ic = Indcol(ip)
-!
-!           ARRAY IWA MARKS THE GROUP NUMBERS OF THE
-!           COLUMNS WHICH ARE ADJACENT TO COLUMN JCOL.
-!
-               Iwa(Ngrp(ic)) = j
+        ! store the pointers to the sorted array in index.
+        i = 1
+        if ( Mode>0 ) then
+            jl = 0
+            ju = Nmax
+            jinc = 1
+        else
+            jl = Nmax
+            ju = 0
+            jinc = -1
+        endif
+        do j = jl , ju , jinc
+            k = Last(j)
+            do
+                if (k==0) exit
+                Index(i) = k
+                i = i + 1
+                k = Next(k)
             enddo
-         enddo
-!
-!     ASSIGN THE SMALLEST UN-MARKED GROUP NUMBER TO JCOL.
-!
-         do jp = 1 , Maxgrp
-            if ( Iwa(jp)/=j ) goto 50
-         enddo
-         Maxgrp = Maxgrp + 1
- 50      Ngrp(jcol) = jp
-      enddo
-!
-!     END OF ITERATION LOOP.
-!
+        enddo
 
-      end subroutine seq
+    end if
 
-      subroutine setr(m,n,Indrow,Jpntr,Indcol,Ipntr,Iwa)
+    end subroutine numsrt
+!*******************************************************************************
 
-      implicit none
+!*******************************************************************************
+!>
+!  given the sparsity pattern of an `m` by `n` matrix `a`, this
+!  subroutine determines a consistent partition of the
+!  columns of `a` by a sequential algorithm.
+!
+!  a consistent partition is defined in terms of the loopless
+!  graph `g` with vertices `a(j), j = 1,2,...,n` where `a(j)` is the
+!  `j`-th column of `a` and with edge `(a(i),a(j))` if and only if
+!  columns `i` and `j` have a non-zero in the same row position.
+!
+!  a partition of the columns of a into groups is consistent
+!  if the columns in any group are not adjacent in the graph `g`.
+!  in graph-theory terminology, a consistent partition of the
+!  columns of a corresponds to a coloring of the graph `g`.
+!
+!  the subroutine examines the columns in the order specified
+!  by the array list, and assigns the current column to the
+!  group with the smallest possible number.
+!
+!  note that the value of `m` is not needed by `seq` and is
+!  therefore not present in the subroutine statement.
 
-      integer m , n
-      integer Indrow(*) , Jpntr(n+1) , Indcol(*) , Ipntr(m+1) , Iwa(m)
+    subroutine seq(n,Indrow,Jpntr,Indcol,Ipntr,List,Ngrp,Maxgrp,Iwa)
 
-!  GIVEN A COLUMN-ORIENTED DEFINITION OF THE SPARSITY PATTERN
-!  OF AN M BY N MATRIX A, THIS SUBROUTINE DETERMINES A
-!  ROW-ORIENTED DEFINITION OF THE SPARSITY PATTERN OF A.
-!
-!  ON INPUT THE COLUMN-ORIENTED DEFINITION IS SPECIFIED BY
-!  THE ARRAYS INDROW AND JPNTR. ON OUTPUT THE ROW-ORIENTED
-!  DEFINITION IS SPECIFIED BY THE ARRAYS INDCOL AND IPNTR.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE SETR(M,N,INDROW,JPNTR,INDCOL,IPNTR,IWA)
-!
-!  WHERE
-!
-!    M IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF ROWS OF A.
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF COLUMNS OF A.
-!
-!    INDROW IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE ROW
-!      INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    JPNTR IS AN INTEGER INPUT ARRAY OF LENGTH N + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE ROW INDICES IN INDROW.
-!      THE ROW INDICES FOR COLUMN J ARE
-!
-!            INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!      NOTE THAT JPNTR(N+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    INDCOL IS AN INTEGER OUTPUT ARRAY WHICH CONTAINS THE
-!      COLUMN INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    IPNTR IS AN INTEGER OUTPUT ARRAY OF LENGTH M + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE COLUMN INDICES IN INDCOL.
-!      THE COLUMN INDICES FOR ROW I ARE
-!
-!            INDCOL(K), K = IPNTR(I),...,IPNTR(I+1)-1.
-!
-!      NOTE THAT IPNTR(1) IS SET TO 1 AND THAT IPNTR(M+1)-1 IS
-!      THEN THE NUMBER OF NON-ZERO ELEMENTS OF THE MATRIX A.
-!
-!    IWA IS AN INTEGER WORK ARRAY OF LENGTH M.
+    implicit none
 
-      integer ir , jcol , jp
+    integer                :: n         !! a positive integer input variable set to the number
+                                        !! of columns of `a`.
+    integer                :: Maxgrp    !! an integer output variable which specifies the
+                                        !! number of groups in the partition of the columns of `a`.
+    integer,dimension(*)   :: Indrow    !! an integer input array which contains the row
+                                        !! indices for the non-zeroes in the matrix `a`.
+    integer,dimension(n+1) :: Jpntr     !! an integer input array of length `n + 1` which
+                                        !! specifies the locations of the row indices in `indrow`.
+                                        !! the row indices for column `j` are
+                                        !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                        !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                        !! elements of the matrix `a`.
+    integer,dimension(*)   :: Indcol    !! an integer input array which contains the
+                                        !! column indices for the non-zeroes in the matrix `a`.
+    integer,dimension(*)   :: Ipntr     !! an integer input array of length `m + 1` which
+                                        !! specifies the locations of the column indices in `indcol`.
+                                        !! the column indices for row `i` are
+                                        !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                        !! **note** that `ipntr(m+1)-1` is then the number of non-zero
+                                        !! elements of the matrix `a`.
+    integer,dimension(n)   :: List      !! an integer input array of length `n` which specifies
+                                        !! the order to be used by the sequential algorithm.
+                                        !! the `j`-th column in this order is `list(j)`.
+    integer,dimension(n)   :: Ngrp      !! an integer output array of length `n` which specifies
+                                        !! the partition of the columns of `a`. column `jcol` belongs
+                                        !! to group `ngrp(jcol)`.
+    integer,dimension(n)   :: Iwa       !! an integer work array of length `n`
+
+    integer :: ic , ip , ir , j , jcol , jp
+
+    ! initialization block.
+
+    Maxgrp = 0
+    do jp = 1 , n
+        Ngrp(jp) = n
+        Iwa(jp) = 0
+    enddo
+
+    ! beginning of iteration loop.
+    do j = 1 , n
+
+        jcol = List(j)
+
+        ! find all columns adjacent to column jcol.
+        !
+        ! determine all positions (ir,jcol) which correspond
+        ! to non-zeroes in the matrix.
+        do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
+            ir = Indrow(jp)
+            ! for each row ir, determine all positions (ir,ic)
+            ! which correspond to non-zeroes in the matrix.
+            do ip = Ipntr(ir) , Ipntr(ir+1) - 1
+                ic = Indcol(ip)
+                ! array iwa marks the group numbers of the
+                ! columns which are adjacent to column jcol.
+                Iwa(Ngrp(ic)) = j
+            enddo
+        enddo
+
+        ! assign the smallest un-marked group number to jcol.
+        do jp = 1 , Maxgrp
+            if ( Iwa(jp)/=j ) then
+                Maxgrp = Maxgrp - 1
+                exit
+            end if
+        enddo
+        Maxgrp = Maxgrp + 1
+        Ngrp(jcol) = jp
+
+    enddo
+    ! end of iteration loop.
+
+    end subroutine seq
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  given a column-oriented definition of the sparsity pattern
+!  of an `m` by `n` matrix `a`, this subroutine determines a
+!  row-oriented definition of the sparsity pattern of `a`.
 !
-!  STORE IN ARRAY IWA THE COUNTS OF NON-ZEROES IN THE ROWS.
-!
-      do ir = 1 , m
-         Iwa(ir) = 0
-      enddo
-      do jp = 1 , Jpntr(n+1) - 1
-         Iwa(Indrow(jp)) = Iwa(Indrow(jp)) + 1
-      enddo
-!
-!  SET POINTERS TO THE START OF THE ROWS IN INDCOL.
-!
-      Ipntr(1) = 1
-      do ir = 1 , m
-         Ipntr(ir+1) = Ipntr(ir) + Iwa(ir)
-         Iwa(ir) = Ipntr(ir)
-      enddo
-!
-!  FILL INDCOL.
-!
-      do jcol = 1 , n
-         do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
+!  on input the column-oriented definition is specified by
+!  the arrays `indrow` and `jpntr`. on output the row-oriented
+!  definition is specified by the arrays `indcol` and `ipntr`.
+
+    subroutine setr(m,n,Indrow,Jpntr,Indcol,Ipntr,Iwa)
+
+    implicit none
+
+    integer,intent(in)     :: m       !! a positive integer input variable set to the number
+                                      !! of rows of `a`.
+    integer,intent(in)     :: n       !! a positive integer input variable set to the number
+                                      !! of columns of `a`.
+    integer,dimension(*)   :: Indrow  !! an integer input array which contains the row
+                                      !! indices for the non-zeroes in the matrix `a`.
+    integer,dimension(n+1) :: Jpntr   !! an integer input array of length `n + 1` which
+                                      !! specifies the locations of the row indices in `indrow`.
+                                      !! the row indices for column `j` are
+                                      !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                      !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                      !! elements of the matrix `a`.
+    integer,dimension(*)   :: Indcol  !! an integer output array which contains the
+                                      !! column indices for the non-zeroes in the matrix `a`.
+    integer,dimension(m+1) :: Ipntr   !! an integer output array of length `m + 1` which
+                                      !! specifies the locations of the column indices in `indcol`.
+                                      !! the column indices for row `i` are
+                                      !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                      !! **note** that `ipntr(1)` is set to 1 and that `ipntr(m+1)-1` is
+                                      !! then the number of non-zero elements of the matrix `a`.
+    integer,dimension(m)   :: Iwa     !! an integer work array of length `m`.
+
+    integer :: ir , jcol , jp
+
+    ! store in array iwa the counts of non-zeroes in the rows.
+
+    do ir = 1 , m
+        Iwa(ir) = 0
+    enddo
+    do jp = 1 , Jpntr(n+1) - 1
+        Iwa(Indrow(jp)) = Iwa(Indrow(jp)) + 1
+    enddo
+
+    ! set pointers to the start of the rows in indcol.
+
+    Ipntr(1) = 1
+    do ir = 1 , m
+        Ipntr(ir+1) = Ipntr(ir) + Iwa(ir)
+        Iwa(ir) = Ipntr(ir)
+    enddo
+
+    ! fill indcol.
+
+    do jcol = 1 , n
+        do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
             ir = Indrow(jp)
             Indcol(Iwa(ir)) = jcol
             Iwa(ir) = Iwa(ir) + 1
-         enddo
-      enddo
+        enddo
+    enddo
 
-      end subroutine setr
+    end subroutine setr
+!*******************************************************************************
 
-      subroutine slo(n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq,Iwa1, &
-                     Iwa2,Iwa3,Iwa4)
+!*******************************************************************************
+!>
+!  given the sparsity pattern of an `m` by `n` matrix `a`, this
+!  subroutine determines the smallest-last ordering of the
+!  columns of `a`.
+!
+!  the smallest-last ordering is defined for the loopless
+!  graph `g` with vertices `a(j), j = 1,2,...,n` where `a(j)` is the
+!  `j`-th column of `a` and with edge `(a(i),a(j))` if and only if
+!  columns `i` and `j` have a non-zero in the same row position.
+!
+!  the smallest-last ordering is determined recursively by
+!  letting `list(k), k = n,...,1` be a column with least degree
+!  in the subgraph spanned by the un-ordered columns.
+!
+!  note that the value of `m` is not needed by `slo` and is
+!  therefore not present in the subroutine statement.
+
+    subroutine slo(n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq,Iwa1, &
+                   Iwa2,Iwa3,Iwa4)
 
       implicit none
 
-      integer n , Maxclq
-      integer Indrow(*) , Jpntr(n+1) , Indcol(*) , Ipntr(*) , Ndeg(n) , &
-              List(n) , Iwa1(0:n-1) , Iwa2(n) , Iwa3(n) , Iwa4(n)
+      integer                  :: n         !! a positive integer input variable set to the number
+                                            !! of columns of `a`.
+      integer                  :: Maxclq    !! an integer output variable set to the size
+                                            !! of the largest clique found during the ordering.
+      integer,dimension(*)     :: Indrow    !! an integer input array which contains the row
+                                            !! indices for the non-zeroes in the matrix `a`.
+      integer,dimension(n+1)   :: Jpntr     !! an integer input array of length `n + 1` which
+                                            !! specifies the locations of the row indices in `indrow`.
+                                            !! the row indices for column `j` are
+                                            !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                            !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                            !! elements of the matrix `a`.
+      integer,dimension(*)     :: Indcol    !! an integer input array which contains the
+                                            !! column indices for the non-zeroes in the matrix `a`.
+      integer,dimension(*)     :: Ipntr     !! an integer input array of length `m + 1` which
+                                            !! specifies the locations of the column indices in `indcol`.
+                                            !! the column indices for row `i` are
+                                            !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                            !! **note** that `ipntr(m+1)-1` is then the number of non-zero
+                                            !! elements of the matrix `a`.
+      integer,dimension(n)     :: Ndeg      !! an integer input array of length `n` which specifies
+                                            !! the degree sequence. the degree of the `j`-th column
+                                            !! of `a` is `ndeg(j)`.
+      integer,dimension(n)     :: List      !! an integer output array of length `n` which specifies
+                                            !! the smallest-last ordering of the columns of `a`. the `j`-th
+                                            !! column in this order is `list(j)`.
+      integer,dimension(0:n-1) :: Iwa1      !! integer work array of length `n`
+      integer,dimension(n)     :: Iwa2      !! integer work array of length `n`
+      integer,dimension(n)     :: Iwa3      !! integer work array of length `n`
+      integer,dimension(n)     :: Iwa4      !! integer work array of length `n`
 
-!  GIVEN THE SPARSITY PATTERN OF AN M BY N MATRIX A, THIS
-!  SUBROUTINE DETERMINES THE SMALLEST-LAST ORDERING OF THE
-!  COLUMNS OF A.
-!
-!  THE SMALLEST-LAST ORDERING IS DEFINED FOR THE LOOPLESS
-!  GRAPH G WITH VERTICES A(J), J = 1,2,...,N WHERE A(J) IS THE
-!  J-TH COLUMN OF A AND WITH EDGE (A(I),A(J)) IF AND ONLY IF
-!  COLUMNS I AND J HAVE A NON-ZERO IN THE SAME ROW POSITION.
-!
-!  THE SMALLEST-LAST ORDERING IS DETERMINED RECURSIVELY BY
-!  LETTING LIST(K), K = N,...,1 BE A COLUMN WITH LEAST DEGREE
-!  IN THE SUBGRAPH SPANNED BY THE UN-ORDERED COLUMNS.
-!
-!  NOTE THAT THE VALUE OF M IS NOT NEEDED BY SLO AND IS
-!  THEREFORE NOT PRESENT IN THE SUBROUTINE STATEMENT.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE SLO(N,INDROW,JPNTR,INDCOL,IPNTR,NDEG,LIST,
-!                   MAXCLQ,IWA1,IWA2,IWA3,IWA4)
-!
-!  WHERE
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF COLUMNS OF A.
-!
-!    INDROW IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE ROW
-!      INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    JPNTR IS AN INTEGER INPUT ARRAY OF LENGTH N + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE ROW INDICES IN INDROW.
-!      THE ROW INDICES FOR COLUMN J ARE
-!
-!            INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!      NOTE THAT JPNTR(N+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    INDCOL IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE
-!      COLUMN INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    IPNTR IS AN INTEGER INPUT ARRAY OF LENGTH M + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE COLUMN INDICES IN INDCOL.
-!      THE COLUMN INDICES FOR ROW I ARE
-!
-!            INDCOL(K), K = IPNTR(I),...,IPNTR(I+1)-1.
-!
-!      NOTE THAT IPNTR(M+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    NDEG IS AN INTEGER INPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!      THE DEGREE SEQUENCE. THE DEGREE OF THE J-TH COLUMN
-!      OF A IS NDEG(J).
-!
-!    LIST IS AN INTEGER OUTPUT ARRAY OF LENGTH N WHICH SPECIFIES
-!      THE SMALLEST-LAST ORDERING OF THE COLUMNS OF A. THE J-TH
-!      COLUMN IN THIS ORDER IS LIST(J).
-!
-!    MAXCLQ IS AN INTEGER OUTPUT VARIABLE SET TO THE SIZE
-!      OF THE LARGEST CLIQUE FOUND DURING THE ORDERING.
-!
-!    IWA1,IWA2,IWA3, AND IWA4 ARE INTEGER WORK ARRAYS OF LENGTH N.
-
-      integer ic , ip , ir , jcol , jp , mindeg , numdeg , numord
+      integer :: ic , ip , ir , jcol , jp , mindeg , numdeg , numord
 !
 !  INITIALIZATION BLOCK.
 !
@@ -1046,112 +958,98 @@
       endif
 
       end subroutine slo
+!*******************************************************************************
 
-      subroutine srtdat(n,Nnz,Indrow,Indcol,Jpntr,Iwa)
+!*******************************************************************************
+!>
+!  given the non-zero elements of an `m` by `n` matrix `a` in
+!  arbitrary order as specified by their row and column
+!  indices, this subroutine permutes these elements so
+!  that their column indices are in non-decreasing order.
+!
+!  on input it is assumed that the elements are specified in
+!
+!  `indrow(k),indcol(k), k = 1,...,nnz`.
+!
+!  on output the elements are permuted so that `indcol` is
+!  in non-decreasing order. in addition, the array `jpntr`
+!  is set so that the row indices for column `j` are
+!
+!  `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+!
+!  note that the value of `m` is not needed by srtdat and is
+!  therefore not present in the subroutine statement.
 
-      implicit none
+    subroutine srtdat(n,Nnz,Indrow,Indcol,Jpntr,Iwa)
 
-      integer n , Nnz
-      integer Indrow(Nnz) , Indcol(Nnz) , Jpntr(n+1) , Iwa(n)
+    implicit none
 
-!  GIVEN THE NON-ZERO ELEMENTS OF AN M BY N MATRIX A IN
-!  ARBITRARY ORDER AS SPECIFIED BY THEIR ROW AND COLUMN
-!  INDICES, THIS SUBROUTINE PERMUTES THESE ELEMENTS SO
-!  THAT THEIR COLUMN INDICES ARE IN NON-DECREASING ORDER.
-!
-!  ON INPUT IT IS ASSUMED THAT THE ELEMENTS ARE SPECIFIED IN
-!
-!        INDROW(K),INDCOL(K), K = 1,...,NNZ.
-!
-!  ON OUTPUT THE ELEMENTS ARE PERMUTED SO THAT INDCOL IS
-!  IN NON-DECREASING ORDER. IN ADDITION, THE ARRAY JPNTR
-!  IS SET SO THAT THE ROW INDICES FOR COLUMN J ARE
-!
-!        INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!  NOTE THAT THE VALUE OF M IS NOT NEEDED BY SRTDAT AND IS
-!  THEREFORE NOT PRESENT IN THE SUBROUTINE STATEMENT.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE SRTDAT(N,NNZ,INDROW,INDCOL,JPNTR,IWA)
-!
-!  WHERE
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF COLUMNS OF A.
-!
-!    NNZ IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF NON-ZERO ELEMENTS OF A.
-!
-!    INDROW IS AN INTEGER ARRAY OF LENGTH NNZ. ON INPUT INDROW
-!      MUST CONTAIN THE ROW INDICES OF THE NON-ZERO ELEMENTS OF A.
-!      ON OUTPUT INDROW IS PERMUTED SO THAT THE CORRESPONDING
-!      COLUMN INDICES OF INDCOL ARE IN NON-DECREASING ORDER.
-!
-!    INDCOL IS AN INTEGER ARRAY OF LENGTH NNZ. ON INPUT INDCOL
-!      MUST CONTAIN THE COLUMN INDICES OF THE NON-ZERO ELEMENTS
-!      OF A. ON OUTPUT INDCOL IS PERMUTED SO THAT THESE INDICES
-!      ARE IN NON-DECREASING ORDER.
-!
-!    JPNTR IS AN INTEGER OUTPUT ARRAY OF LENGTH N + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE ROW INDICES IN THE OUTPUT
-!      INDROW. THE ROW INDICES FOR COLUMN J ARE
-!
-!            INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!      NOTE THAT JPNTR(1) IS SET TO 1 AND THAT JPNTR(N+1)-1
-!      IS THEN NNZ.
-!
-!    IWA IS AN INTEGER WORK ARRAY OF LENGTH N.
+    integer                :: n       !! a positive integer input variable set to the number
+                                      !! of columns of `a`.
+    integer                :: Nnz     !! a positive integer input variable set to the number
+                                      !! of non-zero elements of `a`.
+    integer,dimension(Nnz) :: Indrow  !! an integer array of length `nnz`. on input `indrow`
+                                      !! must contain the row indices of the non-zero elements of `a`.
+                                      !! on output `indrow` is permuted so that the corresponding
+                                      !! column indices of `indcol` are in non-decreasing order.
+    integer,dimension(Nnz) :: Indcol  !! an integer array of length `nnz`. on input `indcol`
+                                      !! must contain the column indices of the non-zero elements
+                                      !! of `a`. on output `indcol` is permuted so that these indices
+                                      !! are in non-decreasing order.
+    integer,dimension(n+1) :: Jpntr   !! an integer output array of length `n + 1` which
+                                      !! specifies the locations of the row indices in the output
+                                      !! `indrow`. the row indices for column `j` are
+                                      !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                      !! **note** that `jpntr(1)` is set to 1 and that `jpntr(n+1)-1`
+                                      !! is then `nnz`.
+    integer,dimension(n)   :: Iwa     !! an integer work array of length `n`.
 
-      integer i , j , k , l
-!
-!  STORE IN ARRAY IWA THE COUNTS OF NON-ZEROES IN THE COLUMNS.
-!
-      do j = 1 , n
-         Iwa(j) = 0
-      enddo
-      do k = 1 , Nnz
-         Iwa(Indcol(k)) = Iwa(Indcol(k)) + 1
-      enddo
-!
-!  SET POINTERS TO THE START OF THE COLUMNS IN INDROW.
-!
-      Jpntr(1) = 1
-      do j = 1 , n
-         Jpntr(j+1) = Jpntr(j) + Iwa(j)
-         Iwa(j) = Jpntr(j)
-      enddo
-      k = 1
-!
-!  BEGIN IN-PLACE SORT.
-!
- 100  j = Indcol(k)
-      if ( k>=Jpntr(j) ) then
-!
-!        CURRENT ELEMENT IS IN POSITION. NOW EXAMINE THE
-!        NEXT ELEMENT OR THE FIRST UN-SORTED ELEMENT IN
-!        THE J-TH GROUP.
-!
-         k = max(k+1,Iwa(j))
-      else
-!
-!        CURRENT ELEMENT IS NOT IN POSITION. PLACE ELEMENT
-!        IN POSITION AND MAKE THE DISPLACED ELEMENT THE
-!        CURRENT ELEMENT.
-!
-         l = Iwa(j)
-         Iwa(j) = Iwa(j) + 1
-         i = Indrow(k)
-         Indrow(k) = Indrow(l)
-         Indcol(k) = Indcol(l)
-         Indrow(l) = i
-         Indcol(l) = j
-      endif
-      if ( k<=Nnz ) goto 100
+    integer :: i , j , k , l
 
-      end subroutine srtdat
+    ! store in array iwa the counts of non-zeroes in the columns.
+
+    do j = 1 , n
+        Iwa(j) = 0
+    enddo
+    do k = 1 , Nnz
+        Iwa(Indcol(k)) = Iwa(Indcol(k)) + 1
+    enddo
+
+    ! set pointers to the start of the columns in indrow.
+
+    Jpntr(1) = 1
+    do j = 1 , n
+        Jpntr(j+1) = Jpntr(j) + Iwa(j)
+        Iwa(j) = Jpntr(j)
+    enddo
+    k = 1
+
+    ! begin in-place sort.
+
+    do
+        j = Indcol(k)
+        if ( k>=Jpntr(j) ) then
+            ! current element is in position. now examine the
+            ! next element or the first un-sorted element in
+            ! the j-th group.
+            k = max(k+1,Iwa(j))
+        else
+            ! current element is not in position. place element
+            ! in position and make the displaced element the
+            ! current element.
+            l = Iwa(j)
+            Iwa(j) = Iwa(j) + 1
+            i = Indrow(k)
+            Indrow(k) = Indrow(l)
+            Indcol(k) = Indcol(l)
+            Indrow(l) = i
+            Indcol(l) = j
+        endif
+        if ( k>Nnz ) exit
+    end do
+
+    end subroutine srtdat
+!*******************************************************************************
 
 !*******************************************************************************
 !>
