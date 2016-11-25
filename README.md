@@ -8,24 +8,23 @@ This is currently an experimental work in progress and is not production ready. 
 
 #### To Do:
 
-- [ ] General code cleanup
 - [x] Computing the nonlinear sparsity pattern
   - [x] Specified by the user
   - [x] Assume all elements `true`
   - [x] Three random points within variable bounds
-- [ ] Computing the linear sparsity pattern
 - [ ] Add additional finite different gradient methods
-  - [x] Forward differences
-  - [x] Central differences
-  - [x] Backward differences
+  - [x] 2-point (backward, forward) differences
+  - [x] 3-point (backward, central, forward) differences
   - [ ] Higher-order differences...
 - [x] Perturbations should respect variable bounds
 - [x] Ability to use different methods for different columns
-- [ ] Jacobian partitioning to compute multiple columns at the same time
+- [x] Jacobian partitioning to compute multiple columns at the same time
+- [ ] Computing the linear sparsity pattern (constant elements of Jacobian)
 - [ ] Add other gradient methods?
 - [ ] Also compute Hessian matrix?
 - [ ] OpenMP or Coarrays for parallelization
 - [ ] Testing for computational efficiency
+- [ ] General code cleanup
 
 # License
 

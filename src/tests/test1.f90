@@ -26,6 +26,7 @@
     type(finite_diff_method)          :: fd
     logical                           :: status_ok
     type(meth_array)                  :: meths
+    integer                           :: func_evals  !! function evaluation counter
 
     do i=1,5  ! try different finite diff methods
 
@@ -35,11 +36,12 @@
         write(output_unit,'(A)') '-------------------'
         write(output_unit,'(A)') ''
 
+        func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_func=compute_sparsity_random,&
                                 jacobian_method=i,&
-                                partition_sparsity_pattern=.true.)  ! 1 = forward diffs
+                                partition_sparsity_pattern=.false.)  ! 1 = forward diffs
 
         call get_finite_diff_formula(i,formula)
         write(output_unit,'(A)') ''
@@ -51,6 +53,7 @@
         write(output_unit,'(A)') ''
         call my_prob%print_sparsity_pattern(output_unit)
         write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+        write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
         write(output_unit,'(A)') ''
         call my_prob%print_sparsity_matrix(output_unit)
         write(output_unit,'(A)') ''
@@ -78,10 +81,11 @@
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'
-        write(output_unit,'(A)') ' specify class'
+        write(output_unit,'(A)') ' specify class [no partitioning]'
         write(output_unit,'(A)') '-------------------'
         write(output_unit,'(A)') ''
 
+        func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_func=compute_sparsity_random,&
@@ -89,6 +93,28 @@
 
         call my_prob%compute_jacobian(x,jac)
         write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+        write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
+        write(output_unit,'(A)') ''
+
+    end do
+
+    do i=2,3
+
+        write(output_unit,'(A)') ''
+        write(output_unit,'(A)') '-------------------'
+        write(output_unit,'(A)') ' specify class [with partitioning]'
+        write(output_unit,'(A)') '-------------------'
+        write(output_unit,'(A)') ''
+
+        func_evals = 0
+        call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
+                                problem_func=my_func,&
+                                sparsity_func=compute_sparsity_random,&
+                                class=i,partition_sparsity_pattern=.true.)
+
+        call my_prob%compute_jacobian(x,jac)
+        write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+        write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
         write(output_unit,'(A)') ''
 
     end do
@@ -110,6 +136,8 @@ contains
     if (any(indices_to_compute==2)) f(2) = x(3) - 1.0_wp
     if (any(indices_to_compute==3)) f(3) = x(4)*x(5)
     if (any(indices_to_compute==4)) f(4) = 2.0_wp*x(6)
+
+    func_evals = func_evals + 1
 
     end subroutine my_func
 

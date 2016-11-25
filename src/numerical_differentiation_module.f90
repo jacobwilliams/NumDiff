@@ -11,6 +11,7 @@
     use kinds_module
     use dsm_module, only: dsm
     use iso_fortran_env, only: error_unit
+    use utilities_module
 
     implicit none
 
@@ -62,6 +63,10 @@
                                             !! (will be the dimension of `irow` and `icol`)
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
+
+        integer,dimension(:),allocatable :: indices  !! index vector
+                                                     !! `[1,2,...,num_nonzero_elements]`
+                                                     !! for putting `df` into `jac`
 
         integer :: maxgrp = 0 !! the number of groups in the partition
                               !! of the columns of `a`.
@@ -139,11 +144,16 @@
         procedure,public :: select_finite_diff_method  !! select a method in a specified class so
                                                        !! that the variable bounds are not violated
                                                        !! when by the perturbations.
+        procedure,public :: select_finite_diff_method_for_partition_group  !! version of [[select_finite_diff_method]]
+                                                                           !! for partitioned sparsity pattern.
 
         ! internal routines:
-        procedure :: destroy_sparsity_pattern            !! destroy the sparsity pattern
-        procedure :: compute_perturbation_vector !! computes the variable perturbation factor
+        procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
+        procedure :: compute_perturbation_vector   !! computes the variable perturbation factor
         procedure :: perturb_x_and_compute_f
+        procedure :: perturb_x_and_compute_f_partitioned
+        procedure :: compute_jacobian_standard
+        procedure :: compute_jacobian_partitioned
 
     end type numdiff_type
 
@@ -178,8 +188,8 @@
             import :: numdiff_type
             implicit none
             class(numdiff_type),intent(inout)  :: me
-            integer,intent(in) :: column !! the column being computed.
-            integer,intent(in) :: i      !! perturbing this column for the `i`th time (1,2,...)
+            integer,dimension(:),intent(in) :: column !! the columns being computed.
+            integer,intent(in) :: i  !! perturbing these columns for the `i`th time (1,2,...)
         end subroutine info_f
     end interface
 
@@ -410,20 +420,20 @@
     implicit none
 
     class(numdiff_type),intent(inout)    :: me
-    real(wp),intent(in)                  :: x         !! the variable value
-    real(wp),intent(in)                  :: xlow      !! the variable lower bound
-    real(wp),intent(in)                  :: xhigh     !! the variable upper bound
-    real(wp),intent(in)                  :: dx        !! the perturbation value (>0)
-    type(meth_array),intent(in)          :: list_of_methods  !! list of available methods to choose from
-    type(finite_diff_method),intent(out) :: fd        !! this method can be used
-    logical,intent(out)                  :: status_ok !! true if it really doesn't violate the bounds
-                                                      !! (say, the bounds are very close to each other)
-                                                      !! if `status_ok=False`, then the first method in
-                                                      !! the given class is returned in `fd`.
+    real(wp),intent(in)                  :: x               !! the variable value
+    real(wp),intent(in)                  :: xlow            !! the variable lower bound
+    real(wp),intent(in)                  :: xhigh           !! the variable upper bound
+    real(wp),intent(in)                  :: dx              !! the perturbation value (>0)
+    type(meth_array),intent(in)          :: list_of_methods !! list of available methods to choose from
+    type(finite_diff_method),intent(out) :: fd              !! this method can be used
+    logical,intent(out)                  :: status_ok       !! true if it really doesn't violate the bounds
+                                                            !! (say, the bounds are very close to each other)
+                                                            !! if `status_ok=False`, then the first method in
+                                                            !! the given class is returned in `fd`.
 
-    integer  :: i      !! counter
-    integer  :: j      !! counter
-    real(wp) :: xp     !! perturbed `x` value
+    integer  :: i   !! counter
+    integer  :: j   !! counter
+    real(wp) :: xp  !! perturbed `x` value
 
     ! initialize:
     status_ok = .false.
@@ -453,6 +463,64 @@
     end if
 
     end subroutine select_finite_diff_method
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Select a finite diff method of a given `class` so that the perturbations
+!  of `x` will not violate the variable bounds for any variable in the group.
+!
+!  The `x` vector are only the variables in a group (not the full variable vector)
+
+    subroutine select_finite_diff_method_for_partition_group(me,x,xlow,xhigh,dx,&
+                                                                list_of_methods,fd,status_ok)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)        :: me
+    real(wp),dimension(:),intent(in)         :: x               !! the variable values
+    real(wp),dimension(:),intent(in)         :: xlow            !! the variable lower bounds
+    real(wp),dimension(:),intent(in)         :: xhigh           !! the variable upper bounds
+    real(wp),dimension(:),intent(in)         :: dx              !! the perturbation values (>0)
+    type(meth_array),intent(in)              :: list_of_methods !! list of available methods to choose from
+    type(finite_diff_method),intent(out)     :: fd              !! this method can be used
+    logical,intent(out)                      :: status_ok       !! true if it really doesn't violate the bounds
+                                                                !! (say, the bounds are very close to each other)
+                                                                !! if `status_ok=False`, then the first method in
+                                                                !! the given class is returned in `fd`.
+
+    integer  :: i   !! counter
+    integer  :: j   !! counter
+    real(wp),dimension(size(x)) :: xp  !! perturbed `x` values
+
+    ! initialize:
+    status_ok = .false.
+
+    ! try all the methods in the class:
+    do i = 1, size(list_of_methods%meth)
+        status_ok = .true. ! will be set to false if any
+                           ! perturbation violates the bounds
+        ! check each of the perturbations:
+        do j = 1, size(list_of_methods%meth(i)%dx_factors)
+            xp = x + list_of_methods%meth(i)%dx_factors(j)*dx
+            if (any(xp < xlow) .or. any(xp > xhigh)) then
+                status_ok = .false.
+                exit
+            end if
+        end do
+        if (status_ok) then   ! this one is OK to use
+            fd = list_of_methods%meth(i)
+            exit
+        end if
+    end do
+
+    if (.not. status_ok) then
+        ! no method was found that doesn't violate the bounds,
+        ! so just return the first one in the list.
+        fd = list_of_methods%meth(1)
+    end if
+
+end subroutine select_finite_diff_method_for_partition_group
 !*******************************************************************************
 
 !*******************************************************************************
@@ -628,11 +696,13 @@
     integer,dimension(:),allocatable,intent(out) :: cols  !! the column numbers in the `igroup` group.
                                                           !! (if none, then it is not allocated)
 
+    integer :: i !! counter
+
     if (me%maxgrp>0 .and. allocated(me%ngrp)) then
         n_cols = count(me%ngrp==igroup)
         if (n_cols>0) then
             allocate(cols(n_cols))
-            cols = pack(me%ngrp,mask=me%ngrp==igroup)
+            cols = pack([(i,i=1,size(me%ngrp))],mask=me%ngrp==igroup)
         end if
     else
         error stop 'Error: the partition has not been computed.'
@@ -665,13 +735,14 @@
     implicit none
 
     class(numdiff_type),intent(inout) :: me
-    integer,dimension(:),intent(in) :: irow
-    integer,dimension(:),intent(in) :: icol
+    integer,dimension(:),intent(in)   :: irow  !! sparsity pattern nonzero elements row indices
+    integer,dimension(:),intent(in)   :: icol  !! sparsity pattern nonzero elements column indices
 
-    integer :: Mingrp
-    integer :: Info
-    integer,dimension(me%m+1) :: ipntr
-    integer,dimension(me%n+1) :: jpntr
+    integer                   :: Mingrp !! for call to [[dsm]]
+    integer                   :: Info   !! for call to [[dsm]]
+    integer,dimension(me%m+1) :: ipntr  !! for call to [[dsm]]
+    integer,dimension(me%n+1) :: jpntr  !! for call to [[dsm]]
+    integer                   :: i      !! counter
 
     call me%destroy_sparsity_pattern()
 
@@ -683,6 +754,9 @@
         me%sparsity%num_nonzero_elements = size(irow)
         me%sparsity%irow = irow
         me%sparsity%icol = icol
+
+        allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
+        me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
 
         if (me%partition_sparsity_pattern) then
             associate( s => me%sparsity )
@@ -709,7 +783,7 @@
     implicit none
 
     class(numdiff_type),intent(inout) :: me
-    real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
+    real(wp),dimension(:),intent(in)  :: x   !! vector of variables (size `n`)
 
     integer :: i !! counter
     integer :: r !! row counter
@@ -721,6 +795,9 @@
     allocate(me%sparsity%irow(me%sparsity%num_nonzero_elements))
     allocate(me%sparsity%icol(me%sparsity%num_nonzero_elements))
 
+    allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
+    me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
+
     ! create the dense matrix:
     i = 0
     do c = 1, me%n
@@ -731,7 +808,8 @@
         end do
     end do
 
-! ... no real need for this, since it can't be partitioned (all elements are true)
+    ! ... no real need for this, since it can't  ...
+    ! ... be partitioned (all elements are true) ...
     if (me%partition_sparsity_pattern) then
         ! generate a "dense" partition
         me%sparsity%maxgrp = me%n
@@ -775,10 +853,10 @@
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
 
-    integer :: Mingrp
-    integer :: Info
-    integer,dimension(me%m+1) :: ipntr
-    integer,dimension(me%n+1) :: jpntr
+    integer                   :: Mingrp  !! for call to [[dsm]]
+    integer                   :: Info    !! for call to [[dsm]]
+    integer,dimension(me%m+1) :: ipntr   !! for call to [[dsm]]
+    integer,dimension(me%n+1) :: jpntr   !! for call to [[dsm]]
 
     real(wp),dimension(3),parameter :: coeffs = [0.251234567_wp,&
                                                  0.512345678_wp,&
@@ -829,6 +907,9 @@
 
     me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
 
+    allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
+    me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
+
     if (me%partition_sparsity_pattern) then
         associate( s => me%sparsity )
             allocate(s%ngrp(me%n))
@@ -842,54 +923,6 @@
 
     ! finished:
     me%sparsity%sparsity_computed = .true.
-
-contains
-
-    pure subroutine expand_vector(vec,n,chunk_size,val,finished)
-
-    !! add elements to the vector in chunks.
-
-    implicit none
-
-    integer,dimension(:),allocatable,intent(inout) :: vec !! the vector to add element to
-    integer,intent(inout) :: n     !! counter for last element added to `vec`.
-                                   !! must be initialized to `size(vec)`
-                                   !! (or 0 if not allocated) before first call
-    integer,intent(in) :: chunk_size  !! allocate `vec` in blocks of this size (>0)
-    integer,intent(in),optional :: val !! the value to add to `vec`
-    logical,intent(in),optional :: finished !! set to true to return `vec`
-                                            !! as its correct size (`n`)
-
-    integer,dimension(:),allocatable :: tmp  !! temporary array
-
-    if (present(val)) then
-        if (allocated(vec)) then
-            if (n==size(vec)) then
-                ! have to add another chunk:
-                allocate(tmp(size(vec)+chunk_size))
-                tmp(1:size(vec)) = vec
-                call move_alloc(tmp,vec)
-            end if
-            n = n + 1
-        else
-            ! the first element:
-            allocate(vec(chunk_size))
-            n = 1
-        end if
-        vec(n) = val
-    end if
-
-    if (present(finished)) then
-        if (finished) then
-            ! set vec to actual size (n):
-            if (allocated(tmp)) deallocate(tmp)
-            allocate(tmp(n))
-            tmp = vec(1:n)
-            call move_alloc(tmp,vec)
-        end if
-    end if
-
-    end subroutine expand_vector
 
     end subroutine compute_sparsity_random
 !*******************************************************************************
@@ -931,7 +964,7 @@ contains
 !  evaluation is done, to avoid having to allocate more temporary storage.
 
     subroutine perturb_x_and_compute_f(me,x,dx_factor,dx,&
-                                       df_factor,column,idx,df,df_den_factor)
+                                       df_factor,column,idx,df)
 
     implicit none
 
@@ -947,8 +980,6 @@ contains
     real(wp),dimension(me%m),intent(inout) :: df   !! the accumulated function value
                                                    !! note: for the first call, this
                                                    !! should be set to zero
-    real(wp),intent(in),optional :: df_den_factor  !! if present, `df` is divided by
-                                                   !! `df_den_factor*dx(column)`
 
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
@@ -957,14 +988,13 @@ contains
     if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
     call me%compute_function(xp,f,idx)
     df(idx) = df(idx) + df_factor * f(idx)
-    if (present(df_den_factor)) df(idx) = df(idx) / (df_den_factor*dx(column))
 
     end subroutine perturb_x_and_compute_f
 !*******************************************************************************
 
 !*******************************************************************************
 !>
-!  Compute the Jacobian using finite differences.
+!  Compute the Jacobian.
 
     subroutine compute_jacobian(me,x,jac)
 
@@ -974,56 +1004,78 @@ contains
     real(wp),dimension(:),intent(in)              :: x    !! vector of variables (size `n`)
     real(wp),dimension(:),allocatable,intent(out) :: jac  !! sparse jacobian vector
 
-    integer :: i  !! column counter
     real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
-    integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
-                                                                 !! nonzero Jacobian
-                                                                 !! elements in a column
-    integer,dimension(:),allocatable :: indices  !! index vector
-                                                 !! `[1,2,...,num_nonzero_elements]`
-                                                 !! for putting `df` into `jac`
-    integer :: j  !! function evaluation counter
-    real(wp),dimension(me%m) :: df  !! accumulated function
-    type(finite_diff_method) :: fd  !! a finite different method (when
-                                    !! specifying class rather than the method)
-    logical :: status_ok  !! error flag
 
     ! if we don't have a sparsity pattern yet then compute it:
+    ! [also computes the indices vector]
     if (.not. me%sparsity%sparsity_computed) call me%compute_sparsity(x)
 
-    ! initialize:
+    ! size the jacobian vector:
     allocate(jac(me%sparsity%num_nonzero_elements))
-    jac = zero
-    indices = [(i,i=1,me%sparsity%num_nonzero_elements)] !NOTE could save this in the class
-                                                         ! so we don't have to keep allocating it
 
     ! compute dx vector:
     call me%compute_perturbation_vector(x,dx)
+
+    ! compute the jacobian:
+    if (me%partition_sparsity_pattern) then
+        call me%compute_jacobian_partitioned(x,dx,jac)
+    else
+        call me%compute_jacobian_standard(x,dx,jac)
+    end if
+
+    end subroutine compute_jacobian
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute the Jacobian using finite differences.
+!  (one column at a time)
+
+    subroutine compute_jacobian_standard(me,x,dx,jac)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)   :: me
+    real(wp),dimension(:),intent(in)    :: x    !! vector of variables (size `n`)
+    real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
+    real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
+
+    integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
+                                                                 !! nonzero Jacobian
+                                                                 !! elements in a column
+    integer                   :: i   !! column counter
+    integer                   :: j   !! function evaluation counter
+    real(wp),dimension(me%m)  :: df  !! accumulated function
+    type(finite_diff_method)  :: fd  !! a finite different method (when
+                                     !! specifying class rather than the method)
+    logical                   :: status_ok   !! error flag
+    integer                   :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
+
+    ! initialize:
+    jac = zero
 
     ! compute Jacobian matrix column-by-column:
     do i=1,me%n
 
         ! determine functions to compute for this column:
-        nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
-        if (size(nonzero_elements_in_col)/=0) then ! there are functions to compute
+        num_nonzero_elements_in_col = count(me%sparsity%icol==i)
+        if (num_nonzero_elements_in_col/=0) then ! there are functions to compute
+
+            nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
 
             select case (me%mode)
             case(1) ! use the specified methods
 
                 ! compute this column of the Jacobian:
                 df = zero
-                do j = 1, size(me%meth(i)%dx_factors)-1
-                    if (associated(me%info_function)) call me%info_function(i,j)
+                do j = 1, size(me%meth(i)%dx_factors) !-1
+                    if (associated(me%info_function)) call me%info_function([i],j)
                     call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
                                                     dx,me%meth(i)%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
                 end do
-                ! the last one has the denominator:
-                if (associated(me%info_function)) call me%info_function(i,j)
-                call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
-                                                dx,me%meth(i)%df_factors(j),&
-                                                i,nonzero_elements_in_col,df,&
-                                                me%meth(i)%df_den_factor)
+                df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
+                                              (me%meth(i)%df_den_factor*dx(i))
 
             case(2) ! select the method from the class so as not to violate the bounds
 
@@ -1034,31 +1086,200 @@ contains
 
                 ! compute this column of the Jacobian:
                 df = zero
-                do j = 1, size(fd%dx_factors)-1
-                    if (associated(me%info_function)) call me%info_function(i,j)
+                do j = 1, size(fd%dx_factors) !-1
+                    if (associated(me%info_function)) call me%info_function([i],j)
                     call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
                                                     dx,fd%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
                 end do
-                ! the last one has the denominator:
-                if (associated(me%info_function)) call me%info_function(i,j)
-                call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
-                                                dx,fd%df_factors(j),&
-                                                i,nonzero_elements_in_col,df,&
-                                                fd%df_den_factor)
+                df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
+                                              (fd%df_den_factor*dx(i))
 
             case default
                 error stop 'Error: invalid mode'
             end select
 
             ! put result into the output vector:
-            jac(pack(indices,mask=me%sparsity%icol==i)) = df(nonzero_elements_in_col)
+            jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = df(nonzero_elements_in_col)
 
         end if
 
     end do
 
-    end subroutine compute_jacobian
+    end subroutine compute_jacobian_standard
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute the Jacobian using finite differences,
+!  (using the partitioned sparsity pattern to compute multiple columns
+!  at a time).
+
+    subroutine compute_jacobian_partitioned(me,x,dx,jac)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)    :: me
+    real(wp),dimension(:),intent(in)     :: x    !! vector of variables (size `n`)
+    real(wp),dimension(me%n),intent(in)  :: dx   !! absolute perturbation (>0) for each variable
+    real(wp),dimension(:),intent(out)    :: jac  !! sparse jacobian vector
+
+    integer                          :: i                              !! column counter
+    integer                          :: j                              !! function evaluation counter
+    integer                          :: igroup                         !! group number counter
+    integer                          :: n_cols                         !! number of columns in a group
+    integer,dimension(:),allocatable :: cols                           !! array of column indices in a group
+    integer,dimension(:),allocatable :: nonzero_elements_in_group      !! the indices of the
+                                                                       !! nonzero Jacobian
+                                                                       !! elements in a group
+    integer                          :: num_nonzero_elements_in_col    !! number of nonzero elements in a column
+    integer                          :: num_nonzero_elements_in_group  !! number of nonzero elements in a group
+    integer,dimension(:),allocatable :: indices
+    integer,dimension(:),allocatable :: col_indices
+    real(wp),dimension(me%m)         :: df                             !! accumulated function
+    type(finite_diff_method)         :: fd                             !! a finite different method (when
+                                                                       !! specifying class rather than the method)
+    logical                          :: status_ok                      !! error flag
+
+    ! initialize:
+    jac = zero
+
+    if (.not. allocated(me%sparsity%ngrp)) then
+        error stop 'Error: sparsity partition not computed'
+    end if
+
+    ! compute by group:
+    do igroup = 1, me%sparsity%maxgrp
+
+        ! initialize for this group:
+        num_nonzero_elements_in_group = 0
+        if (allocated(nonzero_elements_in_group)) deallocate(nonzero_elements_in_group)
+        if (allocated(indices)) deallocate(indices)
+
+        ! get the columns in this group:
+        call me%sparsity%columns_in_partition_group(igroup,n_cols,cols)
+        if (n_cols>0) then
+
+            ! get all the non-zero elements in each column:
+            num_nonzero_elements_in_group = 0  ! initialize
+            do i = 1, n_cols
+                num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
+                if (num_nonzero_elements_in_col/=0) then ! there are functions to
+                                                         ! compute in this column
+                    num_nonzero_elements_in_group = num_nonzero_elements_in_group + &
+                                                    num_nonzero_elements_in_col
+                    col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
+                    if (allocated(nonzero_elements_in_group)) then
+                        nonzero_elements_in_group = [nonzero_elements_in_group, &
+                                                     me%sparsity%irow(col_indices) ]
+                        indices = [indices,col_indices]
+                    else
+                        nonzero_elements_in_group = me%sparsity%irow(col_indices)
+                        indices = col_indices
+                    end if
+                end if
+            end do
+            if (num_nonzero_elements_in_group>0) then
+
+                select case (me%mode)
+                case(1) ! use the specified methods
+
+                    ! note: all the methods must be the same within a group
+
+                    ! compute the columns of the Jacobian in this group:
+                    df = zero
+                    do j = 1, size(me%meth(1)%dx_factors)
+                         if (associated(me%info_function)) call me%info_function(cols,j)
+                         call me%perturb_x_and_compute_f_partitioned(x,me%meth(1)%dx_factors(j),&
+                                                         dx,me%meth(1)%df_factors(j),&
+                                                         cols,nonzero_elements_in_group,df)
+                    end do
+                    ! divide by the denominator, which can be different for each column:
+                    do i = 1, n_cols
+                        df(pack(me%sparsity%irow,me%sparsity%icol==cols(i))) = &
+                            df(pack(me%sparsity%irow,me%sparsity%icol==cols(i))) / &
+                            (me%meth(1)%df_den_factor*dx(cols(i)))
+                    end do
+
+                case(2) ! select the method from the class so as not to violate
+                        ! the bounds on *any* of the variables in the group
+
+                    ! note: all the classes must be the same within a group
+
+                    call me%select_finite_diff_method_for_partition_group( &
+                                    x(cols),me%xlow(cols),me%xhigh(cols),&
+                                    dx(cols),me%class_meths(1),fd,status_ok)
+
+                    if (.not. status_ok) then
+                        write(error_unit,'(A,1X,I5,1X,A,1X,*(I5,1X))') &
+                              'Error: variable bounds violated for group: ',&
+                              igroup,'. columns: ',cols
+                    end if
+
+                    ! compute the columns of the Jacobian in this group:
+                    df = zero
+                    do j = 1, size(fd%dx_factors)
+                        if (associated(me%info_function)) call me%info_function(cols,j)
+                        call me%perturb_x_and_compute_f_partitioned(x,fd%dx_factors(j),&
+                                                        dx,fd%df_factors(j),&
+                                                        cols,nonzero_elements_in_group,df)
+                    end do
+                    ! divide by the denominator, which can be different for each column:
+                    do i = 1, n_cols
+                        df(pack(me%sparsity%irow,me%sparsity%icol==cols(i))) = &
+                            df(pack(me%sparsity%irow,me%sparsity%icol==cols(i))) / &
+                            (fd%df_den_factor*dx(cols(i)))
+                    end do
+
+                case default
+                    error stop 'Error: invalid mode'
+                end select
+
+                ! put result into the output vector:
+                jac(indices) = df(nonzero_elements_in_group)
+
+            end if
+
+        end if
+
+    end do
+
+    end subroutine compute_jacobian_partitioned
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Perturb the specified optimization variable, and compute the function.
+!  This routine is designed so that `df` is accumulated as each function
+!  evaluation is done, to avoid having to allocate more temporary storage.
+
+    subroutine perturb_x_and_compute_f_partitioned(me,x,dx_factor,dx,&
+                                       df_factor,columns,idx,df)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: x         !! nominal variable vector
+    real(wp),intent(in)               :: dx_factor !! factor to multiply `dx`
+    real(wp),dimension(:),intent(in)  :: dx        !! the perturbation value for this column
+    real(wp),intent(in)               :: df_factor !! factor to multiply function value
+    integer,dimension(:),intent(in)   :: columns   !! the variables to perturb
+    integer,dimension(:),intent(in)   :: idx       !! the elements in this
+                                                   !! column of the Jacobian
+                                                   !! to compute (passed to function)
+    real(wp),dimension(me%m),intent(inout) :: df   !! the accumulated function value
+                                                   !! note: for the first call, this
+                                                   !! should be set to zero
+
+    real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
+    real(wp),dimension(me%m) :: f   !! function evaluation
+
+    xp = x
+    if (dx_factor/=zero) xp(columns) = xp(columns) + dx_factor * dx(columns)
+    call me%compute_function(xp,f,idx)
+    df(idx) = df(idx) + df_factor * f(idx)
+
+    end subroutine perturb_x_and_compute_f_partitioned
 !*******************************************************************************
 
 !*******************************************************************************
