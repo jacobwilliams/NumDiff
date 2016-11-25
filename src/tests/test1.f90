@@ -155,6 +155,20 @@
 
     end do
 
+    write(output_unit,'(A)') ''
+    write(output_unit,'(A)') '-------------------'
+    write(output_unit,'(A)') ' specify class [diff]'
+    write(output_unit,'(A)') '-------------------'
+    write(output_unit,'(A)') ''
+
+    func_evals = 0
+    call my_prob%diff_initialize(n,m,xlow,xhigh,my_func,compute_sparsity_random)
+
+    call my_prob%compute_jacobian(x,jac)
+    write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+    write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
+    write(output_unit,'(A)') ''
+
 contains
 
     subroutine my_func(me,x,f,indices_to_compute)

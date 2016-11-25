@@ -116,6 +116,11 @@
         type(meth_array),dimension(:),allocatable :: class_meths !! array of methods for the specified classes.
                                                                  !! used with `class` when `mode=2`
 
+
+        ! parameters when using diff:
+        real(wp) :: eps = 1.0e-9_wp !! tolerance parameter for [[diff]]
+        real(wp) :: acc = 0.0_wp    !! tolerance parameter for [[diff]]
+
         ! these are required to be defined by the user:
         procedure(func),pointer    :: compute_function => null()
             !! the user-defined function
@@ -128,11 +133,17 @@
             !! which is called when each column of the jacobian is computed.
             !! It can be used to perform any setup operations.
 
+        procedure(jacobian_f),pointer :: jacobian_function => null()
+            !! the low-level function called by [[compute_jacobian]]
+            !! that actually computes the jacobian.
+
     contains
 
         private
 
-        procedure,public :: initialize => initialize_numdiff_type  !! initialize the class
+        procedure,public :: initialize => initialize_numdiff !! initialize the class
+        procedure,public :: diff_initialize => initialize_numdiff_for_diff !! initialize the class
+
         procedure,public :: compute_jacobian        !! main routine to compute the Jacobian
                                                     !! using the selected options. It
                                                     !! returns the sparse (vector) form.
@@ -153,10 +164,6 @@
         procedure :: compute_perturbation_vector   !! computes the variable perturbation factor
         procedure :: perturb_x_and_compute_f
         procedure :: perturb_x_and_compute_f_partitioned
-        procedure :: compute_jacobian_standard
-        procedure :: compute_jacobian_partitioned
-
-        procedure :: compute_jacobian_with_diff !! ... just a test for now ...
 
     end type numdiff_type
 
@@ -194,6 +201,17 @@
             integer,dimension(:),intent(in) :: column !! the columns being computed.
             integer,intent(in) :: i  !! perturbing these columns for the `i`th time (1,2,...)
         end subroutine info_f
+        subroutine jacobian_f(me,x,dx,jac)
+            !! Actual function for computing the Jacobian
+            !! called by [[compute_jacobian]].
+            import :: numdiff_type,wp
+            implicit none
+            class(numdiff_type),intent(inout)   :: me
+            real(wp),dimension(:),intent(in)    :: x    !! vector of variables (size `n`)
+            real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
+            real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
+        end subroutine jacobian_f
+
     end interface
 
     ! sparsity methods:
@@ -535,12 +553,64 @@
 
 !*******************************************************************************
 !>
+!  Alternate version of [[initialize_numdiff]] routine when
+!  using [[diff]] to compute the Jacobian.
+!
+!@todo Should add the `info` function option here also.
+
+    subroutine initialize_numdiff_for_diff(me,n,m,xlow,xhigh,&
+                                    problem_func,sparsity_func,chunk_size,&
+                                    eps,acc)
+
+    implicit none
+
+    class(numdiff_type),intent(out)     :: me
+    integer,intent(in)                  :: n               !! number of `x` variables
+    integer,intent(in)                  :: m               !! number of `f` functions
+    real(wp),dimension(n),intent(in)    :: xlow            !! lower bounds on `x`
+    real(wp),dimension(n),intent(in)    :: xhigh           !! upper bounds on `x`
+    procedure(func)                     :: problem_func    !! the user function that defines the problem
+                                                           !! (returns `m` functions)
+    procedure(spars_f)                  :: sparsity_func   !! the sparsity computation function
+    integer,intent(in),optional :: chunk_size  !! chunk size for allocating the arrays
+                                               !! (must be >0) [default is 100]
+    real(wp),intent(in),optional :: eps !! tolerance parameter for [[diff]]
+                                        !! if not present, default is `1.0e-9_wp`
+    real(wp),intent(in),optional :: acc !! tolerance parameter for [[diff]]
+                                        !! if not present, default is `0.0_wp`
+
+    ! functions:
+    me%compute_function => problem_func
+    me%compute_sparsity => sparsity_func
+    me%jacobian_function => compute_jacobian_with_diff
+
+    ! size of the problem:
+    me%n = n
+    me%m = m
+
+    ! input variable bounds:
+    if (any(xlow>=xhigh)) error stop 'Error: all xlow must be < xhigh'
+    allocate(me%xlow(n))
+    allocate(me%xhigh(n))
+    me%xlow = xlow
+    me%xhigh = xhigh
+
+    ! optional:
+    if (present(chunk_size)) me%chunk_size = abs(chunk_size)
+    if (present(eps))        me%eps = abs(eps)
+    if (present(acc))        me%acc = abs(acc)
+
+    end subroutine initialize_numdiff_for_diff
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Initialize a [[numdiff_type]] class. This must be called first.
 !
 !@note Only one of the following inputs can be used: `jacobian_method`,
 !      `jacobian_methods`, `class`, or `classes`.
 
-    subroutine initialize_numdiff_type(me,n,m,xlow,xhigh,perturb_mode,dpert,&
+    subroutine initialize_numdiff(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_func,jacobian_method,jacobian_methods,&
                         class,classes,info,chunk_size,partition_sparsity_pattern)
 
@@ -665,7 +735,14 @@
     if (present(info))       me%info_function => info
     if (present(chunk_size)) me%chunk_size = abs(chunk_size)
 
-    end subroutine initialize_numdiff_type
+    ! set the jacobian function, depending on the options:
+    if (me%partition_sparsity_pattern) then
+        me%jacobian_function => compute_jacobian_partitioned
+    else
+        me%jacobian_function => compute_jacobian_standard
+    end if
+
+    end subroutine initialize_numdiff
 !*******************************************************************************
 
 !*******************************************************************************
@@ -1028,13 +1105,16 @@
     allocate(jac(me%sparsity%num_nonzero_elements))
 
     ! compute dx vector:
-    call me%compute_perturbation_vector(x,dx)
+    if (.not. associated(me%jacobian_function,compute_jacobian_with_diff)) then
+        ! only need this for the finite difference methods (not diff)
+        call me%compute_perturbation_vector(x,dx)
+    end if
 
     ! compute the jacobian:
-    if (me%partition_sparsity_pattern) then
-        call me%compute_jacobian_partitioned(x,dx,jac)
+    if (associated(me%jacobian_function)) then
+        call me%jacobian_function(x,dx,jac)
     else
-        call me%compute_jacobian_standard(x,dx,jac)
+        error stop 'Error: jacobian_function has not been associated.'
     end if
 
     end subroutine compute_jacobian
@@ -1128,9 +1208,6 @@
 !  Compute the Jacobian one element at a time using the [[diff]] algorithm.
 !  This takes a very large number of function evaluations, but should give
 !  a very accurate answer.
-!
-!@note Currently, this is only in the module for testing, but it could
-!      also be a user-selectable method.
 
     subroutine compute_jacobian_with_diff(me,x,dx,jac)
 
@@ -1141,16 +1218,12 @@
     real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
     real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
 
-    integer,parameter  :: iord  = 1         !! tells [[diff]] to compute first derivative
-    real(wp),parameter :: eps   = 1.0e-9_wp !! tolerance parameter for [[diff]]
-                                            !! (could be a user input)
-    real(wp),parameter :: acc   = 0.0_wp    !! tolerance parameter for [[diff]]
-                                            !! (could be a user input)
+    integer,parameter  :: iord  = 1  !! tells [[diff]] to compute first derivative
 
     integer                  :: i      !! counter for nonzero elements of jacobian
     type(diff_func)          :: d      !! the [[diff]] class to use
     real(wp)                 :: x0     !! value of ith variable for [[diff]]
-    real(wp)                 :: xmin   !! ith variable upper bound
+    real(wp)                 :: xmin   !! ith variable lower bound
     real(wp)                 :: xmax   !! ith variable upper bound
     real(wp)                 :: deriv  !! derivative value df/dx from [[diff]]
     real(wp)                 :: error  !! estimated error from [[diff]]
@@ -1175,7 +1248,7 @@
         xmin = me%xlow(ic)
         xmax = me%xhigh(ic)
 
-        call d%compute_derivative(iord,x0,xmin,xmax,eps,acc,deriv,error,ifail)
+        call d%compute_derivative(iord,x0,xmin,xmax,me%eps,me%acc,deriv,error,ifail)
 
         if (ifail==0 .or. ifail==1) then
             jac(i) = deriv
@@ -1238,10 +1311,6 @@
     type(finite_diff_method)         :: fd                            !! a finite different method (when
                                                                       !! specifying class rather than the method)
     logical                          :: status_ok                     !! error flag
-
-    if (.not. allocated(me%sparsity%ngrp)) then
-        error stop 'Error: sparsity partition not computed'
-    end if
 
     ! initialize:
     jac = zero
