@@ -49,7 +49,41 @@
 
             write(output_unit,'(A)') ''
             write(output_unit,'(A)') '-------------------'
-            write(output_unit,'(A)') ' specify method'
+            write(output_unit,'(A)') ' specify method [no partitioning]'
+            write(output_unit,'(A)') '-------------------'
+            write(output_unit,'(A)') ''
+        end if
+
+        write(output_unit,'(A)') formula
+        write(output_unit,'(A)') ''
+        write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
+        write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
+        write(output_unit,'(A)') ''
+
+    end do
+
+    do i=1,9  ! try different finite diff methods
+
+        func_evals = 0
+        call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
+                                problem_func=my_func,&
+                                sparsity_func=compute_sparsity_random,&
+                                jacobian_method=i,&
+                                partition_sparsity_pattern=.true.)  ! 1 = forward diffs
+
+        call get_finite_diff_formula(i,formula)
+        call my_prob%compute_jacobian(x,jac)
+
+        if (i==1) then
+            write(output_unit,'(A)') ''
+            call my_prob%print_sparsity_pattern(output_unit)
+            write(output_unit,'(A)') ''
+            call my_prob%print_sparsity_matrix(output_unit)
+            write(output_unit,'(A)') ''
+
+            write(output_unit,'(A)') ''
+            write(output_unit,'(A)') '-------------------'
+            write(output_unit,'(A)') ' specify method [with partitioning]'
             write(output_unit,'(A)') '-------------------'
             write(output_unit,'(A)') ''
         end if
