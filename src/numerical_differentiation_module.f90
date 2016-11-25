@@ -9,9 +9,10 @@
     module numerical_differentiation_module
 
     use kinds_module
-    use dsm_module, only: dsm
-    use iso_fortran_env, only: error_unit
     use utilities_module
+    use dsm_module,      only: dsm
+    use iso_fortran_env, only: error_unit
+    use diff_module,     only: diff_func
 
     implicit none
 
@@ -154,6 +155,8 @@
         procedure :: perturb_x_and_compute_f_partitioned
         procedure :: compute_jacobian_standard
         procedure :: compute_jacobian_partitioned
+
+        procedure :: compute_jacobian_with_diff !! ... just a test for now ...
 
     end type numdiff_type
 
@@ -1118,6 +1121,91 @@
     end do
 
     end subroutine compute_jacobian_standard
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute the Jacobian one element at a time using the [[diff]] algorithm.
+!  This takes a very large number of function evaluations, but should give
+!  a very accurate answer.
+!
+!@note Currently, this is only in the module for testing, but it could
+!      also be a user-selectable method.
+
+    subroutine compute_jacobian_with_diff(me,x,dx,jac)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)   :: me
+    real(wp),dimension(:),intent(in)    :: x    !! vector of variables (size `n`)
+    real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
+    real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
+
+    integer,parameter  :: iord  = 1         !! tells [[diff]] to compute first derivative
+    real(wp),parameter :: eps   = 1.0e-9_wp !! tolerance parameter for [[diff]]
+                                            !! (could be a user input)
+    real(wp),parameter :: acc   = 0.0_wp    !! tolerance parameter for [[diff]]
+                                            !! (could be a user input)
+
+    integer                  :: i      !! counter for nonzero elements of jacobian
+    type(diff_func)          :: d      !! the [[diff]] class to use
+    real(wp)                 :: x0     !! value of ith variable for [[diff]]
+    real(wp)                 :: xmin   !! ith variable upper bound
+    real(wp)                 :: xmax   !! ith variable upper bound
+    real(wp)                 :: deriv  !! derivative value df/dx from [[diff]]
+    real(wp)                 :: error  !! estimated error from [[diff]]
+    integer                  :: ifail  !! [[diff]] error flag
+    real(wp),dimension(me%n) :: xp     !! used by [[dfunc]].
+    real(wp),dimension(me%m) :: fvec   !! used by [[dfunc]].
+    integer                  :: ir     !! row index of next non-zero element
+    integer                  :: ic     !! column index of next non-zero element
+
+    ! initialize:
+    jac = zero
+
+    ! set the function for diff:
+    call d%set_function(dfunc)
+
+    ! each element is computed one by one
+    do i = 1, me%sparsity%num_nonzero_elements
+
+        ir   = me%sparsity%irow(i)
+        ic   = me%sparsity%icol(i)
+        x0   = x(ic)
+        xmin = me%xlow(ic)
+        xmax = me%xhigh(ic)
+
+        call d%compute_derivative(iord,x0,xmin,xmax,eps,acc,deriv,error,ifail)
+
+        if (ifail==0 .or. ifail==1) then
+            jac(i) = deriv
+        else
+            error stop 'Error computing derivative with DIFF.'
+        end if
+
+    end do
+
+    contains
+
+        function dfunc(this,xval) result(fx)
+
+        !! interface to user function for [[diff]] routine.
+
+        implicit none
+
+        class(diff_func),intent(inout) :: this
+        real(wp),intent(in) :: xval  !! input variable (`ic` variable)
+        real(wp) :: fx  !! derivative of `ir` function w.r.t. `xval`
+
+        xp = x
+        xp(ic) = xval
+        call me%compute_function(xp,fvec,indices_to_compute=[ir])
+
+        fx = fvec(ir)
+
+        end function dfunc
+
+    end subroutine compute_jacobian_with_diff
 !*******************************************************************************
 
 !*******************************************************************************

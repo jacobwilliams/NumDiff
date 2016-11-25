@@ -16,7 +16,7 @@
     real(wp),dimension(n),parameter :: x     = 1.0_wp
     real(wp),dimension(n),parameter :: xlow  = -10.0_wp
     real(wp),dimension(n),parameter :: xhigh = 10.0_wp
-    real(wp),dimension(n),parameter :: dpert = 1.0e-6_wp
+    real(wp),dimension(n),parameter :: dpert = 1.0e-5_wp ! 1.0e-6_wp
     integer,parameter :: perturb_mode = 1
 
     type(numdiff_type)                :: my_prob
@@ -164,11 +164,11 @@ contains
     implicit none
 
     class(numdiff_type),intent(inout) :: me
-    real(wp),dimension(:),intent(in) :: x
+    real(wp),dimension(:),intent(in)  :: x
     real(wp),dimension(:),intent(out) :: f
-    integer,dimension(:),intent(in) :: indices_to_compute
+    integer,dimension(:),intent(in)   :: indices_to_compute
 
-    if (any(indices_to_compute==1)) f(1) = x(1)*x(2) - x(3)
+    if (any(indices_to_compute==1)) f(1) = x(1)*x(2) - x(3)**3
     if (any(indices_to_compute==2)) f(2) = x(3) - 1.0_wp
     if (any(indices_to_compute==3)) f(3) = x(4)*x(5)
     if (any(indices_to_compute==4)) f(4) = 2.0_wp*x(6)
