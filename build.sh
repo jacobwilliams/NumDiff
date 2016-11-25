@@ -19,7 +19,7 @@ FORDMD='numdiff.md'             # FORD config file name
 
 FCOMPILER='gnu' #Set compiler to gfortran
 #FCOMPILERFLAGS='-c -O2 -std=f2008'
-FCOMPILERFLAGS='-c -O2 -g'
+FCOMPILERFLAGS='-c -O2'
 
 #build using FoBiS:
 

@@ -422,7 +422,7 @@
 !  Select a finite diff method of a given `class` so that the perturbations
 !  of `x` will not violate the variable bounds.
 
-    subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,list_of_methods,fd,status_ok)
+    pure subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,list_of_methods,fd,status_ok)
 
     implicit none
 
@@ -479,7 +479,7 @@
 !
 !  The `x` vector are only the variables in a group (not the full variable vector)
 
-    subroutine select_finite_diff_method_for_partition_group(me,x,xlow,xhigh,dx,&
+    pure subroutine select_finite_diff_method_for_partition_group(me,x,xlow,xhigh,dx,&
                                                                 list_of_methods,fd,status_ok)
 
     implicit none
@@ -527,7 +527,7 @@
         fd = list_of_methods%meth(1)
     end if
 
-end subroutine select_finite_diff_method_for_partition_group
+    end subroutine select_finite_diff_method_for_partition_group
 !*******************************************************************************
 
 !*******************************************************************************
@@ -693,7 +693,7 @@ end subroutine select_finite_diff_method_for_partition_group
 !
 !@note This is just a wrapper to get data from `ngrp`.
 
-    subroutine columns_in_partition_group(me,igroup,n_cols,cols)
+    pure subroutine columns_in_partition_group(me,igroup,n_cols,cols)
 
     implicit none
 
