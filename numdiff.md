@@ -11,6 +11,7 @@ docmark_alt:
 docmark: !
 display: public
          protected
+         private
 source: true
 graph: true
 exclude_dir: ./src/tests

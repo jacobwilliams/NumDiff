@@ -358,9 +358,16 @@
     select case (id)
     case(1); fd = finite_diff_method(id,'2-point forward',  2,[1,0],[1,-1],1)      ! (f(x+h) - f(x)) / h
     case(2); fd = finite_diff_method(id,'2-point backward', 2,[0,-1],[1,-1],1)     ! (f(x) - f(x-h)) / h
+
     case(3); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)     ! (f(x+h) - f(x-h)) / (2h)
     case(4); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)
     case(5); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)
+
+    case(6); fd = finite_diff_method(id,'4-point forward 1',  4,[-1,0,1,2],[-2,-3,6,-1],6)
+    case(7); fd = finite_diff_method(id,'4-point backward 1', 4,[-2,-1,0,1],[1,-6,3,2],6)
+    case(8); fd = finite_diff_method(id,'4-point forward 2',  4,[0,1,2,3],[-11,18,-9,2],6)
+    case(9); fd = finite_diff_method(id,'4-point backward 2', 4,[-3,-2,-1,0],[-2,9,-18,11],6)
+
     case default
         found = .false.
     end select

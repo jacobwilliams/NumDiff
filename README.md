@@ -15,6 +15,7 @@ This is currently an experimental work in progress and is not production ready. 
 - [ ] Add additional finite different gradient methods
   - [x] 2-point (backward, forward) differences
   - [x] 3-point (backward, central, forward) differences
+  - [x] 4-point (backward 1, backward 2, forward 1, forward 2) differences
   - [ ] Higher-order differences...
 - [x] Perturbations should respect variable bounds
 - [x] Ability to use different methods for different columns

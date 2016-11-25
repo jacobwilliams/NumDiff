@@ -202,112 +202,92 @@
     end subroutine dsm
 !*******************************************************************************
 
+!*******************************************************************************
+!>
+!  Given the sparsity pattern of an `m` by `n` matrix `a`,
+!  this subroutine determines the degree sequence for
+!  the intersection graph of the columns of `a`.
+!
+!  In graph-theory terminology, the intersection graph of
+!  the columns of `a` is the loopless graph `g` with vertices
+!  `a(j), j = 1,2,...,n` where `a(j)` is the `j`-th column of `a`
+!  and with edge `(a(i),a(j))` if and only if columns `i` and `j`
+!  have a non-zero in the same row position.
+!
+!@note The value of `m` is not needed by `degr` and is
+!      therefore not present in the subroutine statement.
+
     subroutine degr(n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,Iwa)
 
     implicit none
 
-    integer :: n
-    integer :: Indrow(*)
-    integer :: Jpntr(n+1)
-    integer :: Indcol(*)
-    integer :: Ipntr(*)
-    integer :: Ndeg(n)
-    integer :: Iwa(n)
+    integer,intent(in)                :: n       !! a positive integer input variable set to the number
+                                                 !! of columns of `a`.
+    integer,dimension(*),intent(in)   :: indrow  !! an integer input array which contains the row
+                                                 !! indices for the non-zeroes in the matrix `a`.
+    integer,dimension(n+1),intent(in) :: jpntr   !! an integer input array of length `n + 1` which
+                                                 !! specifies the locations of the row indices in `indrow`.
+                                                 !! the row indices for column `j` are
+                                                 !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                                 !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                                 !! elements of the matrix `a`.
+    integer,dimension(*),intent(in)   :: indcol  !! an integer input array which contains the
+                                                 !! column indices for the non-zeroes in the matrix `a`.
+    integer,dimension(*),intent(in)   :: ipntr   !! an integer input array of length `m + 1` which
+                                                 !! specifies the locations of the column indices in `indcol`.
+                                                 !! the column indices for row `i` are
+                                                 !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                                 !! **note** that `ipntr(m+1)-1` is then the number of non-zero
+                                                 !! elements of the matrix `a`.
+    integer,dimension(n),intent(out)   :: ndeg   !! an integer output array of length `n` which
+                                                 !! specifies the degree sequence. the degree of the
+                                                 !! `j`-th column of `a` is `ndeg(j)`.
+    integer,dimension(n)               :: iwa    !! an integer work array of length `n`
 
-!  GIVEN THE SPARSITY PATTERN OF AN M BY N MATRIX A,
-!  THIS SUBROUTINE DETERMINES THE DEGREE SEQUENCE FOR
-!  THE INTERSECTION GRAPH OF THE COLUMNS OF A.
-!
-!  IN GRAPH-THEORY TERMINOLOGY, THE INTERSECTION GRAPH OF
-!  THE COLUMNS OF A IS THE LOOPLESS GRAPH G WITH VERTICES
-!  A(J), J = 1,2,...,N WHERE A(J) IS THE J-TH COLUMN OF A
-!  AND WITH EDGE (A(I),A(J)) IF AND ONLY IF COLUMNS I AND J
-!  HAVE A NON-ZERO IN THE SAME ROW POSITION.
-!
-!  NOTE THAT THE VALUE OF M IS NOT NEEDED BY DEGR AND IS
-!  THEREFORE NOT PRESENT IN THE SUBROUTINE STATEMENT.
-!
-!  THE SUBROUTINE STATEMENT IS
-!
-!    SUBROUTINE DEGR(N,INDROW,JPNTR,INDCOL,IPNTR,NDEG,IWA)
-!
-!  WHERE
-!
-!    N IS A POSITIVE INTEGER INPUT VARIABLE SET TO THE NUMBER
-!      OF COLUMNS OF A.
-!
-!    INDROW IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE ROW
-!      INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    JPNTR IS AN INTEGER INPUT ARRAY OF LENGTH N + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE ROW INDICES IN INDROW.
-!      THE ROW INDICES FOR COLUMN J ARE
-!
-!            INDROW(K), K = JPNTR(J),...,JPNTR(J+1)-1.
-!
-!      NOTE THAT JPNTR(N+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    INDCOL IS AN INTEGER INPUT ARRAY WHICH CONTAINS THE
-!      COLUMN INDICES FOR THE NON-ZEROES IN THE MATRIX A.
-!
-!    IPNTR IS AN INTEGER INPUT ARRAY OF LENGTH M + 1 WHICH
-!      SPECIFIES THE LOCATIONS OF THE COLUMN INDICES IN INDCOL.
-!      THE COLUMN INDICES FOR ROW I ARE
-!
-!            INDCOL(K), K = IPNTR(I),...,IPNTR(I+1)-1.
-!
-!      NOTE THAT IPNTR(M+1)-1 IS THEN THE NUMBER OF NON-ZERO
-!      ELEMENTS OF THE MATRIX A.
-!
-!    NDEG IS AN INTEGER OUTPUT ARRAY OF LENGTH N WHICH
-!      SPECIFIES THE DEGREE SEQUENCE. THE DEGREE OF THE
-!      J-TH COLUMN OF A IS NDEG(J).
-!
-!    IWA IS AN INTEGER WORK ARRAY OF LENGTH N.
+    integer :: ic , ip , ir , jcol , jp
 
-      integer ic , ip , ir , jcol , jp
-!
-!  INITIALIZATION BLOCK.
-!
-      do jp = 1 , n
-         Ndeg(jp) = 0
-         Iwa(jp) = 0
-      enddo
-!
-!  COMPUTE THE DEGREE SEQUENCE BY DETERMINING THE CONTRIBUTIONS
-!  TO THE DEGREES FROM THE CURRENT(JCOL) COLUMN AND FURTHER
-!  COLUMNS WHICH HAVE NOT YET BEEN CONSIDERED.
-!
-      do jcol = 2 , n
-         Iwa(jcol) = n
-!
-!     DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND
-!     TO NON-ZEROES IN THE MATRIX.
-!
-         do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
+    ! initialization block.
+
+    do jp = 1 , n
+        Ndeg(jp) = 0
+        Iwa(jp) = 0
+    enddo
+
+    ! compute the degree sequence by determining the contributions
+    ! to the degrees from the current(jcol) column and further
+    ! columns which have not yet been considered.
+
+    do jcol = 2 , n
+        Iwa(jcol) = n
+
+        ! determine all positions (ir,jcol) which correspond
+        ! to non-zeroes in the matrix.
+
+        do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
             ir = Indrow(jp)
-!
-!        FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
-!        WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
-!
-            do ip = Ipntr(ir) , Ipntr(ir+1) - 1
-               ic = Indcol(ip)
-!
-!           ARRAY IWA MARKS COLUMNS WHICH HAVE CONTRIBUTED TO
-!           THE DEGREE COUNT OF COLUMN JCOL. UPDATE THE DEGREE
-!           COUNTS OF THESE COLUMNS AS WELL AS COLUMN JCOL.
-!
-               if ( Iwa(ic)<jcol ) then
-                  Iwa(ic) = jcol
-                  Ndeg(ic) = Ndeg(ic) + 1
-                  Ndeg(jcol) = Ndeg(jcol) + 1
-               endif
-            enddo
-         enddo
-      enddo
 
-      end subroutine degr
+            ! for each row ir, determine all positions (ir,ic)
+            ! which correspond to non-zeroes in the matrix.
+
+            do ip = Ipntr(ir) , Ipntr(ir+1) - 1
+                ic = Indcol(ip)
+
+                ! array iwa marks columns which have contributed to
+                ! the degree count of column jcol. update the degree
+                ! counts of these columns as well as column jcol.
+
+                if ( Iwa(ic)<jcol ) then
+                    Iwa(ic) = jcol
+                    Ndeg(ic) = Ndeg(ic) + 1
+                    Ndeg(jcol) = Ndeg(jcol) + 1
+                endif
+
+            enddo
+        enddo
+    enddo
+
+    end subroutine degr
+!*******************************************************************************
 
       subroutine ido(m,n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq,    &
                      Iwa1,Iwa2,Iwa3,Iwa4)
@@ -565,7 +545,7 @@
 !  LAST AND NEXT AS FOLLOWS.
 !
 !        K = LAST(L)
-!        WHILE (K .NE. 0) K = NEXT(K)
+!        WHILE (K /= 0) K = NEXT(K)
 !
 !  OPTIONALLY, THE SUBROUTINE PRODUCES AN ARRAY INDEX SO THAT
 !  THE SEQUENCE NUM(INDEX(I)), I = 1,2,...,N IS SORTED.
