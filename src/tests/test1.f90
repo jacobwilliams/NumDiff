@@ -16,7 +16,7 @@
     real(wp),dimension(n),parameter :: x     = 1.0_wp
     real(wp),dimension(n),parameter :: xlow  = -10.0_wp
     real(wp),dimension(n),parameter :: xhigh = 10.0_wp
-    real(wp),dimension(n),parameter :: dpert = 1.0e-5_wp ! 1.0e-6_wp
+    real(wp),dimension(n),parameter :: dpert = 1.0e-5_wp
     integer,parameter :: perturb_mode = 1
 
     type(numdiff_type)                :: my_prob
@@ -33,9 +33,9 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_func=compute_sparsity_random,&
+                                sparsity_mode=2,&
                                 jacobian_method=i,&
-                                partition_sparsity_pattern=.false.)  ! 1 = forward diffs
+                                partition_sparsity_pattern=.false.)
 
         call get_finite_diff_formula(i,formula)
         call my_prob%compute_jacobian(x,jac)
@@ -67,9 +67,9 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_func=compute_sparsity_random,&
+                                sparsity_mode=2,&
                                 jacobian_method=i,&
-                                partition_sparsity_pattern=.true.)  ! 1 = forward diffs
+                                partition_sparsity_pattern=.true.)
 
         call get_finite_diff_formula(i,formula)
         call my_prob%compute_jacobian(x,jac)
@@ -124,7 +124,7 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_func=compute_sparsity_random,&
+                                sparsity_mode=2,&
                                 class=i)
 
         call my_prob%compute_jacobian(x,jac)
@@ -145,7 +145,7 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_func=compute_sparsity_random,&
+                                sparsity_mode=2,&
                                 class=i,partition_sparsity_pattern=.true.)
 
         call my_prob%compute_jacobian(x,jac)
@@ -157,12 +157,12 @@
 
     write(output_unit,'(A)') ''
     write(output_unit,'(A)') '-------------------'
-    write(output_unit,'(A)') ' specify class [diff]'
+    write(output_unit,'(A)') ' diff algorithm'
     write(output_unit,'(A)') '-------------------'
     write(output_unit,'(A)') ''
 
     func_evals = 0
-    call my_prob%diff_initialize(n,m,xlow,xhigh,my_func,compute_sparsity_random)
+    call my_prob%diff_initialize(n,m,xlow,xhigh,my_func,sparsity_mode=2)
 
     call my_prob%compute_jacobian(x,jac)
     write(output_unit,'(A,1X,*(F17.12,","))') 'jac =',jac
@@ -171,7 +171,7 @@
 
 contains
 
-    subroutine my_func(me,x,f,indices_to_compute)
+    subroutine my_func(me,x,f,funcs_to_compute)
 
     !! Problem function
 
@@ -180,12 +180,12 @@ contains
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(:),intent(in)  :: x
     real(wp),dimension(:),intent(out) :: f
-    integer,dimension(:),intent(in)   :: indices_to_compute
+    integer,dimension(:),intent(in)   :: funcs_to_compute
 
-    if (any(indices_to_compute==1)) f(1) = x(1)*x(2) - x(3)**3
-    if (any(indices_to_compute==2)) f(2) = x(3) - 1.0_wp
-    if (any(indices_to_compute==3)) f(3) = x(4)*x(5)
-    if (any(indices_to_compute==4)) f(4) = 2.0_wp*x(6)
+    if (any(funcs_to_compute==1)) f(1) = x(1)*x(2) - x(3)**3
+    if (any(funcs_to_compute==2)) f(2) = x(3) - 1.0_wp
+    if (any(funcs_to_compute==3)) f(3) = x(4)*x(5)
+    if (any(funcs_to_compute==4)) f(4) = 2.0_wp*x(6)
 
     func_evals = func_evals + 1
 

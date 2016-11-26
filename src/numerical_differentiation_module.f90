@@ -168,7 +168,7 @@
     end type numdiff_type
 
     abstract interface
-        subroutine func(me,x,f,indices_to_compute)
+        subroutine func(me,x,f,funcs_to_compute)
             !! The function (vector array of output functions `f`, computed
             !! from a vector of input variables `x`).
             !! This must be defined for all computations.
@@ -177,10 +177,10 @@
             class(numdiff_type),intent(inout) :: me
             real(wp),dimension(:),intent(in) :: x !! array of variables (size `n`)
             real(wp),dimension(:),intent(out) :: f !! array of functions (size `m`)
-            integer,dimension(:),intent(in) :: indices_to_compute !! the elements of the
-                                                                  !! function vector that need
-                                                                  !! to be computed (the other
-                                                                  !! are ignored)
+            integer,dimension(:),intent(in) :: funcs_to_compute !! the elements of the
+                                                                !! function vector that need
+                                                                !! to be computed (the other
+                                                                !! are ignored)
         end subroutine func
         subroutine spars_f(me,x)
             !! The function to compute the sparsity pattern.
@@ -213,9 +213,6 @@
         end subroutine jacobian_f
 
     end interface
-
-    ! sparsity methods:
-    public :: compute_sparsity_dense,compute_sparsity_random
 
     ! other:
     public :: get_finite_diff_formula
@@ -555,34 +552,52 @@
 !>
 !  Alternate version of [[initialize_numdiff]] routine when
 !  using [[diff]] to compute the Jacobian.
-!
-!@todo Should add the `info` function option here also.
 
     subroutine initialize_numdiff_for_diff(me,n,m,xlow,xhigh,&
-                                    problem_func,sparsity_func,chunk_size,&
-                                    eps,acc)
+                                    problem_func,sparsity_mode,info,&
+                                    chunk_size,eps,acc)
 
     implicit none
 
-    class(numdiff_type),intent(out)     :: me
-    integer,intent(in)                  :: n               !! number of `x` variables
-    integer,intent(in)                  :: m               !! number of `f` functions
-    real(wp),dimension(n),intent(in)    :: xlow            !! lower bounds on `x`
-    real(wp),dimension(n),intent(in)    :: xhigh           !! upper bounds on `x`
-    procedure(func)                     :: problem_func    !! the user function that defines the problem
-                                                           !! (returns `m` functions)
-    procedure(spars_f)                  :: sparsity_func   !! the sparsity computation function
-    integer,intent(in),optional :: chunk_size  !! chunk size for allocating the arrays
-                                               !! (must be >0) [default is 100]
-    real(wp),intent(in),optional :: eps !! tolerance parameter for [[diff]]
-                                        !! if not present, default is `1.0e-9_wp`
-    real(wp),intent(in),optional :: acc !! tolerance parameter for [[diff]]
-                                        !! if not present, default is `0.0_wp`
+    class(numdiff_type),intent(out)  :: me
+    integer,intent(in)               :: n             !! number of `x` variables
+    integer,intent(in)               :: m             !! number of `f` functions
+    real(wp),dimension(n),intent(in) :: xlow          !! lower bounds on `x`
+    real(wp),dimension(n),intent(in) :: xhigh         !! upper bounds on `x`
+    procedure(func)                  :: problem_func  !! the user function that defines the problem
+                                                      !! (returns `m` functions)
+    integer,intent(in)               :: sparsity_mode !! the sparsity computation method:
+                                                      !! **1** - assume dense,
+                                                      !! **2** - three-point method,
+                                                      !! **3** - will be specified by the user in
+                                                      !! a subsequent call to [[set_sparsity_pattern]].
+    procedure(info_f),optional       :: info          !! a function the user can define
+                                                      !! which is called when each column
+                                                      !! of the jacobian is computed.
+                                                      !! It can be used to perform any
+                                                      !! setup operations.
+    integer,intent(in),optional      :: chunk_size    !! chunk size for allocating the arrays
+                                                      !! (must be >0) [default is 100]
+    real(wp),intent(in),optional     :: eps           !! tolerance parameter for [[diff]]
+                                                      !! if not present, default is `1.0e-9_wp`
+    real(wp),intent(in),optional     :: acc           !! tolerance parameter for [[diff]]
+                                                      !! if not present, default is `0.0_wp`
 
     ! functions:
-    me%compute_function => problem_func
-    me%compute_sparsity => sparsity_func
+    me%compute_function  => problem_func
     me%jacobian_function => compute_jacobian_with_diff
+
+    ! set the sparsity function
+    select case (sparsity_mode)
+    case(1)  ! dense
+        me%compute_sparsity => compute_sparsity_dense
+    case(2)  ! three-point method
+        me%compute_sparsity => compute_sparsity_random
+    case(3)  ! user defined
+        me%compute_sparsity => null()
+    case default
+        error stop 'Error: sparsity_mode must be 1, 2, or 3.'
+    end select
 
     ! size of the problem:
     me%n = n
@@ -597,8 +612,9 @@
 
     ! optional:
     if (present(chunk_size)) me%chunk_size = abs(chunk_size)
-    if (present(eps))        me%eps = abs(eps)
-    if (present(acc))        me%acc = abs(acc)
+    if (present(eps))        me%eps = eps
+    if (present(acc))        me%acc = acc
+    if (present(info))       me%info_function => info
 
     end subroutine initialize_numdiff_for_diff
 !*******************************************************************************
@@ -611,7 +627,7 @@
 !      `jacobian_methods`, `class`, or `classes`.
 
     subroutine initialize_numdiff(me,n,m,xlow,xhigh,perturb_mode,dpert,&
-                        problem_func,sparsity_func,jacobian_method,jacobian_methods,&
+                        problem_func,sparsity_mode,jacobian_method,jacobian_methods,&
                         class,classes,info,chunk_size,partition_sparsity_pattern)
 
     implicit none
@@ -628,7 +644,11 @@
     real(wp),dimension(n),intent(in)    :: dpert           !! perturbation vector for `x`
     procedure(func)                     :: problem_func    !! the user function that defines the problem
                                                            !! (returns `m` functions)
-    procedure(spars_f)                  :: sparsity_func   !! the sparsity computation function
+    integer,intent(in)                  :: sparsity_mode   !! the sparsity computation method:
+                                                           !! **1** - assume dense,
+                                                           !! **2** - three-point method,
+                                                           !! **3** - will be specified by the user in
+                                                           !! a subsequent call to [[set_sparsity_pattern]].
     integer,intent(in),optional         :: jacobian_method !! `id` code for the finite difference method
                                                            !! to use for all `n` variables.
                                                            !! see [[get_finite_difference_method]]
@@ -657,7 +677,6 @@
 
     ! functions:
     me%compute_function => problem_func
-    me%compute_sparsity => sparsity_func
 
     if (present(partition_sparsity_pattern)) then
         me%partition_sparsity_pattern = partition_sparsity_pattern
@@ -726,7 +745,12 @@
     me%xhigh = xhigh
 
     ! perturbation options:
-    me%perturb_mode = perturb_mode
+    select case (perturb_mode)
+    case(1:3)
+        me%perturb_mode = perturb_mode
+    case default
+        error stop 'Error: perturb_mode must be 1, 2, or 3.'
+    end select
     if (allocated(me%dpert)) deallocate(me%dpert)
     allocate(me%dpert(n))
     me%dpert = abs(dpert)
@@ -741,6 +765,18 @@
     else
         me%jacobian_function => compute_jacobian_standard
     end if
+
+    ! set the sparsity function
+    select case (sparsity_mode)
+    case(1)  ! dense
+        me%compute_sparsity => compute_sparsity_dense
+    case(2)  ! three-point method
+        me%compute_sparsity => compute_sparsity_random
+    case(3)  ! user defined
+        me%compute_sparsity => null()
+    case default
+        error stop 'Error: sparsity_mode must be 1, 2, or 3.'
+    end select
 
     end subroutine initialize_numdiff
 !*******************************************************************************
@@ -777,7 +813,7 @@
 !
 !@note This is just a wrapper to get data from `ngrp`.
 
-    pure subroutine columns_in_partition_group(me,igroup,n_cols,cols)
+    pure subroutine columns_in_partition_group(me,igroup,n_cols,cols,nonzero_rows,indices)
 
     implicit none
 
@@ -786,15 +822,42 @@
     integer,intent(out) :: n_cols   !! number of columns in the `igroup` group.
     integer,dimension(:),allocatable,intent(out) :: cols  !! the column numbers in the `igroup` group.
                                                           !! (if none, then it is not allocated)
+    integer,dimension(:),allocatable,intent(out) :: nonzero_rows  !! the row numbers of all the nonzero
+                                                                  !! Jacobian elements in this group
+    integer,dimension(:),allocatable,intent(out) :: indices  !! nonzero indices in `jac` for a group
 
-    integer :: i !! counter
+    integer :: i  !! counter
+    integer :: num_nonzero_elements_in_col          !! number of nonzero elements in a column
+    integer :: num_nonzero_elements_in_group        !! number of nonzero elements in a group
+    integer,dimension(:),allocatable :: col_indices !! nonzero indices in `jac` for a column
 
     if (me%maxgrp>0 .and. allocated(me%ngrp)) then
+
         n_cols = count(me%ngrp==igroup)
         if (n_cols>0) then
             allocate(cols(n_cols))
             cols = pack([(i,i=1,size(me%ngrp))],mask=me%ngrp==igroup)
         end if
+
+        ! get all the non-zero elements in each column:
+        num_nonzero_elements_in_group = 0  ! initialize
+        do i = 1, n_cols
+            num_nonzero_elements_in_col = count(me%icol==cols(i))
+            if (num_nonzero_elements_in_col/=0) then ! there are functions to
+                                                     ! compute in this column
+                num_nonzero_elements_in_group = num_nonzero_elements_in_group + &
+                                                num_nonzero_elements_in_col
+                col_indices = pack(me%indices,mask=me%icol==cols(i))
+                if (allocated(nonzero_rows)) then
+                    nonzero_rows = [nonzero_rows,me%irow(col_indices)]
+                    indices = [indices,col_indices]
+                else
+                    nonzero_rows = me%irow(col_indices)
+                    indices = col_indices
+                end if
+            end if
+        end do
+
     else
         error stop 'Error: the partition has not been computed.'
     end if
@@ -1233,8 +1296,14 @@
     integer                  :: ir     !! row index of next non-zero element
     integer                  :: ic     !! column index of next non-zero element
 
+    integer :: ic_prev  !! previous column perturbed
+    integer :: icount   !! count of number of times a column has been perturbed
+    logical :: use_info !! if we are reporting to the user
+
     ! initialize:
     jac = zero
+    use_info = associated(me%info_function)
+    if (use_info) ic_prev = -1
 
     ! set the function for diff:
     call d%set_function(dfunc)
@@ -1248,6 +1317,13 @@
         xmin = me%xlow(ic)
         xmax = me%xhigh(ic)
 
+        ! if reporting to the user, have to keep track
+        ! of which column is being perturbed, and how
+        ! many times:
+        if (use_info) then
+            if (ic/=ic_prev) icount = 0
+        end if
+
         call d%compute_derivative(iord,x0,xmin,xmax,me%eps,me%acc,deriv,error,ifail)
 
         if (ifail==0 .or. ifail==1) then
@@ -1255,6 +1331,8 @@
         else
             error stop 'Error computing derivative with DIFF.'
         end if
+
+        if (use_info) ic_prev = ic
 
     end do
 
@@ -1268,11 +1346,16 @@
 
         class(diff_func),intent(inout) :: this
         real(wp),intent(in) :: xval  !! input variable (`ic` variable)
-        real(wp) :: fx  !! derivative of `ir` function w.r.t. `xval`
+        real(wp) :: fx  !! derivative of `ir` function w.r.t. `xval` variable
+
+        if (use_info) then
+            icount = icount + 1
+            call me%info_function([ic],icount)
+        end if
 
         xp = x
         xp(ic) = xval
-        call me%compute_function(xp,fvec,indices_to_compute=[ir])
+        call me%compute_function(xp,fvec,funcs_to_compute=[ir])
 
         fx = fvec(ir)
 
@@ -1296,21 +1379,19 @@
     real(wp),dimension(me%n),intent(in)  :: dx   !! absolute perturbation (>0) for each variable
     real(wp),dimension(:),intent(out)    :: jac  !! sparse jacobian vector
 
-    integer                          :: i                             !! column counter
-    integer                          :: j                             !! function evaluation counter
-    integer                          :: igroup                        !! group number counter
-    integer                          :: n_cols                        !! number of columns in a group
-    integer,dimension(:),allocatable :: cols                          !! array of column indices in a group
-    integer,dimension(:),allocatable :: nonzero_elements_in_group     !! the indices of the nonzero Jacobian
-                                                                      !! elements in a group
-    integer                          :: num_nonzero_elements_in_col   !! number of nonzero elements in a column
-    integer                          :: num_nonzero_elements_in_group !! number of nonzero elements in a group
-    integer,dimension(:),allocatable :: indices                       !! nonzero indices in `jac` for a group
-    integer,dimension(:),allocatable :: col_indices                   !! nonzero indices in `jac` for a column
-    real(wp),dimension(me%m)         :: df                            !! accumulated function
-    type(finite_diff_method)         :: fd                            !! a finite different method (when
-                                                                      !! specifying class rather than the method)
-    logical                          :: status_ok                     !! error flag
+    integer                          :: i             !! column counter
+    integer                          :: j             !! function evaluation counter
+    integer                          :: igroup        !! group number counter
+    integer                          :: n_cols        !! number of columns in a group
+    integer,dimension(:),allocatable :: cols          !! array of column indices in a group
+    integer,dimension(:),allocatable :: nonzero_rows  !! the indices of the nonzero Jacobian
+                                                      !! elementes (row numbers) in a group
+    integer,dimension(:),allocatable :: indices       !! nonzero indices in `jac` for a group
+    integer,dimension(:),allocatable :: col_indices   !! nonzero indices in `jac` for a column
+    real(wp),dimension(me%m)         :: df            !! accumulated function
+    type(finite_diff_method)         :: fd            !! a finite different method (when
+                                                      !! specifying class rather than the method)
+    logical                          :: status_ok     !! error flag
 
     ! initialize:
     jac = zero
@@ -1318,35 +1399,12 @@
     ! compute by group:
     do igroup = 1, me%sparsity%maxgrp
 
-        ! initialize for this group:
-        num_nonzero_elements_in_group = 0
-        if (allocated(nonzero_elements_in_group)) deallocate(nonzero_elements_in_group)
-        if (allocated(indices)) deallocate(indices)
-
         ! get the columns in this group:
-        call me%sparsity%columns_in_partition_group(igroup,n_cols,cols)
+        call me%sparsity%columns_in_partition_group(igroup,n_cols,cols,&
+                                                    nonzero_rows,indices)
         if (n_cols>0) then
 
-            ! get all the non-zero elements in each column:
-            num_nonzero_elements_in_group = 0  ! initialize
-            do i = 1, n_cols
-                num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
-                if (num_nonzero_elements_in_col/=0) then ! there are functions to
-                                                         ! compute in this column
-                    num_nonzero_elements_in_group = num_nonzero_elements_in_group + &
-                                                    num_nonzero_elements_in_col
-                    col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
-                    if (allocated(nonzero_elements_in_group)) then
-                        nonzero_elements_in_group = [nonzero_elements_in_group, &
-                                                     me%sparsity%irow(col_indices) ]
-                        indices = [indices,col_indices]
-                    else
-                        nonzero_elements_in_group = me%sparsity%irow(col_indices)
-                        indices = col_indices
-                    end if
-                end if
-            end do
-            if (num_nonzero_elements_in_group>0) then
+            if (allocated(nonzero_rows)) then
 
                 select case (me%mode)
                 case(1) ! use the specified methods
@@ -1359,7 +1417,7 @@
                          if (associated(me%info_function)) call me%info_function(cols,j)
                          call me%perturb_x_and_compute_f_partitioned(x,me%meth(1)%dx_factors(j),&
                                                          dx,me%meth(1)%df_factors(j),&
-                                                         cols,nonzero_elements_in_group,df)
+                                                         cols,nonzero_rows,df)
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
@@ -1389,7 +1447,7 @@
                         if (associated(me%info_function)) call me%info_function(cols,j)
                         call me%perturb_x_and_compute_f_partitioned(x,fd%dx_factors(j),&
                                                         dx,fd%df_factors(j),&
-                                                        cols,nonzero_elements_in_group,df)
+                                                        cols,nonzero_rows,df)
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
@@ -1403,7 +1461,7 @@
                 end select
 
                 ! put result into the output vector:
-                jac(indices) = df(nonzero_elements_in_group)
+                jac(indices) = df(nonzero_rows)
 
             end if
 

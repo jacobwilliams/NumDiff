@@ -13,7 +13,7 @@
     private
 
     type,public :: diff_func
-        !! class to define the function:
+        !! class to define the function for [[diff]]
         private
         procedure(func),pointer :: f => null()
         contains
@@ -24,7 +24,8 @@
     end type diff_func
 
     abstract interface
-        function func(me,x) result(fx)     !! interface to function
+        function func(me,x) result(fx)
+            !! interface to function for [[diff]]
             import :: diff_func,wp
             implicit none
             class(diff_func),intent(inout) :: me
@@ -60,8 +61,8 @@
 !  the procedure diff calculates the first, second or
 !  third order derivative of a function by using neville's process to
 !  extrapolate from a sequence of simple polynomial approximations based on
-!  interpolating points distributed symmetrically about x0 (or lying only on
-!  one side of x0 should this be necessary).  if the specified tolerance is
+!  interpolating points distributed symmetrically about `x0` (or lying only on
+!  one side of `x0` should this be necessary).  if the specified tolerance is
 !  non-zero then the procedure attempts to satisfy this absolute or relative
 !  accuracy requirement, while if it is unsuccessful or if the tolerance is
 !  set to zero then the result having the minimum achievable estimated error
@@ -81,21 +82,21 @@
     integer,intent(in)    :: iord   !! 1, 2 or 3 specifies that the first, second or third order
                                     !! derivative,respectively, is required.
     real(wp), intent(in)  :: x0     !! the point at which the derivative of the function is to be calculated.
-    real(wp), intent(in)  :: xmin   !! xmin, xmax restrict the interpolating points to lie in [xmin, xmax], which
-                                    !! should be the largest interval including x0 in which the function is
+    real(wp), intent(in)  :: xmin   !! `xmin`, `xmax` restrict the interpolating points to lie in [`xmin`, `xmax`], which
+                                    !! should be the largest interval including `x0` in which the function is
                                     !! calculable and continuous.
-    real(wp), intent(in)  :: xmax   !! xmin, xmax restrict the interpolating points to lie in [xmin, xmax], which
-                                    !! should be the largest interval including x0 in which the function is
+    real(wp), intent(in)  :: xmax   !! `xmin`, `xmax` restrict the interpolating points to lie in [`xmin`, `xmax`], which
+                                    !! should be the largest interval including `x0` in which the function is
                                     !! calculable and continuous.
-    real(wp), intent(in)  :: eps    !! denotes the tolerance, either absolute or relative.  eps=0 specifies that
-                                    !! the error is to be minimised, while eps>0 or eps<0 specifies that the
-                                    !! absolute or relative error, respectively, must not exceed abs(eps) if
+    real(wp), intent(in)  :: eps    !! denotes the tolerance, either absolute or relative. `eps=0` specifies that
+                                    !! the error is to be minimised, while `eps>0` or `eps<0` specifies that the
+                                    !! absolute or relative error, respectively, must not exceed `abs(eps)` if
                                     !! possible.  the accuracy requirement should not be made stricter than
                                     !! necessary, since the amount of computation tends to increase as
-                                    !! the magnitude of eps decreases, and is particularly high when eps=0.
-    real(wp), intent(in)  :: accr   !! denotes that the absolute (accr>0) or relative (accr<0) errors in the
-                                    !! computed values of the function are most unlikely to exceed abs(accr), which
-                                    !! should be as small as possible.  if the user cannot estimate accr with
+                                    !! the magnitude of `eps` decreases, and is particularly high when `eps=0`.
+    real(wp), intent(in)  :: accr   !! denotes that the absolute (`accr>0`) or relative (`accr<0`) errors in the
+                                    !! computed values of the function are most unlikely to exceed `abs(accr)`, which
+                                    !! should be as small as possible.  if the user cannot estimate `accr` with
                                     !! complete confidence, then it should be set to zero.
     real(wp), intent(out) :: deriv  !! the calculated value of the derivative
     real(wp), intent(out) :: error  !! an estimated upper bound on the magnitude of the absolute error in
@@ -107,7 +108,7 @@
                                     !!  *1* the estimated error in the result exceeds the (non-zero) requested
                                     !!      error, but the most accurate result possible has been returned.
                                     !!  *2* input data incorrect (derivative and error will be undefined).
-                                    !!  *3* the interval [xmin, xmax] is too small (derivative and error will be
+                                    !!  *3* the interval [`xmin`, `xmax`] is too small (derivative and error will be
                                     !!      undefined).
 
     real(wp) :: acc,beta,beta4,h,h0,h1,h2, &
