@@ -2,7 +2,16 @@
 !> author: Jacob Williams
 !  license: BSD
 !
-!  Numerical differentiation of user defined function using [[diff]].
+!  Numerical differentiation of a 1D function `f(x)` using Neville's process.
+!
+!## Authors
+!   * J. Oliver, "An algorithm for numerical differentiation of a function
+!     of one real variable", Journal of Computational and Applied Mathematics
+!     6 (2) (1980) 145–160. [Algol 60 source in original paper]
+!   * David Kahaner, Fortran 77 code from
+!     [NIST](ftp://math.nist.gov/pub/repository/diff/src/DIFF)
+!   * Jacob Williams : 2/17/2013 : Converted to modern Fortran.
+!     Some refactoring, addition of test cases.
 
     module diff_module
 
@@ -67,12 +76,6 @@
 !  accuracy requirement, while if it is unsuccessful or if the tolerance is
 !  set to zero then the result having the minimum achievable estimated error
 !  is returned instead.
-!
-!## Authors
-!   * Original code from [NIST](ftp://math.nist.gov/pub/repository/diff/src/DIFF)
-!   * Jacob Williams : 2/17/2013 :
-!     Converted to modern Fortran.
-!     Some refactoring, addition of test cases.
 
     subroutine diff(me,iord,x0,xmin,xmax,eps,accr,deriv,error,ifail)
 
@@ -133,6 +136,7 @@
     real(wp),parameter :: sqrt2 = sqrt(2.0_wp)  !! \( \sqrt(2) \)
     real(wp),parameter :: sqrt3 = sqrt(3.0_wp)  !! \( \sqrt(3) \)
 
+    ! execution commences with examination of input parameters
     if (iord<1 .or. iord>3 .or. xmax<=xmin .or. &
         x0>xmax .or. x0<xmin .or. .not. associated(me%f)) then
 
@@ -618,7 +622,7 @@
                 ignore(2) = .false.
               else if (.not. (ignore(1) .or. ignore(2)) .and. n == 2  &
                     .and. beta4*factor*abs(heval) <= maxh) then
-            ! save all current values in case of return to current point
+                ! save all current values in case of return to current point
                 saved = .true.
                 save(0) = h
                 save(1) = heval
@@ -694,6 +698,14 @@
 !*****************************************************************************************
 !>
 !  Support routine for [[diff]].
+!
+! This procedure attempts to estimate the level of rounding errors in
+! the calculated function values near the point `x0+h0` by fitting a
+! least-squares straight-line approximation to the function at the
+! six points `x0+h0-j*h1`, (j = 0,1,3,5,7,9), and then setting `facc` to
+! twice the largest deviation of the function values from this line.
+! `hi` is adjusted if necessary so that it is approximately 8 times the
+! smallest spacing at which the function values are unequal near `x0+h0`.
 
     subroutine faccur(me,h0,h1,facc,x0,twoinf,f0,f1)
 

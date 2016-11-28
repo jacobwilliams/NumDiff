@@ -18,8 +18,12 @@ FORDMD='numdiff.md'             # FORD config file name
 #compiler flags:
 
 FCOMPILER='gnu' #Set compiler to gfortran
-#FCOMPILERFLAGS='-c -O2 -std=f2008'
+##FCOMPILERFLAGS='-c -O2 -std=f2008'
 FCOMPILERFLAGS='-c -O2'
+
+#FCOMPILER='intel' #Set compiler to gfortran
+#FCOMPILERFLAGS='-c -O2 -debug -traceback -assume realloc_lhs'
+
 
 #build using FoBiS:
 

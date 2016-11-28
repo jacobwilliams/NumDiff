@@ -13,6 +13,7 @@
     use dsm_module,      only: dsm
     use iso_fortran_env, only: error_unit
     use diff_module,     only: diff_func
+    use cache_module,    only: function_cache
 
     implicit none
 
@@ -39,6 +40,7 @@
     contains
         private
         procedure,public :: get_formula
+        procedure,public :: print => print_finite_difference_method
     end type finite_diff_method
     interface finite_diff_method
         !! constructor
@@ -121,9 +123,19 @@
         real(wp) :: eps = 1.0e-9_wp !! tolerance parameter for [[diff]]
         real(wp) :: acc = 0.0_wp    !! tolerance parameter for [[diff]]
 
-        ! these are required to be defined by the user:
-        procedure(func),pointer    :: compute_function => null()
+        type(function_cache) :: cache    !! if using the function cache
+
+        logical :: use_diff = .false. !! if we are using the Neville's process method,
+                                      !! rather than finite differences
+
+        procedure(func),pointer :: problem_func => null()
             !! the user-defined function
+
+        ! these are required to be defined by the user:
+        procedure(func),pointer :: compute_function => null()
+            !! compute the user-defined function
+            !! this can point to the `problem_func` or, if using
+            !! the cache, it points to [[compute_function_with_cache]].
 
         procedure(spars_f),pointer :: compute_sparsity => null()
             !! for computing the sparsity pattern
@@ -229,7 +241,7 @@
 !      to reals for the actual computations. (note: this means we can't
 !      currently define methods that have non-integer factors).
 
-    pure function initialize_finite_difference_method(id,name,class,dx_factors,&
+    function initialize_finite_difference_method(id,name,class,dx_factors,&
                                                  df_factors,df_den_factor) result(me)
 
     implicit none
@@ -260,12 +272,77 @@
 
 !*******************************************************************************
 !>
+!  Print the contents of a [[finite_diff_method]]. Used for debugging.
+
+    subroutine print_finite_difference_method(me,iunit)
+
+    implicit none
+
+    class(finite_diff_method),intent(in) :: me
+    integer,intent(in)                   :: iunit  !! file unit for printing
+                                                   !! (assumed to be opened)
+
+    write(iunit,'(A,1X,I5)')        'id            :', me%id
+    write(iunit,'(A,1X,A)')         'name          :', me%name
+    write(iunit,'(A,1X,I5)')        'class         :', me%class
+    write(iunit,'(A,1X,*(I5,","))') 'dx_factors    :', int(me%dx_factors)
+    write(iunit,'(A,1X,*(I5,","))') 'df_factors    :', int(me%df_factors)
+    write(iunit,'(A,1X,I5)')        'df_den_factor :', int(me%df_den_factor)
+
+    end subroutine print_finite_difference_method
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Wrapper for computing the function, using the cache.
+
+    subroutine compute_function_with_cache(me,x,f,funcs_to_compute)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in) :: x !! array of variables (size `n`)
+    real(wp),dimension(:),intent(out) :: f !! array of functions (size `m`)
+    integer,dimension(:),intent(in) :: funcs_to_compute !! the elements of the
+                                                        !! function vector that need
+                                                        !! to be computed (the other
+                                                        !! are ignored)
+
+    integer :: i !! index in the cache
+    logical,dimension(size(funcs_to_compute)) :: ffound  !! functions found in the cache
+    logical :: xfound  !! if `x` was found in the cache
+
+    call me%cache%get(x,funcs_to_compute,i,f,xfound,ffound)
+
+    if (xfound .and. any(ffound)) then
+
+        ! at least one of the functions was found
+        if (all(ffound)) return ! all were found
+
+        ! compute the ones that weren't found,
+        ! and add them to the cache:
+        call me%problem_func(x,f,pack(funcs_to_compute,mask=(.not. ffound)))
+        call me%cache%put(i,x,f,pack(funcs_to_compute,mask=(.not. ffound)))
+
+    else
+
+        ! compute the function and add it to the cache:
+        call me%problem_func(x,f,funcs_to_compute)
+        call me%cache%put(i,x,f,funcs_to_compute)
+
+    end if
+
+    end subroutine compute_function_with_cache
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Return a string with the finite difference formula.
 !
 !### Example
 !  * For 3-point backward: `dfdx = (f(x-2h)-4f(x-h)+3f(x)) / (2h)`
 
-    pure subroutine get_formula(me,formula)
+    subroutine get_formula(me,formula)
 
     class(finite_diff_method),intent(in) :: me
     character(len=:),allocatable,intent(out) :: formula
@@ -335,7 +412,7 @@
 !###See also:
 !  * [[get_formula]]
 
-    pure subroutine get_finite_diff_formula(id,formula)
+    subroutine get_finite_diff_formula(id,formula)
 
     implicit none
 
@@ -356,6 +433,21 @@
 !  Return a [[finite_diff_method]] given the `id` code.
 !  (the `id` codes begin at 1, are sequential, and uniquely define the method).
 !
+!  The available methods are:
+!
+!   * \( (f(x+h)-f(x)) / h                           \)
+!   * \( (f(x)-f(x-h)) / h                           \)
+!   * \( (f(x+h)-f(x-h)) / (2h)                      \)
+!   * \( (-3f(x)+4f(x+h)-f(x+2h)) / (2h)             \)
+!   * \( (f(x-2h)-4f(x-h)+3f(x)) / (2h)              \)
+!   * \( (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)     \)
+!   * \( (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)      \)
+!   * \( (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h) \)
+!   * \( (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h) \)
+!
+!  Where \(f(x)\) is the user-defined function of \(x\)
+!  and \(h\) is a "small" perturbation.
+!
 !@note This is the only routine that has to be changed if a new
 !      finite difference method is added.
 !
@@ -363,7 +455,7 @@
 !      to use them (e.g., central diffs are first, etc.) This is used in
 !      the [[select_finite_diff_method]] routine.
 
-    pure subroutine get_finite_difference_method(id,fd,found)
+    subroutine get_finite_difference_method(id,fd,found)
 
     implicit none
 
@@ -374,17 +466,17 @@
     found = .true.
 
     select case (id)
-    case(1); fd = finite_diff_method(id,'2-point forward',  2,[1,0],[1,-1],1)      ! (f(x+h) - f(x)) / h
-    case(2); fd = finite_diff_method(id,'2-point backward', 2,[0,-1],[1,-1],1)     ! (f(x) - f(x-h)) / h
+    case(1); fd = finite_diff_method(id,'2-point forward',  2,[1,0],[1,-1],1)                 ! (f(x+h)-f(x)) / h
+    case(2); fd = finite_diff_method(id,'2-point backward', 2,[0,-1],[1,-1],1)                ! (f(x)-f(x-h)) / h
 
-    case(3); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)     ! (f(x+h) - f(x-h)) / (2h)
-    case(4); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)
-    case(5); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)
+    case(3); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)                ! (f(x+h)-f(x-h)) / (2h)
+    case(4); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)            ! (-3f(x)+4f(x+h)-f(x+2h)) / (2h)
+    case(5); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)           ! (f(x-2h)-4f(x-h)+3f(x)) / (2h)
 
-    case(6); fd = finite_diff_method(id,'4-point forward 1',  4,[-1,0,1,2],[-2,-3,6,-1],6)
-    case(7); fd = finite_diff_method(id,'4-point backward 1', 4,[-2,-1,0,1],[1,-6,3,2],6)
-    case(8); fd = finite_diff_method(id,'4-point forward 2',  4,[0,1,2,3],[-11,18,-9,2],6)
-    case(9); fd = finite_diff_method(id,'4-point backward 2', 4,[-3,-2,-1,0],[-2,9,-18,11],6)
+    case(6); fd = finite_diff_method(id,'4-point forward 1',  4,[-1,0,1,2],[-2,-3,6,-1],6)    ! (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)
+    case(7); fd = finite_diff_method(id,'4-point backward 1', 4,[-2,-1,0,1],[1,-6,3,2],6)     ! (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)
+    case(8); fd = finite_diff_method(id,'4-point forward 2',  4,[0,1,2,3],[-11,18,-9,2],6)    ! (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)
+    case(9); fd = finite_diff_method(id,'4-point backward 2', 4,[-3,-2,-1,0],[-2,9,-18,11],6) ! (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)
 
     case default
         found = .false.
@@ -397,7 +489,7 @@
 !>
 !  Returns all the methods with the given `class`.
 
-    pure elemental function get_all_methods_in_class(class) result(list_of_methods)
+    function get_all_methods_in_class(class) result(list_of_methods)
 
     implicit none
 
@@ -409,6 +501,8 @@
                                     !! method from [[get_finite_difference_method]]
     integer :: id     !! method id counter
     logical :: found  !! status flag
+    integer :: n      !! temp size variable
+    type(finite_diff_method),dimension(:),allocatable :: tmp  !! for resizing `meth` array
 
     ! currently, the only way to do this is to call the
     ! get_finite_difference_method routine and see if there
@@ -420,9 +514,18 @@
         if (found) then
             if (fd%class==class) then
                 if (allocated(list_of_methods%meth)) then
-                    list_of_methods%meth = [list_of_methods%meth,fd]  ! add to the list
+                    ! add to the list
+                    n = size(list_of_methods%meth)
+                    allocate(tmp(n+1))
+                    tmp(1:n) = list_of_methods%meth
+                    tmp(n+1) = fd
+                    call move_alloc(tmp,list_of_methods%meth)
+                    ! ... this doesn't appear to work on Intel compiler ...
+                    !list_of_methods%meth = [list_of_methods%meth,fd]  ! add to the list
                 else
-                    list_of_methods%meth = [fd]
+                    ! first element:
+                    allocate(list_of_methods%meth(1))
+                    list_of_methods%meth = fd
                 end if
             elseif (fd%class>class) then ! we assume they are in increasing order
                 exit
@@ -440,7 +543,7 @@
 !  Select a finite diff method of a given `class` so that the perturbations
 !  of `x` will not violate the variable bounds.
 
-    pure subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,list_of_methods,fd,status_ok)
+    subroutine select_finite_diff_method(me,x,xlow,xhigh,dx,list_of_methods,fd,status_ok)
 
     implicit none
 
@@ -497,8 +600,8 @@
 !
 !  The `x` vector are only the variables in a group (not the full variable vector)
 
-    pure subroutine select_finite_diff_method_for_partition_group(me,x,xlow,xhigh,dx,&
-                                                                list_of_methods,fd,status_ok)
+    subroutine select_finite_diff_method_for_partition_group(me,x,xlow,xhigh,dx,&
+                                                             list_of_methods,fd,status_ok)
 
     implicit none
 
@@ -555,7 +658,7 @@
 
     subroutine initialize_numdiff_for_diff(me,n,m,xlow,xhigh,&
                                     problem_func,sparsity_mode,info,&
-                                    chunk_size,eps,acc)
+                                    chunk_size,eps,acc,cache_size)
 
     implicit none
 
@@ -582,9 +685,27 @@
                                                       !! if not present, default is `1.0e-9_wp`
     real(wp),intent(in),optional     :: acc           !! tolerance parameter for [[diff]]
                                                       !! if not present, default is `0.0_wp`
+    integer,intent(in),optional      :: cache_size    !! if present, this is the cache size
+                                                      !! for the function cache
+                                                      !! (default is not to enable cache)
+
+    logical :: cache  !! if the cache is to be used
+
+    me%use_diff = .true.
+
+    ! cache:
+    cache = present(cache_size)
+    if (cache) cache = cache_size>0
+    if (cache) then
+        me%compute_function  => compute_function_with_cache
+        call me%cache%initialize(cache_size,n,m)
+    else
+        me%compute_function  => problem_func
+        call me%cache%destroy()
+    end if
 
     ! functions:
-    me%compute_function  => problem_func
+    me%problem_func      => problem_func
     me%jacobian_function => compute_jacobian_with_diff
 
     ! set the sparsity function
@@ -628,7 +749,8 @@
 
     subroutine initialize_numdiff(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_mode,jacobian_method,jacobian_methods,&
-                        class,classes,info,chunk_size,partition_sparsity_pattern)
+                        class,classes,info,chunk_size,partition_sparsity_pattern,&
+                        cache_size)
 
     implicit none
 
@@ -671,12 +793,29 @@
     logical,intent(in),optional :: partition_sparsity_pattern  !! if the sparisty pattern is to
                                                                !! be partitioned using [[DSM]]
                                                                !! [default is False]
+    integer,intent(in),optional      :: cache_size    !! if present, this is the cache size
+                                                      !! for the function cache
+                                                      !! (default is not to enable cache)
 
     integer :: i !! counter
     logical :: found
+    logical :: cache  !! if the cache is to be used
+
+    me%use_diff = .false.
+
+    ! cache:
+    cache = present(cache_size)
+    if (cache) cache = cache_size>0
+    if (cache) then
+        me%compute_function  => compute_function_with_cache
+        call me%cache%initialize(cache_size,n,m)
+    else
+        me%compute_function  => problem_func
+        call me%cache%destroy()
+    end if
 
     ! functions:
-    me%compute_function => problem_func
+    me%problem_func => problem_func
 
     if (present(partition_sparsity_pattern)) then
         me%partition_sparsity_pattern = partition_sparsity_pattern
@@ -724,7 +863,9 @@
         me%mode = 2
         me%class = classes
         allocate(me%class_meths(n))
-        me%class_meths = get_all_methods_in_class(me%class) ! elemental
+        do i=1,n
+            me%class_meths(i) = get_all_methods_in_class(me%class(i))
+        end do
         if (me%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
             'sparsity pattern, all columns must use the same finite diff method.'
     else
@@ -813,7 +954,7 @@
 !
 !@note This is just a wrapper to get data from `ngrp`.
 
-    pure subroutine columns_in_partition_group(me,igroup,n_cols,cols,nonzero_rows,indices)
+    subroutine columns_in_partition_group(me,igroup,n_cols,cols,nonzero_rows,indices)
 
     implicit none
 
@@ -847,6 +988,8 @@
                                                      ! compute in this column
                 num_nonzero_elements_in_group = num_nonzero_elements_in_group + &
                                                 num_nonzero_elements_in_col
+                if (allocated(col_indices)) deallocate(col_indices)
+                allocate(col_indices(num_nonzero_elements_in_col))
                 col_indices = pack(me%indices,mask=me%icol==cols(i))
                 if (allocated(nonzero_rows)) then
                     nonzero_rows = [nonzero_rows,me%irow(col_indices)]
@@ -1168,7 +1311,8 @@
     allocate(jac(me%sparsity%num_nonzero_elements))
 
     ! compute dx vector:
-    if (.not. associated(me%jacobian_function,compute_jacobian_with_diff)) then
+    !if (.not. associated(me%jacobian_function,compute_jacobian_with_diff)) then  ! this doesn't work with Intel compiler ...
+    if (.not. me%use_diff) then
         ! only need this for the finite difference methods (not diff)
         call me%compute_perturbation_vector(x,dx)
     end if
@@ -1194,8 +1338,10 @@
 
     class(numdiff_type),intent(inout)   :: me
     real(wp),dimension(:),intent(in)    :: x    !! vector of variables (size `n`)
-    real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
-    real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
+    real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0)
+                                                !! for each variable
+    real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size
+                                                !! `num_nonzero_elements`)
 
     integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
                                                                  !! nonzero Jacobian
@@ -1205,8 +1351,8 @@
     real(wp),dimension(me%m)  :: df  !! accumulated function
     type(finite_diff_method)  :: fd  !! a finite different method (when
                                      !! specifying class rather than the method)
-    logical                   :: status_ok   !! error flag
-    integer                   :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
+    logical :: status_ok   !! error flag
+    integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
 
     ! initialize:
     jac = zero
@@ -1231,6 +1377,7 @@
                                                     dx,me%meth(i)%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
                 end do
+
                 df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
                                               (me%meth(i)%df_den_factor*dx(i))
 
@@ -1257,7 +1404,8 @@
             end select
 
             ! put result into the output vector:
-            jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = df(nonzero_elements_in_col)
+            jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = &
+                df(nonzero_elements_in_col)
 
         end if
 
@@ -1278,8 +1426,10 @@
 
     class(numdiff_type),intent(inout)   :: me
     real(wp),dimension(:),intent(in)    :: x    !! vector of variables (size `n`)
-    real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
-    real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
+    real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0)
+                                                !! for each variable
+    real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size
+                                                !! `num_nonzero_elements`)
 
     integer,parameter  :: iord  = 1  !! tells [[diff]] to compute first derivative
 
@@ -1344,9 +1494,10 @@
 
         implicit none
 
-        class(diff_func),intent(inout) :: this
-        real(wp),intent(in) :: xval  !! input variable (`ic` variable)
-        real(wp) :: fx  !! derivative of `ir` function w.r.t. `xval` variable
+        class(diff_func),intent(inout)  :: this
+        real(wp),intent(in)             :: xval  !! input variable (`ic` variable)
+        real(wp)                        :: fx    !! derivative of `ir` function
+                                                 !! w.r.t. `xval` variable
 
         if (use_info) then
             icount = icount + 1
@@ -1393,6 +1544,8 @@
                                                       !! specifying class rather than the method)
     logical                          :: status_ok     !! error flag
 
+    integer :: num_nonzero_elements_in_col
+
     ! initialize:
     jac = zero
 
@@ -1421,6 +1574,9 @@
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
+                        num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
+                        if (allocated(col_indices)) deallocate(col_indices)
+                        allocate(col_indices(num_nonzero_elements_in_col))
                         col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
                         df(me%sparsity%irow(col_indices)) = df(me%sparsity%irow(col_indices)) / &
                                                             (me%meth(1)%df_den_factor*dx(cols(i)))
@@ -1451,6 +1607,9 @@
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
+                        num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
+                        if (allocated(col_indices)) deallocate(col_indices)
+                        allocate(col_indices(num_nonzero_elements_in_col))
                         col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
                         df(me%sparsity%irow(col_indices)) = df(me%sparsity%irow(col_indices)) / &
                                                             (fd%df_den_factor*dx(cols(i)))

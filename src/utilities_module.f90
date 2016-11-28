@@ -71,23 +71,25 @@
 !>
 !  Returns only the unique elements of the vector.
 
-    function unique(ivec,chunk_size) result(ivec_unique)
+    function unique(vec,chunk_size) result(ivec_unique)
 
     implicit none
 
-    integer,dimension(:),intent(inout) :: ivec        !! a vector of integers
+    integer,dimension(:),intent(in)    :: vec        !! a vector of integers
     integer,intent(in)                 :: chunk_size  !! chunk size for adding to arrays
     integer,dimension(:),allocatable   :: ivec_unique !! unique elements of `ivec`
 
+    integer,dimension(size(vec)) :: ivec !! temp copy of vec
     integer :: i !! counter
     integer :: n !! number of unique elements
 
     ! first we sort it:
+    ivec = vec ! make a copy
     call sort_ascending(ivec)
 
     ! add the first element:
     n = 1
-    ivec_unique = ivec(1)
+    ivec_unique = [ivec(1)]
 
     ! walk through array and get the unique ones:
     if (size(ivec)>1) then
@@ -98,7 +100,7 @@
         end do
         call expand_vector(ivec_unique,n,chunk_size,finished=.true.)
     end if
-
+    
     end function unique
 !*******************************************************************************
 
