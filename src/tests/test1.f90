@@ -31,9 +31,7 @@
     integer,parameter :: cache_size = 0 !! `0` indicates not to use cache
     !integer,parameter :: cache_size = 1000 ! use cache
 
-    do i=1,9  ! try different finite diff methods
-
-        write(*,*) i
+    do i=1,14  ! try different finite diff methods
 
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
@@ -68,7 +66,7 @@
 
     end do
 
-    do i=1,9  ! try different finite diff methods
+    do i=1,14  ! try different finite diff methods
 
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
@@ -120,7 +118,7 @@
     write(output_unit,'(A)') formula
     write(output_unit,'(A)') ''
 
-    do i=2,4
+    do i=2,5
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'
@@ -142,7 +140,7 @@
 
     end do
 
-    do i=2,4
+    do i=2,5
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'

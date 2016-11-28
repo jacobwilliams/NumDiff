@@ -67,7 +67,7 @@
 
 !*****************************************************************************************
 !>
-!  the procedure diff calculates the first, second or
+!  the procedure `diff` calculates the first, second or
 !  third order derivative of a function by using neville's process to
 !  extrapolate from a sequence of simple polynomial approximations based on
 !  interpolating points distributed symmetrically about `x0` (or lying only on
@@ -697,12 +697,10 @@
 
 !*****************************************************************************************
 !>
-!  Support routine for [[diff]].
-!
 ! This procedure attempts to estimate the level of rounding errors in
 ! the calculated function values near the point `x0+h0` by fitting a
 ! least-squares straight-line approximation to the function at the
-! six points `x0+h0-j*h1`, (j = 0,1,3,5,7,9), and then setting `facc` to
+! six points `x0+h0-j*h1`, (`j = 0,1,3,5,7,9`), and then setting `facc` to
 ! twice the largest deviation of the function values from this line.
 ! `hi` is adjusted if necessary so that it is approximately 8 times the
 ! smallest spacing at which the function values are unequal near `x0+h0`.

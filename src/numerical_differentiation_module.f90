@@ -435,15 +435,20 @@
 !
 !  The available methods are:
 !
-!   * \( (f(x+h)-f(x)) / h                           \)
-!   * \( (f(x)-f(x-h)) / h                           \)
-!   * \( (f(x+h)-f(x-h)) / (2h)                      \)
-!   * \( (-3f(x)+4f(x+h)-f(x+2h)) / (2h)             \)
-!   * \( (f(x-2h)-4f(x-h)+3f(x)) / (2h)              \)
-!   * \( (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)     \)
-!   * \( (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)      \)
-!   * \( (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h) \)
-!   * \( (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h) \)
+!   * \( (f(x+h)-f(x)) / h                                       \)
+!   * \( (f(x)-f(x-h)) / h                                       \)
+!   * \( (f(x+h)-f(x-h)) / (2h)                                  \)
+!   * \( (-3f(x)+4f(x+h)-f(x+2h)) / (2h)                         \)
+!   * \( (f(x-2h)-4f(x-h)+3f(x)) / (2h)                          \)
+!   * \( (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)                 \)
+!   * \( (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)                  \)
+!   * \( (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)             \)
+!   * \( (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)             \)
+!   * \( (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h)               \)
+!   * \( (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h)     \)
+!   * \( (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h)     \)
+!   * \( (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h) \)
+!   * \( (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)  \)
 !
 !  Where \(f(x)\) is the user-defined function of \(x\)
 !  and \(h\) is a "small" perturbation.
@@ -466,18 +471,48 @@
     found = .true.
 
     select case (id)
-    case(1); fd = finite_diff_method(id,'2-point forward',  2,[1,0],[1,-1],1)                 ! (f(x+h)-f(x)) / h
-    case(2); fd = finite_diff_method(id,'2-point backward', 2,[0,-1],[1,-1],1)                ! (f(x)-f(x-h)) / h
-
-    case(3); fd = finite_diff_method(id,'3-point central',  3,[1,-1],[1,-1],2)                ! (f(x+h)-f(x-h)) / (2h)
-    case(4); fd = finite_diff_method(id,'3-point forward',  3,[0,1,2],[-3,4,-1],2)            ! (-3f(x)+4f(x+h)-f(x+2h)) / (2h)
-    case(5); fd = finite_diff_method(id,'3-point backward', 3,[-2,-1,0],[1,-4,3],2)           ! (f(x-2h)-4f(x-h)+3f(x)) / (2h)
-
-    case(6); fd = finite_diff_method(id,'4-point forward 1',  4,[-1,0,1,2],[-2,-3,6,-1],6)    ! (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)
-    case(7); fd = finite_diff_method(id,'4-point backward 1', 4,[-2,-1,0,1],[1,-6,3,2],6)     ! (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)
-    case(8); fd = finite_diff_method(id,'4-point forward 2',  4,[0,1,2,3],[-11,18,-9,2],6)    ! (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)
-    case(9); fd = finite_diff_method(id,'4-point backward 2', 4,[-3,-2,-1,0],[-2,9,-18,11],6) ! (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)
-
+    case(1)
+        ! (f(x+h)-f(x)) / h
+        fd = finite_diff_method(id,'2-point forward',    2,[1,0],[1,-1],1)
+    case(2)
+        ! (f(x)-f(x-h)) / h
+        fd = finite_diff_method(id,'2-point backward',   2,[0,-1],[1,-1],1)
+    case(3)
+        ! (f(x+h)-f(x-h)) / (2h)
+        fd = finite_diff_method(id,'3-point central',    3,[1,-1],[1,-1],2)
+    case(4)
+        ! (-3f(x)+4f(x+h)-f(x+2h)) / (2h)
+        fd = finite_diff_method(id,'3-point forward',    3,[0,1,2],[-3,4,-1],2)
+    case(5)
+        ! (f(x-2h)-4f(x-h)+3f(x)) / (2h)
+        fd = finite_diff_method(id,'3-point backward',   3,[-2,-1,0],[1,-4,3],2)
+    case(6)
+        ! (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)
+        fd = finite_diff_method(id,'4-point forward 1',  4,[-1,0,1,2],[-2,-3,6,-1],6)
+    case(7)
+        ! (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)
+        fd = finite_diff_method(id,'4-point backward 1', 4,[-2,-1,0,1],[1,-6,3,2],6)
+    case(8)
+        ! (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)
+        fd = finite_diff_method(id,'4-point forward 2',  4,[0,1,2,3],[-11,18,-9,2],6)
+    case(9)
+        ! (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)
+        fd = finite_diff_method(id,'4-point backward 2', 4,[-3,-2,-1,0],[-2,9,-18,11],6)
+    case(10)
+        ! (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h)
+        fd = finite_diff_method(id,'5-point central',    5,[-2,-1,1,2],[1,-8,8,-1],12)
+    case(11)
+        ! (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h)
+        fd = finite_diff_method(id,'5-point forward 2',  5,[-1,0,1,2,3],[-3,-10,18,-6,1],12)
+    case(12)
+        ! (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h)
+        fd = finite_diff_method(id,'5-point backward 2', 5,[-3,-2,-1,0,1],[-1,6,-18,10,3],12)
+    case(13)
+        ! (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h)
+        fd = finite_diff_method(id,'5-point forward 1',  5,[0,1,2,3,4],[-25,48,-36,16,-3],12)
+    case(14)
+        ! (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)
+        fd = finite_diff_method(id,'5-point backward 1', 5,[-4,-3,-2,-1,0],[3,-16,36,-48,25],12)
     case default
         found = .false.
     end select
@@ -958,14 +993,14 @@
 
     implicit none
 
-    class(sparsity_pattern),intent(in) :: me
-    integer,intent(in) :: igroup    !! group number. Should be `>0` and `<=me%mxgrp`
-    integer,intent(out) :: n_cols   !! number of columns in the `igroup` group.
-    integer,dimension(:),allocatable,intent(out) :: cols  !! the column numbers in the `igroup` group.
-                                                          !! (if none, then it is not allocated)
-    integer,dimension(:),allocatable,intent(out) :: nonzero_rows  !! the row numbers of all the nonzero
-                                                                  !! Jacobian elements in this group
-    integer,dimension(:),allocatable,intent(out) :: indices  !! nonzero indices in `jac` for a group
+    class(sparsity_pattern),intent(in)           :: me
+    integer,intent(in)                           :: igroup       !! group number. Should be `>0` and `<=me%mxgrp`
+    integer,intent(out)                          :: n_cols       !! number of columns in the `igroup` group.
+    integer,dimension(:),allocatable,intent(out) :: cols         !! the column numbers in the `igroup` group.
+                                                                 !! (if none, then it is not allocated)
+    integer,dimension(:),allocatable,intent(out) :: nonzero_rows !! the row numbers of all the nonzero
+                                                                 !! Jacobian elements in this group
+    integer,dimension(:),allocatable,intent(out) :: indices      !! nonzero indices in `jac` for a group
 
     integer :: i  !! counter
     integer :: num_nonzero_elements_in_col          !! number of nonzero elements in a column
@@ -1010,7 +1045,7 @@
 
 !*******************************************************************************
 !>
-!  destroy the sparsity pattern in the class.
+!  Destroy the sparsity pattern in the class.
 
     subroutine destroy_sparsity_pattern(me)
 

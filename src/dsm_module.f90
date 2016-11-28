@@ -11,7 +11,7 @@
 !    Volume 10 Issue 3, Sept. 1984, Pages 346-347
 !
 !### History
-!  * Jacob Williams, Dec. 2016, extensive refactoring into modern Fortran.
+!  * Jacob Williams, Nov. 2016, extensive refactoring into modern Fortran.
 
     module dsm_module
 
@@ -309,143 +309,143 @@
     subroutine ido(m,n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq, &
                    Iwa1,Iwa2,Iwa3,Iwa4)
 
-      implicit none
+    implicit none
 
-      integer,intent(in)       :: m         !! a positive integer input variable set to the number
-                                            !! of rows of `a`.
-      integer,intent(in)       :: n         !! a positive integer input variable set to the number
-                                            !! of columns of `a`.
-      integer,intent(out)      :: Maxclq    !! an integer output variable set to the size
-                                            !! of the largest clique found during the ordering.
-      integer,dimension(*),intent(in) :: Indrow    !! an integer input array which contains the row
-                                                   !! indices for the non-zeroes in the matrix `a`.
-      integer,dimension(n+1),intent(in) :: Jpntr   !! an integer input array of length `n + 1` which
-                                                   !! specifies the locations of the row indices in `indrow`.
-                                                   !! the row indices for column `j` are
-                                                   !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
-                                                   !! **note** that `jpntr(n+1)-1` is then the number of non-zero
-                                                   !! elements of the matrix `a`.
-      integer,dimension(*),intent(in)     :: Indcol     !! an integer input array which contains the
-                                                        !! column indices for the non-zeroes in the matrix `a`.
-      integer,dimension(m+1),intent(in)   :: Ipntr      !! an integer input array of length `m + 1` which
-                                                        !! specifies the locations of the column indices in `indcol`.
-                                                        !! the column indices for row `i` are
-                                                        !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
-                                                        !! **note** that `ipntr(m+1)-1` is then the number of non-zero
-                                                        !! elements of the matrix `a`.
-      integer,dimension(n),intent(in)     :: Ndeg       !! an integer input array of length `n` which specifies
-                                                        !! the degree sequence. the degree of the `j`-th column
-                                                        !! of `a` is `ndeg(j)`.
-      integer,dimension(n),intent(out)     :: List      !! an integer output array of length `n` which specifies
-                                                        !! the incidence-degree ordering of the columns of `a`. the `j`-th
-                                                        !! column in this order is `list(j)`.
-      integer,dimension(0:n-1) :: Iwa1      !! integer work array of length `n`.
-      integer,dimension(n)     :: Iwa2      !! integer work array of length `n`.
-      integer,dimension(n)     :: Iwa3      !! integer work array of length `n`.
-      integer,dimension(n)     :: Iwa4      !! integer work array of length `n`.
+    integer,intent(in)       :: m         !! a positive integer input variable set to the number
+                                          !! of rows of `a`.
+    integer,intent(in)       :: n         !! a positive integer input variable set to the number
+                                          !! of columns of `a`.
+    integer,intent(out)      :: Maxclq    !! an integer output variable set to the size
+                                          !! of the largest clique found during the ordering.
+    integer,dimension(*),intent(in) :: Indrow    !! an integer input array which contains the row
+                                                 !! indices for the non-zeroes in the matrix `a`.
+    integer,dimension(n+1),intent(in) :: Jpntr   !! an integer input array of length `n + 1` which
+                                                 !! specifies the locations of the row indices in `indrow`.
+                                                 !! the row indices for column `j` are
+                                                 !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                                 !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                                 !! elements of the matrix `a`.
+    integer,dimension(*),intent(in)     :: Indcol   !! an integer input array which contains the
+                                                    !! column indices for the non-zeroes in the matrix `a`.
+    integer,dimension(m+1),intent(in)   :: Ipntr    !! an integer input array of length `m + 1` which
+                                                    !! specifies the locations of the column indices in `indcol`.
+                                                    !! the column indices for row `i` are
+                                                    !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                                    !! **note** that `ipntr(m+1)-1` is then the number of non-zero
+                                                    !! elements of the matrix `a`.
+    integer,dimension(n),intent(in)     :: Ndeg     !! an integer input array of length `n` which specifies
+                                                    !! the degree sequence. the degree of the `j`-th column
+                                                    !! of `a` is `ndeg(j)`.
+    integer,dimension(n),intent(out)    :: List     !! an integer output array of length `n` which specifies
+                                                    !! the incidence-degree ordering of the columns of `a`. the `j`-th
+                                                    !! column in this order is `list(j)`.
+    integer,dimension(0:n-1) :: Iwa1      !! integer work array of length `n`.
+    integer,dimension(n)     :: Iwa2      !! integer work array of length `n`.
+    integer,dimension(n)     :: Iwa3      !! integer work array of length `n`.
+    integer,dimension(n)     :: Iwa4      !! integer work array of length `n`.
 
-      integer :: ic , ip , ir , jcol , jp , maxinc , maxlst , ncomp , &
-              numinc , numlst , numord , numwgt
+    integer :: ic , ip , ir , jcol , jp , maxinc , maxlst , ncomp , &
+               numinc , numlst , numord , numwgt
 
-!  sort the degree sequence.
+    ! sort the degree sequence.
 
-      call numsrt(n,n-1,Ndeg,-1,Iwa4,Iwa2,Iwa3)
+    call numsrt(n,n-1,Ndeg,-1,Iwa4,Iwa2,Iwa3)
 
-!  initialization block.
-!
-!  create a doubly-linked list to access the incidences of the
-!  columns. the pointers for the linked list are as follows.
-!
-!  each un-ordered column ic is in a list (the incidence list)
-!  of columns with the same incidence.
-!
-!  iwa1(numinc) is the first column in the numinc list
-!  unless iwa1(numinc) = 0. in this case there are
-!  no columns in the numinc list.
-!
-!  iwa2(ic) is the column before ic in the incidence list
-!  unless iwa2(ic) = 0. in this case ic is the first
-!  column in this incidence list.
-!
-!  iwa3(ic) is the column after ic in the incidence list
-!  unless iwa3(ic) = 0. in this case ic is the last
-!  column in this incidence list.
-!
-!  if ic is an un-ordered column, then list(ic) is the
-!  incidence of ic to the graph induced by the ordered
-!  columns. if jcol is an ordered column, then list(jcol)
-!  is the incidence-degree order of column jcol.
+    ! initialization block.
+    !
+    ! create a doubly-linked list to access the incidences of the
+    ! columns. the pointers for the linked list are as follows.
+    !
+    ! each un-ordered column ic is in a list (the incidence list)
+    ! of columns with the same incidence.
+    !
+    ! iwa1(numinc) is the first column in the numinc list
+    ! unless iwa1(numinc) = 0. in this case there are
+    ! no columns in the numinc list.
+    !
+    ! iwa2(ic) is the column before ic in the incidence list
+    ! unless iwa2(ic) = 0. in this case ic is the first
+    ! column in this incidence list.
+    !
+    ! iwa3(ic) is the column after ic in the incidence list
+    ! unless iwa3(ic) = 0. in this case ic is the last
+    ! column in this incidence list.
+    !
+    ! if ic is an un-ordered column, then list(ic) is the
+    ! incidence of ic to the graph induced by the ordered
+    ! columns. if jcol is an ordered column, then list(jcol)
+    ! is the incidence-degree order of column jcol.
 
-      maxinc = 0
-      do jp = n , 1 , -1
-         ic = Iwa4(jp)
-         Iwa1(n-jp) = 0
-         Iwa2(ic) = 0
-         Iwa3(ic) = Iwa1(0)
-         if ( Iwa1(0)>0 ) Iwa2(Iwa1(0)) = ic
-         Iwa1(0) = ic
-         Iwa4(jp) = 0
-         List(jp) = 0
-      enddo
+    maxinc = 0
+    do jp = n , 1 , -1
+        ic = Iwa4(jp)
+        Iwa1(n-jp) = 0
+        Iwa2(ic) = 0
+        Iwa3(ic) = Iwa1(0)
+        if ( Iwa1(0)>0 ) Iwa2(Iwa1(0)) = ic
+        Iwa1(0) = ic
+        Iwa4(jp) = 0
+        List(jp) = 0
+    enddo
 
-!  DETERMINE THE MAXIMAL SEARCH LENGTH FOR THE LIST
-!  OF COLUMNS OF MAXIMAL INCIDENCE.
+    ! DETERMINE THE MAXIMAL SEARCH LENGTH FOR THE LIST
+    ! OF COLUMNS OF MAXIMAL INCIDENCE.
 
-      maxlst = 0
-      do ir = 1 , m
-         maxlst = maxlst + (Ipntr(ir+1)-Ipntr(ir))**2
-      enddo
-      maxlst = maxlst/n
-      Maxclq = 0
-      numord = 1
+    maxlst = 0
+    do ir = 1 , m
+        maxlst = maxlst + (Ipntr(ir+1)-Ipntr(ir))**2
+    enddo
+    maxlst = maxlst/n
+    Maxclq = 0
+    numord = 1
 
-!  BEGINNING OF ITERATION LOOP.
+    ! BEGINNING OF ITERATION LOOP.
 
-! UPDATE THE SIZE OF THE LARGEST CLIQUE
-! FOUND DURING THE ORDERING.
+    ! UPDATE THE SIZE OF THE LARGEST CLIQUE
+    ! FOUND DURING THE ORDERING.
 
- 100  if ( maxinc==0 ) ncomp = 0
-      ncomp = ncomp + 1
-      if ( maxinc+1==ncomp ) Maxclq = max(Maxclq,ncomp)
+100 if ( maxinc==0 ) ncomp = 0
+    ncomp = ncomp + 1
+    if ( maxinc+1==ncomp ) Maxclq = max(Maxclq,ncomp)
 
-! CHOOSE A COLUMN JCOL OF MAXIMAL DEGREE AMONG THE
-! COLUMNS OF MAXIMAL INCIDENCE MAXINC.
+    ! CHOOSE A COLUMN JCOL OF MAXIMAL DEGREE AMONG THE
+    ! COLUMNS OF MAXIMAL INCIDENCE MAXINC.
 
- 200  jp = Iwa1(maxinc)
-      if ( jp>0 ) then
-         numwgt = -1
-         do numlst = 1 , maxlst
+200 jp = Iwa1(maxinc)
+    if ( jp>0 ) then
+        numwgt = -1
+        do numlst = 1 , maxlst
             if ( Ndeg(jp)>numwgt ) then
-               numwgt = Ndeg(jp)
-               jcol = jp
+                numwgt = Ndeg(jp)
+                jcol = jp
             endif
             jp = Iwa3(jp)
             if ( jp<=0 ) exit
-         enddo
-         List(jcol) = numord
-         numord = numord + 1
+        enddo
+        List(jcol) = numord
+        numord = numord + 1
 
-         ! TERMINATION TEST.
+        ! TERMINATION TEST.
 
-         if ( numord>n ) then
+        if ( numord>n ) then
 
             ! INVERT THE ARRAY LIST.
 
             do jcol = 1 , n
-               Iwa2(List(jcol)) = jcol
+                Iwa2(List(jcol)) = jcol
             enddo
             do jp = 1 , n
-               List(jp) = Iwa2(jp)
+                List(jp) = Iwa2(jp)
             enddo
 
-         else
+        else
 
             ! DELETE COLUMN JCOL FROM THE MAXINC LIST.
 
             if ( Iwa2(jcol)==0 ) then
-               Iwa1(maxinc) = Iwa3(jcol)
+                Iwa1(maxinc) = Iwa3(jcol)
             else
-               Iwa3(Iwa2(jcol)) = Iwa3(jcol)
+                Iwa3(Iwa2(jcol)) = Iwa3(jcol)
             endif
             if ( Iwa3(jcol)>0 ) Iwa2(Iwa3(jcol)) = Iwa2(jcol)
 
@@ -457,53 +457,53 @@
             ! TO NON-ZEROES IN THE MATRIX.
 
             do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
-               ir = Indrow(jp)
+                ir = Indrow(jp)
 
                 ! FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
                 ! WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
 
-               do ip = Ipntr(ir) , Ipntr(ir+1) - 1
-                  ic = Indcol(ip)
+                do ip = Ipntr(ir) , Ipntr(ir+1) - 1
+                    ic = Indcol(ip)
 
                     ! ARRAY IWA4 MARKS COLUMNS WHICH ARE ADJACENT TO
                     ! COLUMN JCOL.
 
-                  if ( Iwa4(ic)<numord ) then
-                     Iwa4(ic) = numord
+                    if ( Iwa4(ic)<numord ) then
+                        Iwa4(ic) = numord
 
-                     ! UPDATE THE POINTERS TO THE CURRENT INCIDENCE LISTS.
+                        ! UPDATE THE POINTERS TO THE CURRENT INCIDENCE LISTS.
 
-                     numinc = List(ic)
-                     List(ic) = List(ic) + 1
-                     maxinc = max(maxinc,List(ic))
+                        numinc = List(ic)
+                        List(ic) = List(ic) + 1
+                        maxinc = max(maxinc,List(ic))
 
-                     ! DELETE COLUMN IC FROM THE NUMINC LIST.
+                        ! DELETE COLUMN IC FROM THE NUMINC LIST.
 
-                     if ( Iwa2(ic)==0 ) then
-                        Iwa1(numinc) = Iwa3(ic)
-                     else
-                        Iwa3(Iwa2(ic)) = Iwa3(ic)
-                     endif
-                     if ( Iwa3(ic)>0 ) Iwa2(Iwa3(ic)) = Iwa2(ic)
+                        if ( Iwa2(ic)==0 ) then
+                            Iwa1(numinc) = Iwa3(ic)
+                        else
+                            Iwa3(Iwa2(ic)) = Iwa3(ic)
+                        endif
+                        if ( Iwa3(ic)>0 ) Iwa2(Iwa3(ic)) = Iwa2(ic)
 
-                     ! ADD COLUMN IC TO THE NUMINC+1 LIST.
+                        ! ADD COLUMN IC TO THE NUMINC+1 LIST.
 
-                     Iwa2(ic) = 0
-                     Iwa3(ic) = Iwa1(numinc+1)
-                     if ( Iwa1(numinc+1)>0 ) Iwa2(Iwa1(numinc+1)) = ic
-                     Iwa1(numinc+1) = ic
-                  endif
-               enddo
+                        Iwa2(ic) = 0
+                        Iwa3(ic) = Iwa1(numinc+1)
+                        if ( Iwa1(numinc+1)>0 ) Iwa2(Iwa1(numinc+1)) = ic
+                        Iwa1(numinc+1) = ic
+                    endif
+                enddo
             enddo
 
             ! END OF ITERATION LOOP.
 
             goto 100
-         endif
-      else
-         maxinc = maxinc - 1
-         goto 200
-      endif
+        endif
+    else
+        maxinc = maxinc - 1
+        goto 200
+    endif
 
     end subroutine ido
 !*******************************************************************************
@@ -789,175 +789,176 @@
     subroutine slo(n,Indrow,Jpntr,Indcol,Ipntr,Ndeg,List,Maxclq,Iwa1, &
                    Iwa2,Iwa3,Iwa4)
 
-      implicit none
+    implicit none
 
-      integer                  :: n         !! a positive integer input variable set to the number
-                                            !! of columns of `a`.
-      integer                  :: Maxclq    !! an integer output variable set to the size
-                                            !! of the largest clique found during the ordering.
-      integer,dimension(*)     :: Indrow    !! an integer input array which contains the row
-                                            !! indices for the non-zeroes in the matrix `a`.
-      integer,dimension(n+1)   :: Jpntr     !! an integer input array of length `n + 1` which
-                                            !! specifies the locations of the row indices in `indrow`.
-                                            !! the row indices for column `j` are
-                                            !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
-                                            !! **note** that `jpntr(n+1)-1` is then the number of non-zero
-                                            !! elements of the matrix `a`.
-      integer,dimension(*)     :: Indcol    !! an integer input array which contains the
-                                            !! column indices for the non-zeroes in the matrix `a`.
-      integer,dimension(*)     :: Ipntr     !! an integer input array of length `m + 1` which
-                                            !! specifies the locations of the column indices in `indcol`.
-                                            !! the column indices for row `i` are
-                                            !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
-                                            !! **note** that `ipntr(m+1)-1` is then the number of non-zero
-                                            !! elements of the matrix `a`.
-      integer,dimension(n)     :: Ndeg      !! an integer input array of length `n` which specifies
-                                            !! the degree sequence. the degree of the `j`-th column
-                                            !! of `a` is `ndeg(j)`.
-      integer,dimension(n)     :: List      !! an integer output array of length `n` which specifies
-                                            !! the smallest-last ordering of the columns of `a`. the `j`-th
-                                            !! column in this order is `list(j)`.
-      integer,dimension(0:n-1) :: Iwa1      !! integer work array of length `n`
-      integer,dimension(n)     :: Iwa2      !! integer work array of length `n`
-      integer,dimension(n)     :: Iwa3      !! integer work array of length `n`
-      integer,dimension(n)     :: Iwa4      !! integer work array of length `n`
+    integer                  :: n         !! a positive integer input variable set to the number
+                                          !! of columns of `a`.
+    integer                  :: Maxclq    !! an integer output variable set to the size
+                                          !! of the largest clique found during the ordering.
+    integer,dimension(*)     :: Indrow    !! an integer input array which contains the row
+                                          !! indices for the non-zeroes in the matrix `a`.
+    integer,dimension(n+1)   :: Jpntr     !! an integer input array of length `n + 1` which
+                                          !! specifies the locations of the row indices in `indrow`.
+                                          !! the row indices for column `j` are
+                                          !! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.
+                                          !! **note** that `jpntr(n+1)-1` is then the number of non-zero
+                                          !! elements of the matrix `a`.
+    integer,dimension(*)     :: Indcol    !! an integer input array which contains the
+                                          !! column indices for the non-zeroes in the matrix `a`.
+    integer,dimension(*)     :: Ipntr     !! an integer input array of length `m + 1` which
+                                          !! specifies the locations of the column indices in `indcol`.
+                                          !! the column indices for row `i` are
+                                          !! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.
+                                          !! **note** that `ipntr(m+1)-1` is then the number of non-zero
+                                          !! elements of the matrix `a`.
+    integer,dimension(n)     :: Ndeg      !! an integer input array of length `n` which specifies
+                                          !! the degree sequence. the degree of the `j`-th column
+                                          !! of `a` is `ndeg(j)`.
+    integer,dimension(n)     :: List      !! an integer output array of length `n` which specifies
+                                          !! the smallest-last ordering of the columns of `a`. the `j`-th
+                                          !! column in this order is `list(j)`.
+    integer,dimension(0:n-1) :: Iwa1      !! integer work array of length `n`
+    integer,dimension(n)     :: Iwa2      !! integer work array of length `n`
+    integer,dimension(n)     :: Iwa3      !! integer work array of length `n`
+    integer,dimension(n)     :: Iwa4      !! integer work array of length `n`
 
-      integer :: ic , ip , ir , jcol , jp , mindeg , numdeg , numord
-!
-!  INITIALIZATION BLOCK.
-!
-      mindeg = n
-      do jp = 1 , n
-         Iwa1(jp-1) = 0
-         Iwa4(jp) = n
-         List(jp) = Ndeg(jp)
-         mindeg = min(mindeg,Ndeg(jp))
-      enddo
-!
-!  CREATE A DOUBLY-LINKED LIST TO ACCESS THE DEGREES OF THE
-!  COLUMNS. THE POINTERS FOR THE LINKED LIST ARE AS FOLLOWS.
-!
-!  EACH UN-ORDERED COLUMN IC IS IN A LIST (THE DEGREE LIST)
-!  OF COLUMNS WITH THE SAME DEGREE.
-!
-!  IWA1(NUMDEG) IS THE FIRST COLUMN IN THE NUMDEG LIST
-!  UNLESS IWA1(NUMDEG) = 0. IN THIS CASE THERE ARE
-!  NO COLUMNS IN THE NUMDEG LIST.
-!
-!  IWA2(IC) IS THE COLUMN BEFORE IC IN THE DEGREE LIST
-!  UNLESS IWA2(IC) = 0. IN THIS CASE IC IS THE FIRST
-!  COLUMN IN THIS DEGREE LIST.
-!
-!  IWA3(IC) IS THE COLUMN AFTER IC IN THE DEGREE LIST
-!  UNLESS IWA3(IC) = 0. IN THIS CASE IC IS THE LAST
-!  COLUMN IN THIS DEGREE LIST.
-!
-!  IF IC IS AN UN-ORDERED COLUMN, THEN LIST(IC) IS THE
-!  DEGREE OF IC IN THE GRAPH INDUCED BY THE UN-ORDERED
-!  COLUMNS. IF JCOL IS AN ORDERED COLUMN, THEN LIST(JCOL)
-!  IS THE SMALLEST-LAST ORDER OF COLUMN JCOL.
-!
-      do jp = 1 , n
-         numdeg = Ndeg(jp)
-         Iwa2(jp) = 0
-         Iwa3(jp) = Iwa1(numdeg)
-         if ( Iwa1(numdeg)>0 ) Iwa2(Iwa1(numdeg)) = jp
-         Iwa1(numdeg) = jp
-      enddo
-      Maxclq = 0
-      numord = n
-!
-!  BEGINNING OF ITERATION LOOP.
-!
-!
-!     MARK THE SIZE OF THE LARGEST CLIQUE
-!     FOUND DURING THE ORDERING.
-!
- 100  if ( mindeg+1==numord .and. Maxclq==0 ) Maxclq = numord
-!
-!     CHOOSE A COLUMN JCOL OF MINIMAL DEGREE MINDEG.
-!
- 200  jcol = Iwa1(mindeg)
-      if ( jcol>0 ) then
-         List(jcol) = numord
-         numord = numord - 1
-!
-!     TERMINATION TEST.
-!
-         if ( numord==0 ) then
-!
-!  INVERT THE ARRAY LIST.
-!
+    integer :: ic , ip , ir , jcol , jp , mindeg , numdeg , numord
+
+    ! INITIALIZATION BLOCK.
+
+    mindeg = n
+    do jp = 1 , n
+        Iwa1(jp-1) = 0
+        Iwa4(jp) = n
+        List(jp) = Ndeg(jp)
+        mindeg = min(mindeg,Ndeg(jp))
+    enddo
+
+    ! CREATE A DOUBLY-LINKED LIST TO ACCESS THE DEGREES OF THE
+    ! COLUMNS. THE POINTERS FOR THE LINKED LIST ARE AS FOLLOWS.
+    !
+    ! EACH UN-ORDERED COLUMN IC IS IN A LIST (THE DEGREE LIST)
+    ! OF COLUMNS WITH THE SAME DEGREE.
+    !
+    ! IWA1(NUMDEG) IS THE FIRST COLUMN IN THE NUMDEG LIST
+    ! UNLESS IWA1(NUMDEG) = 0. IN THIS CASE THERE ARE
+    ! NO COLUMNS IN THE NUMDEG LIST.
+    !
+    ! IWA2(IC) IS THE COLUMN BEFORE IC IN THE DEGREE LIST
+    ! UNLESS IWA2(IC) = 0. IN THIS CASE IC IS THE FIRST
+    ! COLUMN IN THIS DEGREE LIST.
+    !
+    ! IWA3(IC) IS THE COLUMN AFTER IC IN THE DEGREE LIST
+    ! UNLESS IWA3(IC) = 0. IN THIS CASE IC IS THE LAST
+    ! COLUMN IN THIS DEGREE LIST.
+    !
+    ! IF IC IS AN UN-ORDERED COLUMN, THEN LIST(IC) IS THE
+    ! DEGREE OF IC IN THE GRAPH INDUCED BY THE UN-ORDERED
+    ! COLUMNS. IF JCOL IS AN ORDERED COLUMN, THEN LIST(JCOL)
+    ! IS THE SMALLEST-LAST ORDER OF COLUMN JCOL.
+
+    do jp = 1 , n
+        numdeg = Ndeg(jp)
+        Iwa2(jp) = 0
+        Iwa3(jp) = Iwa1(numdeg)
+        if ( Iwa1(numdeg)>0 ) Iwa2(Iwa1(numdeg)) = jp
+        Iwa1(numdeg) = jp
+    enddo
+    Maxclq = 0
+    numord = n
+
+    !  BEGINNING OF ITERATION LOOP.
+    !
+    !
+    ! MARK THE SIZE OF THE LARGEST CLIQUE
+    ! FOUND DURING THE ORDERING.
+
+100 if ( mindeg+1==numord .and. Maxclq==0 ) Maxclq = numord
+
+    ! CHOOSE A COLUMN JCOL OF MINIMAL DEGREE MINDEG.
+
+200 jcol = Iwa1(mindeg)
+    if ( jcol>0 ) then
+        List(jcol) = numord
+        numord = numord - 1
+
+        ! TERMINATION TEST.
+
+        if ( numord==0 ) then
+
+            ! INVERT THE ARRAY LIST.
+
             do jcol = 1 , n
-               Iwa2(List(jcol)) = jcol
+                Iwa2(List(jcol)) = jcol
             enddo
             do jp = 1 , n
-               List(jp) = Iwa2(jp)
+                List(jp) = Iwa2(jp)
             enddo
-         else
-!
-!     DELETE COLUMN JCOL FROM THE MINDEG LIST.
-!
+
+        else
+
+            ! DELETE COLUMN JCOL FROM THE MINDEG LIST.
+
             Iwa1(mindeg) = Iwa3(jcol)
             if ( Iwa3(jcol)>0 ) Iwa2(Iwa3(jcol)) = 0
-!
-!     FIND ALL COLUMNS ADJACENT TO COLUMN JCOL.
-!
-            Iwa4(jcol) = 0
-!
-!     DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND
-!     TO NON-ZEROES IN THE MATRIX.
-!
-            do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
-               ir = Indrow(jp)
-!
-!        FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
-!        WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
-!
-               do ip = Ipntr(ir) , Ipntr(ir+1) - 1
-                  ic = Indcol(ip)
-!
-!           ARRAY IWA4 MARKS COLUMNS WHICH ARE ADJACENT TO
-!           COLUMN JCOL.
-!
-                  if ( Iwa4(ic)>numord ) then
-                     Iwa4(ic) = numord
-!
-!              UPDATE THE POINTERS TO THE CURRENT DEGREE LISTS.
-!
-                     numdeg = List(ic)
-                     List(ic) = List(ic) - 1
-                     mindeg = min(mindeg,List(ic))
-!
-!              DELETE COLUMN IC FROM THE NUMDEG LIST.
-!
-                     if ( Iwa2(ic)==0 ) then
-                        Iwa1(numdeg) = Iwa3(ic)
-                     else
-                        Iwa3(Iwa2(ic)) = Iwa3(ic)
-                     endif
-                     if ( Iwa3(ic)>0 ) Iwa2(Iwa3(ic)) = Iwa2(ic)
-!
-!              ADD COLUMN IC TO THE NUMDEG-1 LIST.
-!
-                     Iwa2(ic) = 0
-                     Iwa3(ic) = Iwa1(numdeg-1)
-                     if ( Iwa1(numdeg-1)>0 ) Iwa2(Iwa1(numdeg-1)) = ic
-                     Iwa1(numdeg-1) = ic
-                  endif
-               enddo
-            enddo
-!
-!     END OF ITERATION LOOP.
-!
-            goto 100
-         endif
-      else
-         mindeg = mindeg + 1
-         goto 200
-      endif
 
-      end subroutine slo
+            ! FIND ALL COLUMNS ADJACENT TO COLUMN JCOL.
+
+            Iwa4(jcol) = 0
+
+            ! DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND
+            ! TO NON-ZEROES IN THE MATRIX.
+
+            do jp = Jpntr(jcol) , Jpntr(jcol+1) - 1
+                ir = Indrow(jp)
+
+                ! FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)
+                ! WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.
+
+                do ip = Ipntr(ir) , Ipntr(ir+1) - 1
+                    ic = Indcol(ip)
+
+                    ! ARRAY IWA4 MARKS COLUMNS WHICH ARE ADJACENT TO
+                    ! COLUMN JCOL.
+
+                    if ( Iwa4(ic)>numord ) then
+                        Iwa4(ic) = numord
+
+                        ! UPDATE THE POINTERS TO THE CURRENT DEGREE LISTS.
+
+                        numdeg = List(ic)
+                        List(ic) = List(ic) - 1
+                        mindeg = min(mindeg,List(ic))
+
+                        ! DELETE COLUMN IC FROM THE NUMDEG LIST.
+
+                        if ( Iwa2(ic)==0 ) then
+                            Iwa1(numdeg) = Iwa3(ic)
+                        else
+                            Iwa3(Iwa2(ic)) = Iwa3(ic)
+                        endif
+                        if ( Iwa3(ic)>0 ) Iwa2(Iwa3(ic)) = Iwa2(ic)
+
+                        ! ADD COLUMN IC TO THE NUMDEG-1 LIST.
+
+                        Iwa2(ic) = 0
+                        Iwa3(ic) = Iwa1(numdeg-1)
+                        if ( Iwa1(numdeg-1)>0 ) Iwa2(Iwa1(numdeg-1)) = ic
+                        Iwa1(numdeg-1) = ic
+                    endif
+                enddo
+            enddo
+
+            ! END OF ITERATION LOOP.
+
+            goto 100
+        endif
+    else
+        mindeg = mindeg + 1
+        goto 200
+    endif
+
+    end subroutine slo
 !*******************************************************************************
 
 !*******************************************************************************

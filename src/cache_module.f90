@@ -168,6 +168,8 @@
     real(wp),dimension(:),intent(in)    :: f      !! function vector `f(x)` (dimension m)
     integer,dimension(:),intent(in)     :: ifs    !! elements of `f` to add (should all be >0, <=m)
 
+    real(wp),parameter :: null = huge(1.0_wp) !! an unusual value
+
     if (allocated(me%c)) then
         if (i<=size(me%c)) then
 
@@ -183,7 +185,7 @@
                         me%c(i)%ifs = unique([me%c(i)%ifs,ifs],chunk_size=100)
                     else
                         allocate(me%c(i)%f(me%m))
-                        me%c(i)%f = huge(1.0_wp) ! initialize to an unusual value
+                        me%c(i)%f   = null ! initialize to an unusual value
                         me%c(i)%ifs = ifs
                     end if
                     me%c(i)%f(ifs) = f(ifs)
@@ -193,14 +195,14 @@
                     me%c(i)%ifs = ifs
                     if (allocated(me%c(i)%f)) deallocate(me%c(i)%f)
                     allocate(me%c(i)%f(me%m))
-                    me%c(i)%f = huge(1.0_wp) ! initialize to an unusual value
+                    me%c(i)%f      = null ! initialize to an unusual value
                     me%c(i)%f(ifs) = f(ifs)
                 end if
             else
                 ! new entry in the cache:
                 me%c(i)%x = x
                 allocate(me%c(i)%f(me%m))
-                me%c(i)%f = huge(1.0_wp) ! initialize to an unusual value
+                me%c(i)%f      = null ! initialize to an unusual value
                 me%c(i)%ifs    = ifs
                 me%c(i)%f(ifs) = f(ifs)
             end if
@@ -246,7 +248,7 @@
     hash = 5381_ip
 
     do i=1,size(r)
-        hash = ishft(hash,5_ip) + hash + transfer(r(i), 1_ip)
+        hash = ishft(hash,5_ip) + hash + transfer(r(i),1_ip)
     end do
 
     end function vector_djb_hash
