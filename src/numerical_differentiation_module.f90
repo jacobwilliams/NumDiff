@@ -156,11 +156,13 @@
         procedure,public :: initialize => initialize_numdiff !! initialize the class
         procedure,public :: diff_initialize => initialize_numdiff_for_diff !! initialize the class
 
-        procedure,public :: compute_jacobian        !! main routine to compute the Jacobian
-                                                    !! using the selected options. It
-                                                    !! returns the sparse (vector) form.
-        procedure,public :: compute_jacobian_dense  !! return the dense `size(m,n)`
-                                                    !! matrix form of the Jacobian.
+        procedure,public :: compute_jacobian              !! main routine to compute the Jacobian
+                                                          !! using the selected options. It
+                                                          !! returns the sparse (vector) form.
+        procedure,public :: compute_jacobian_dense        !! return the dense `size(m,n)`
+                                                          !! matrix form of the Jacobian.
+        procedure,public :: compute_jacobian_times_vector !! returns the product of the Jacobian
+                                                          !! matrix and an input vector
         procedure,public :: destroy => destroy_numdiff_type  !! destroy the class
         procedure,public :: print_sparsity_pattern  !! print the sparsity pattern in vector form to a file
         procedure,public :: print_sparsity_matrix   !! print the sparsity pattern in matrix form to a file
@@ -1326,6 +1328,54 @@
 
 !*******************************************************************************
 !>
+!  Returns the product `J*v`, where `J` is the `m x n` Jacobian matrix
+!  and `v` is an `n x 1` vector.
+
+    subroutine compute_jacobian_times_vector(me,x,v,z)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: x    !! vector of variables (size `n`)
+    real(wp),dimension(:),intent(in)  :: v    !! vector (size `n`)
+    real(wp),dimension(:),intent(out) :: z    !! The product `J*v` (size `m`)
+
+    real(wp),dimension(:),allocatable :: jac !! sparse jacobian vector
+    integer :: i !! counter
+    integer :: r !! row number in full jacobian
+    integer :: c !! column number in full jacobian
+
+    ! first compute the jacobian in sparse vector form:
+    call me%compute_jacobian(x,jac)
+
+    ! initialize output vector:
+    z = 0.0_wp
+
+    if (allocated(jac)) then
+
+        !   J    v   z
+        !  ---   -   -
+        !  X0X   X   X
+        !  0X0 * X = X
+        !  00X   X   X
+        !  00X       X
+
+        ! multiplication by input v:
+        do i = 1, me%sparsity%num_nonzero_elements
+            r = me%sparsity%irow(i)
+            c = me%sparsity%icol(i)
+            z(r) = z(r) + jac(i)*v(c)
+        end do
+
+        deallocate(jac)
+
+    end if
+
+    end subroutine compute_jacobian_times_vector
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Compute the Jacobian.
 
     subroutine compute_jacobian(me,x,jac)
@@ -1451,9 +1501,9 @@
 
 !*******************************************************************************
 !>
-!  Compute the Jacobian one element at a time using the [[diff]] algorithm.
-!  This takes a very large number of function evaluations, but should give
-!  a very accurate answer.
+!  Compute the Jacobian one element at a time using the Neville's process
+!  algorithm [[diff]]. This takes a very large number of function evaluations,
+!  but should give a very accurate answer.
 
     subroutine compute_jacobian_with_diff(me,x,dx,jac)
 

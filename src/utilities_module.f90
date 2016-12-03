@@ -100,7 +100,7 @@
         end do
         call expand_vector(ivec_unique,n,chunk_size,finished=.true.)
     end if
-    
+
     end function unique
 !*******************************************************************************
 
