@@ -30,7 +30,9 @@
         private
         integer :: n = 0 !! size of `x`
         integer :: m = 0 !! size of `f`
-        type(fx),dimension(:),allocatable :: c  !! the cache of f(x)
+        type(fx),dimension(:),allocatable :: c  !! the cache of `f(x)`
+        integer :: chunk_size = 100 !! for resizing vectors
+                                    !! in the [[unique]] function
     contains
         private
         procedure,public :: initialize => initialize_cache
@@ -44,7 +46,10 @@
 !*******************************************************************************
 
 !*******************************************************************************
-    subroutine initialize_cache(me,isize,n,m)
+!>
+!  Initialize the cache. Must be called first before use.
+
+    subroutine initialize_cache(me,isize,n,m,chunk_size)
 
     implicit none
 
@@ -52,12 +57,22 @@
     integer,intent(in) :: isize !! the size of the hash table
     integer,intent(in) :: n     !! number of independant variables (x)
     integer,intent(in) :: m     !! number of functions (f)
+    integer,intent(in),optional :: chunk_size  !! chunk size to speed up reallocation
+                                               !! of arrays. A good value is a guess for
+                                               !! the actual number of elements of `f` that
+                                               !! will be saved per value of `x` [default is 100]
 
     call me%destroy()
 
     allocate(me%c(0:isize-1))
     me%n = n
     me%m = m
+
+    if (present(chunk_size)) then
+        me%chunk_size = chunk_size
+    else
+        me%chunk_size = 100
+    end if
 
     end subroutine initialize_cache
 !*******************************************************************************
@@ -163,12 +178,12 @@
     implicit none
 
     class(function_cache),intent(inout) :: me
-    integer,intent(in)                  :: i      !! index in the hash table
-    real(wp),dimension(:),intent(in)    :: x      !! independant variable vector (dimension n)
-    real(wp),dimension(:),intent(in)    :: f      !! function vector `f(x)` (dimension m)
-    integer,dimension(:),intent(in)     :: ifs    !! elements of `f` to add (should all be >0, <=m)
+    integer,intent(in)                  :: i    !! index in the hash table
+    real(wp),dimension(:),intent(in)    :: x    !! independant variable vector (dimension `n`)
+    real(wp),dimension(:),intent(in)    :: f    !! function vector `f(x)` (dimension `m`)
+    integer,dimension(:),intent(in)     :: ifs  !! elements of `f` to add (should all be `>0, <=m`)
 
-    real(wp),parameter :: null = huge(1.0_wp) !! an unusual value
+    real(wp),parameter :: null = huge(1.0_wp) !! an unusual value to initialize arrays
 
     if (allocated(me%c)) then
         if (i<=size(me%c)) then
@@ -182,7 +197,8 @@
                     ! this x is already present in this location.
                     ! so merge the new f,ifs into what is already there.
                     if (allocated(me%c(i)%f)) then
-                        me%c(i)%ifs = unique([me%c(i)%ifs,ifs],chunk_size=100)
+                        me%c(i)%ifs = unique([me%c(i)%ifs,ifs],&
+                                                chunk_size=me%chunk_size)
                     else
                         allocate(me%c(i)%f(me%m))
                         me%c(i)%f   = null ! initialize to an unusual value
