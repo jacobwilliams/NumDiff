@@ -204,16 +204,17 @@
             class(numdiff_type),intent(inout) :: me
             real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
         end subroutine spars_f
-        subroutine info_f(me,column,i)
+        subroutine info_f(me,column,i,x)
             !! User-defined info function (optional).
             !! Informs user what is being done during Jacobian computation.
             !! It can be used to perform any setup operations that need to
             !! done on the user's end.
-            import :: numdiff_type
+            import :: numdiff_type,wp
             implicit none
             class(numdiff_type),intent(inout)  :: me
             integer,dimension(:),intent(in) :: column !! the columns being computed.
-            integer,intent(in) :: i  !! perturbing these columns for the `i`th time (1,2,...)
+            integer,intent(in) :: i                   !! perturbing these columns for the `i`th time (1,2,...)
+            real(wp),dimension(:),intent(in)  :: x    !! the nominal variable vector
         end subroutine info_f
         subroutine jacobian_f(me,x,dx,jac)
             !! Actual function for computing the Jacobian
@@ -1002,6 +1003,8 @@
                                                                  !! (if none, then it is not allocated)
     integer,dimension(:),allocatable,intent(out) :: nonzero_rows !! the row numbers of all the nonzero
                                                                  !! Jacobian elements in this group
+                                                                 !! note: can contain duplicate indices, since
+                                                                 !! a function can depend on more than one variable
     integer,dimension(:),allocatable,intent(out) :: indices      !! nonzero indices in `jac` for a group
 
     integer :: i  !! counter
@@ -1318,6 +1321,8 @@
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
+    !write(*,*) '**perturb_x_and_compute_f**'
+
     xp = x
     if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
     call me%compute_function(xp,f,idx)
@@ -1439,6 +1444,8 @@
     logical :: status_ok   !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
 
+    !write(*,*) '***compute_jacobian_standard***'
+
     ! initialize:
     jac = zero
 
@@ -1451,13 +1458,17 @@
 
             nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
 
+            ! write(*,*) ''
+            ! write(*,*) 'nonzero_elements_in_col:',nonzero_elements_in_col
+            ! write(*,*) ''
+
             select case (me%mode)
             case(1) ! use the specified methods
 
                 ! compute this column of the Jacobian:
                 df = zero
                 do j = 1, size(me%meth(i)%dx_factors)
-                    if (associated(me%info_function)) call me%info_function([i],j)
+                    if (associated(me%info_function)) call me%info_function([i],j,x)
                     call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
                                                     dx,me%meth(i)%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
@@ -1476,7 +1487,7 @@
                 ! compute this column of the Jacobian:
                 df = zero
                 do j = 1, size(fd%dx_factors)
-                    if (associated(me%info_function)) call me%info_function([i],j)
+                    if (associated(me%info_function)) call me%info_function([i],j,x)
                     call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
                                                     dx,fd%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
@@ -1586,7 +1597,7 @@
 
         if (use_info) then
             icount = icount + 1
-            call me%info_function([ic],icount)
+            call me%info_function([ic],icount,x)
         end if
 
         xp = x
@@ -1652,7 +1663,7 @@
                     ! compute the columns of the Jacobian in this group:
                     df = zero
                     do j = 1, size(me%meth(1)%dx_factors)
-                         if (associated(me%info_function)) call me%info_function(cols,j)
+                         if (associated(me%info_function)) call me%info_function(cols,j,x)
                          call me%perturb_x_and_compute_f_partitioned(x,me%meth(1)%dx_factors(j),&
                                                          dx,me%meth(1)%df_factors(j),&
                                                          cols,nonzero_rows,df)
@@ -1685,7 +1696,7 @@
                     ! compute the columns of the Jacobian in this group:
                     df = zero
                     do j = 1, size(fd%dx_factors)
-                        if (associated(me%info_function)) call me%info_function(cols,j)
+                        if (associated(me%info_function)) call me%info_function(cols,j,x)
                         call me%perturb_x_and_compute_f_partitioned(x,fd%dx_factors(j),&
                                                         dx,fd%df_factors(j),&
                                                         cols,nonzero_rows,df)
