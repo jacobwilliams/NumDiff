@@ -1103,6 +1103,9 @@
                          s%ngrp,s%maxgrp,&
                          mingrp,info,ipntr,jpntr)
                 if (info/=1) error stop 'Error partitioning sparsity pattern.'
+                ! restore the original one, since it is used elsewhere:
+                s%irow = irow
+                s%icol = icol
             end associate
         end if
 
@@ -1803,7 +1806,7 @@
 
     implicit none
 
-    class(sparsity_pattern),intent(inout) :: me
+    class(sparsity_pattern),intent(in) :: me
     integer,intent(in) :: n  !! number of variables (columns of jacobian)
     integer,intent(in) :: m  !! number of functions (rows of jacobian)
     integer,intent(in) :: iunit !! file unit to write to.
