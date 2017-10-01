@@ -764,11 +764,7 @@
     me%m = m
 
     ! input variable bounds:
-    if (any(xlow>=xhigh)) error stop 'Error: all xlow must be < xhigh'
-    allocate(me%xlow(n))
-    allocate(me%xhigh(n))
-    me%xlow = xlow
-    me%xhigh = xhigh
+    call me%set_numdiff_bounds(xlow,xhigh)
 
     ! optional:
     if (present(chunk_size)) me%chunk_size = abs(chunk_size)
@@ -949,13 +945,7 @@
     me%m = m
 
     ! input variable bounds:
-    if (any(xlow>=xhigh)) error stop 'Error: all xlow must be < xhigh'
-    if (allocated(me%xlow)) deallocate(me%xlow)
-    if (allocated(me%xhigh)) deallocate(me%xhigh)
-    allocate(me%xlow(n))
-    allocate(me%xhigh(n))
-    me%xlow = xlow
-    me%xhigh = xhigh
+    call me%set_numdiff_bounds(xlow,xhigh)
 
     ! perturbation options:
     select case (perturb_mode)
