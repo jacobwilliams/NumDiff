@@ -172,6 +172,7 @@
                                                        !! when by the perturbations.
         procedure,public :: select_finite_diff_method_for_partition_group  !! version of [[select_finite_diff_method]]
                                                                            !! for partitioned sparsity pattern.
+        procedure,public :: set_numdiff_bounds  !! can be called to change the variable bounds.
 
         ! internal routines:
         procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
@@ -780,6 +781,39 @@
 
 !*******************************************************************************
 !>
+!  Change the variable bounds in a [[numdiff_type]].
+!
+!@note The bounds must be set when the class is initialized,
+!      but this routine can be used to change them later if required.
+
+    subroutine set_numdiff_bounds(me,xlow,xhigh)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: xlow    !! lower bounds on `x`
+    real(wp),dimension(:),intent(in)  :: xhigh   !! upper bounds on `x`
+
+    if (size(xlow)/=me%n .or. size(xhigh)/=me%n) then
+        error stop 'error in set_numdiff_bounds: invalid size of xlow or xhigh'
+    else if (any(xlow>=xhigh)) then
+        error stop 'Error: all xlow must be < xhigh'
+    else
+
+        if (allocated(me%xlow)) deallocate(me%xlow)
+        if (allocated(me%xhigh)) deallocate(me%xhigh)
+        allocate(me%xlow(me%n))
+        allocate(me%xhigh(me%n))
+        me%xlow  = xlow
+        me%xhigh = xhigh
+
+    end if
+
+    end subroutine set_numdiff_bounds
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Initialize a [[numdiff_type]] class. This must be called first.
 !
 !@note Only one of the following inputs can be used: `jacobian_method`,
@@ -1003,8 +1037,6 @@
                                                                  !! (if none, then it is not allocated)
     integer,dimension(:),allocatable,intent(out) :: nonzero_rows !! the row numbers of all the nonzero
                                                                  !! Jacobian elements in this group
-                                                                 !! note: can contain duplicate indices, since
-                                                                 !! a function can depend on more than one variable
     integer,dimension(:),allocatable,intent(out) :: indices      !! nonzero indices in `jac` for a group
 
     integer :: i  !! counter
