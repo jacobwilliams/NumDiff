@@ -453,6 +453,12 @@
 !   * \( (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h)     \)
 !   * \( (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h) \)
 !   * \( (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)  \)
+!   * \( (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h) ])
+!   * \( (-2f(x-3h)+15f(x-2h)-60f(x-h)+20f(x)+30f(x+h)-3f(x+2h)) / (60h) ])
+!   * \( (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h) ])
+!   * \( (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h) ])
+!   * \( (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h) ])
+!   * \( (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h) ])
 !
 !  Where \(f(x)\) is the user-defined function of \(x\)
 !  and \(h\) is a "small" perturbation.
@@ -460,7 +466,7 @@
 !@note This is the only routine that has to be changed if a new
 !      finite difference method is added.
 !
-!@note The order within a class is assumed to be the order that we would perfer
+!@note The order within a class is assumed to be the order that we would prefer
 !      to use them (e.g., central diffs are first, etc.) This is used in
 !      the [[select_finite_diff_method]] routine.
 
@@ -469,7 +475,8 @@
     implicit none
 
     integer,intent(in)                   :: id     !! the id code for the method
-    type(finite_diff_method),intent(out) :: fd     !! this method (can be used in [[compute_jacobian]])
+    type(finite_diff_method),intent(out) :: fd     !! this method (can be used
+                                                   !! in [[compute_jacobian]])
     logical,intent(out)                  :: found  !! true if it was found
 
     found = .true.
@@ -517,6 +524,24 @@
     case(14)
         ! (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)
         fd = finite_diff_method(id,'5-point backward 1', 5,[-4,-3,-2,-1,0],[3,-16,36,-48,25],12)
+    case(15)
+        ! (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h)
+        fd = finite_diff_method(id,'6-point forward 3',  6,[-2,-1,0,1,2,3],[3,-30,-20,60,-15,2],60)
+    case(16)
+        ! (-2f(x-3h)+15f(x-2h)-60f(x-h)+20f(x)+30f(x+h)-3f(x+2h)) / (60h)
+        fd = finite_diff_method(id,'6-point backward 3', 6,[-3,-2,-1,0,1,2],[-2,15,-60,20,30,-3],60)
+    case(17)
+        ! (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h)
+        fd = finite_diff_method(id,'6-point forward 2',  6,[-1,0,1,2,3,4],[-12,-65,120,-60,20,-3],60)
+    case(18)
+        ! (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h)
+        fd = finite_diff_method(id,'6-point backward 2', 6,[-4,-3,-2,-1,0,1],[3,-20,60,-120,65,12],60)
+    case(19)
+        ! (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h)
+        fd = finite_diff_method(id,'6-point forward 1',  6,[0,1,2,3,4,5],[-137,300,-300,200,-75,12],60)
+    case(20)
+        ! (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h)
+        fd = finite_diff_method(id,'6-point backward 1', 6,[-5,-4,-3,-2,-1,0],[-12,75,-200,300,-300,137],60)
     case default
         found = .false.
     end select
@@ -526,7 +551,8 @@
 
 !*******************************************************************************
 !>
-!  Returns all the methods with the given `class`.
+!  Returns all the methods with the given `class`
+!  (i.e., number of points in the formula).
 
     function get_all_methods_in_class(class) result(list_of_methods)
 
@@ -795,14 +821,12 @@
     else if (any(xlow>=xhigh)) then
         error stop 'Error: all xlow must be < xhigh'
     else
-
         if (allocated(me%xlow)) deallocate(me%xlow)
         if (allocated(me%xhigh)) deallocate(me%xhigh)
         allocate(me%xlow(me%n))
         allocate(me%xhigh(me%n))
         me%xlow  = xlow
         me%xhigh = xhigh
-
     end if
 
     end subroutine set_numdiff_bounds

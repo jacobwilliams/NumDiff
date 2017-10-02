@@ -12,14 +12,17 @@ This is currently an experimental work in progress and is not production ready. 
   - [x] Specified by the user
   - [x] Assume all elements `true`
   - [x] Three random points within variable bounds
-- [ ] Add additional finite different gradient methods
-  - [x] 2-point (backward, forward) differences
-  - [x] 3-point (backward, central, forward) differences
-  - [x] 4-point (backward 1, backward 2, forward 1, forward 2) differences
-  - [ ] Higher-order differences...
+- [x] Various order finite different gradient methods
+  - [x] 2-point (backward, forward)
+  - [x] 3-point (backward, central, forward)
+  - [x] 4-point (backward 1, backward 2, forward 1, forward 2)
+  - [x] 5-point (backward 1, backward 2, central, forward 1, forward 2)
+  - [x] 6-point (backward 1, backward 2, backward 3, forward 1, forward 2, forward 3)
 - [x] Perturbations should respect variable bounds
+- [x] Neville's process
 - [x] Ability to use different methods for different columns
 - [x] Jacobian partitioning to compute multiple columns at the same time
+- [ ] Estimate the optimal perturbation step size
 - [ ] Computing the linear sparsity pattern (constant elements of Jacobian)
 - [ ] Add other gradient methods?
 - [ ] Also compute Hessian matrix?
