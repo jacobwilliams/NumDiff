@@ -241,7 +241,7 @@
 !>
 !  Constructor for a [[finite_diff_method]].
 !
-!@note factors are input as integers for convienence, but are converted
+!@note factors are input as integers for convenience, but are converted
 !      to reals for the actual computations. (note: this means we can't
 !      currently define methods that have non-integer factors).
 
@@ -262,11 +262,18 @@
         error stop 'Error: dx_factors and df_factors arrays must be the same size.'
     else
 
-        me%id            = id
-        me%name          = trim(name)
-        me%class         = class
-        me%dx_factors    = real(dx_factors,wp)
-        me%df_factors    = real(df_factors,wp)
+        me%id     = id
+        me%name   = trim(name)
+        me%class  = class
+
+        ! the following is not strictly necessary if the
+        ! compiler fully supports auto-LHS allocation:
+        allocate(me%dx_factors(size(dx_factors)))
+        allocate(me%df_factors(size(df_factors)))
+
+        me%dx_factors = real(dx_factors,wp)
+        me%df_factors = real(df_factors,wp)
+
         me%df_den_factor = real(df_den_factor,wp)
 
     end if
