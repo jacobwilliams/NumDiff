@@ -8,12 +8,12 @@
 
     module numerical_differentiation_module
 
-    use kinds_module
-    use utilities_module
-    use dsm_module,      only: dsm
-    use iso_fortran_env, only: error_unit
-    use diff_module,     only: diff_func
-    use cache_module,    only: function_cache
+    use numdiff_kinds_module
+    use numdiff_utilities_module
+    use iso_fortran_env,      only: error_unit
+    use dsm_module,           only: dsm
+    use diff_module,          only: diff_func
+    use numdiff_cache_module, only: function_cache
 
     implicit none
 
@@ -434,7 +434,11 @@
     logical :: found
 
     call get_finite_difference_method(id,fd,found)
-    call get_formula(fd,formula)
+    if (found .and. fd%id/=0) then
+        call get_formula(fd,formula)
+    else
+        formula = ''
+    end if
 
     end subroutine get_finite_diff_formula
 !*******************************************************************************
@@ -446,29 +450,49 @@
 !
 !  The available methods are:
 !
-!   * \( (f(x+h)-f(x)) / h                                       \)
-!   * \( (f(x)-f(x-h)) / h                                       \)
-!   * \( (f(x+h)-f(x-h)) / (2h)                                  \)
-!   * \( (-3f(x)+4f(x+h)-f(x+2h)) / (2h)                         \)
-!   * \( (f(x-2h)-4f(x-h)+3f(x)) / (2h)                          \)
-!   * \( (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)                 \)
-!   * \( (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)                  \)
-!   * \( (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)             \)
-!   * \( (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)             \)
-!   * \( (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h)               \)
-!   * \( (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h)     \)
-!   * \( (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h)     \)
+!   * \( (f(x+h)-f(x)) / h \)
+!   * \( (f(x)-f(x-h)) / h \)
+!   * \( (f(x+h)-f(x-h)) / (2h) \)
+!   * \( (-3f(x)+4f(x+h)-f(x+2h)) / (2h) \)
+!   * \( (f(x-2h)-4f(x-h)+3f(x)) / (2h) \)
+!   * \( (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h) \)
+!   * \( (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h) \)
+!   * \( (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h) \)
+!   * \( (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h) \)
+!   * \( (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h) \)
+!   * \( (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h) \)
+!   * \( (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h) \)
 !   * \( (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h) \)
-!   * \( (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)  \)
-!   * \( (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h) ])
-!   * \( (-2f(x-3h)+15f(x-2h)-60f(x-h)+20f(x)+30f(x+h)-3f(x+2h)) / (60h) ])
-!   * \( (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h) ])
-!   * \( (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h) ])
-!   * \( (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h) ])
-!   * \( (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h) ])
+!   * \( (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h) \)
+!   * \( (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h) \)
+!   * \( (-2f(x-3h)+15f(x-2h)-60f(x-h)+20f(x)+30f(x+h)-3f(x+2h)) / (60h) \)
+!   * \( (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h) \)
+!   * \( (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h) \)
+!   * \( (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h) \)
+!   * \( (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h) \)
+!   * \( (-f(x-3h)+9f(x-2h)-45f(x-h)+45f(x+h)-9f(x+2h)+f(x+3h)) / (60h) \)
+!   * \( (2f(x-2h)-24f(x-h)-35f(x)+80f(x+h)-30f(x+2h)+8f(x+3h)-f(x+4h)) / (60h) \)
+!   * \( (f(x-4h)-8f(x-3h)+30f(x-2h)-80f(x-h)+35f(x)+24f(x+h)-2f(x+2h)) / (60h) \)
+!   * \( (-10f(x-h)-77f(x)+150f(x+h)-100f(x+2h)+50f(x+3h)-15f(x+4h)+2f(x+5h)) / (60h) \)
+!   * \( (-2f(x-5h)+15f(x-4h)-50f(x-3h)+100f(x-2h)-150f(x-h)+77f(x)+10f(x+h)) / (60h) \)
+!   * \( (-147f(x)+360f(x+h)-450f(x+2h)+400f(x+3h)-225f(x+4h)+72f(x+5h)-10f(x+6h)) / (60h) \)
+!   * \( (10f(x-6h)-72f(x-5h)+225f(x-4h)-400f(x-3h)+450f(x-2h)-360f(x-h)+147f(x)) / (60h) \)
+!   * \( (3f(x-4h)-32f(x-3h)+168f(x-2h)-672f(x-h)+672f(x+h)-168f(x+2h)+32f(x+3h)-3f(x+4h)) / (840h) \)
+!   * \( (-5f(x-3h)+60f(x-2h)-420f(x-h)-378f(x)+1050f(x+h)-420f(x+2h)+140f(x+3h)-30f(x+4h)+3f(x+5h)) / (840h) \)
+!   * \( (-3f(x-5h)+30f(x-4h)-140f(x-3h)+420f(x-2h)-1050f(x-h)+378f(x)+420f(x+h)-60f(x+2h)+5f(x+3h)) / (840h) \)
+!   * \( (15f(x-2h)-240f(x-h)-798f(x)+1680f(x+h)-1050f(x+2h)+560f(x+3h)-210f(x+4h)+48f(x+5h)-5f(x+6h)) / (840h) \)
+!   * \( (5f(x-6h)-48f(x-5h)+210f(x-4h)-560f(x-3h)+1050f(x-2h)-1680f(x-h)+798f(x)+240f(x+h)-15f(x+2h)) / (840h) \)
+!   * \( (-105f(x-h)-1338f(x)+2940f(x+h)-2940f(x+2h)+2450f(x+3h)-1470f(x+4h)+588f(x+5h)-140f(x+6h)+15f(x+7h)) / (840h) \)
+!   * \( (-15f(x-7h)+140f(x-6h)-588f(x-5h)+1470f(x-4h)-2450f(x-3h)+2940f(x-2h)-2940f(x-h)+1338f(x)+105f(x+h)) / (840h) \)
+!   * \( (-2283f(x)+6720f(x+h)-11760f(x+2h)+15680f(x+3h)-14700f(x+4h)+9408f(x+5h)-3920f(x+6h)+960f(x+7h)-105f(x+8h)) / (840h) \)
+!   * \( (105f(x-8h)-960f(x-7h)+3920f(x-6h)-9408f(x-5h)+14700f(x-4h)-15680f(x-3h)+11760f(x-2h)-6720f(x-h)+2283f(x)) / (840h) \)
 !
 !  Where \(f(x)\) is the user-defined function of \(x\)
 !  and \(h\) is a "small" perturbation.
+!
+!### References
+!  * G. E. Mullges, F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.
+!  * G. W. Griffiths, "Numerical Analysis Using R", Cambridge University Press, 2016.
 !
 !@note This is the only routine that has to be changed if a new
 !      finite difference method is added.
@@ -489,48 +513,58 @@
     found = .true.
 
     select case (id)
+
+    ! 2 point methods
     case(1)
         ! (f(x+h)-f(x)) / h
-        fd = finite_diff_method(id,'2-point forward',    2,[1,0],[1,-1],1)
+        fd = finite_diff_method(id,'2-point forward 1',    2,[1,0],[1,-1],1)
     case(2)
         ! (f(x)-f(x-h)) / h
-        fd = finite_diff_method(id,'2-point backward',   2,[0,-1],[1,-1],1)
+        fd = finite_diff_method(id,'2-point backward 1',   2,[0,-1],[1,-1],1)
+
+    ! 3 point methods
     case(3)
         ! (f(x+h)-f(x-h)) / (2h)
         fd = finite_diff_method(id,'3-point central',    3,[1,-1],[1,-1],2)
     case(4)
         ! (-3f(x)+4f(x+h)-f(x+2h)) / (2h)
-        fd = finite_diff_method(id,'3-point forward',    3,[0,1,2],[-3,4,-1],2)
+        fd = finite_diff_method(id,'3-point forward 2',    3,[0,1,2],[-3,4,-1],2)
     case(5)
         ! (f(x-2h)-4f(x-h)+3f(x)) / (2h)
-        fd = finite_diff_method(id,'3-point backward',   3,[-2,-1,0],[1,-4,3],2)
+        fd = finite_diff_method(id,'3-point backward 2',   3,[-2,-1,0],[1,-4,3],2)
+
+    ! 4 point methods
     case(6)
         ! (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)
-        fd = finite_diff_method(id,'4-point forward 1',  4,[-1,0,1,2],[-2,-3,6,-1],6)
+        fd = finite_diff_method(id,'4-point forward 2',  4,[-1,0,1,2],[-2,-3,6,-1],6)
     case(7)
         ! (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)
-        fd = finite_diff_method(id,'4-point backward 1', 4,[-2,-1,0,1],[1,-6,3,2],6)
+        fd = finite_diff_method(id,'4-point backward 2', 4,[-2,-1,0,1],[1,-6,3,2],6)
     case(8)
         ! (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)
-        fd = finite_diff_method(id,'4-point forward 2',  4,[0,1,2,3],[-11,18,-9,2],6)
+        fd = finite_diff_method(id,'4-point forward 3',  4,[0,1,2,3],[-11,18,-9,2],6)
     case(9)
         ! (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)
-        fd = finite_diff_method(id,'4-point backward 2', 4,[-3,-2,-1,0],[-2,9,-18,11],6)
+        fd = finite_diff_method(id,'4-point backward 3', 4,[-3,-2,-1,0],[-2,9,-18,11],6)
+
+    ! 5 point methods
     case(10)
         ! (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h)
         fd = finite_diff_method(id,'5-point central',    5,[-2,-1,1,2],[1,-8,8,-1],12)
     case(11)
         ! (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h)
-        fd = finite_diff_method(id,'5-point forward 2',  5,[-1,0,1,2,3],[-3,-10,18,-6,1],12)
+        fd = finite_diff_method(id,'5-point forward 3',  5,[-1,0,1,2,3],[-3,-10,18,-6,1],12)
     case(12)
         ! (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h)
-        fd = finite_diff_method(id,'5-point backward 2', 5,[-3,-2,-1,0,1],[-1,6,-18,10,3],12)
+        fd = finite_diff_method(id,'5-point backward 3', 5,[-3,-2,-1,0,1],[-1,6,-18,10,3],12)
     case(13)
         ! (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h)
-        fd = finite_diff_method(id,'5-point forward 1',  5,[0,1,2,3,4],[-25,48,-36,16,-3],12)
+        fd = finite_diff_method(id,'5-point forward 4',  5,[0,1,2,3,4],[-25,48,-36,16,-3],12)
     case(14)
         ! (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)
-        fd = finite_diff_method(id,'5-point backward 1', 5,[-4,-3,-2,-1,0],[3,-16,36,-48,25],12)
+        fd = finite_diff_method(id,'5-point backward 4', 5,[-4,-3,-2,-1,0],[3,-16,36,-48,25],12)
+
+    ! 6 point methods
     case(15)
         ! (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h)
         fd = finite_diff_method(id,'6-point forward 3',  6,[-2,-1,0,1,2,3],[3,-30,-20,60,-15,2],60)
@@ -539,16 +573,82 @@
         fd = finite_diff_method(id,'6-point backward 3', 6,[-3,-2,-1,0,1,2],[-2,15,-60,20,30,-3],60)
     case(17)
         ! (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h)
-        fd = finite_diff_method(id,'6-point forward 2',  6,[-1,0,1,2,3,4],[-12,-65,120,-60,20,-3],60)
+        fd = finite_diff_method(id,'6-point forward 4',  6,[-1,0,1,2,3,4],[-12,-65,120,-60,20,-3],60)
     case(18)
         ! (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h)
-        fd = finite_diff_method(id,'6-point backward 2', 6,[-4,-3,-2,-1,0,1],[3,-20,60,-120,65,12],60)
+        fd = finite_diff_method(id,'6-point backward 4', 6,[-4,-3,-2,-1,0,1],[3,-20,60,-120,65,12],60)
     case(19)
         ! (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h)
-        fd = finite_diff_method(id,'6-point forward 1',  6,[0,1,2,3,4,5],[-137,300,-300,200,-75,12],60)
+        fd = finite_diff_method(id,'6-point forward 5',  6,[0,1,2,3,4,5],[-137,300,-300,200,-75,12],60)
     case(20)
         ! (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h)
-        fd = finite_diff_method(id,'6-point backward 1', 6,[-5,-4,-3,-2,-1,0],[-12,75,-200,300,-300,137],60)
+        fd = finite_diff_method(id,'6-point backward 5', 6,[-5,-4,-3,-2,-1,0],[-12,75,-200,300,-300,137],60)
+
+    ! 7 point methods
+    case(21)
+        ! (-f(x-3h)+9f(x-2h)-45f(x-h)+45f(x+h)-9f(x+2h)+f(x+3h)) / (60h)
+        fd = finite_diff_method(id,'7-point central', 7,[-3,-2,-1,1,2,3],[-1,9,-45,45,-9,1],60)
+    case(22)
+        ! (2f(x-2h)-24f(x-h)-35f(x)+80f(x+h)-30f(x+2h)+8f(x+3h)-f(x+4h)) / (60h)
+        fd = finite_diff_method(id,'7-point forward 4', 7,[-2,-1,0,1,2,3,4],[2,-24,-35,80,-30,8,-1],60)
+    case(23)
+        ! (f(x-4h)-8f(x-3h)+30f(x-2h)-80f(x-h)+35f(x)+24f(x+h)-2f(x+2h)) / (60h)
+        fd = finite_diff_method(id,'7-point backward 4', 7,[-4,-3,-2,-1,0,1,2],[1,-8,30,-80,35,24,-2],60)
+    case(24)
+        ! (-10f(x-h)-77f(x)+150f(x+h)-100f(x+2h)+50f(x+3h)-15f(x+4h)+2f(x+5h)) / (60h)
+        fd = finite_diff_method(id,'7-point forward 5', 7,[-1,0,1,2,3,4,5],[-10,-77,150,-100,50,-15,2],60)
+    case(25)
+        ! (-2f(x-5h)+15f(x-4h)-50f(x-3h)+100f(x-2h)-150f(x-h)+77f(x)+10f(x+h)) / (60h)
+        fd = finite_diff_method(id,'7-point backward 5', 7,[-5,-4,-3,-2,-1,0,1],[-2,15,-50,100,-150,77,10],60)
+    case(26)
+        ! (-147f(x)+360f(x+h)-450f(x+2h)+400f(x+3h)-225f(x+4h)+72f(x+5h)-10f(x+6h)) / (60h)
+        fd = finite_diff_method(id,'7-point forward 6', 7,[0,1,2,3,4,5,6],[-147,360,-450,400,-225,72,-10],60)
+    case(27)
+        ! (10f(x-6h)-72f(x-5h)+225f(x-4h)-400f(x-3h)+450f(x-2h)-360f(x-h)+147f(x)) / (60h)
+        fd = finite_diff_method(id,'7-point backward 6', 7,[-6,-5,-4,-3,-2,-1,0],[10,-72,225,-400,450,-360,147],60)
+
+    ! 8 point methods - not coded up yet
+    case(28:35)
+        fd = finite_diff_method(0,'NOT AVAILABLE YET', 8,[0],[0],1)
+
+    ! 9 point methods
+    case(36)
+        ! (3f(x-4h)-32f(x-3h)+168f(x-2h)-672f(x-h)+672f(x+h)-168f(x+2h)+32f(x+3h)-3f(x+4h)) / (840h)
+        fd = finite_diff_method(id,'9-point central',    &
+                9,[-4,-3,-2,-1,1,2,3,4],[3,-32,168,-672,672,-168,32,-3],840)
+    case(37)
+        ! (-5f(x-3h)+60f(x-2h)-420f(x-h)-378f(x)+1050f(x+h)-420f(x+2h)+140f(x+3h)-30f(x+4h)+3f(x+5h)) / (840h)
+        fd = finite_diff_method(id,'9-point forward 5',  &
+                9,[-3,-2,-1,0,1,2,3,4,5],[-5,60,-420,-378,1050,-420,140,-30,3],840)
+    case(38)
+        ! (-3f(x-5h)+30f(x-4h)-140f(x-3h)+420f(x-2h)-1050f(x-h)+378f(x)+420f(x+h)-60f(x+2h)+5f(x+3h)) / (840h)
+        fd = finite_diff_method(id,'9-point backward 5', &
+                9,[-5,-4,-3,-2,-1,0,1,2,3],[-3,30,-140,420,-1050,378,420,-60,5],840)
+    case(39)
+        ! (15f(x-2h)-240f(x-h)-798f(x)+1680f(x+h)-1050f(x+2h)+560f(x+3h)-210f(x+4h)+48f(x+5h)-5f(x+6h)) / (840h)
+        fd = finite_diff_method(id,'9-point forward 6',  &
+                9,[-2,-1,0,1,2,3,4,5,6],[15,-240,-798,1680,-1050,560,-210,48,-5],840)
+    case(40)
+        ! (5f(x-6h)-48f(x-5h)+210f(x-4h)-560f(x-3h)+1050f(x-2h)-1680f(x-h)+798f(x)+240f(x+h)-15f(x+2h)) / (840h)
+        fd = finite_diff_method(id,'9-point backward 6', &
+                9,[-6,-5,-4,-3,-2,-1,0,1,2],[5,-48,210,-560,1050,-1680,798,240,-15],840)
+    case(41)
+        ! (-105f(x-h)-1338f(x)+2940f(x+h)-2940f(x+2h)+2450f(x+3h)-1470f(x+4h)+588f(x+5h)-140f(x+6h)+15f(x+7h)) / (840h)
+        fd = finite_diff_method(id,'9-point forward 7',  &
+                9,[-1,0,1,2,3,4,5,6,7],[-105,-1338,2940,-2940,2450,-1470,588,-140,15],840)
+    case(42)
+        ! (-15f(x-7h)+140f(x-6h)-588f(x-5h)+1470f(x-4h)-2450f(x-3h)+2940f(x-2h)-2940f(x-h)+1338f(x)+105f(x+h)) / (840h)
+        fd = finite_diff_method(id,'9-point backward 7', &
+                9,[-7,-6,-5,-4,-3,-2,-1,0,1],[-15,140,-588,1470,-2450,2940,-2940,1338,105],840)
+    case(43)
+        ! (-2283f(x)+6720f(x+h)-11760f(x+2h)+15680f(x+3h)-14700f(x+4h)+9408f(x+5h)-3920f(x+6h)+960f(x+7h)-105f(x+8h)) / (840h)
+        fd = finite_diff_method(id,'9-point forward 8',  &
+                9,[0,1,2,3,4,5,6,7,8],[-2283,6720,-11760,15680,-14700,9408,-3920,960,-105],840)
+    case(44)
+        ! (105f(x-8h)-960f(x-7h)+3920f(x-6h)-9408f(x-5h)+14700f(x-4h)-15680f(x-3h)+11760f(x-2h)-6720f(x-h)+2283f(x)) / (840h)
+        fd = finite_diff_method(id,'9-point backward 8', &
+                9,[-8,-7,-6,-5,-4,-3,-2,-1,0],[105,-960,3920,-9408,14700,-15680,11760,-6720,2283],840)
+
     case default
         found = .false.
     end select
@@ -1377,8 +1477,6 @@
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
-    !write(*,*) '**perturb_x_and_compute_f**'
-
     xp = x
     if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
     call me%compute_function(xp,f,idx)
@@ -1500,8 +1598,6 @@
     logical :: status_ok   !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
 
-    !write(*,*) '***compute_jacobian_standard***'
-
     ! initialize:
     jac = zero
 
@@ -1513,10 +1609,6 @@
         if (num_nonzero_elements_in_col/=0) then ! there are functions to compute
 
             nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
-
-            ! write(*,*) ''
-            ! write(*,*) 'nonzero_elements_in_col:',nonzero_elements_in_col
-            ! write(*,*) ''
 
             select case (me%mode)
             case(1) ! use the specified methods

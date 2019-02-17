@@ -31,8 +31,13 @@
     integer,parameter :: cache_size = 0 !! `0` indicates not to use cache
     !integer,parameter :: cache_size = 1000 ! use cache
 
-    do i=1,20  ! try different finite diff methods
+    do i=1,44  ! try different finite diff methods
 
+        call get_finite_diff_formula(i,formula)
+        if (formula=='') then
+            write(output_unit,*) 'id ', i , 'not available'
+            cycle
+        end if
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
@@ -41,7 +46,6 @@
                                 partition_sparsity_pattern=.false.,&
                                 cache_size=cache_size)
 
-        call get_finite_diff_formula(i,formula)
         call my_prob%compute_jacobian(x,jac)
 
         if (i==1) then
@@ -66,7 +70,13 @@
 
     end do
 
-    do i=1,20  ! try different finite diff methods
+    do i=1,44  ! try different finite diff methods
+
+        call get_finite_diff_formula(i,formula)
+        if (formula=='') then
+            write(output_unit,*) 'id ', i , 'not available'
+            cycle
+        end if
 
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
@@ -76,7 +86,6 @@
                                 partition_sparsity_pattern=.true.,&
                                 cache_size=cache_size)
 
-        call get_finite_diff_formula(i,formula)
         call my_prob%compute_jacobian(x,jac)
 
         if (i==1) then
@@ -118,7 +127,9 @@
     write(output_unit,'(A)') formula
     write(output_unit,'(A)') ''
 
-    do i=2,6
+    do i=2,9
+
+        if (i==8) cycle
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'
@@ -140,7 +151,9 @@
 
     end do
 
-    do i=2,6
+    do i=2,9
+
+        if (i==8) cycle
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'

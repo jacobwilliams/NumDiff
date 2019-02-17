@@ -3,10 +3,10 @@
 !
 !  For caching function evaluations.
 
-    module cache_module
+    module numdiff_cache_module
 
-    use kinds_module
-    use iso_fortran_env, only: ip => int64  ! same number of bits are real(wp)
+    use numdiff_kinds_module
+    use iso_fortran_env, only: ip => int64  ! same number of bits as real(wp)
 
     implicit none
 
@@ -173,7 +173,7 @@
 
     subroutine put_in_cache(me,i,x,f,ifs)
 
-    use utilities_module,   only: unique
+    use numdiff_utilities_module,   only: unique
 
     implicit none
 
@@ -271,5 +271,5 @@
 !*******************************************************************************
 
 !*******************************************************************************
-    end module cache_module
+    end module numdiff_cache_module
 !*******************************************************************************

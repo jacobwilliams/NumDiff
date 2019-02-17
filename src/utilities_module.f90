@@ -3,9 +3,9 @@
 !
 !  Utility routines.
 
-    module utilities_module
+    module numdiff_utilities_module
 
-    use kinds_module
+    use numdiff_kinds_module
 
     integer,parameter :: max_size_for_insertion_sort = 20 !! max size for using insertion sort.
 
@@ -207,5 +207,5 @@
 !*******************************************************************************
 
 !*******************************************************************************
-    end module utilities_module
+    end module numdiff_utilities_module
 !*******************************************************************************

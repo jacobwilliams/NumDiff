@@ -2,7 +2,7 @@
 !>
 !  Numeric kinds for NumDiff.
 
-    module kinds_module
+    module numdiff_kinds_module
 
     use iso_fortran_env, only: real64
 
@@ -10,5 +10,5 @@
 
     integer,parameter,public :: wp = real64  !! default real kind
 
-    end module kinds_module
+    end module numdiff_kinds_module
 !*******************************************************************************

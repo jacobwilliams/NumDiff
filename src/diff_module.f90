@@ -15,7 +15,7 @@
 
     module diff_module
 
-    use kinds_module
+    use numdiff_kinds_module
 
     implicit none
 
