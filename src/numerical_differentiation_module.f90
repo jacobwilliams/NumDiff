@@ -1466,15 +1466,15 @@
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
 
-    integer                   :: Mingrp  !! for call to [[dsm]]
-    integer                   :: Info    !! for call to [[dsm]]
+    integer                   :: mingrp  !! for call to [[dsm]]
+    integer                   :: info    !! for call to [[dsm]]
     integer,dimension(me%m+1) :: ipntr   !! for call to [[dsm]]
     integer,dimension(me%n+1) :: jpntr   !! for call to [[dsm]]
 
-    real(wp),dimension(3),parameter :: coeffs = [0.251234567_wp,&
-                                                 0.512345678_wp,&
-                                                 0.751234567_wp]
-        !! Pick three points roughly equally spaced.
+    real(wp),dimension(3),parameter :: coeffs = [0.25123456787654321_wp,&
+                                                 0.50123456787654321_wp,&
+                                                 0.75123456787654321_wp]
+        !! Pick three pseud-random points roughly equally spaced.
         !! (add some noise in attempt to avoid freak zeros)
         !!````
         !! xlow---|----|--x--|---xhigh
