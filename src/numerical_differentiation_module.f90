@@ -106,6 +106,8 @@
 
         logical :: partition_sparsity_pattern = .false.  !! to partition the sparsity pattern using [[dsm]]
         type(sparsity_pattern) :: sparsity  !! the sparsity pattern
+        real(wp),dimension(:),allocatable :: xlow_for_sparsity  !! lower bounds on `x` for computing sparsity (optional)
+        real(wp),dimension(:),allocatable :: xhigh_for_sparsity !! upper bounds on `x` for computing sparsity (optional)
 
         integer :: mode = 1 !! **1** = use `meth` (specified methods),
                             !! **2** = use `class` (specified class, method is selected on-the-fly).
@@ -179,6 +181,7 @@
         procedure :: compute_perturbation_vector   !! computes the variable perturbation factor
         procedure :: perturb_x_and_compute_f
         procedure :: perturb_x_and_compute_f_partitioned
+        procedure :: set_numdiff_sparsity_bounds
 
     end type numdiff_type
 
@@ -259,7 +262,8 @@
     integer,intent(in)              :: df_den_factor !! denominator factor for finite difference equation (times dx)
 
     if (size(dx_factors)/=size(df_factors)) then
-        error stop 'Error: dx_factors and df_factors arrays must be the same size.'
+        error stop 'Error in initialize_finite_difference_method: '//&
+                   'dx_factors and df_factors arrays must be the same size.'
     else
 
         me%id     = id
@@ -830,7 +834,8 @@
 
     subroutine initialize_numdiff_for_diff(me,n,m,xlow,xhigh,&
                                     problem_func,sparsity_mode,info,&
-                                    chunk_size,eps,acc,cache_size)
+                                    chunk_size,eps,acc,cache_size,&
+                                    xlow_for_sparsity,xhigh_for_sparsity)
 
     implicit none
 
@@ -860,6 +865,14 @@
     integer,intent(in),optional      :: cache_size    !! if present, this is the cache size
                                                       !! for the function cache
                                                       !! (default is not to enable cache)
+    real(wp),dimension(n),intent(in),optional :: xlow_for_sparsity   !! lower bounds on `x` used for
+                                                                     !! sparsity computation (when
+                                                                     !! `sparsity_mode` is 2). If not
+                                                                     !! present, then `xlow` is used.
+    real(wp),dimension(n),intent(in),optional :: xhigh_for_sparsity  !! upper bounds on `x` used for
+                                                                     !! sparsity computation (when
+                                                                     !! `sparsity_mode` is 2). If not
+                                                                     !! present, then `xhigh` is used.
 
     logical :: cache  !! if the cache is to be used
 
@@ -880,24 +893,27 @@
     me%problem_func      => problem_func
     me%jacobian_function => compute_jacobian_with_diff
 
-    ! set the sparsity function
-    select case (sparsity_mode)
-    case(1)  ! dense
-        me%compute_sparsity => compute_sparsity_dense
-    case(2)  ! three-point method
-        me%compute_sparsity => compute_sparsity_random
-    case(3)  ! user defined
-        me%compute_sparsity => null()
-    case default
-        error stop 'Error: sparsity_mode must be 1, 2, or 3.'
-    end select
-
     ! size of the problem:
     me%n = n
     me%m = m
 
     ! input variable bounds:
     call me%set_numdiff_bounds(xlow,xhigh)
+
+    ! set the sparsity function
+    select case (sparsity_mode)
+    case(1)  ! dense
+        me%compute_sparsity => compute_sparsity_dense
+    case(2)  ! three-point method
+        me%compute_sparsity => compute_sparsity_random
+        ! in this case, we have the option of specifying
+        ! separate bounds for computing the sparsity:
+        call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
+    case(3)  ! user defined
+        me%compute_sparsity => null()
+    case default
+        error stop 'Error in initialize_numdiff_for_diff: sparsity_mode must be 1, 2, or 3.'
+    end select
 
     ! optional:
     if (present(chunk_size)) me%chunk_size = abs(chunk_size)
@@ -912,6 +928,9 @@
 !>
 !  Change the variable bounds in a [[numdiff_type]].
 !
+!### See also
+!  * [[set_numdiff_sparstiy_bounds]]
+!
 !@note The bounds must be set when the class is initialized,
 !      but this routine can be used to change them later if required.
 
@@ -923,13 +942,14 @@
     real(wp),dimension(:),intent(in)  :: xlow    !! lower bounds on `x`
     real(wp),dimension(:),intent(in)  :: xhigh   !! upper bounds on `x`
 
+    if (allocated(me%xlow)) deallocate(me%xlow)
+    if (allocated(me%xhigh)) deallocate(me%xhigh)
+
     if (size(xlow)/=me%n .or. size(xhigh)/=me%n) then
-        error stop 'error in set_numdiff_bounds: invalid size of xlow or xhigh'
+        error stop 'Error in set_numdiff_bounds: invalid size of xlow or xhigh'
     else if (any(xlow>=xhigh)) then
-        error stop 'Error: all xlow must be < xhigh'
+        error stop 'Error in set_numdiff_bounds: all xlow must be < xhigh'
     else
-        if (allocated(me%xlow)) deallocate(me%xlow)
-        if (allocated(me%xhigh)) deallocate(me%xhigh)
         allocate(me%xlow(me%n))
         allocate(me%xhigh(me%n))
         me%xlow  = xlow
@@ -937,6 +957,58 @@
     end if
 
     end subroutine set_numdiff_bounds
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Sets the variable bounds for sparsity in a [[numdiff_type]].
+!  These are only used for `sparsity_mode=2`.
+!
+!### See also
+!  * [[set_numdiff_bounds]]
+!
+!@note This routine assumes that `xlow` and `xhigh` have already
+!      been set in the class.
+
+    subroutine set_numdiff_sparsity_bounds(me,xlow,xhigh)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in),optional  :: xlow  !! lower bounds on `x` to be used for
+                                                        !! sparsity computation. If not present,
+                                                        !! then then `xlow` values in the class are used.
+    real(wp),dimension(:),intent(in),optional  :: xhigh !! upper bounds on `x` to be used for
+                                                        !! sparsity computation. If not present,
+                                                        !! then then `xhigh` values in the class are used.
+
+    if (allocated(me%xlow_for_sparsity)) deallocate(me%xlow_for_sparsity)
+    if (allocated(me%xhigh_for_sparsity)) deallocate(me%xhigh_for_sparsity)
+
+    if (.not. present(xlow)) then
+        allocate(me%xlow_for_sparsity(size(me%xlow)))
+        me%xlow_for_sparsity = me%xlow
+    else
+        allocate(me%xlow_for_sparsity(size(xlow)))
+        me%xlow_for_sparsity = xlow
+    end if
+
+    if (.not. present(xhigh)) then
+        allocate(me%xhigh_for_sparsity(size(me%xhigh)))
+        me%xhigh_for_sparsity = me%xhigh
+    else
+        allocate(me%xhigh_for_sparsity(size(xhigh)))
+        me%xhigh_for_sparsity = xhigh
+    end if
+
+    ! error checks:
+    if (size(me%xlow_for_sparsity)/=me%n .or. size(me%xhigh_for_sparsity)/=me%n) then
+        error stop 'Error in set_numdiff_sparstiy_bounds: invalid size of xlow or xhigh'
+    else if (any(me%xlow_for_sparsity>=me%xhigh_for_sparsity)) then
+        error stop 'Error in set_numdiff_sparstiy_bounds: all xlow must be < xhigh'
+    end if
+
+    end subroutine set_numdiff_sparsity_bounds
 !*******************************************************************************
 
 !*******************************************************************************
@@ -949,7 +1021,7 @@
     subroutine initialize_numdiff(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_mode,jacobian_method,jacobian_methods,&
                         class,classes,info,chunk_size,partition_sparsity_pattern,&
-                        cache_size)
+                        cache_size,xlow_for_sparsity,xhigh_for_sparsity)
 
     implicit none
 
@@ -995,6 +1067,15 @@
     integer,intent(in),optional      :: cache_size    !! if present, this is the cache size
                                                       !! for the function cache
                                                       !! (default is not to enable cache)
+    real(wp),dimension(n),intent(in),optional :: xlow_for_sparsity   !! lower bounds on `x` used for
+                                                                     !! sparsity computation (when
+                                                                     !! `sparsity_mode` is 2). If not
+                                                                     !! present, then `xlow` is used.
+    real(wp),dimension(n),intent(in),optional :: xhigh_for_sparsity  !! upper bounds on `x` used for
+                                                                     !! sparsity computation (when
+                                                                     !! `sparsity_mode` is 2). If not
+                                                                     !! present, then `xhigh` is used.
+
 
     integer :: i !! counter
     logical :: found
@@ -1034,7 +1115,7 @@
         allocate(me%meth(n))
         do i=1,n
             call get_finite_difference_method(jacobian_method,me%meth(i),found)
-            if (.not. found) error stop 'Error: invalid jacobian_method'
+            if (.not. found) error stop 'Error in initialize_numdiff: invalid jacobian_method'
         end do
     elseif (.not. present(jacobian_method) .and. present(jacobian_methods) .and. &
             .not. present(class) .and. .not. present(classes)) then
@@ -1043,10 +1124,11 @@
         allocate(me%meth(n))
         do i=1,n
             call get_finite_difference_method(jacobian_methods(i),me%meth(i),found)
-            if (.not. found) error stop 'Error: invalid jacobian_methods'
+            if (.not. found) error stop 'Error in initialize_numdiff: invalid jacobian_methods'
         end do
-        if (me%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
-            'sparsity pattern, all columns must use the same finite diff method.'
+        if (me%partition_sparsity_pattern) error stop 'Error in initialize_numdiff: '//&
+            'when using partitioned sparsity pattern, all columns must use the same '//&
+            'finite diff method.'
     elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
                   present(class) .and. .not. present(classes)) then
         ! use the class for all variables
@@ -1065,10 +1147,12 @@
         do i=1,n
             me%class_meths(i) = get_all_methods_in_class(me%class(i))
         end do
-        if (me%partition_sparsity_pattern) error stop 'Error: when using partitioned '//&
-            'sparsity pattern, all columns must use the same finite diff method.'
+        if (me%partition_sparsity_pattern) error stop 'Error in initialize_numdiff: '//&
+            'when using partitioned sparsity pattern, all columns must use the same '//&
+            'finite diff method.'
     else
-        error stop 'Error: must specify one of either jacobian_method, jacobian_methods, class, or classes.'
+        error stop 'Error in initialize_numdiff: must specify one of either '//&
+                   'jacobian_method, jacobian_methods, class, or classes.'
     end if
 
     ! size of the problem:
@@ -1083,7 +1167,7 @@
     case(1:3)
         me%perturb_mode = perturb_mode
     case default
-        error stop 'Error: perturb_mode must be 1, 2, or 3.'
+        error stop 'Error in initialize_numdiff: perturb_mode must be 1, 2, or 3.'
     end select
     if (allocated(me%dpert)) deallocate(me%dpert)
     allocate(me%dpert(n))
@@ -1106,10 +1190,13 @@
         me%compute_sparsity => compute_sparsity_dense
     case(2)  ! three-point method
         me%compute_sparsity => compute_sparsity_random
+        ! in this case, we have the option of specifying
+        ! separate bounds for computing the sparsity:
+        call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
     case(3)  ! user defined
         me%compute_sparsity => null()
     case default
-        error stop 'Error: sparsity_mode must be 1, 2, or 3.'
+        error stop 'Error in initialize_numdiff: sparsity_mode must be 1, 2, or 3.'
     end select
 
     end subroutine initialize_numdiff
@@ -1195,7 +1282,8 @@
         end do
 
     else
-        error stop 'Error: the partition has not been computed.'
+        error stop 'Error in columns_in_partition_group: '//&
+                   'the partition has not been computed.'
     end if
 
     end subroutine columns_in_partition_group
@@ -1228,7 +1316,7 @@
     integer,dimension(:),intent(in)   :: irow  !! sparsity pattern nonzero elements row indices
     integer,dimension(:),intent(in)   :: icol  !! sparsity pattern nonzero elements column indices
 
-    integer                   :: Mingrp !! for call to [[dsm]]
+    integer                   :: mingrp !! for call to [[dsm]]
     integer                   :: Info   !! for call to [[dsm]]
     integer,dimension(me%m+1) :: ipntr  !! for call to [[dsm]]
     integer,dimension(me%n+1) :: jpntr  !! for call to [[dsm]]
@@ -1237,7 +1325,8 @@
     call me%destroy_sparsity_pattern()
 
     if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
-        error stop 'Error: invalid inputs to set_sparsity_pattern'
+        error stop 'Error in set_sparsity_pattern: '//&
+                   'invalid inputs to set_sparsity_pattern'
     else
 
         me%sparsity%sparsity_computed = .true.
@@ -1255,7 +1344,8 @@
                          s%irow,s%icol,&
                          s%ngrp,s%maxgrp,&
                          mingrp,info,ipntr,jpntr)
-                if (info/=1) error stop 'Error partitioning sparsity pattern.'
+                if (info/=1) error stop 'Error in set_sparsity_pattern: '//&
+                                        'error partitioning sparsity pattern.'
                 ! restore the original one, since it is used elsewhere:
                 s%irow = irow
                 s%icol = icol
@@ -1361,42 +1451,51 @@
         !!        1    2     3
         !!````
 
-    ! initialize:
-    call me%destroy_sparsity_pattern()
+    ! error check:
+    if (.not. allocated(me%xlow_for_sparsity) .or. .not. allocated(me%xhigh_for_sparsity)) then
+        error stop 'Error in compute_sparsity_random: the x bounds have not been set.'
+    end if
 
-    ! we will compute all the functions:
-    idx = [(i,i=1,me%m)]
+    associate (xlow => me%xlow_for_sparsity, xhigh => me%xhigh_for_sparsity)
 
-    n_icol = 0  ! initialize vector size counters
-    n_irow = 0
+        ! initialize:
+        call me%destroy_sparsity_pattern()
 
-    ! define a nominal point roughly in the middle:
-    x2 = me%xlow + (me%xhigh-me%xlow)*coeffs(2)
-    call me%compute_function(x2,f2,idx)
+        ! we will compute all the functions:
+        idx = [(i,i=1,me%m)]
 
-    do i = 1, me%n  ! columns
+        n_icol = 0  ! initialize vector size counters
+        n_irow = 0
 
-        ! restore nominal:
-        x1 = x2
-        x3 = x2
+        ! define a nominal point roughly in the middle:
+        x2 = me%xlow + (me%xhigh-me%xlow)*coeffs(2)
+        call me%compute_function(x2,f2,idx)
 
-        x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(1)
-        x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(3)
+        do i = 1, me%n  ! columns
 
-        call me%compute_function(x1,f1,idx)
-        call me%compute_function(x3,f3,idx)
+            ! restore nominal:
+            x1 = x2
+            x3 = x2
 
-        do j = 1, me%m ! each function (rows of Jacobian)
-            if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
-                call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
-                call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
-            end if
+            x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(1)
+            x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(3)
+
+            call me%compute_function(x1,f1,idx)
+            call me%compute_function(x3,f3,idx)
+
+            do j = 1, me%m ! each function (rows of Jacobian)
+                if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
+                    call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
+                    call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
+                end if
+            end do
+            ! resize to correct size:
+            call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
+            call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
+
         end do
-        ! resize to correct size:
-        call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
-        call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
 
-    end do
+    end associate
 
     me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
 
@@ -1410,7 +1509,8 @@
                      s%irow,s%icol,&
                      s%ngrp,s%maxgrp,&
                      mingrp,info,ipntr,jpntr)
-            if (info/=1) error stop 'Error partitioning sparsity pattern.'
+            if (info/=1) error stop 'Error in compute_sparsity_random: '//&
+                                    'error partitioning sparsity pattern.'
         end associate
     end if
 
@@ -1555,7 +1655,6 @@
     allocate(jac(me%sparsity%num_nonzero_elements))
 
     ! compute dx vector:
-    !if (.not. associated(me%jacobian_function,compute_jacobian_with_diff)) then  ! this doesn't work with Intel compiler ...
     if (.not. me%use_diff) then
         ! only need this for the finite difference methods (not diff)
         call me%compute_perturbation_vector(x,dx)
@@ -1565,7 +1664,7 @@
     if (associated(me%jacobian_function)) then
         call me%jacobian_function(x,dx,jac)
     else
-        error stop 'Error: jacobian_function has not been associated.'
+        error stop 'Error in compute_jacobian: jacobian_function has not been associated.'
     end if
 
     end subroutine compute_jacobian
@@ -1590,11 +1689,11 @@
     integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
                                                                  !! nonzero Jacobian
                                                                  !! elements in a column
-    integer                   :: i   !! column counter
-    integer                   :: j   !! function evaluation counter
-    real(wp),dimension(me%m)  :: df  !! accumulated function
-    type(finite_diff_method)  :: fd  !! a finite different method (when
-                                     !! specifying class rather than the method)
+    integer                  :: i   !! column counter
+    integer                  :: j   !! function evaluation counter
+    real(wp),dimension(me%m) :: df  !! accumulated function
+    type(finite_diff_method) :: fd  !! a finite different method (when
+                                    !! specifying class rather than the method)
     logical :: status_ok   !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
 
@@ -1630,7 +1729,7 @@
                 call me%select_finite_diff_method(x(i),me%xlow(i),me%xhigh(i),&
                                                   dx(i),me%class_meths(i),fd,status_ok)
                 if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
-                    'Error: variable bounds violated for column: ',i
+                    'Error in compute_jacobian_standard: variable bounds violated for column: ',i
 
                 ! compute this column of the Jacobian:
                 df = zero
@@ -1644,7 +1743,7 @@
                                               (fd%df_den_factor*dx(i))
 
             case default
-                error stop 'Error: invalid mode'
+                error stop 'Error in compute_jacobian_standard: invalid mode'
             end select
 
             ! put result into the output vector:
@@ -1723,7 +1822,8 @@
         if (ifail==0 .or. ifail==1) then
             jac(i) = deriv
         else
-            error stop 'Error computing derivative with DIFF.'
+            error stop 'Error in compute_jacobian_with_diff: '//&
+                       'error computing derivative with DIFF.'
         end if
 
         if (use_info) ic_prev = ic
@@ -1837,7 +1937,8 @@
 
                     if (.not. status_ok) then
                         write(error_unit,'(A,1X,I5,1X,A,1X,*(I5,1X))') &
-                              'Error: variable bounds violated for group: ',&
+                              'Error in compute_jacobian_partitioned: '//&
+                              'variable bounds violated for group: ',&
                               igroup,'. columns: ',cols
                     end if
 
@@ -1860,7 +1961,7 @@
                     end do
 
                 case default
-                    error stop 'Error: invalid mode'
+                    error stop 'Error in compute_jacobian_partitioned: invalid mode'
                 end select
 
                 ! put result into the output vector:
@@ -1934,7 +2035,8 @@
     case(3)
         dx = abs(me%dpert) * (1.0_wp + abs(x))
     case default
-        error stop 'Error: invalid value for perturb_mode (must be 1, 2, or 3)'
+        error stop 'Error in compute_perturbation_vector: '//&
+                   'invalid value for perturb_mode (must be 1, 2, or 3)'
     end select
 
     ! make sure none are too small:
@@ -1993,7 +2095,7 @@
         end if
 
     else
-        error stop 'Error: sparsity pattern not available.'
+        error stop 'Error in print_sparsity: sparsity pattern not available.'
     end if
 
     end subroutine print_sparsity

@@ -11,7 +11,7 @@ This is currently an experimental work in progress and is not production ready. 
 - [x] Computing the nonlinear sparsity pattern
   - [x] Specified by the user
   - [x] Assume all elements `true`
-  - [x] Three random points within variable bounds
+  - [x] Three random points within variable bounds (have the option to specify separate bounds for this purpose)
 - [x] Various order finite different gradient methods
   - [x] 2-point (backward 1, forward 1)
   - [x] 3-point (backward 2, central, forward 2)
