@@ -129,8 +129,6 @@
 
     do i=2,9
 
-        if (i==8) cycle
-
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'
         write(output_unit,'(A,I2)') ' specify class [no partitioning] : ', i
@@ -152,8 +150,6 @@
     end do
 
     do i=2,9
-
-        if (i==8) cycle
 
         write(output_unit,'(A)') ''
         write(output_unit,'(A)') '-------------------'
