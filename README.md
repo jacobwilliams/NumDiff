@@ -23,6 +23,10 @@ This is currently an experimental work in progress and is not production ready. 
   - [x] 7-point (backward 6, backward 5, backward 4, central, forward 4, forward 5, forward 6)
   - [x] 8-point (backward 7, backward 6, backward 5, backward 4, forward 4, forward 5, forward 6, forward 7)
   - [x] 9-point (backward 8, backward 7, backward 6, backward 5, central, forward 5, forward 6, forward 7, forward 8)
+  - [x] 11-point (central)
+  - [x] 13-point (central)
+  - [x] 15-point (central)
+  - [x] 17-point (central)
 - [x] Perturbations should respect variable bounds
 - [x] Neville's process
 - [x] Ability to use different methods for different columns
