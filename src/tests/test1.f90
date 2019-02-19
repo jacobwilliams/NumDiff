@@ -21,17 +21,24 @@
 
     type(numdiff_type)                :: my_prob
     integer                           :: i          !! counter
+    integer                           :: j          !! counter
     real(wp),dimension(:),allocatable :: jac
     character(len=:),allocatable      :: formula
     type(finite_diff_method)          :: fd
     logical                           :: status_ok
     type(meth_array)                  :: meths
     integer                           :: func_evals  !! function evaluation counter
+    integer,dimension(:),allocatable  :: methods     !! array of method IDs
 
     integer,parameter :: cache_size = 0 !! `0` indicates not to use cache
     !integer,parameter :: cache_size = 1000 ! use cache
 
-    do i=1,44  ! try different finite diff methods
+    methods = [(i, i = 1, 44)]
+    methods = [methods, 500,600,700,800]  ! these only have central diffs
+
+    do j=1,size(methods)  ! try different finite diff methods
+
+        i = methods(j)
 
         call get_finite_diff_formula(i,formula)
         if (formula=='') then
@@ -70,7 +77,9 @@
 
     end do
 
-    do i=1,44  ! try different finite diff methods
+    do j=1,size(methods)  ! try different finite diff methods
+
+        i = methods(j)
 
         call get_finite_diff_formula(i,formula)
         if (formula=='') then
