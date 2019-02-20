@@ -31,3 +31,10 @@ bin
 *.exe
 *.out
 *.app
+
+*.sln
+*.suo
+*.vfproj
+Release
+Debug
+x64
