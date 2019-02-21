@@ -193,6 +193,10 @@
                                                                            !! for partitioned sparsity pattern.
         procedure,public :: set_numdiff_bounds  !! can be called to change the variable bounds.
 
+        procedure,public :: compute_sparsity_pattern !! if the user needs to compute the sparsity pattern manually.
+                                                     !! (otherwise it will be done the first time the Jacobian is computed)
+        procedure,public :: get_sparsity_pattern     !! returns the sparsity pattern (if it is allocated)
+
         ! internal routines:
         procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
         procedure :: compute_perturbation_vector   !! computes the variable perturbation factor
@@ -1632,6 +1636,49 @@
     me%sparsity%sparsity_computed = .true.
 
     end subroutine compute_sparsity_random
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Computes the sparsity pattern and return it. 
+!  Uses the settings currently in the class.
+
+    subroutine compute_sparsity_pattern(me,x,irow,icol)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)            :: me
+    real(wp),dimension(:),intent(in)             :: x     !! vector of variables (size `n`) 
+    integer,dimension(:),allocatable,intent(out) :: irow  !! sparsity pattern nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out) :: icol  !! sparsity pattern nonzero elements column indices
+
+    if (associated(me%compute_sparsity)) then
+        call me%compute_sparsity(x)
+        call me%get_sparsity_pattern(irow,icol)
+    end if 
+
+    end subroutine compute_sparsity_pattern
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns the sparsity pattern from the class.
+!  If it hasn't been computed, the output arrays will not be allocated.
+
+    subroutine get_sparsity_pattern(me,irow,icol)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)            :: me
+    integer,dimension(:),allocatable,intent(out) :: irow  !! sparsity pattern nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out) :: icol  !! sparsity pattern nonzero elements column indices
+
+    if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
+        irow = me%sparsity%irow 
+        icol = me%sparsity%icol 
+    end if 
+
+    end subroutine get_sparsity_pattern
 !*******************************************************************************
 
 !*******************************************************************************
