@@ -67,6 +67,11 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
+        logical :: linear_sparsity_computed = .false. !! if the linear pattern has been populated
+        integer,dimension(:),allocatable  :: linear_irow  !! linear sparsity pattern - rows of non-zero elements
+        integer,dimension(:),allocatable  :: linear_icol  !! linear sparsity pattern - columns of non-zero elements
+        real(wp),dimension(:),allocatable :: linear_vals  !! linear elements of the jacobian
+
         integer,dimension(:),allocatable :: indices  !! index vector
                                                      !! `[1,2,...,num_nonzero_elements]`
                                                      !! for putting `df` into `jac`
@@ -108,6 +113,18 @@
         type(sparsity_pattern) :: sparsity  !! the sparsity pattern
         real(wp),dimension(:),allocatable :: xlow_for_sparsity  !! lower bounds on `x` for computing sparsity (optional)
         real(wp),dimension(:),allocatable :: xhigh_for_sparsity !! upper bounds on `x` for computing sparsity (optional)
+
+        ! if computing the sparsity pattern, we also have an option to
+        ! compute the linear pattern, which indicates constant elements
+        ! of the jacobian. these elements don't need to be computed again.
+        logical :: compute_linear_sparsity_pattern = .false.  !! to also compute the linear sparsity pattern
+        real(wp) :: linear_sparsity_tol = 1.0e-12_wp !! the equality tolerance for derivatives to
+                                                     !! indicate a constant jacobian element (linear sparsity)
+
+        real(wp) :: function_precision_tol = 1.0e-16_wp !! the function precision. two functions values
+                                                        !! that are the within this tolerance are
+                                                        !! considered the same value. This is used
+                                                        !! when estimating the sparsity pattern.
 
         integer :: mode = 1 !! **1** = use `meth` (specified methods),
                             !! **2** = use `class` (specified class, method is selected on-the-fly).
@@ -990,7 +1007,7 @@
 !  Change the variable bounds in a [[numdiff_type]].
 !
 !### See also
-!  * [[set_numdiff_sparstiy_bounds]]
+!  * [[set_numdiff_sparsity_bounds]]
 !
 !@note The bounds must be set when the class is initialized,
 !      but this routine can be used to change them later if required.
@@ -1064,9 +1081,9 @@
 
     ! error checks:
     if (size(me%xlow_for_sparsity)/=me%n .or. size(me%xhigh_for_sparsity)/=me%n) then
-        error stop 'Error in set_numdiff_sparstiy_bounds: invalid size of xlow or xhigh'
+        error stop 'Error in set_numdiff_sparsity_bounds: invalid size of xlow or xhigh'
     else if (any(me%xlow_for_sparsity>=me%xhigh_for_sparsity)) then
-        error stop 'Error in set_numdiff_sparstiy_bounds: all xlow must be < xhigh'
+        error stop 'Error in set_numdiff_sparsity_bounds: all xlow must be < xhigh'
     end if
 
     end subroutine set_numdiff_sparsity_bounds
@@ -1125,9 +1142,9 @@
     logical,intent(in),optional :: partition_sparsity_pattern  !! if the sparisty pattern is to
                                                                !! be partitioned using [[DSM]]
                                                                !! [default is False]
-    integer,intent(in),optional      :: cache_size    !! if present, this is the cache size
-                                                      !! for the function cache
-                                                      !! (default is not to enable cache)
+    integer,intent(in),optional :: cache_size    !! if present, this is the cache size
+                                                 !! for the function cache
+                                                 !! (default is not to enable cache)
     real(wp),dimension(n),intent(in),optional :: xlow_for_sparsity   !! lower bounds on `x` used for
                                                                      !! sparsity computation (when
                                                                      !! `sparsity_mode` is 2). If not
@@ -1489,6 +1506,9 @@
     integer :: j !! row counter
     integer :: n_icol  !! `icol` size counter
     integer :: n_irow  !! `irow` size counter
+    integer :: n_linear_icol  !! `linear_icol` size counter
+    integer :: n_linear_irow  !! `linear_irow` size counter
+    integer :: n_linear_vals  !! `linear_vals` size counter
     integer,dimension(me%m) :: idx !! indices to compute [1,2,...,m]
     real(wp),dimension(me%n) :: x1 !! perturbed variable vector
     real(wp),dimension(me%n) :: x2 !! perturbed variable vector
@@ -1496,16 +1516,18 @@
     real(wp),dimension(me%m) :: f1 !! function evaluation
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
-
     integer                   :: mingrp  !! for call to [[dsm]]
     integer                   :: info    !! for call to [[dsm]]
     integer,dimension(me%m+1) :: ipntr   !! for call to [[dsm]]
     integer,dimension(me%n+1) :: jpntr   !! for call to [[dsm]]
+    real(wp) :: dfdx1 !! for linear sparsity estimation
+    real(wp) :: dfdx2 !! for linear sparsity estimation
+    real(wp) :: dfdx  !! for linear sparsity estimation
 
     real(wp),dimension(3),parameter :: coeffs = [0.25123456787654321_wp,&
                                                  0.50123456787654321_wp,&
                                                  0.75123456787654321_wp]
-        !! Pick three pseud-random points roughly equally spaced.
+        !! Pick three pseudo-random points roughly equally spaced.
         !! (add some noise in attempt to avoid freak zeros)
         !!````
         !! xlow---|----|--x--|---xhigh
@@ -1532,7 +1554,7 @@
         x2 = me%xlow + (me%xhigh-me%xlow)*coeffs(2)
         call me%compute_function(x2,f2,idx)
 
-        do i = 1, me%n  ! columns
+        do i = 1, me%n  ! columns of Jacobian
 
             ! restore nominal:
             x1 = x2
@@ -1545,16 +1567,47 @@
             call me%compute_function(x3,f3,idx)
 
             do j = 1, me%m ! each function (rows of Jacobian)
-                if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
+
+                if ( equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol) ) then
+                    ! no change in the function, so no sparsity element here.
+                    cycle
+                else
+                    if (me%compute_linear_sparsity_pattern) then
+                        ! if computing the linear pattern separately.
+                        ! do the three points lie on a line? (x1,f1) -> (x2, f2), -> (x3,f3)
+                        ! [check that the slopes are equal within a tolerance]
+                        dfdx1 = (f1(j)-f2(j)) / (x1(i)-x2(i)) ! slope of line from 1->2
+                        dfdx2 = (f1(j)-f3(j)) / (x1(i)-x3(i)) ! slope of line from 1->3
+                        if (equal_within_tol([dfdx1,dfdx2],me%linear_sparsity_tol)) then
+                            ! this is a linear element (constant value)
+                            dfdx = (dfdx1 + dfdx2) / 2.0_wp ! just take the average and use that
+                            call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,val=i)
+                            call expand_vector(me%sparsity%linear_irow,n_linear_irow,me%chunk_size,val=j)
+                            call expand_vector(me%sparsity%linear_vals,n_linear_vals,me%chunk_size,val=dfdx)
+                            cycle ! this element will not be added to the nonlinear pattern
+                        end if
+                    end if
+                    ! otherwise, add it to the nonliner pattern:
                     call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
                     call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
                 end if
+
             end do
-            ! resize to correct size:
-            call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
-            call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
 
         end do
+
+        ! resize to correct size:
+        call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
+        call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
+
+        ! linear pattern (note: there may be no linear elements):
+        me%sparsity%linear_sparsity_computed = me%compute_linear_sparsity_pattern .and. &
+                                      allocated(me%sparsity%linear_vals)
+        if (me%sparsity%linear_sparsity_computed) then
+            call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,finished=.true.)
+            call expand_vector(me%sparsity%linear_irow,n_linear_irow,me%chunk_size,finished=.true.)
+            call expand_vector(me%sparsity%linear_vals,n_linear_vals,me%chunk_size,finished=.true.)
+        end if
 
     end associate
 
@@ -1948,8 +2001,7 @@
     type(finite_diff_method)         :: fd            !! a finite different method (when
                                                       !! specifying class rather than the method)
     logical                          :: status_ok     !! error flag
-
-    integer :: num_nonzero_elements_in_col
+    integer                          :: num_nonzero_elements_in_col
 
     ! initialize:
     jac = zero
