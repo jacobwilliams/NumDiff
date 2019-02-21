@@ -1587,13 +1587,13 @@
         n_linear_vals = 0
 
         ! define a nominal point roughly in the middle:
-        x2 = me%xlow + (me%xhigh-me%xlow)*coeffs(2)
+        x2 = xlow + (xhigh-xlow)*coeffs(2)
         call me%compute_function(x2,f2,idx)
 
         if (me%compute_linear_sparsity_pattern) then
             ! we need another point where we perturb all the variables
             ! to check to make sure it is linear in only one variable.
-            x4 = me%xlow + (me%xhigh-me%xlow)*coeffs(4)
+            x4 = xlow + (xhigh-xlow)*coeffs(4)
             call me%compute_function(x4,f4,idx)
         end if
 
@@ -1603,8 +1603,8 @@
             x1 = x2
             x3 = x2
 
-            x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(1)
-            x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(3)
+            x1(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(1)
+            x3(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(3)
 
             call me%compute_function(x1,f1,idx)
             call me%compute_function(x3,f3,idx)
