@@ -85,6 +85,7 @@
 
         contains
         private
+        procedure :: dsm_wrapper
         procedure,public :: destroy => destroy_sparsity
         procedure,public :: print => print_sparsity
         procedure,public :: columns_in_partition_group
@@ -1313,6 +1314,44 @@
 
 !*******************************************************************************
 !>
+!  Wrapper for [[dsm]] to compute the sparsity pattern partition.
+
+    subroutine dsm_wrapper(me,n,m)
+
+    implicit none
+
+    class(sparsity_pattern),intent(inout) :: me
+    integer,intent(in) :: n  !! number of columns of jacobian matrix
+    integer,intent(in) :: m  !! number of rows of jacobian matrix
+
+    integer :: mingrp !! for call to [[dsm]]
+    integer :: info   !! for call to [[dsm]]
+    integer,dimension(m+1) :: ipntr  !! for call to [[dsm]]
+    integer,dimension(n+1) :: jpntr  !! for call to [[dsm]]
+    integer,dimension(:),allocatable :: irow  !! for call to [[dsm]]
+                                              !! (temp copy since [[dsm]]
+                                              !! will modify it)
+    integer,dimension(:),allocatable :: icol  !! for call to [[dsm]]
+                                              !! (temp copy since [[dsm]]
+                                              !! will modify it)
+
+    allocate(me%ngrp(n))
+    irow = me%irow
+    icol = me%icol
+
+    call dsm(m,n,me%num_nonzero_elements,&
+             irow,icol,&
+             me%ngrp,me%maxgrp,&
+             mingrp,info,ipntr,jpntr)
+
+    if (info/=1) error stop 'Error in dsm_wrapper: '//&
+                            'error partitioning sparsity pattern.'
+
+    end subroutine dsm_wrapper
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Returns the columns in a sparsity partition group.
 !
 !@note This is just a wrapper to get data from `ngrp`.
@@ -1405,11 +1444,7 @@
     integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
     real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
 
-    integer                   :: mingrp !! for call to [[dsm]]
-    integer                   :: info   !! for call to [[dsm]]
-    integer,dimension(me%m+1) :: ipntr  !! for call to [[dsm]]
-    integer,dimension(me%n+1) :: jpntr  !! for call to [[dsm]]
-    integer                   :: i      !! counter
+    integer :: i      !! counter
 
     call me%destroy_sparsity_pattern()
 
@@ -1425,20 +1460,7 @@
         allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
         me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
 
-        if (me%partition_sparsity_pattern) then
-            associate( s => me%sparsity )
-                allocate(s%ngrp(me%n))
-                call dsm(me%m,me%n,s%num_nonzero_elements,&
-                         s%irow,s%icol,&
-                         s%ngrp,s%maxgrp,&
-                         mingrp,info,ipntr,jpntr)
-                if (info/=1) error stop 'Error in set_sparsity_pattern: '//&
-                                        'error partitioning sparsity pattern.'
-                ! restore the original one, since it is used elsewhere:
-                s%irow = irow
-                s%icol = icol
-            end associate
-        end if
+        if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
 
     end if
 
@@ -1535,7 +1557,7 @@
     integer :: n_linear_icol  !! `linear_icol` size counter
     integer :: n_linear_irow  !! `linear_irow` size counter
     integer :: n_linear_vals  !! `linear_vals` size counter
-    integer,dimension(me%m) :: idx !! indices to compute [1,2,...,m]
+    integer,dimension(me%m) :: idx !! indices to compute `[1,2,...,m]`
     real(wp),dimension(me%n) :: x1 !! perturbed variable vector
     real(wp),dimension(me%n) :: x2 !! perturbed variable vector
     real(wp),dimension(me%n) :: x3 !! perturbed variable vector
@@ -1544,10 +1566,6 @@
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
     real(wp),dimension(me%m) :: f4 !! function evaluation
-    integer                   :: mingrp  !! for call to [[dsm]]
-    integer                   :: info    !! for call to [[dsm]]
-    integer,dimension(me%m+1) :: ipntr   !! for call to [[dsm]]
-    integer,dimension(me%n+1) :: jpntr   !! for call to [[dsm]]
     real(wp) :: dfdx1 !! for linear sparsity estimation
     real(wp) :: dfdx2 !! for linear sparsity estimation
     real(wp) :: dfdx3 !! for linear sparsity estimation
@@ -1666,17 +1684,7 @@
     allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
     me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
 
-    if (me%partition_sparsity_pattern) then
-        associate( s => me%sparsity )
-            allocate(s%ngrp(me%n))
-            call dsm(me%m,me%n,s%num_nonzero_elements,&
-                     s%irow,s%icol,&
-                     s%ngrp,s%maxgrp,&
-                     mingrp,info,ipntr,jpntr)
-            if (info/=1) error stop 'Error in compute_sparsity_random: '//&
-                                    'error partitioning sparsity pattern.'
-        end associate
-    end if
+    if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
 
     ! finished:
     me%sparsity%sparsity_computed = .true.
@@ -1697,9 +1705,12 @@
     real(wp),dimension(:),intent(in)  :: x     !! vector of variables (size `n`)
     integer,dimension(:),allocatable,intent(out) :: irow  !! sparsity pattern nonzero elements row indices
     integer,dimension(:),allocatable,intent(out) :: icol  !! sparsity pattern nonzero elements column indices
-    integer,dimension(:),allocatable,intent(out),optional  :: linear_irow !! linear sparsity pattern nonzero elements row indices
-    integer,dimension(:),allocatable,intent(out),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
-    real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_irow !! linear sparsity pattern
+                                                                          !! nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_icol !! linear sparsity pattern nonzero
+                                                                          !! elements column indices
+    real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
+                                                                          !! elements of the Jacobian)
 
     if (associated(me%compute_sparsity)) then
         call me%compute_sparsity(x)
@@ -1721,16 +1732,19 @@
     class(numdiff_type),intent(inout) :: me
     integer,dimension(:),allocatable,intent(out)  :: irow  !! sparsity pattern nonzero elements row indices
     integer,dimension(:),allocatable,intent(out)  :: icol  !! sparsity pattern nonzero elements column indices
-    integer,dimension(:),allocatable,intent(out),optional  :: linear_irow !! linear sparsity pattern nonzero elements row indices
-    integer,dimension(:),allocatable,intent(out),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
-    real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_irow !! linear sparsity pattern
+                                                                          !! nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_icol !! linear sparsity pattern nonzero
+                                                                          !! elements column indices
+    real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
+                                                                          !! elements of the Jacobian)
 
     if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
         irow = me%sparsity%irow
         icol = me%sparsity%icol
     end if
 
-    ! option linear pattern output:
+    ! optional linear pattern output:
     if (present(linear_irow)) then
         if (allocated(me%sparsity%linear_irow)) linear_irow = me%sparsity%linear_irow
     end if
