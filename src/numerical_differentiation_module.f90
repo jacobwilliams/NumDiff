@@ -67,6 +67,12 @@
         integer,dimension(:),allocatable :: irow  !! sparsity pattern - rows of non-zero elements
         integer,dimension(:),allocatable :: icol  !! sparsity pattern - columns of non-zero elements
 
+        logical :: linear_sparsity_computed = .false. !! if the linear pattern has been populated
+        integer :: num_nonzero_linear_elements = 0 !! number of constant elements in the jacobian
+        integer,dimension(:),allocatable  :: linear_irow  !! linear sparsity pattern - rows of non-zero elements
+        integer,dimension(:),allocatable  :: linear_icol  !! linear sparsity pattern - columns of non-zero elements
+        real(wp),dimension(:),allocatable :: linear_vals  !! linear elements of the jacobian
+
         integer,dimension(:),allocatable :: indices  !! index vector
                                                      !! `[1,2,...,num_nonzero_elements]`
                                                      !! for putting `df` into `jac`
@@ -79,6 +85,7 @@
 
         contains
         private
+        procedure :: dsm_wrapper
         procedure,public :: destroy => destroy_sparsity
         procedure,public :: print => print_sparsity
         procedure,public :: columns_in_partition_group
@@ -108,6 +115,18 @@
         type(sparsity_pattern) :: sparsity  !! the sparsity pattern
         real(wp),dimension(:),allocatable :: xlow_for_sparsity  !! lower bounds on `x` for computing sparsity (optional)
         real(wp),dimension(:),allocatable :: xhigh_for_sparsity !! upper bounds on `x` for computing sparsity (optional)
+
+        ! if computing the sparsity pattern, we also have an option to
+        ! compute the linear pattern, which indicates constant elements
+        ! of the jacobian. these elements don't need to be computed again.
+        logical :: compute_linear_sparsity_pattern = .false.  !! to also compute the linear sparsity pattern
+        real(wp) :: linear_sparsity_tol = 1.0e-12_wp !! the equality tolerance for derivatives to
+                                                     !! indicate a constant jacobian element (linear sparsity)
+
+        real(wp) :: function_precision_tol = 1.0e-16_wp !! the function precision. two functions values
+                                                        !! that are the within this tolerance are
+                                                        !! considered the same value. This is used
+                                                        !! when estimating the sparsity pattern.
 
         integer :: mode = 1 !! **1** = use `meth` (specified methods),
                             !! **2** = use `class` (specified class, method is selected on-the-fly).
@@ -175,6 +194,10 @@
         procedure,public :: select_finite_diff_method_for_partition_group  !! version of [[select_finite_diff_method]]
                                                                            !! for partitioned sparsity pattern.
         procedure,public :: set_numdiff_bounds  !! can be called to change the variable bounds.
+
+        procedure,public :: compute_sparsity_pattern !! if the user needs to compute the sparsity pattern manually.
+                                                     !! (otherwise it will be done the first time the Jacobian is computed)
+        procedure,public :: get_sparsity_pattern     !! returns the sparsity pattern (if it is allocated)
 
         ! internal routines:
         procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
@@ -990,7 +1013,7 @@
 !  Change the variable bounds in a [[numdiff_type]].
 !
 !### See also
-!  * [[set_numdiff_sparstiy_bounds]]
+!  * [[set_numdiff_sparsity_bounds]]
 !
 !@note The bounds must be set when the class is initialized,
 !      but this routine can be used to change them later if required.
@@ -1064,9 +1087,9 @@
 
     ! error checks:
     if (size(me%xlow_for_sparsity)/=me%n .or. size(me%xhigh_for_sparsity)/=me%n) then
-        error stop 'Error in set_numdiff_sparstiy_bounds: invalid size of xlow or xhigh'
+        error stop 'Error in set_numdiff_sparsity_bounds: invalid size of xlow or xhigh'
     else if (any(me%xlow_for_sparsity>=me%xhigh_for_sparsity)) then
-        error stop 'Error in set_numdiff_sparstiy_bounds: all xlow must be < xhigh'
+        error stop 'Error in set_numdiff_sparsity_bounds: all xlow must be < xhigh'
     end if
 
     end subroutine set_numdiff_sparsity_bounds
@@ -1125,9 +1148,9 @@
     logical,intent(in),optional :: partition_sparsity_pattern  !! if the sparisty pattern is to
                                                                !! be partitioned using [[DSM]]
                                                                !! [default is False]
-    integer,intent(in),optional      :: cache_size    !! if present, this is the cache size
-                                                      !! for the function cache
-                                                      !! (default is not to enable cache)
+    integer,intent(in),optional :: cache_size    !! if present, this is the cache size
+                                                 !! for the function cache
+                                                 !! (default is not to enable cache)
     real(wp),dimension(n),intent(in),optional :: xlow_for_sparsity   !! lower bounds on `x` used for
                                                                      !! sparsity computation (when
                                                                      !! `sparsity_mode` is 2). If not
@@ -1291,6 +1314,44 @@
 
 !*******************************************************************************
 !>
+!  Wrapper for [[dsm]] to compute the sparsity pattern partition.
+
+    subroutine dsm_wrapper(me,n,m)
+
+    implicit none
+
+    class(sparsity_pattern),intent(inout) :: me
+    integer,intent(in) :: n  !! number of columns of jacobian matrix
+    integer,intent(in) :: m  !! number of rows of jacobian matrix
+
+    integer :: mingrp !! for call to [[dsm]]
+    integer :: info   !! for call to [[dsm]]
+    integer,dimension(m+1) :: ipntr  !! for call to [[dsm]]
+    integer,dimension(n+1) :: jpntr  !! for call to [[dsm]]
+    integer,dimension(:),allocatable :: irow  !! for call to [[dsm]]
+                                              !! (temp copy since [[dsm]]
+                                              !! will modify it)
+    integer,dimension(:),allocatable :: icol  !! for call to [[dsm]]
+                                              !! (temp copy since [[dsm]]
+                                              !! will modify it)
+
+    allocate(me%ngrp(n))
+    irow = me%irow
+    icol = me%icol
+
+    call dsm(m,n,me%num_nonzero_elements,&
+             irow,icol,&
+             me%ngrp,me%maxgrp,&
+             mingrp,info,ipntr,jpntr)
+
+    if (info/=1) error stop 'Error in dsm_wrapper: '//&
+                            'error partitioning sparsity pattern.'
+
+    end subroutine dsm_wrapper
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Returns the columns in a sparsity partition group.
 !
 !@note This is just a wrapper to get data from `ngrp`.
@@ -1368,26 +1429,27 @@
 !*******************************************************************************
 !>
 !  To specify the sparsity pattern directly if it is already known.
+!
+!@note If specifying the linear pattern, all three optional arguments
+!      must be present.
 
-    subroutine set_sparsity_pattern(me,irow,icol)
+    subroutine set_sparsity_pattern(me,irow,icol,linear_irow,linear_icol,linear_vals)
 
     implicit none
 
-    class(numdiff_type),intent(inout) :: me
-    integer,dimension(:),intent(in)   :: irow  !! sparsity pattern nonzero elements row indices
-    integer,dimension(:),intent(in)   :: icol  !! sparsity pattern nonzero elements column indices
+    class(numdiff_type),intent(inout)         :: me
+    integer,dimension(:),intent(in)           :: irow        !! sparsity pattern nonzero elements row indices
+    integer,dimension(:),intent(in)           :: icol        !! sparsity pattern nonzero elements column indices
+    integer,dimension(:),intent(in),optional  :: linear_irow !! linear sparsity pattern nonzero elements row indices
+    integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
+    real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
 
-    integer                   :: mingrp !! for call to [[dsm]]
-    integer                   :: Info   !! for call to [[dsm]]
-    integer,dimension(me%m+1) :: ipntr  !! for call to [[dsm]]
-    integer,dimension(me%n+1) :: jpntr  !! for call to [[dsm]]
-    integer                   :: i      !! counter
+    integer :: i      !! counter
 
     call me%destroy_sparsity_pattern()
 
     if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
-        error stop 'Error in set_sparsity_pattern: '//&
-                   'invalid inputs to set_sparsity_pattern'
+        error stop 'Error in set_sparsity_pattern: invalid inputs'
     else
 
         me%sparsity%sparsity_computed = .true.
@@ -1398,21 +1460,24 @@
         allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
         me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
 
-        if (me%partition_sparsity_pattern) then
-            associate( s => me%sparsity )
-                allocate(s%ngrp(me%n))
-                call dsm(me%m,me%n,s%num_nonzero_elements,&
-                         s%irow,s%icol,&
-                         s%ngrp,s%maxgrp,&
-                         mingrp,info,ipntr,jpntr)
-                if (info/=1) error stop 'Error in set_sparsity_pattern: '//&
-                                        'error partitioning sparsity pattern.'
-                ! restore the original one, since it is used elsewhere:
-                s%irow = irow
-                s%icol = icol
-            end associate
-        end if
+        if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
 
+    end if
+
+    ! linear pattern:
+    if (present(linear_irow) .and. present(linear_icol) .and. present(linear_vals)) then
+        if (size(linear_irow)/=size(linear_icol) .or. &
+            size(linear_vals)/=size(linear_icol) .or. &
+            any(linear_irow>me%m) .or. &
+            any(linear_icol>me%n)) then
+            error stop 'Error in set_sparsity_pattern: invalid linear sparsity pattern'
+        else
+            me%sparsity%linear_irow = linear_irow
+            me%sparsity%linear_icol = linear_icol
+            me%sparsity%linear_vals = linear_vals
+            me%sparsity%linear_sparsity_computed = .true.
+            me%sparsity%num_nonzero_linear_elements = size(linear_irow)
+        end if
     end if
 
     end subroutine set_sparsity_pattern
@@ -1489,28 +1554,36 @@
     integer :: j !! row counter
     integer :: n_icol  !! `icol` size counter
     integer :: n_irow  !! `irow` size counter
-    integer,dimension(me%m) :: idx !! indices to compute [1,2,...,m]
+    integer :: n_linear_icol  !! `linear_icol` size counter
+    integer :: n_linear_irow  !! `linear_irow` size counter
+    integer :: n_linear_vals  !! `linear_vals` size counter
+    integer,dimension(me%m) :: idx !! indices to compute `[1,2,...,m]`
     real(wp),dimension(me%n) :: x1 !! perturbed variable vector
     real(wp),dimension(me%n) :: x2 !! perturbed variable vector
     real(wp),dimension(me%n) :: x3 !! perturbed variable vector
+    real(wp),dimension(me%n) :: x4 !! perturbed variable vector
     real(wp),dimension(me%m) :: f1 !! function evaluation
     real(wp),dimension(me%m) :: f2 !! function evaluation
     real(wp),dimension(me%m) :: f3 !! function evaluation
+    real(wp),dimension(me%m) :: f4 !! function evaluation
+    real(wp) :: dfdx1 !! for linear sparsity estimation
+    real(wp) :: dfdx2 !! for linear sparsity estimation
+    real(wp) :: dfdx3 !! for linear sparsity estimation
+    real(wp) :: dfdx  !! for linear sparsity estimation
 
-    integer                   :: mingrp  !! for call to [[dsm]]
-    integer                   :: info    !! for call to [[dsm]]
-    integer,dimension(me%m+1) :: ipntr   !! for call to [[dsm]]
-    integer,dimension(me%n+1) :: jpntr   !! for call to [[dsm]]
-
-    real(wp),dimension(3),parameter :: coeffs = [0.25123456787654321_wp,&
-                                                 0.50123456787654321_wp,&
-                                                 0.75123456787654321_wp]
-        !! Pick three pseud-random points roughly equally spaced.
+    real(wp),dimension(4),parameter :: coeffs = [0.20123456787654321_wp,&
+                                                 0.40123456787654321_wp,&
+                                                 0.60123456787654321_wp,&
+                                                 0.80123456787654321_wp]
+        !! Pick three pseudo-random points roughly equally spaced.
         !! (add some noise in attempt to avoid freak zeros)
         !!````
         !! xlow---|----|--x--|---xhigh
         !!        1    2     3
         !!````
+        !!
+        !! Also using an extra point to estimate the
+        !! constant elements of the Jacobian.
 
     ! error check:
     if (.not. allocated(me%xlow_for_sparsity) .or. .not. allocated(me%xhigh_for_sparsity)) then
@@ -1527,53 +1600,91 @@
 
         n_icol = 0  ! initialize vector size counters
         n_irow = 0
+        n_linear_icol = 0
+        n_linear_irow = 0
+        n_linear_vals = 0
 
         ! define a nominal point roughly in the middle:
-        x2 = me%xlow + (me%xhigh-me%xlow)*coeffs(2)
+        x2 = xlow + (xhigh-xlow)*coeffs(2)
         call me%compute_function(x2,f2,idx)
 
-        do i = 1, me%n  ! columns
+        if (me%compute_linear_sparsity_pattern) then
+            ! we need another point where we perturb all the variables
+            ! to check to make sure it is linear in only one variable.
+            x4 = xlow + (xhigh-xlow)*coeffs(4)
+            call me%compute_function(x4,f4,idx)
+        end if
+
+        do i = 1, me%n  ! columns of Jacobian
 
             ! restore nominal:
             x1 = x2
             x3 = x2
 
-            x1(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(1)
-            x3(i) = me%xlow(i) + (me%xhigh(i)-me%xlow(i))*coeffs(3)
+            x1(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(1)
+            x3(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(3)
 
             call me%compute_function(x1,f1,idx)
             call me%compute_function(x3,f3,idx)
 
             do j = 1, me%m ! each function (rows of Jacobian)
-                if (f1(j)/=f2(j) .or. f3(j)/=f2(j)) then
+
+                if ( equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol) ) then
+                    ! no change in the function, so no sparsity element here.
+                    cycle
+                else
+                    if (me%compute_linear_sparsity_pattern) then
+                        ! if computing the linear pattern separately.
+                        ! do the three points lie on a line? (x1,f1) -> (x2, f2), -> (x3,f3)
+                        ! [check that the slopes are equal within a tolerance]
+                        dfdx1 = (f1(j)-f2(j)) / (x1(i)-x2(i)) ! slope of line from 1->2
+                        dfdx2 = (f1(j)-f3(j)) / (x1(i)-x3(i)) ! slope of line from 1->3
+                        dfdx3 = (f1(j)-f4(j)) / (x1(i)-x4(i)) ! slope of line from 1->4
+                        if (equal_within_tol([dfdx1,dfdx2,dfdx3],me%linear_sparsity_tol)) then
+                            ! this is a linear element (constant value)
+                            dfdx = (dfdx1 + dfdx2 + dfdx3) / 3.0_wp ! just take the average and use that
+                            call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,val=i)
+                            call expand_vector(me%sparsity%linear_irow,n_linear_irow,me%chunk_size,val=j)
+                            call expand_vector(me%sparsity%linear_vals,n_linear_vals,me%chunk_size,val=dfdx)
+                            cycle ! this element will not be added to the nonlinear pattern
+                        end if
+                    end if
+                    ! otherwise, add it to the nonlinear pattern:
                     call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
                     call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
                 end if
+
             end do
-            ! resize to correct size:
-            call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
-            call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
 
         end do
 
-    end associate
+        ! resize to correct size:
+        if (allocated(me%sparsity%icol)) then
+            call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
+            call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
+            me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
+        else
+            me%sparsity%num_nonzero_elements = 0
+        end if
 
-    me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
+        ! linear pattern (note: there may be no linear elements):
+        me%sparsity%linear_sparsity_computed = me%compute_linear_sparsity_pattern .and. &
+                                               allocated(me%sparsity%linear_vals)
+        if (me%sparsity%linear_sparsity_computed) then
+            call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,finished=.true.)
+            call expand_vector(me%sparsity%linear_irow,n_linear_irow,me%chunk_size,finished=.true.)
+            call expand_vector(me%sparsity%linear_vals,n_linear_vals,me%chunk_size,finished=.true.)
+            me%sparsity%num_nonzero_linear_elements = n_linear_vals
+        else
+            me%sparsity%num_nonzero_linear_elements = 0
+        end if
+
+    end associate
 
     allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
     me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
 
-    if (me%partition_sparsity_pattern) then
-        associate( s => me%sparsity )
-            allocate(s%ngrp(me%n))
-            call dsm(me%m,me%n,s%num_nonzero_elements,&
-                     s%irow,s%icol,&
-                     s%ngrp,s%maxgrp,&
-                     mingrp,info,ipntr,jpntr)
-            if (info/=1) error stop 'Error in compute_sparsity_random: '//&
-                                    'error partitioning sparsity pattern.'
-        end associate
-    end if
+    if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
 
     ! finished:
     me%sparsity%sparsity_computed = .true.
@@ -1583,7 +1694,75 @@
 
 !*******************************************************************************
 !>
+!  Computes the sparsity pattern and return it.
+!  Uses the settings currently in the class.
+
+    subroutine compute_sparsity_pattern(me,x,irow,icol,linear_irow,linear_icol,linear_vals)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: x     !! vector of variables (size `n`)
+    integer,dimension(:),allocatable,intent(out) :: irow  !! sparsity pattern nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out) :: icol  !! sparsity pattern nonzero elements column indices
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_irow !! linear sparsity pattern
+                                                                          !! nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_icol !! linear sparsity pattern nonzero
+                                                                          !! elements column indices
+    real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
+                                                                          !! elements of the Jacobian)
+
+    if (associated(me%compute_sparsity)) then
+        call me%compute_sparsity(x)
+        call me%get_sparsity_pattern(irow,icol,linear_irow,linear_icol,linear_vals)
+    end if
+
+    end subroutine compute_sparsity_pattern
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns the sparsity pattern from the class.
+!  If it hasn't been computed, the output arrays will not be allocated.
+
+    subroutine get_sparsity_pattern(me,irow,icol,linear_irow,linear_icol,linear_vals)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,dimension(:),allocatable,intent(out)  :: irow  !! sparsity pattern nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out)  :: icol  !! sparsity pattern nonzero elements column indices
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_irow !! linear sparsity pattern
+                                                                          !! nonzero elements row indices
+    integer,dimension(:),allocatable,intent(out),optional  :: linear_icol !! linear sparsity pattern nonzero
+                                                                          !! elements column indices
+    real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
+                                                                          !! elements of the Jacobian)
+
+    if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
+        irow = me%sparsity%irow
+        icol = me%sparsity%icol
+    end if
+
+    ! optional linear pattern output:
+    if (present(linear_irow)) then
+        if (allocated(me%sparsity%linear_irow)) linear_irow = me%sparsity%linear_irow
+    end if
+    if (present(linear_icol)) then
+        if (allocated(me%sparsity%linear_icol)) linear_icol = me%sparsity%linear_icol
+    end if
+    if (present(linear_vals)) then
+        if (allocated(me%sparsity%linear_vals)) linear_vals = me%sparsity%linear_vals
+    end if
+
+    end subroutine get_sparsity_pattern
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  just a wrapper for [[compute_jacobian]], that returns a dense (`m x n`) matrix.
+!
+!@note This one will include the constant elements if the linear pattern is available.
 
     subroutine compute_jacobian_dense(me,x,jac)
 
@@ -1596,16 +1775,26 @@
     real(wp),dimension(:),allocatable :: jac_vec  !! sparse jacobian representation
     integer :: i !! counter
 
-    ! compute sparse form of jacobian:
-    call me%compute_jacobian(x,jac_vec)
-
     ! size output matrix:
     allocate(jac(me%m,me%n))
 
     ! convert to dense form:
     jac = zero
-    do i = 1, me%sparsity%num_nonzero_elements
-        jac(me%sparsity%irow(i),me%sparsity%icol(i)) = jac_vec(i)
+
+    ! compute sparse form of jacobian:
+    call me%compute_jacobian(x,jac_vec)
+
+    if (allocated(jac_vec)) then
+        ! add the nonlinear elements:
+        do i = 1, me%sparsity%num_nonzero_elements
+            jac(me%sparsity%irow(i),me%sparsity%icol(i)) = jac_vec(i)
+        end do
+        deallocate(jac_vec)
+    end if
+
+    ! add the constant elements if necessary:
+    do i = 1, me%sparsity%num_nonzero_linear_elements
+        jac(me%sparsity%linear_irow(i),me%sparsity%linear_icol(i)) = me%sparsity%linear_vals(i)
     end do
 
     end subroutine compute_jacobian_dense
@@ -1650,6 +1839,8 @@
 !>
 !  Returns the product `J*v`, where `J` is the `m x n` Jacobian matrix
 !  and `v` is an `n x 1` vector.
+!
+!@note This one will include the constant elements if the linear pattern is available.
 
     subroutine compute_jacobian_times_vector(me,x,v,z)
 
@@ -1691,12 +1882,24 @@
 
     end if
 
+    ! linear elements if available:
+    do i = 1, me%sparsity%num_nonzero_linear_elements
+        r = me%sparsity%linear_irow(i)
+        c = me%sparsity%linear_icol(i)
+        z(r) = z(r) + me%sparsity%linear_vals(i)*v(c)
+    end do
+
     end subroutine compute_jacobian_times_vector
 !*******************************************************************************
 
 !*******************************************************************************
 !>
 !  Compute the Jacobian.
+!
+!@note The output `jac` only includes the elements of the nonlinear Jacobian.
+!      If the constant elements are being handled separately (if the linear
+!      pattern is available), then those elements can be obtained by
+!      calling `get_sparsity_pattern` if required.
 
     subroutine compute_jacobian(me,x,jac)
 
@@ -1711,6 +1914,7 @@
     ! if we don't have a sparsity pattern yet then compute it:
     ! [also computes the indices vector]
     if (.not. me%sparsity%sparsity_computed) call me%compute_sparsity(x)
+    if (me%sparsity%num_nonzero_elements==0) return
 
     ! size the jacobian vector:
     allocate(jac(me%sparsity%num_nonzero_elements))
@@ -1948,8 +2152,7 @@
     type(finite_diff_method)         :: fd            !! a finite different method (when
                                                       !! specifying class rather than the method)
     logical                          :: status_ok     !! error flag
-
-    integer :: num_nonzero_elements_in_col
+    integer                          :: num_nonzero_elements_in_col
 
     ! initialize:
     jac = zero
@@ -2127,15 +2330,15 @@
     integer :: r   !! row counter
     character(len=1),dimension(n) :: row  !! a row of the sparsity matrix
 
+    if (present(dense)) then
+        print_matrix = dense
+    else
+        print_matrix = .false.  ! default
+    end if
+
+    write(iunit,'(A)') '---Sparsity pattern---'
     if (allocated(me%irow) .and. allocated(me%icol)) then
 
-        if (present(dense)) then
-            print_matrix = dense
-        else
-            print_matrix = .false.  ! default
-        end if
-
-        write(iunit,'(A)') '---Sparsity pattern---'
         if (print_matrix) then
             do r = 1,m    ! print by row
                 row = '0'
@@ -2146,17 +2349,34 @@
             write(iunit,'(A,1X,*(I3,","))') 'irow:',me%irow
             write(iunit,'(A,1X,*(I3,","))') 'icol:',me%icol
         end if
-        write(iunit,'(A)') ''
 
         if (allocated(me%ngrp)) then
+            write(iunit,'(A)') ''
             write(iunit,'(A)') '---Sparsity partition---'
             write(iunit,'(A,1x,I5)')       'Number of groups:',me%maxgrp
             write(iunit,'(A,1x,*(I5,1X))') 'Group array:     ',me%ngrp
-            write(iunit,'(A)') ''
         end if
 
-    else
-        error stop 'Error in print_sparsity: sparsity pattern not available.'
+    end if
+    write(iunit,'(A)') ''
+
+    ! print linear pattern if available
+    if (me%linear_sparsity_computed) then
+        write(iunit,'(A)') '---Linear sparsity pattern---'
+        if (allocated(me%linear_icol) .and. allocated(me%linear_irow)) then
+            if (print_matrix) then
+                do r = 1,m    ! print by row
+                    row = '0'
+                    row(pack(me%linear_icol,mask=me%linear_irow==r)) = 'X'
+                    write(iunit,'(*(A1))') row
+                end do
+            else
+                write(iunit,'(A,1X,*(I3,","))') 'irow:',me%linear_irow
+                write(iunit,'(A,1X,*(I3,","))') 'icol:',me%linear_icol
+                write(iunit,'(A,1X,*(E30.16,","))') 'vals:',me%linear_vals
+            end if
+        end if
+        write(iunit,'(A)') ''
     end if
 
     end subroutine print_sparsity

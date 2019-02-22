@@ -11,9 +11,14 @@
 
     private
 
-    public :: unique
+    interface expand_vector
+        module procedure :: expand_vector_int, expand_vector_real
+    end interface expand_vector
     public :: expand_vector
+
+    public :: unique
     public :: sort_ascending
+    public :: equal_within_tol
 
     contains
 !*******************************************************************************
@@ -22,7 +27,7 @@
 !>
 !  Add elements to the integer vector in chunks.
 
-    pure subroutine expand_vector(vec,n,chunk_size,val,finished)
+    pure subroutine expand_vector_int(vec,n,chunk_size,val,finished)
 
     implicit none
 
@@ -64,7 +69,56 @@
         end if
     end if
 
-    end subroutine expand_vector
+    end subroutine expand_vector_int
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Add elements to the real vector in chunks.
+
+    pure subroutine expand_vector_real(vec,n,chunk_size,val,finished)
+
+    implicit none
+
+    real(wp),dimension(:),allocatable,intent(inout) :: vec
+    integer,intent(inout)       :: n           !! counter for last element added to `vec`.
+                                               !! must be initialized to `size(vec)`
+                                               !! (or 0 if not allocated) before first call
+    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size (>0)
+    real(wp),intent(in),optional :: val        !! the value to add to `vec`
+    logical,intent(in),optional :: finished    !! set to true to return `vec`
+                                               !! as its correct size (`n`)
+
+    real(wp),dimension(:),allocatable :: tmp  !! temporary array
+
+    if (present(val)) then
+        if (allocated(vec)) then
+            if (n==size(vec)) then
+                ! have to add another chunk:
+                allocate(tmp(size(vec)+chunk_size))
+                tmp(1:size(vec)) = vec
+                call move_alloc(tmp,vec)
+            end if
+            n = n + 1
+        else
+            ! the first element:
+            allocate(vec(chunk_size))
+            n = 1
+        end if
+        vec(n) = val
+    end if
+
+    if (present(finished)) then
+        if (finished) then
+            ! set vec to actual size (n):
+            if (allocated(tmp)) deallocate(tmp)
+            allocate(tmp(n))
+            tmp = vec(1:n)
+            call move_alloc(tmp,vec)
+        end if
+    end if
+
+    end subroutine expand_vector_real
 !*******************************************************************************
 
 !*******************************************************************************
@@ -204,6 +258,25 @@
     i2  = tmp
 
     end subroutine swap
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns true if the values in the array are the same
+!  (to within the specified absolute tolerance).
+
+    pure function equal_within_tol(vals,tol) result (equal)
+
+    implicit none
+
+    real(wp),dimension(:),intent(in) :: vals  !! a set of values
+    real(wp),intent(in)              :: tol   !! a positive tolerance value
+    logical                          :: equal !! true if they are equal
+                                              !! within the tolerance
+
+    equal = all ( abs(vals - vals(1)) < tol )
+
+    end function equal_within_tol
 !*******************************************************************************
 
 !*******************************************************************************

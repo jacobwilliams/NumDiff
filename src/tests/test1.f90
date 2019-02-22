@@ -212,7 +212,7 @@ contains
     if (any(funcs_to_compute==2)) f(2) = x(3) - 1.0_wp
     if (any(funcs_to_compute==3)) f(3) = x(4)*x(5)
     if (any(funcs_to_compute==4)) f(4) = 2.0_wp*x(6) + sin(x(7))
-    if (any(funcs_to_compute==5)) f(5) = cos(x(8)) + sqrt(x(9))
+    if (any(funcs_to_compute==5)) f(5) = cos(x(8)) + sqrt(abs(x(9)))
     if (any(funcs_to_compute==6)) f(6) = 1.0_wp / (1.0_wp + exp(x(10)))
 
     func_evals = func_evals + 1

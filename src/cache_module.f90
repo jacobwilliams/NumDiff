@@ -5,8 +5,9 @@
 
     module numdiff_cache_module
 
-    use numdiff_kinds_module
     use iso_fortran_env, only: ip => int64  ! same number of bits as real(wp)
+    use numdiff_kinds_module
+    use numdiff_utilities_module,   only: unique
 
     implicit none
 
@@ -172,8 +173,6 @@
 !  Put a value into the cache.
 
     subroutine put_in_cache(me,i,x,f,ifs)
-
-    use numdiff_utilities_module,   only: unique
 
     implicit none
 
