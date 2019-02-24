@@ -538,9 +538,12 @@
 !   * \( (-2283f(x)+6720f(x+h)-11760f(x+2h)+15680f(x+3h)-14700f(x+4h)+9408f(x+5h)-3920f(x+6h)+960f(x+7h)-105f(x+8h)) / (840h) \)
 !   * \( (105f(x-8h)-960f(x-7h)+3920f(x-6h)-9408f(x-5h)+14700f(x-4h)-15680f(x-3h)+11760f(x-2h)-6720f(x-h)+2283f(x)) / (840h) \)
 !   * \( (-2f(x-5h)+25f(x-4h)-150f(x-3h)+600f(x-2h)-2100f(x-h)+2100f(x+h)-600f(x+2h)+150f(x+3h)-25f(x+4h)+2f(x+5h)) / (2520h) \)
-!   * \( (5f(x-6h)-72f(x-5h)+495f(x-4h)-2200f(x-3h)+7425f(x-2h)-23760f(x-h)+23760f(x+h)-7425f(x+2h)+2200f(x+3h)-495f(x+4h)+72f(x+5h)-5f(x+6h)) / (27720h) \)
-!   * \( (-15f(x-7h)+245f(x-6h)-1911f(x-5h)+9555f(x-4h)-35035f(x-3h)+105105f(x-2h)-315315f(x-h)+315315f(x+h)-105105f(x+2h)+35035f(x+3h)-9555f(x+4h)+1911f(x+5h)-245f(x+6h)+15f(x+7h)) / (360360h) \)
-!   * \( (7f(x-8h)-128f(x-7h)+1120f(x-6h)-6272f(x-5h)+25480f(x-4h)-81536f(x-3h)+224224f(x-2h)-640640f(x-h)+640640f(x+h)-224224f(x+2h)+81536f(x+3h)-25480f(x+4h)+6272f(x+5h)-1120f(x+6h)+128f(x+7h)-7f(x+8h)) / (720720h) \)
+!   * \( (5f(x-6h)-72f(x-5h)+495f(x-4h)-2200f(x-3h)+7425f(x-2h)-23760f(x-h)+23760f(x+h)-7425f(x+2h)+2200f(x+3h)-495f(x+4h)+
+!        72f(x+5h)-5f(x+6h)) / (27720h) \)
+!   * \( (-15f(x-7h)+245f(x-6h)-1911f(x-5h)+9555f(x-4h)-35035f(x-3h)+105105f(x-2h)-315315f(x-h)+315315f(x+h)-105105f(x+2h)+
+!        35035f(x+3h)-9555f(x+4h)+1911f(x+5h)-245f(x+6h)+15f(x+7h)) / (360360h) \)
+!   * \( (7f(x-8h)-128f(x-7h)+1120f(x-6h)-6272f(x-5h)+25480f(x-4h)-81536f(x-3h)+224224f(x-2h)-640640f(x-h)+640640f(x+h)-
+!        224224f(x+2h)+81536f(x+3h)-25480f(x+4h)+6272f(x+5h)-1120f(x+6h)+128f(x+7h)-7f(x+8h)) / (720720h) \)
 !
 !  Where \(f(x)\) is the user-defined function of \(x\)
 !  and \(h\) is a "small" perturbation.
@@ -1582,8 +1585,6 @@
     integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
     real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
 
-    integer :: i      !! counter
-
     call me%destroy_sparsity_pattern()
 
     if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
@@ -1891,6 +1892,7 @@
     integer :: n_linear_irow  !! `linear_irow` size counter
     integer :: n_linear_vals  !! `linear_vals` size counter
     type(meth_array) :: class_meths  !! set of finite diff methods to use
+    real(wp),dimension(:),allocatable :: jac !! array of jacobian element values
 
     ! initialize:
     call me%destroy_sparsity_pattern()
@@ -1918,6 +1920,7 @@
     n_linear_icol = 0
     n_linear_irow = 0
     n_linear_vals = 0
+    allocate(jac(me%num_sparsity_points))
 
     ! the idea here is to compute the (dense) jacobian
     ! one column at at time, and keep a running track of
@@ -1946,15 +1949,21 @@
 
         ! check each row:
         do irow = 1, me%m
+
+            ! get the jacobian values for this row,col for all the points:
+            do j = 1, me%num_sparsity_points
+                jac(j) = jac_array(j)%jac(irow)
+            end do
+
             ! put the results into the tmp_sparsity_pattern
-            if (equal_within_tol([0.0_wp,jac_array(:)%jac(irow)],me%linear_sparsity_tol)) then
+            if (equal_within_tol([0.0_wp,jac],me%linear_sparsity_tol)) then
                 ! they are all zero
                 cycle
             else
                 if (me%compute_linear_sparsity_pattern) then
-                    if (equal_within_tol([jac_array(:)%jac(irow)],me%linear_sparsity_tol)) then
+                    if (equal_within_tol(jac,me%linear_sparsity_tol)) then
                         ! this is a linear element (constant value)
-                        dfdx = sum(jac_array(:)%jac(irow)) / me%num_sparsity_points ! just take the average and use that
+                        dfdx = sum(jac) / me%num_sparsity_points ! just take the average and use that
                         call expand_vector(tmp_sparsity_pattern%linear_icol,n_linear_icol,me%chunk_size,val=icol)
                         call expand_vector(tmp_sparsity_pattern%linear_irow,n_linear_irow,me%chunk_size,val=irow)
                         call expand_vector(tmp_sparsity_pattern%linear_vals,n_linear_vals,me%chunk_size,val=dfdx)
