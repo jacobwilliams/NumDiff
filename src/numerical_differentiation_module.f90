@@ -950,11 +950,13 @@
     procedure(func)                  :: problem_func  !! the user function that defines the problem
                                                       !! (returns `m` functions)
     integer,intent(in)               :: sparsity_mode !! the sparsity computation method:
+                                                      !!
                                                       !! **1** - assume dense,
-                                                      !! **2** - three-point method,
+                                                      !! **2** - three-point simple method,
                                                       !! **3** - will be specified by the user in
                                                       !! a subsequent call to [[set_sparsity_pattern]].
-                                                      !! **4** -
+                                                      !! **4** - computes a two-point jacobian
+                                                      !! at `num_sparsity_points` points.
     procedure(info_f),optional       :: info          !! a function the user can define
                                                       !! which is called when each column
                                                       !! of the jacobian is computed.
@@ -979,13 +981,19 @@
                                                                      !! present, then `xhigh` is used.
     real(wp),dimension(n),intent(in),optional :: dpert_for_sparsity  !! required if `sparsity_mode=4`
     integer,intent(in),optional :: sparsity_perturb_mode   !! perturbation mode (required if `sparsity_mode=4`):
+                                                           !!
                                                            !! **1** - perturbation is `dx=dpert`,
                                                            !! **2** - perturbation is `dx=dpert*x`,
                                                            !! **3** - perturbation is `dx=dpert*(1+x)`
     integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
                                                         !! evaluations used to estimate the sparsity pattern.
-    real(wp),intent(in),optional :: linear_sparsity_tol
-    real(wp),intent(in),optional :: function_precision_tol
+    real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
+                                                        !! indicate a constant jacobian element (linear sparsity)
+    real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
+                                                            !! that are the within this tolerance are
+                                                            !! considered the same value. This is used
+                                                            !! when estimating the sparsity pattern when
+                                                            !! `sparsity_mode=2` in [[compute_sparsity_random]]
 
     logical :: cache  !! if the cache is to be used
 
@@ -1094,7 +1102,8 @@
                                         !! **2** - three-point method,
                                         !! **3** - will be specified by the user in
                                         !! a subsequent call to [[set_sparsity_pattern]].
-                                        !! **4** -
+                                        !! **4** - computes a two-point jacobian
+                                        !! at `num_sparsity_points` points.
     real(wp),dimension(:),intent(in),optional :: xlow_for_sparsity   !! lower bounds on `x` used for
                                                                      !! sparsity computation (when
                                                                      !! `sparsity_mode` is 2). If not
@@ -1213,7 +1222,8 @@
                                                            !! **2** - three-point method,
                                                            !! **3** - will be specified by the user in
                                                            !! a subsequent call to [[set_sparsity_pattern]].
-                                                           !! **4** -
+                                                           !! **4** - computes a two-point jacobian
+                                                           !! at `num_sparsity_points` points.
     integer,intent(in),optional         :: jacobian_method !! `id` code for the finite difference method
                                                            !! to use for all `n` variables.
                                                            !! see [[get_finite_difference_method]]
@@ -1252,8 +1262,13 @@
                                                            !! **1** - perturbation is `dx=dpert`,
                                                            !! **2** - perturbation is `dx=dpert*x`,
                                                            !! **3** - perturbation is `dx=dpert*(1+x)`
-    real(wp),intent(in),optional :: linear_sparsity_tol
-    real(wp),intent(in),optional :: function_precision_tol
+    real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
+                                                        !! indicate a constant jacobian element (linear sparsity)
+    real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
+                                                            !! that are the within this tolerance are
+                                                            !! considered the same value. This is used
+                                                            !! when estimating the sparsity pattern when
+                                                            !! `sparsity_mode=2` in [[compute_sparsity_random]]
     integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
                                                         !! evaluations used to estimate the sparsity pattern.
 
@@ -1667,14 +1682,8 @@
 !*******************************************************************************
 !>
 !  Compute the sparsity pattern by computing the function at three
-!  "random" points in the [xlow,xhigh] interval and checking if the
-!  function values are the same.
-!
-!@note The input `x` is not used here.
-!
-!@note Could also allow the three coefficients to be user inputs.
-!
-!@note Instead of three points, the number of points could be a user input.
+!  "random" points in the [`xlow_for_sparsity`, `xhigh_for_sparsity`] interval
+!  and checking if the function values are the same.
 
     subroutine compute_sparsity_random(me,x)
 
@@ -1682,6 +1691,7 @@
 
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
+                                          !! (not used here)
 
     integer :: i !! column counter
     integer :: j !! row counter
@@ -1857,6 +1867,7 @@
 
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(:),intent(in)  :: x !! vector of variables (size `n`)
+                                           !! (not used here)
 
     type :: jac_type
         !! so we can define an array of jacobian columns
