@@ -1099,7 +1099,7 @@
     class(numdiff_type),intent(inout) :: me
     integer,intent(in) :: sparsity_mode !! the sparsity computation method:
                                         !! **1** - assume dense,
-                                        !! **2** - three-point method,
+                                        !! **2** - three-point simple method,
                                         !! **3** - will be specified by the user in
                                         !! a subsequent call to [[set_sparsity_pattern]].
                                         !! **4** - computes a two-point jacobian
@@ -1119,12 +1119,12 @@
         me%compute_sparsity => compute_sparsity_dense
     case(3)  ! user defined
         me%compute_sparsity => null()
-    case(2)  ! three-point method
+    case(2)  ! three-point simple method
         me%compute_sparsity => compute_sparsity_random
         ! in this case, we have the option of specifying
         ! separate bounds for computing the sparsity:
         call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
-    case(4)  ! compute jacobian in specified number of points
+    case(4)  ! compute 2-point jacobian in specified number of points
         me%compute_sparsity => compute_sparsity_random_2
         ! in this case, we have the option of specifying
         ! separate bounds for computing the sparsity:
@@ -1219,7 +1219,7 @@
                                                            !! (returns `m` functions)
     integer,intent(in)                  :: sparsity_mode   !! the sparsity computation method:
                                                            !! **1** - assume dense,
-                                                           !! **2** - three-point method,
+                                                           !! **2** - three-point simple method,
                                                            !! **3** - will be specified by the user in
                                                            !! a subsequent call to [[set_sparsity_pattern]].
                                                            !! **4** - computes a two-point jacobian
