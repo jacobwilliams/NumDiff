@@ -1857,6 +1857,7 @@
     integer :: n_linear_icol  !! `linear_icol` size counter
     integer :: n_linear_irow  !! `linear_irow` size counter
     integer :: n_linear_vals  !! `linear_vals` size counter
+    type(meth_array) :: class_meths  !! set of finite diff methods to use
 
     ! initialize:
     call me%destroy_sparsity_pattern()
@@ -1895,6 +1896,9 @@
         xp(:,i) = me%xlow_for_sparsity + (me%xhigh_for_sparsity-me%xlow_for_sparsity)*coeffs(i)
     end do
 
+    ! we will use 2-point methods (simple differences):
+    class_meths = get_all_methods_in_class(2)
+
     do icol = 1, me%n  ! column loop
 
         ! size the array:
@@ -1904,15 +1908,13 @@
         ! compute the ith column of the jacobian:
         me%sparsity%icol = [(icol, j=1,me%m)]
         do i = 1, me%num_sparsity_points
-            call me%compute_jacobian_for_sparsity( xp(:,i), jac_array(i)%jac )
+            call me%compute_jacobian_for_sparsity( icol, class_meths, xp(:,i), jac_array(i)%jac )
         end do
 
         ! check each row:
         do irow = 1, me%m
 
             ! put the results into the tmp_sparsity_pattern
-
-            ! write(*,*) icol,irow,jac_array(:)%jac(irow)
 
             if (equal_within_tol([0.0_wp,jac_array(:)%jac(irow)],me%linear_sparsity_tol)) then
                 ! they are all zero
@@ -2215,76 +2217,71 @@
 !>
 !  A separate version of [[compute_jacobian]] to be used only when
 !  computing the sparsity pattern in [[compute_sparsity_random_2]].
-!  It uses 2-point diffs and the sparsity dperts and bounds.
+!  It uses `class_meths` and the sparsity dperts and bounds.
+!
+!@note Based on [[compute_jacobian]]. The index manipulation here could be
+!      greatly simplified, since we realdy know we are computed all the
+!      elements in one column.
 
-    subroutine compute_jacobian_for_sparsity(me,x,jac)
+    subroutine compute_jacobian_for_sparsity(me,i,class_meths,x,jac)
 
     implicit none
 
     class(numdiff_type),intent(inout)             :: me
-    real(wp),dimension(:),intent(in)              :: x    !! vector of variables (size `n`)
-    real(wp),dimension(:),allocatable,intent(out) :: jac  !! sparse jacobian vector
+    integer,intent(in)                            :: i           !! the column being computed
+    type(meth_array),intent(in)                   :: class_meths !! set of finite diff methods to use
+    real(wp),dimension(:),intent(in)              :: x           !! vector of variables (size `n`)
+    real(wp),dimension(:),allocatable,intent(out) :: jac         !! sparse jacobian vector
 
     real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
-
     integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
                                                                  !! nonzero Jacobian
                                                                  !! elements in a column
-    integer                  :: i   !! column counter
     integer                  :: j   !! function evaluation counter
     real(wp),dimension(me%m) :: df  !! accumulated function
     type(finite_diff_method) :: fd  !! a finite different method (when
                                     !! specifying class rather than the method)
-    logical :: status_ok   !! error flag
+    logical :: status_ok                    !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
-    type(meth_array) :: class_meths
 
     ! Note that a sparsity pattern has already been set
 
     ! size the jacobian vector:
     allocate(jac(me%sparsity%num_nonzero_elements))
 
+    ! compute the perturbation vector (really we only need dx(i)):
     call me%compute_sparsity_perturbation_vector(x,dx)
-
-    ! we will use 2-point methods (simple differences):
-    class_meths = get_all_methods_in_class(2)
 
     ! initialize:
     jac = zero
 
-    ! compute Jacobian matrix column-by-column:
-    do i=1,me%n
+    ! determine functions to compute for this column:
+    num_nonzero_elements_in_col = count(me%sparsity%icol==i)
+    if (num_nonzero_elements_in_col/=0) then ! there are functions to compute
 
-        ! determine functions to compute for this column:
-        num_nonzero_elements_in_col = count(me%sparsity%icol==i)
-        if (num_nonzero_elements_in_col/=0) then ! there are functions to compute
+        nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
 
-            nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
+        call me%select_finite_diff_method(x(i),me%xlow_for_sparsity(i),me%xhigh_for_sparsity(i),&
+                                            dx(i),class_meths,fd,status_ok)
+        if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
+            'Error in compute_jacobian_for_sparsity: variable bounds violated for column: ',i
 
-                call me%select_finite_diff_method(x(i),me%xlow_for_sparsity(i),me%xhigh_for_sparsity(i),&
-                                                  dx(i),class_meths,fd,status_ok)
-                if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
-                    'Error in compute_jacobian_for_sparsity: variable bounds violated for column: ',i
+        ! compute this column of the Jacobian:
+        df = zero
+        do j = 1, size(fd%dx_factors)
+            if (associated(me%info_function)) call me%info_function([i],j,x)
+            call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
+                                            dx,fd%df_factors(j),&
+                                            i,nonzero_elements_in_col,df)
+        end do
+        df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
+                                        (fd%df_den_factor*dx(i))
 
-                ! compute this column of the Jacobian:
-                df = zero
-                do j = 1, size(fd%dx_factors)
-                    if (associated(me%info_function)) call me%info_function([i],j,x)
-                    call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
-                                                    dx,fd%df_factors(j),&
-                                                    i,nonzero_elements_in_col,df)
-                end do
-                df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
-                                              (fd%df_den_factor*dx(i))
+        ! put result into the output vector:
+        jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = &
+            df(nonzero_elements_in_col)
 
-
-            ! put result into the output vector:
-            jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = &
-                df(nonzero_elements_in_col)
-
-        end if
-
-    end do
+    end if
 
     end subroutine compute_jacobian_for_sparsity
 !*******************************************************************************
