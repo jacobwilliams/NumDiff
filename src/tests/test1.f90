@@ -18,6 +18,10 @@
     real(wp),dimension(n),parameter :: xhigh = 10.0_wp
     real(wp),dimension(n),parameter :: dpert = 1.0e-5_wp
     integer,parameter :: perturb_mode = 1
+    integer,parameter :: cache_size = 0 !! `0` indicates not to use cache
+    !integer,parameter :: cache_size = 1000 ! use cache
+   ! integer,parameter :: sparsity_mode = 2
+    integer,parameter :: sparsity_mode = 4
 
     type(numdiff_type)                :: my_prob
     integer                           :: i          !! counter
@@ -29,9 +33,6 @@
     type(meth_array)                  :: meths
     integer                           :: func_evals  !! function evaluation counter
     integer,dimension(:),allocatable  :: methods     !! array of method IDs
-
-    integer,parameter :: cache_size = 0 !! `0` indicates not to use cache
-    !integer,parameter :: cache_size = 1000 ! use cache
 
     methods = [(i, i = 1, 44)]
     methods = [methods, 500,600,700,800]  ! these only have central diffs
@@ -48,7 +49,7 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_mode=2,&
+                                sparsity_mode=sparsity_mode,&
                                 jacobian_method=i,&
                                 partition_sparsity_pattern=.false.,&
                                 cache_size=cache_size)
@@ -63,9 +64,9 @@
             write(output_unit,'(A)') ''
 
             write(output_unit,'(A)') ''
-            write(output_unit,'(A)') '-------------------'
-            write(output_unit,'(A,I2)') ' specify method [no partitioning] : ',i
-            write(output_unit,'(A)') '-------------------'
+            write(output_unit,'(A)') '--------------------------------------'
+            write(output_unit,'(A,I4)') ' specify method [no partitioning] : ',i
+            write(output_unit,'(A)') '--------------------------------------'
             write(output_unit,'(A)') ''
         end if
 
@@ -90,7 +91,7 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_mode=2,&
+                                sparsity_mode=sparsity_mode,&
                                 jacobian_method=i,&
                                 partition_sparsity_pattern=.true.,&
                                 cache_size=cache_size)
@@ -105,9 +106,9 @@
             write(output_unit,'(A)') ''
 
             write(output_unit,'(A)') ''
-            write(output_unit,'(A)') '-------------------'
-            write(output_unit,'(A,I2)') ' specify method [with partitioning] : ',i
-            write(output_unit,'(A)') '-------------------'
+            write(output_unit,'(A)') '--------------------------------------'
+            write(output_unit,'(A,I4)') ' specify method [with partitioning] : ',i
+            write(output_unit,'(A)') '--------------------------------------'
             write(output_unit,'(A)') ''
         end if
 
@@ -147,7 +148,7 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_mode=2,&
+                                sparsity_mode=sparsity_mode,&
                                 class=i,&
                                 cache_size=cache_size)
 
@@ -169,7 +170,7 @@
         func_evals = 0
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
-                                sparsity_mode=2,&
+                                sparsity_mode=sparsity_mode,&
                                 class=i,partition_sparsity_pattern=.true.,&
                                 cache_size=cache_size)
 
@@ -187,7 +188,7 @@
     write(output_unit,'(A)') ''
 
     func_evals = 0
-    call my_prob%diff_initialize(n,m,xlow,xhigh,my_func,sparsity_mode=2,&
+    call my_prob%diff_initialize(n,m,xlow,xhigh,my_func,sparsity_mode=1,&  ! use a dense method for this one
                                     cache_size=cache_size)
 
     call my_prob%compute_jacobian(x,jac)

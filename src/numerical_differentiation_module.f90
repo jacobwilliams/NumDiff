@@ -86,6 +86,7 @@
         contains
         private
         procedure :: dsm_wrapper
+        procedure :: compute_indices
         procedure,public :: destroy => destroy_sparsity
         procedure,public :: print => print_sparsity
         procedure,public :: columns_in_partition_group
@@ -106,6 +107,7 @@
         integer :: chunk_size = 100  !! chuck size for allocating the arrays (>0)
 
         integer :: perturb_mode = 1  !! perturbation mode:
+                                     !!
                                      !! **1** - perturbation is `dx=dpert`,
                                      !! **2** - perturbation is `dx=dpert*x`,
                                      !! **3** - perturbation is `dx=dpert*(1+x)`
@@ -115,18 +117,28 @@
         type(sparsity_pattern) :: sparsity  !! the sparsity pattern
         real(wp),dimension(:),allocatable :: xlow_for_sparsity  !! lower bounds on `x` for computing sparsity (optional)
         real(wp),dimension(:),allocatable :: xhigh_for_sparsity !! upper bounds on `x` for computing sparsity (optional)
+        real(wp),dimension(:),allocatable :: dpert_for_sparsity !! perturbation vector for `x` when computing
+                                                                !! sparsity for `sparsity_mode=4`
+        integer :: num_sparsity_points = 3    !! for `sparsity_mode=4`, the number of jacobian
+                                              !! evaluations used to estimate the sparsity pattern.
+                                              !! See [[compute_sparsity_random_2]]
+        integer :: sparsity_perturb_mode = 1  !! perturbation mode (if `sparsity_mode=4`):
+                                              !!
+                                              !! **1** - perturbation is `dx=dpert`,
+                                              !! **2** - perturbation is `dx=dpert*x`,
+                                              !! **3** - perturbation is `dx=dpert*(1+x)`
 
         ! if computing the sparsity pattern, we also have an option to
         ! compute the linear pattern, which indicates constant elements
         ! of the jacobian. these elements don't need to be computed again.
         logical :: compute_linear_sparsity_pattern = .false.  !! to also compute the linear sparsity pattern
-        real(wp) :: linear_sparsity_tol = 1.0e-12_wp !! the equality tolerance for derivatives to
-                                                     !! indicate a constant jacobian element (linear sparsity)
-
-        real(wp) :: function_precision_tol = 1.0e-16_wp !! the function precision. two functions values
-                                                        !! that are the within this tolerance are
-                                                        !! considered the same value. This is used
-                                                        !! when estimating the sparsity pattern.
+        real(wp) :: linear_sparsity_tol = epsilon(1.0_wp)    !! the equality tolerance for derivatives to
+                                                             !! indicate a constant jacobian element (linear sparsity)
+        real(wp) :: function_precision_tol = epsilon(1.0_wp) !! the function precision. two functions values
+                                                             !! that are the within this tolerance are
+                                                             !! considered the same value. This is used
+                                                             !! when estimating the sparsity pattern when
+                                                             !! `sparsity_mode=2` in [[compute_sparsity_random]]
 
         integer :: mode = 1 !! **1** = use `meth` (specified methods),
                             !! **2** = use `class` (specified class, method is selected on-the-fly).
@@ -138,7 +150,6 @@
                                                    !! `size(n)`. Either this or `meth` is used
         type(meth_array),dimension(:),allocatable :: class_meths !! array of methods for the specified classes.
                                                                  !! used with `class` when `mode=2`
-
 
         ! parameters when using diff:
         real(wp) :: eps = 1.0e-9_wp !! tolerance parameter for [[diff]]
@@ -201,10 +212,16 @@
 
         ! internal routines:
         procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
+        procedure :: compute_perturb_vector
         procedure :: compute_perturbation_vector   !! computes the variable perturbation factor
+        procedure :: compute_sparsity_perturbation_vector
         procedure :: perturb_x_and_compute_f
         procedure :: perturb_x_and_compute_f_partitioned
         procedure :: set_numdiff_sparsity_bounds
+        procedure :: set_sparsity_mode
+        procedure :: generate_dense_sparsity_partition
+        procedure :: compute_jacobian_for_sparsity
+        procedure :: resize_sparsity_vectors
 
     end type numdiff_type
 
@@ -253,7 +270,6 @@
             real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
             real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
         end subroutine jacobian_f
-
     end interface
 
     ! other:
@@ -522,9 +538,12 @@
 !   * \( (-2283f(x)+6720f(x+h)-11760f(x+2h)+15680f(x+3h)-14700f(x+4h)+9408f(x+5h)-3920f(x+6h)+960f(x+7h)-105f(x+8h)) / (840h) \)
 !   * \( (105f(x-8h)-960f(x-7h)+3920f(x-6h)-9408f(x-5h)+14700f(x-4h)-15680f(x-3h)+11760f(x-2h)-6720f(x-h)+2283f(x)) / (840h) \)
 !   * \( (-2f(x-5h)+25f(x-4h)-150f(x-3h)+600f(x-2h)-2100f(x-h)+2100f(x+h)-600f(x+2h)+150f(x+3h)-25f(x+4h)+2f(x+5h)) / (2520h) \)
-!   * \( (5f(x-6h)-72f(x-5h)+495f(x-4h)-2200f(x-3h)+7425f(x-2h)-23760f(x-h)+23760f(x+h)-7425f(x+2h)+2200f(x+3h)-495f(x+4h)+72f(x+5h)-5f(x+6h)) / (27720h) \)
-!   * \( (-15f(x-7h)+245f(x-6h)-1911f(x-5h)+9555f(x-4h)-35035f(x-3h)+105105f(x-2h)-315315f(x-h)+315315f(x+h)-105105f(x+2h)+35035f(x+3h)-9555f(x+4h)+1911f(x+5h)-245f(x+6h)+15f(x+7h)) / (360360h) \)
-!   * \( (7f(x-8h)-128f(x-7h)+1120f(x-6h)-6272f(x-5h)+25480f(x-4h)-81536f(x-3h)+224224f(x-2h)-640640f(x-h)+640640f(x+h)-224224f(x+2h)+81536f(x+3h)-25480f(x+4h)+6272f(x+5h)-1120f(x+6h)+128f(x+7h)-7f(x+8h)) / (720720h) \)
+!   * \( (5f(x-6h)-72f(x-5h)+495f(x-4h)-2200f(x-3h)+7425f(x-2h)-23760f(x-h)+23760f(x+h)-7425f(x+2h)+2200f(x+3h)-495f(x+4h)+
+!        72f(x+5h)-5f(x+6h)) / (27720h) \)
+!   * \( (-15f(x-7h)+245f(x-6h)-1911f(x-5h)+9555f(x-4h)-35035f(x-3h)+105105f(x-2h)-315315f(x-h)+315315f(x+h)-105105f(x+2h)+
+!        35035f(x+3h)-9555f(x+4h)+1911f(x+5h)-245f(x+6h)+15f(x+7h)) / (360360h) \)
+!   * \( (7f(x-8h)-128f(x-7h)+1120f(x-6h)-6272f(x-5h)+25480f(x-4h)-81536f(x-3h)+224224f(x-2h)-640640f(x-h)+640640f(x+h)-
+!        224224f(x+2h)+81536f(x+3h)-25480f(x+4h)+6272f(x+5h)-1120f(x+6h)+128f(x+7h)-7f(x+8h)) / (720720h) \)
 !
 !  Where \(f(x)\) is the user-defined function of \(x\)
 !  and \(h\) is a "small" perturbation.
@@ -865,17 +884,17 @@
 
     implicit none
 
-    class(numdiff_type),intent(inout)        :: me
-    real(wp),dimension(:),intent(in)         :: x               !! the variable values
-    real(wp),dimension(:),intent(in)         :: xlow            !! the variable lower bounds
-    real(wp),dimension(:),intent(in)         :: xhigh           !! the variable upper bounds
-    real(wp),dimension(:),intent(in)         :: dx              !! the perturbation values (>0)
-    type(meth_array),intent(in)              :: list_of_methods !! list of available methods to choose from
-    type(finite_diff_method),intent(out)     :: fd              !! this method can be used
-    logical,intent(out)                      :: status_ok       !! true if it really doesn't violate the bounds
-                                                                !! (say, the bounds are very close to each other)
-                                                                !! if `status_ok=False`, then the first method in
-                                                                !! the given class is returned in `fd`.
+    class(numdiff_type),intent(inout)     :: me
+    real(wp),dimension(:),intent(in)      :: x               !! the variable values
+    real(wp),dimension(:),intent(in)      :: xlow            !! the variable lower bounds
+    real(wp),dimension(:),intent(in)      :: xhigh           !! the variable upper bounds
+    real(wp),dimension(:),intent(in)      :: dx              !! the perturbation values (>0)
+    type(meth_array),intent(in)           :: list_of_methods !! list of available methods to choose from
+    type(finite_diff_method),intent(out)  :: fd              !! this method can be used
+    logical,intent(out)                   :: status_ok       !! true if it really doesn't violate the bounds
+                                                             !! (say, the bounds are very close to each other)
+                                                             !! if `status_ok=False`, then the first method in
+                                                             !! the given class is returned in `fd`.
 
     integer  :: i   !! counter
     integer  :: j   !! counter
@@ -919,7 +938,10 @@
     subroutine initialize_numdiff_for_diff(me,n,m,xlow,xhigh,&
                                     problem_func,sparsity_mode,info,&
                                     chunk_size,eps,acc,cache_size,&
-                                    xlow_for_sparsity,xhigh_for_sparsity)
+                                    xlow_for_sparsity,xhigh_for_sparsity,&
+                                    dpert_for_sparsity,sparsity_perturb_mode,&
+                                    linear_sparsity_tol,function_precision_tol,&
+                                    num_sparsity_points)
 
     implicit none
 
@@ -931,10 +953,13 @@
     procedure(func)                  :: problem_func  !! the user function that defines the problem
                                                       !! (returns `m` functions)
     integer,intent(in)               :: sparsity_mode !! the sparsity computation method:
+                                                      !!
                                                       !! **1** - assume dense,
-                                                      !! **2** - three-point method,
+                                                      !! **2** - three-point simple method,
                                                       !! **3** - will be specified by the user in
                                                       !! a subsequent call to [[set_sparsity_pattern]].
+                                                      !! **4** - computes a two-point jacobian
+                                                      !! at `num_sparsity_points` points.
     procedure(info_f),optional       :: info          !! a function the user can define
                                                       !! which is called when each column
                                                       !! of the jacobian is computed.
@@ -957,6 +982,21 @@
                                                                      !! sparsity computation (when
                                                                      !! `sparsity_mode` is 2). If not
                                                                      !! present, then `xhigh` is used.
+    real(wp),dimension(n),intent(in),optional :: dpert_for_sparsity  !! required if `sparsity_mode=4`
+    integer,intent(in),optional :: sparsity_perturb_mode   !! perturbation mode (required if `sparsity_mode=4`):
+                                                           !!
+                                                           !! **1** - perturbation is `dx=dpert`,
+                                                           !! **2** - perturbation is `dx=dpert*x`,
+                                                           !! **3** - perturbation is `dx=dpert*(1+x)`
+    integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
+                                                        !! evaluations used to estimate the sparsity pattern.
+    real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
+                                                        !! indicate a constant jacobian element (linear sparsity)
+    real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
+                                                            !! that are the within this tolerance are
+                                                            !! considered the same value. This is used
+                                                            !! when estimating the sparsity pattern when
+                                                            !! `sparsity_mode=2` in [[compute_sparsity_random]]
 
     logical :: cache  !! if the cache is to be used
 
@@ -985,25 +1025,33 @@
     call me%set_numdiff_bounds(xlow,xhigh)
 
     ! set the sparsity function
-    select case (sparsity_mode)
-    case(1)  ! dense
-        me%compute_sparsity => compute_sparsity_dense
-    case(2)  ! three-point method
-        me%compute_sparsity => compute_sparsity_random
-        ! in this case, we have the option of specifying
-        ! separate bounds for computing the sparsity:
-        call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
-    case(3)  ! user defined
-        me%compute_sparsity => null()
-    case default
-        error stop 'Error in initialize_numdiff_for_diff: sparsity_mode must be 1, 2, or 3.'
-    end select
+    call me%set_sparsity_mode(sparsity_mode,xlow_for_sparsity,xhigh_for_sparsity)
+
+    if (sparsity_mode==4) then
+        ! these must be present, since we don't have a dpert and perturb mode for the gradients:
+        if (present(dpert_for_sparsity) .and. present(sparsity_perturb_mode)) then
+            me%dpert_for_sparsity = abs(dpert_for_sparsity)
+            ! perturbation options:
+            select case (sparsity_perturb_mode)
+            case(1:3)
+                me%sparsity_perturb_mode = sparsity_perturb_mode
+            case default
+                error stop 'Error in initialize_numdiff: sparsity_perturb_mode must be 1, 2, or 3.'
+            end select
+        else
+            error stop 'Error in initialize_numdiff_for_diff: missing required inputs for sparsity mode 4'
+        end if
+    end if
+    ! if these aren't present, they will just keep the defaults:
+    if (present(linear_sparsity_tol))    me%linear_sparsity_tol    = linear_sparsity_tol
+    if (present(function_precision_tol)) me%function_precision_tol = function_precision_tol
+    if (present(num_sparsity_points))    me%num_sparsity_points    = num_sparsity_points
 
     ! optional:
-    if (present(chunk_size)) me%chunk_size = abs(chunk_size)
-    if (present(eps))        me%eps = eps
-    if (present(acc))        me%acc = acc
-    if (present(info))       me%info_function => info
+    if (present(chunk_size))  me%chunk_size = abs(chunk_size)
+    if (present(eps))         me%eps = eps
+    if (present(acc))         me%acc = acc
+    if (present(info))        me%info_function => info
 
     end subroutine initialize_numdiff_for_diff
 !*******************************************************************************
@@ -1041,6 +1089,54 @@
     end if
 
     end subroutine set_numdiff_bounds
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Set sparsity mode.
+
+    subroutine set_sparsity_mode(me,sparsity_mode,xlow_for_sparsity,xhigh_for_sparsity)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,intent(in) :: sparsity_mode !! the sparsity computation method:
+                                        !! **1** - assume dense,
+                                        !! **2** - three-point simple method,
+                                        !! **3** - will be specified by the user in
+                                        !! a subsequent call to [[set_sparsity_pattern]].
+                                        !! **4** - computes a two-point jacobian
+                                        !! at `num_sparsity_points` points.
+    real(wp),dimension(:),intent(in),optional :: xlow_for_sparsity   !! lower bounds on `x` used for
+                                                                     !! sparsity computation (when
+                                                                     !! `sparsity_mode` is 2). If not
+                                                                     !! present, then `xlow` is used.
+    real(wp),dimension(:),intent(in),optional :: xhigh_for_sparsity  !! upper bounds on `x` used for
+                                                                     !! sparsity computation (when
+                                                                     !! `sparsity_mode` is 2). If not
+                                                                     !! present, then `xhigh` is used.
+
+    ! set the sparsity function
+    select case (sparsity_mode)
+    case(1)  ! dense
+        me%compute_sparsity => compute_sparsity_dense
+    case(3)  ! user defined
+        me%compute_sparsity => null()
+    case(2)  ! three-point simple method
+        me%compute_sparsity => compute_sparsity_random
+        ! in this case, we have the option of specifying
+        ! separate bounds for computing the sparsity:
+        call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
+    case(4)  ! compute 2-point jacobian in specified number of points
+        me%compute_sparsity => compute_sparsity_random_2
+        ! in this case, we have the option of specifying
+        ! separate bounds for computing the sparsity:
+        call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
+    case default
+        error stop 'Error in set_sparsity_mode: sparsity_mode must be 1, 2, 3, or 4.'
+    end select
+
+    end subroutine set_sparsity_mode
 !*******************************************************************************
 
 !*******************************************************************************
@@ -1105,7 +1201,10 @@
     subroutine initialize_numdiff(me,n,m,xlow,xhigh,perturb_mode,dpert,&
                         problem_func,sparsity_mode,jacobian_method,jacobian_methods,&
                         class,classes,info,chunk_size,partition_sparsity_pattern,&
-                        cache_size,xlow_for_sparsity,xhigh_for_sparsity)
+                        cache_size,xlow_for_sparsity,xhigh_for_sparsity,&
+                        dpert_for_sparsity,sparsity_perturb_mode,&
+                        linear_sparsity_tol,function_precision_tol,&
+                        num_sparsity_points)
 
     implicit none
 
@@ -1123,9 +1222,11 @@
                                                            !! (returns `m` functions)
     integer,intent(in)                  :: sparsity_mode   !! the sparsity computation method:
                                                            !! **1** - assume dense,
-                                                           !! **2** - three-point method,
+                                                           !! **2** - three-point simple method,
                                                            !! **3** - will be specified by the user in
                                                            !! a subsequent call to [[set_sparsity_pattern]].
+                                                           !! **4** - computes a two-point jacobian
+                                                           !! at `num_sparsity_points` points.
     integer,intent(in),optional         :: jacobian_method !! `id` code for the finite difference method
                                                            !! to use for all `n` variables.
                                                            !! see [[get_finite_difference_method]]
@@ -1159,10 +1260,23 @@
                                                                      !! sparsity computation (when
                                                                      !! `sparsity_mode` is 2). If not
                                                                      !! present, then `xhigh` is used.
+    real(wp),dimension(n),intent(in),optional :: dpert_for_sparsity  !! for `sparsity_mode=4`, the perturbation
+    integer,intent(in),optional :: sparsity_perturb_mode   !! perturbation mode (required if `sparsity_mode=4`):
+                                                           !! **1** - perturbation is `dx=dpert`,
+                                                           !! **2** - perturbation is `dx=dpert*x`,
+                                                           !! **3** - perturbation is `dx=dpert*(1+x)`
+    real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
+                                                        !! indicate a constant jacobian element (linear sparsity)
+    real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
+                                                            !! that are the within this tolerance are
+                                                            !! considered the same value. This is used
+                                                            !! when estimating the sparsity pattern when
+                                                            !! `sparsity_mode=2` in [[compute_sparsity_random]]
+    integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
+                                                        !! evaluations used to estimate the sparsity pattern.
 
-
-    integer :: i !! counter
-    logical :: found
+    integer :: i      !! counter
+    logical :: found  !! flag for [[get_finite_difference_method]]
     logical :: cache  !! if the cache is to be used
 
     me%use_diff = .false.
@@ -1269,19 +1383,28 @@
     end if
 
     ! set the sparsity function
-    select case (sparsity_mode)
-    case(1)  ! dense
-        me%compute_sparsity => compute_sparsity_dense
-    case(2)  ! three-point method
-        me%compute_sparsity => compute_sparsity_random
-        ! in this case, we have the option of specifying
-        ! separate bounds for computing the sparsity:
-        call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
-    case(3)  ! user defined
-        me%compute_sparsity => null()
-    case default
-        error stop 'Error in initialize_numdiff: sparsity_mode must be 1, 2, or 3.'
-    end select
+    call me%set_sparsity_mode(sparsity_mode,xlow_for_sparsity,xhigh_for_sparsity)
+
+    if (present(linear_sparsity_tol))    me%linear_sparsity_tol    = linear_sparsity_tol
+    if (present(function_precision_tol)) me%function_precision_tol = function_precision_tol
+    if (present(num_sparsity_points))    me%num_sparsity_points    = num_sparsity_points
+
+    if (present(dpert_for_sparsity)) then
+        me%dpert_for_sparsity = abs(dpert_for_sparsity)
+    else
+        me%dpert_for_sparsity = dpert ! use the same dpert as the jacobian
+    end if
+
+    if (present(sparsity_perturb_mode)) then
+        select case (sparsity_perturb_mode)
+        case(1:3)
+            me%sparsity_perturb_mode = sparsity_perturb_mode
+        case default
+            error stop 'Error in initialize_numdiff: sparsity_perturb_mode must be 1, 2, or 3.'
+        end select
+    else
+        me%sparsity_perturb_mode = perturb_mode ! use the same perturb mode as the jacobian
+    end if
 
     end subroutine initialize_numdiff
 !*******************************************************************************
@@ -1428,6 +1551,24 @@
 
 !*******************************************************************************
 !>
+!  Computes the `indices` vector in the class.
+
+    subroutine compute_indices(me)
+
+    implicit none
+
+    class(sparsity_pattern),intent(inout) :: me
+
+    integer :: i !! counter
+
+    allocate(me%indices(me%num_nonzero_elements))
+    me%indices = [(i,i=1,me%num_nonzero_elements)]
+
+    end subroutine compute_indices
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  To specify the sparsity pattern directly if it is already known.
 !
 !@note If specifying the linear pattern, all three optional arguments
@@ -1444,8 +1585,6 @@
     integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
     real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
 
-    integer :: i      !! counter
-
     call me%destroy_sparsity_pattern()
 
     if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
@@ -1457,9 +1596,7 @@
         me%sparsity%irow = irow
         me%sparsity%icol = icol
 
-        allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
-        me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
-
+        call me%sparsity%compute_indices()
         if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
 
     end if
@@ -1504,8 +1641,7 @@
     allocate(me%sparsity%irow(me%sparsity%num_nonzero_elements))
     allocate(me%sparsity%icol(me%sparsity%num_nonzero_elements))
 
-    allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
-    me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
+    call me%sparsity%compute_indices()
 
     ! create the dense matrix:
     i = 0
@@ -1517,14 +1653,8 @@
         end do
     end do
 
-    ! ... no real need for this, since it can't  ...
-    ! ... be partitioned (all elements are true) ...
-    if (me%partition_sparsity_pattern) then
-        ! generate a "dense" partition
-        me%sparsity%maxgrp = me%n
-        allocate(me%sparsity%ngrp(me%n))
-        me%sparsity%ngrp = [(i, i=1,me%n)]
-    end if
+    ! No real need for this, since it can't be partitioned (all elements are true)
+    if (me%partition_sparsity_pattern) call me%generate_dense_sparsity_partition()
 
     me%sparsity%sparsity_computed = .true.
 
@@ -1533,15 +1663,28 @@
 
 !*******************************************************************************
 !>
+!  Generate a "dense" sparsity partition.
+
+    subroutine generate_dense_sparsity_partition(me)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+
+    integer :: i !! counter
+
+    me%sparsity%maxgrp = me%n
+    allocate(me%sparsity%ngrp(me%n))
+    me%sparsity%ngrp = [(i, i=1,me%n)]
+
+    end subroutine generate_dense_sparsity_partition
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Compute the sparsity pattern by computing the function at three
-!  "random" points in the [xlow,xhigh] interval and checking if the
-!  function values are the same.
-!
-!@note The input `x` is not used here.
-!
-!@note Could also allow the three coefficients to be user inputs.
-!
-!@note Instead of three points, the number of points could be a user input.
+!  "random" points in the [`xlow_for_sparsity`, `xhigh_for_sparsity`] interval
+!  and checking if the function values are the same.
 
     subroutine compute_sparsity_random(me,x)
 
@@ -1549,6 +1692,7 @@
 
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
+                                          !! (not used here)
 
     integer :: i !! column counter
     integer :: j !! row counter
@@ -1628,8 +1772,7 @@
             call me%compute_function(x3,f3,idx)
 
             do j = 1, me%m ! each function (rows of Jacobian)
-
-                if ( equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol) ) then
+                if (equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol)) then
                     ! no change in the function, so no sparsity element here.
                     cycle
                 else
@@ -1653,43 +1796,200 @@
                     call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
                     call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
                 end if
-
             end do
 
         end do
 
         ! resize to correct size:
-        if (allocated(me%sparsity%icol)) then
-            call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
-            call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
-            me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
-        else
-            me%sparsity%num_nonzero_elements = 0
-        end if
-
-        ! linear pattern (note: there may be no linear elements):
-        me%sparsity%linear_sparsity_computed = me%compute_linear_sparsity_pattern .and. &
-                                               allocated(me%sparsity%linear_vals)
-        if (me%sparsity%linear_sparsity_computed) then
-            call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,finished=.true.)
-            call expand_vector(me%sparsity%linear_irow,n_linear_irow,me%chunk_size,finished=.true.)
-            call expand_vector(me%sparsity%linear_vals,n_linear_vals,me%chunk_size,finished=.true.)
-            me%sparsity%num_nonzero_linear_elements = n_linear_vals
-        else
-            me%sparsity%num_nonzero_linear_elements = 0
-        end if
+        call me%resize_sparsity_vectors(n_icol,n_irow,n_linear_icol,&
+                                            n_linear_irow,n_linear_vals)
 
     end associate
 
-    allocate(me%sparsity%indices(me%sparsity%num_nonzero_elements))
-    me%sparsity%indices = [(i,i=1,me%sparsity%num_nonzero_elements)]
-
+    call me%sparsity%compute_indices()
     if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
 
     ! finished:
     me%sparsity%sparsity_computed = .true.
 
     end subroutine compute_sparsity_random
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Resize the sparsity arrays after accumulating them.
+
+    subroutine resize_sparsity_vectors(me,n_icol,n_irow,n_linear_icol,&
+                                            n_linear_irow,n_linear_vals)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,intent(inout) :: n_icol
+    integer,intent(inout) :: n_irow
+    integer,intent(inout) :: n_linear_icol
+    integer,intent(inout) :: n_linear_irow
+    integer,intent(inout) :: n_linear_vals
+
+    ! resize to correct size:
+    if (allocated(me%sparsity%icol)) then
+        call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,finished=.true.)
+        call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,finished=.true.)
+        me%sparsity%num_nonzero_elements = size(me%sparsity%irow)
+    else
+        me%sparsity%num_nonzero_elements = 0
+    end if
+
+    ! linear pattern (note: there may be no linear elements):
+    me%sparsity%linear_sparsity_computed = me%compute_linear_sparsity_pattern .and. &
+                                            allocated(me%sparsity%linear_vals)
+    if (me%sparsity%linear_sparsity_computed) then
+        call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,finished=.true.)
+        call expand_vector(me%sparsity%linear_irow,n_linear_irow,me%chunk_size,finished=.true.)
+        call expand_vector(me%sparsity%linear_vals,n_linear_vals,me%chunk_size,finished=.true.)
+        me%sparsity%num_nonzero_linear_elements = n_linear_vals
+    else
+        me%sparsity%num_nonzero_linear_elements = 0
+    end if
+
+    end subroutine resize_sparsity_vectors
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute the sparsity pattern by computing a 2-point jacobian at a specified
+!  number of "random" points (`num_sparsity_points`) in the
+!  [`xlow_for_sparsity`, `xhigh_for_sparsity`] interval and checking if
+!  they are the same.
+
+    subroutine compute_sparsity_random_2(me,x)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: x !! vector of variables (size `n`)
+                                           !! (not used here)
+
+    type :: jac_type
+        !! so we can define an array of jacobian columns
+        real(wp),dimension(:),allocatable :: jac !! a column of the jacobian
+    end type jac_type
+
+    real(wp),dimension(:),allocatable :: coeffs           !! coefficients for computing `xp`
+    real(wp),dimension(:,:),allocatable :: xp             !! perturbed `x` array (size `n,num_sparsity_points`)
+    type(jac_type),dimension(:),allocatable :: jac_array  !! array of jacobian columns
+    type(sparsity_pattern) :: tmp_sparsity_pattern        !! will accumulate the pattern here
+                                                          !! and copy it into the class when
+                                                          !! finished.
+    integer :: i              !! counter for the number of points
+    integer :: j              !! counter
+    integer :: icol           !! column counter
+    integer :: irow           !! row counter
+    real(wp) :: dfdx          !! value of a jacobian element
+    integer :: n_icol         !! `icol` size counter
+    integer :: n_irow         !! `irow` size counter
+    integer :: n_linear_icol  !! `linear_icol` size counter
+    integer :: n_linear_irow  !! `linear_irow` size counter
+    integer :: n_linear_vals  !! `linear_vals` size counter
+    type(meth_array) :: class_meths  !! set of finite diff methods to use
+    real(wp),dimension(:),allocatable :: jac !! array of jacobian element values
+
+    ! initialize:
+    call me%destroy_sparsity_pattern()
+
+    ! error check:
+    if (.not. allocated(me%xlow_for_sparsity) .or. .not. allocated(me%xhigh_for_sparsity)) then
+        error stop 'Error in compute_sparsity_random_2: the x bounds have not been set.'
+    end if
+
+    ! compute the coefficients:
+    coeffs = divide_interval(me%num_sparsity_points)
+
+    ! save the initial settings:
+    tmp_sparsity_pattern = me%sparsity
+
+    ! we create a provisional sparsity pattern here,
+    ! to compute one row at a time:
+    me%sparsity%irow = [(irow,irow=1,me%m)]
+    me%sparsity%sparsity_computed = .true.
+    me%sparsity%num_nonzero_elements = me%m
+    call me%sparsity%compute_indices()
+    if (me%partition_sparsity_pattern) call me%generate_dense_sparsity_partition()
+    n_icol = 0
+    n_irow = 0
+    n_linear_icol = 0
+    n_linear_irow = 0
+    n_linear_vals = 0
+    allocate(jac(me%num_sparsity_points))
+
+    ! the idea here is to compute the (dense) jacobian
+    ! one column at at time, and keep a running track of
+    ! the ones that have changed.
+
+    ! first precompute the perturbation arrays for each point:
+    allocate(xp(me%n,me%num_sparsity_points))
+    do i = 1, me%num_sparsity_points
+        xp(:,i) = me%xlow_for_sparsity + (me%xhigh_for_sparsity-me%xlow_for_sparsity)*coeffs(i)
+    end do
+
+    ! we will use 2-point methods (simple differences):
+    class_meths = get_all_methods_in_class(2)
+
+    do icol = 1, me%n  ! column loop
+
+        ! size the array:
+        if (allocated(jac_array)) deallocate(jac_array)
+        allocate(jac_array(me%num_sparsity_points))
+
+        ! compute the ith column of the jacobian:
+        me%sparsity%icol = [(icol, j=1,me%m)]
+        do i = 1, me%num_sparsity_points
+            call me%compute_jacobian_for_sparsity( icol, class_meths, xp(:,i), jac_array(i)%jac )
+        end do
+
+        ! check each row:
+        do irow = 1, me%m
+
+            ! get the jacobian values for this row,col for all the points:
+            do j = 1, me%num_sparsity_points
+                jac(j) = jac_array(j)%jac(irow)
+            end do
+
+            ! put the results into the tmp_sparsity_pattern
+            if (equal_within_tol([0.0_wp,jac],me%linear_sparsity_tol)) then
+                ! they are all zero
+                cycle
+            else
+                if (me%compute_linear_sparsity_pattern) then
+                    if (equal_within_tol(jac,me%linear_sparsity_tol)) then
+                        ! this is a linear element (constant value)
+                        dfdx = sum(jac) / me%num_sparsity_points ! just take the average and use that
+                        call expand_vector(tmp_sparsity_pattern%linear_icol,n_linear_icol,me%chunk_size,val=icol)
+                        call expand_vector(tmp_sparsity_pattern%linear_irow,n_linear_irow,me%chunk_size,val=irow)
+                        call expand_vector(tmp_sparsity_pattern%linear_vals,n_linear_vals,me%chunk_size,val=dfdx)
+                        cycle ! this element will not be added to the nonlinear pattern
+                    end if
+                end if
+                ! otherwise, add it to the nonlinear pattern:
+                call expand_vector(tmp_sparsity_pattern%icol,n_icol,me%chunk_size,val=icol)
+                call expand_vector(tmp_sparsity_pattern%irow,n_irow,me%chunk_size,val=irow)
+            end if
+        end do
+
+    end do
+
+    ! copy over the computed pattern:
+    me%sparsity = tmp_sparsity_pattern
+
+    ! resize to correct size:
+    call me%resize_sparsity_vectors(n_icol,n_irow,n_linear_icol,&
+                                        n_linear_irow,n_linear_vals)
+
+    call me%sparsity%compute_indices()
+    if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
+    me%sparsity%sparsity_computed = .true.
+
+    end subroutine compute_sparsity_random_2
 !*******************************************************************************
 
 !*******************************************************************************
@@ -1933,6 +2233,79 @@
     end if
 
     end subroutine compute_jacobian
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  A separate version of [[compute_jacobian]] to be used only when
+!  computing the sparsity pattern in [[compute_sparsity_random_2]].
+!  It uses `class_meths` and the sparsity dperts and bounds.
+!
+!@note Based on [[compute_jacobian]]. The index manipulation here could be
+!      greatly simplified, since we realdy know we are computed all the
+!      elements in one column.
+
+    subroutine compute_jacobian_for_sparsity(me,i,class_meths,x,jac)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)             :: me
+    integer,intent(in)                            :: i           !! the column being computed
+    type(meth_array),intent(in)                   :: class_meths !! set of finite diff methods to use
+    real(wp),dimension(:),intent(in)              :: x           !! vector of variables (size `n`)
+    real(wp),dimension(:),allocatable,intent(out) :: jac         !! sparse jacobian vector
+
+    real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
+    integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
+                                                                 !! nonzero Jacobian
+                                                                 !! elements in a column
+    integer                  :: j   !! function evaluation counter
+    real(wp),dimension(me%m) :: df  !! accumulated function
+    type(finite_diff_method) :: fd  !! a finite different method (when
+                                    !! specifying class rather than the method)
+    logical :: status_ok                    !! error flag
+    integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
+
+    ! Note that a sparsity pattern has already been set
+
+    ! size the jacobian vector:
+    allocate(jac(me%sparsity%num_nonzero_elements))
+
+    ! compute the perturbation vector (really we only need dx(i)):
+    call me%compute_sparsity_perturbation_vector(x,dx)
+
+    ! initialize:
+    jac = zero
+
+    ! determine functions to compute for this column:
+    num_nonzero_elements_in_col = count(me%sparsity%icol==i)
+    if (num_nonzero_elements_in_col/=0) then ! there are functions to compute
+
+        nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
+
+        call me%select_finite_diff_method(x(i),me%xlow_for_sparsity(i),me%xhigh_for_sparsity(i),&
+                                            dx(i),class_meths,fd,status_ok)
+        if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
+            'Error in compute_jacobian_for_sparsity: variable bounds violated for column: ',i
+
+        ! compute this column of the Jacobian:
+        df = zero
+        do j = 1, size(fd%dx_factors)
+            if (associated(me%info_function)) call me%info_function([i],j,x)
+            call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
+                                            dx,fd%df_factors(j),&
+                                            i,nonzero_elements_in_col,df)
+        end do
+        df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
+                                        (fd%df_den_factor*dx(i))
+
+        ! put result into the output vector:
+        jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = &
+            df(nonzero_elements_in_col)
+
+    end if
+
+    end subroutine compute_jacobian_for_sparsity
 !*******************************************************************************
 
 !*******************************************************************************
@@ -2277,6 +2650,43 @@
 
 !*******************************************************************************
 !>
+!  Compute `dx`, the perturbation vector for `x`
+
+    subroutine compute_perturb_vector(me,x,dpert,perturb_mode,dx)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)    :: me
+    real(wp),dimension(me%n),intent(in)  :: x     !! vector of variables (size `n`)
+    real(wp),dimension(me%n),intent(in)  :: dpert
+    integer,intent(in)                   :: perturb_mode
+    real(wp),dimension(me%n),intent(out) :: dx  !! absolute perturbation (>0)
+                                                !! for each variable
+
+    real(wp),parameter :: eps = epsilon(1.0_wp) !! the smallest allowed absolute step
+
+    select case (perturb_mode)
+    case(1)
+        dx = abs(dpert)
+    case(2)
+        dx = abs(dpert * x)
+    case(3)
+        dx = abs(dpert) * (1.0_wp + abs(x))
+    case default
+        error stop 'Error in compute_perturb_vector: '//&
+                   'invalid value for perturb_mode (must be 1, 2, or 3)'
+    end select
+
+    ! make sure none are too small:
+    where (dx<eps)
+        dx = eps
+    end where
+
+    end subroutine compute_perturb_vector
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Compute `dx`, the perturbation vector for `x` used
 !  when computing the gradients.
 
@@ -2289,24 +2699,28 @@
     real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0)
                                                !! for each variable
 
-    real(wp),parameter :: eps = epsilon(1.0_wp) !! the smallest allowed absolute step
-
-    select case (me%perturb_mode)
-    case(1)
-        dx = abs(me%dpert)
-    case(2)
-        dx = abs(me%dpert * x)
-    case(3)
-        dx = abs(me%dpert) * (1.0_wp + abs(x))
-    case default
-        error stop 'Error in compute_perturbation_vector: '//&
-                   'invalid value for perturb_mode (must be 1, 2, or 3)'
-    end select
-
-    ! make sure none are too small:
-    where (dx<eps) dx = eps
+    call me%compute_perturb_vector(x,me%dpert,me%perturb_mode,dx)
 
     end subroutine compute_perturbation_vector
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute `dx`, the perturbation vector for `x` used
+!  when computing the sparsity pattern.
+
+    subroutine compute_sparsity_perturbation_vector(me,x,dx)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)    :: me
+    real(wp),dimension(me%n),intent(in)  :: x  !! vector of variables (size `n`)
+    real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0)
+                                               !! for each variable
+
+    call me%compute_perturb_vector(x,me%dpert_for_sparsity,me%sparsity_perturb_mode,dx)
+
+    end subroutine compute_sparsity_perturbation_vector
 !*******************************************************************************
 
 !*******************************************************************************
