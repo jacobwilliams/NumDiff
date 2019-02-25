@@ -6,7 +6,7 @@
 
     program test1
 
-    use iso_fortran_env, only: wp => real64, output_unit
+    use iso_fortran_env, only: wp => real64, output_unit, error_unit
     use numerical_differentiation_module
 
     implicit none
@@ -33,6 +33,7 @@
     type(meth_array)                  :: meths
     integer                           :: func_evals  !! function evaluation counter
     integer,dimension(:),allocatable  :: methods     !! array of method IDs
+    character(len=:),allocatable      :: error_msg   !! error message string
 
     methods = [(i, i = 1, 44)]
     methods = [methods, 500,600,700,800]  ! these only have central diffs
@@ -53,8 +54,18 @@
                                 jacobian_method=i,&
                                 partition_sparsity_pattern=.false.,&
                                 cache_size=cache_size)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
 
         call my_prob%compute_jacobian(x,jac)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
 
         if (i==1) then
             write(output_unit,'(A)') ''
@@ -95,8 +106,18 @@
                                 jacobian_method=i,&
                                 partition_sparsity_pattern=.true.,&
                                 cache_size=cache_size)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
 
         call my_prob%compute_jacobian(x,jac)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
 
         if (i==1) then
             write(output_unit,'(A)') ''
@@ -151,8 +172,18 @@
                                 sparsity_mode=sparsity_mode,&
                                 class=i,&
                                 cache_size=cache_size)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
 
         call my_prob%compute_jacobian(x,jac)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
         write(output_unit,'(A,1X,*(F27.16,","))') 'jac =',jac
         write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
         write(output_unit,'(A)') ''
@@ -173,8 +204,18 @@
                                 sparsity_mode=sparsity_mode,&
                                 class=i,partition_sparsity_pattern=.true.,&
                                 cache_size=cache_size)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
 
         call my_prob%compute_jacobian(x,jac)
+        if (my_prob%failed()) then
+            call my_prob%get_error_status(error_msg=error_msg)
+            write(error_unit,'(A)') error_msg
+            stop
+        end if
         write(output_unit,'(A,1X,*(F27.16,","))') 'jac =',jac
         write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
         write(output_unit,'(A)') ''
@@ -190,8 +231,18 @@
     func_evals = 0
     call my_prob%diff_initialize(n,m,xlow,xhigh,my_func,sparsity_mode=1,&  ! use a dense method for this one
                                     cache_size=cache_size)
+    if (my_prob%failed()) then
+        call my_prob%get_error_status(error_msg=error_msg)
+        write(error_unit,'(A)') error_msg
+        stop
+    end if
 
     call my_prob%compute_jacobian(x,jac)
+    if (my_prob%failed()) then
+        call my_prob%get_error_status(error_msg=error_msg)
+        write(error_unit,'(A)') error_msg
+        stop
+    end if
     write(output_unit,'(A,1X,*(F27.16,","))') 'jac =',jac
     write(output_unit,'(A,1X,I5)') 'function evaluations:',func_evals
     write(output_unit,'(A)') ''
