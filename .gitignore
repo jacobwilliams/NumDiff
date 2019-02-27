@@ -35,6 +35,7 @@ bin
 *.sln
 *.suo
 *.vfproj
+*u2d
 Release
 Debug
 x64

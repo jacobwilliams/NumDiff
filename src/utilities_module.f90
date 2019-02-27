@@ -426,7 +426,7 @@
     logical                          :: equal !! true if they are equal
                                               !! within the tolerance
 
-    equal = all ( abs(vals - vals(1)) < abs(tol) )
+    equal = all ( abs(vals - vals(1)) <= abs(tol) )
 
     end function equal_within_tol
 !*******************************************************************************
