@@ -98,6 +98,11 @@
 
         private
 
+        logical :: exception_raised = .false. !! if true, an exception has been raised
+        integer :: istat = 0   !! a non-zero value will cause all routine to exit.
+                               !! this can be set to `-1` by calling [[terminate]].
+        character(len=:),allocatable :: error_msg !! error message (if `istat/=0`)
+
         integer :: n = 0 !! number of `x` variables
         integer :: m = 0 !! number of `f` functions
 
@@ -210,6 +215,11 @@
                                                      !! (otherwise it will be done the first time the Jacobian is computed)
         procedure,public :: get_sparsity_pattern     !! returns the sparsity pattern (if it is allocated)
 
+        procedure,public :: terminate !! can be called by user to stop the computation
+
+        procedure,public :: failed !! to check if an exception was raised.
+        procedure,public :: get_error_status !! the status of error condition
+
         ! internal routines:
         procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
         procedure :: compute_perturb_vector
@@ -222,6 +232,8 @@
         procedure :: generate_dense_sparsity_partition
         procedure :: compute_jacobian_for_sparsity
         procedure :: resize_sparsity_vectors
+        procedure :: raise_exception
+        procedure :: clear_exceptions
 
     end type numdiff_type
 
@@ -365,6 +377,8 @@
     integer :: i !! index in the cache
     logical,dimension(size(funcs_to_compute)) :: ffound  !! functions found in the cache
     logical :: xfound  !! if `x` was found in the cache
+
+    if (me%exception_raised) return ! check for exceptions
 
     call me%cache%get(x,funcs_to_compute,i,f,xfound,ffound)
 
@@ -845,6 +859,8 @@
     ! initialize:
     status_ok = .false.
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! try all the methods in the class:
     do i = 1, size(list_of_methods%meth)
         status_ok = .true. ! will be set to false if any
@@ -902,6 +918,8 @@
 
     ! initialize:
     status_ok = .false.
+
+    if (me%exception_raised) return ! check for exceptions
 
     ! try all the methods in the class:
     do i = 1, size(list_of_methods%meth)
@@ -1036,10 +1054,14 @@
             case(1:3)
                 me%sparsity_perturb_mode = sparsity_perturb_mode
             case default
-                error stop 'Error in initialize_numdiff: sparsity_perturb_mode must be 1, 2, or 3.'
+                call me%raise_exception(1,'initialize_numdiff_for_diff',&
+                                          'sparsity_perturb_mode must be 1, 2, or 3.')
+                return
             end select
         else
-            error stop 'Error in initialize_numdiff_for_diff: missing required inputs for sparsity mode 4'
+            call me%raise_exception(2,'initialize_numdiff_for_diff',&
+                                      'missing required inputs for sparsity mode 4')
+            return
         end if
     end if
     ! if these aren't present, they will just keep the defaults:
@@ -1074,13 +1096,19 @@
     real(wp),dimension(:),intent(in)  :: xlow    !! lower bounds on `x`
     real(wp),dimension(:),intent(in)  :: xhigh   !! upper bounds on `x`
 
-    if (allocated(me%xlow)) deallocate(me%xlow)
+    if (me%exception_raised) return ! check for exceptions
+
+    if (allocated(me%xlow))  deallocate(me%xlow)
     if (allocated(me%xhigh)) deallocate(me%xhigh)
 
     if (size(xlow)/=me%n .or. size(xhigh)/=me%n) then
-        error stop 'Error in set_numdiff_bounds: invalid size of xlow or xhigh'
+        call me%raise_exception(3,'set_numdiff_bounds',&
+                                  'invalid size of xlow or xhigh')
+        return
     else if (any(xlow>=xhigh)) then
-        error stop 'Error in set_numdiff_bounds: all xlow must be < xhigh'
+        call me%raise_exception(4,'set_numdiff_bounds',&
+                                  'all xlow must be < xhigh')
+        return
     else
         allocate(me%xlow(me%n))
         allocate(me%xhigh(me%n))
@@ -1116,6 +1144,8 @@
                                                                      !! `sparsity_mode` is 2). If not
                                                                      !! present, then `xhigh` is used.
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! set the sparsity function
     select case (sparsity_mode)
     case(1)  ! dense
@@ -1133,7 +1163,9 @@
         ! separate bounds for computing the sparsity:
         call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
     case default
-        error stop 'Error in set_sparsity_mode: sparsity_mode must be 1, 2, 3, or 4.'
+        call me%raise_exception(5,'set_sparsity_mode',&
+                                  'sparsity_mode must be 1, 2, 3, or 4.')
+        return
     end select
 
     end subroutine set_sparsity_mode
@@ -1162,6 +1194,8 @@
                                                         !! sparsity computation. If not present,
                                                         !! then then `xhigh` values in the class are used.
 
+    if (me%exception_raised) return ! check for exceptions
+
     if (allocated(me%xlow_for_sparsity)) deallocate(me%xlow_for_sparsity)
     if (allocated(me%xhigh_for_sparsity)) deallocate(me%xhigh_for_sparsity)
 
@@ -1183,9 +1217,11 @@
 
     ! error checks:
     if (size(me%xlow_for_sparsity)/=me%n .or. size(me%xhigh_for_sparsity)/=me%n) then
-        error stop 'Error in set_numdiff_sparsity_bounds: invalid size of xlow or xhigh'
+        call me%raise_exception(6,'set_numdiff_sparsity_bounds',&
+                                  'invalid size of xlow or xhigh')
     else if (any(me%xlow_for_sparsity>=me%xhigh_for_sparsity)) then
-        error stop 'Error in set_numdiff_sparsity_bounds: all xlow must be < xhigh'
+        call me%raise_exception(7,'set_numdiff_sparsity_bounds',&
+                                  'all xlow must be < xhigh')
     end if
 
     end subroutine set_numdiff_sparsity_bounds
@@ -1313,7 +1349,11 @@
         allocate(me%meth(n))
         do i=1,n
             call get_finite_difference_method(jacobian_method,me%meth(i),found)
-            if (.not. found) error stop 'Error in initialize_numdiff: invalid jacobian_method'
+            if (.not. found) then
+                call me%raise_exception(8,'initialize_numdiff',&
+                                          'invalid jacobian_method')
+                return
+            end if
         end do
     elseif (.not. present(jacobian_method) .and. present(jacobian_methods) .and. &
             .not. present(class) .and. .not. present(classes)) then
@@ -1322,11 +1362,19 @@
         allocate(me%meth(n))
         do i=1,n
             call get_finite_difference_method(jacobian_methods(i),me%meth(i),found)
-            if (.not. found) error stop 'Error in initialize_numdiff: invalid jacobian_methods'
+            if (.not. found) then
+                call me%raise_exception(9,'initialize_numdiff',&
+                                          'invalid jacobian_methods')
+                return
+            end if
         end do
-        if (me%partition_sparsity_pattern) error stop 'Error in initialize_numdiff: '//&
-            'when using partitioned sparsity pattern, all columns must use the same '//&
-            'finite diff method.'
+        if (me%partition_sparsity_pattern) then
+            call me%raise_exception(10,'initialize_numdiff',&
+                                        'when using partitioned sparsity pattern, '//&
+                                        'all columns must use the same '//&
+                                        'finite diff method.')
+            return
+        end if
     elseif (.not. present(jacobian_method) .and. .not. present(jacobian_methods) .and. &
                   present(class) .and. .not. present(classes)) then
         ! use the class for all variables
@@ -1345,12 +1393,16 @@
         do i=1,n
             me%class_meths(i) = get_all_methods_in_class(me%class(i))
         end do
-        if (me%partition_sparsity_pattern) error stop 'Error in initialize_numdiff: '//&
-            'when using partitioned sparsity pattern, all columns must use the same '//&
-            'finite diff method.'
+        if (me%partition_sparsity_pattern) then
+            call me%raise_exception(11,'initialize_numdiff',&
+                                        'when using partitioned sparsity pattern, '//&
+                                        'all columns must use the same '//&
+                                        'finite diff method.')
+        end if
     else
-        error stop 'Error in initialize_numdiff: must specify one of either '//&
-                   'jacobian_method, jacobian_methods, class, or classes.'
+        call me%raise_exception(12,'initialize_numdiff',&
+                                    'must specify one of either '//&
+                                    'jacobian_method, jacobian_methods, class, or classes.')
     end if
 
     ! size of the problem:
@@ -1365,7 +1417,9 @@
     case(1:3)
         me%perturb_mode = perturb_mode
     case default
-        error stop 'Error in initialize_numdiff: perturb_mode must be 1, 2, or 3.'
+        call me%raise_exception(13,'initialize_numdiff',&
+                                   'perturb_mode must be 1, 2, or 3.')
+        return
     end select
     if (allocated(me%dpert)) deallocate(me%dpert)
     allocate(me%dpert(n))
@@ -1400,7 +1454,9 @@
         case(1:3)
             me%sparsity_perturb_mode = sparsity_perturb_mode
         case default
-            error stop 'Error in initialize_numdiff: sparsity_perturb_mode must be 1, 2, or 3.'
+            call me%raise_exception(14,'initialize_numdiff',&
+                                       'sparsity_perturb_mode must be 1, 2, or 3.')
+            return
         end select
     else
         me%sparsity_perturb_mode = perturb_mode ! use the same perturb mode as the jacobian
@@ -1439,16 +1495,16 @@
 !>
 !  Wrapper for [[dsm]] to compute the sparsity pattern partition.
 
-    subroutine dsm_wrapper(me,n,m)
+    subroutine dsm_wrapper(me,n,m,info)
 
     implicit none
 
     class(sparsity_pattern),intent(inout) :: me
-    integer,intent(in) :: n  !! number of columns of jacobian matrix
-    integer,intent(in) :: m  !! number of rows of jacobian matrix
+    integer,intent(in)  :: n     !! number of columns of jacobian matrix
+    integer,intent(in)  :: m     !! number of rows of jacobian matrix
+    integer,intent(out) :: info  !! status output from [[dsm]]
 
     integer :: mingrp !! for call to [[dsm]]
-    integer :: info   !! for call to [[dsm]]
     integer,dimension(m+1) :: ipntr  !! for call to [[dsm]]
     integer,dimension(n+1) :: jpntr  !! for call to [[dsm]]
     integer,dimension(:),allocatable :: irow  !! for call to [[dsm]]
@@ -1467,9 +1523,6 @@
              me%ngrp,me%maxgrp,&
              mingrp,info,ipntr,jpntr)
 
-    if (info/=1) error stop 'Error in dsm_wrapper: '//&
-                            'error partitioning sparsity pattern.'
-
     end subroutine dsm_wrapper
 !*******************************************************************************
 
@@ -1479,7 +1532,7 @@
 !
 !@note This is just a wrapper to get data from `ngrp`.
 
-    subroutine columns_in_partition_group(me,igroup,n_cols,cols,nonzero_rows,indices)
+    subroutine columns_in_partition_group(me,igroup,n_cols,cols,nonzero_rows,indices,status_ok)
 
     implicit none
 
@@ -1491,6 +1544,7 @@
     integer,dimension(:),allocatable,intent(out) :: nonzero_rows !! the row numbers of all the nonzero
                                                                  !! Jacobian elements in this group
     integer,dimension(:),allocatable,intent(out) :: indices      !! nonzero indices in `jac` for a group
+    logical,intent(out)                          :: status_ok    !! true if the partition is valid
 
     integer :: i  !! counter
     integer :: num_nonzero_elements_in_col          !! number of nonzero elements in a column
@@ -1498,6 +1552,8 @@
     integer,dimension(:),allocatable :: col_indices !! nonzero indices in `jac` for a column
 
     if (me%maxgrp>0 .and. allocated(me%ngrp)) then
+
+        status_ok = .true.
 
         n_cols = count(me%ngrp==igroup)
         if (n_cols>0) then
@@ -1527,8 +1583,7 @@
         end do
 
     else
-        error stop 'Error in columns_in_partition_group: '//&
-                   'the partition has not been computed.'
+        status_ok = .false.
     end if
 
     end subroutine columns_in_partition_group
@@ -1585,10 +1640,16 @@
     integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
     real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
 
+    integer :: info !! status output form [[dsm]]
+
     call me%destroy_sparsity_pattern()
 
+    if (me%exception_raised) return ! check for exceptions
+
     if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
-        error stop 'Error in set_sparsity_pattern: invalid inputs'
+        call me%raise_exception(15,'set_sparsity_pattern',&
+                                   'invalid inputs')
+        return
     else
 
         me%sparsity%sparsity_computed = .true.
@@ -1597,7 +1658,14 @@
         me%sparsity%icol = icol
 
         call me%sparsity%compute_indices()
-        if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
+        if (me%partition_sparsity_pattern) then
+            call me%sparsity%dsm_wrapper(me%n,me%m,info)
+            if (info/=1) then
+                call me%raise_exception(16,'set_sparsity_pattern',&
+                                           'error partitioning sparsity pattern.')
+                return
+            end if
+        end if
 
     end if
 
@@ -1607,7 +1675,9 @@
             size(linear_vals)/=size(linear_icol) .or. &
             any(linear_irow>me%m) .or. &
             any(linear_icol>me%n)) then
-            error stop 'Error in set_sparsity_pattern: invalid linear sparsity pattern'
+            call me%raise_exception(17,'set_sparsity_pattern',&
+                                       'invalid linear sparsity pattern')
+            return
         else
             me%sparsity%linear_irow = linear_irow
             me%sparsity%linear_icol = linear_icol
@@ -1636,6 +1706,8 @@
     integer :: c !! column counter
 
     call me%destroy_sparsity_pattern()
+
+    if (me%exception_raised) return ! check for exceptions
 
     me%sparsity%num_nonzero_elements = me%m * me%n
     allocate(me%sparsity%irow(me%sparsity%num_nonzero_elements))
@@ -1672,6 +1744,8 @@
     class(numdiff_type),intent(inout) :: me
 
     integer :: i !! counter
+
+    if (me%exception_raised) return ! check for exceptions
 
     me%sparsity%maxgrp = me%n
     allocate(me%sparsity%ngrp(me%n))
@@ -1714,6 +1788,7 @@
     real(wp) :: dfdx2 !! for linear sparsity estimation
     real(wp) :: dfdx3 !! for linear sparsity estimation
     real(wp) :: dfdx  !! for linear sparsity estimation
+    integer :: info !! status output form [[dsm]]
 
     real(wp),dimension(4),parameter :: coeffs = [0.20123456787654321_wp,&
                                                  0.40123456787654321_wp,&
@@ -1729,15 +1804,19 @@
         !! Also using an extra point to estimate the
         !! constant elements of the Jacobian.
 
+    ! initialize:
+    call me%destroy_sparsity_pattern()
+
+    if (me%exception_raised) return ! check for exceptions
+
     ! error check:
     if (.not. allocated(me%xlow_for_sparsity) .or. .not. allocated(me%xhigh_for_sparsity)) then
-        error stop 'Error in compute_sparsity_random: the x bounds have not been set.'
+        call me%raise_exception(18,'compute_sparsity_random',&
+                                   'the x bounds have not been set.')
+        return
     end if
 
     associate (xlow => me%xlow_for_sparsity, xhigh => me%xhigh_for_sparsity)
-
-        ! initialize:
-        call me%destroy_sparsity_pattern()
 
         ! we will compute all the functions:
         idx = [(i,i=1,me%m)]
@@ -1751,12 +1830,14 @@
         ! define a nominal point roughly in the middle:
         x2 = xlow + (xhigh-xlow)*coeffs(2)
         call me%compute_function(x2,f2,idx)
+        if (me%exception_raised) return ! check for exceptions
 
         if (me%compute_linear_sparsity_pattern) then
             ! we need another point where we perturb all the variables
             ! to check to make sure it is linear in only one variable.
             x4 = xlow + (xhigh-xlow)*coeffs(4)
             call me%compute_function(x4,f4,idx)
+            if (me%exception_raised) return ! check for exceptions
         end if
 
         do i = 1, me%n  ! columns of Jacobian
@@ -1769,7 +1850,9 @@
             x3(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(3)
 
             call me%compute_function(x1,f1,idx)
+            if (me%exception_raised) return ! check for exceptions
             call me%compute_function(x3,f3,idx)
+            if (me%exception_raised) return ! check for exceptions
 
             do j = 1, me%m ! each function (rows of Jacobian)
                 if (equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol)) then
@@ -1807,7 +1890,14 @@
     end associate
 
     call me%sparsity%compute_indices()
-    if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
+    if (me%partition_sparsity_pattern) then
+        call me%sparsity%dsm_wrapper(me%n,me%m,info)
+        if (info/=1) then
+            call me%raise_exception(19,'compute_sparsity_random',&
+                                       'error partitioning sparsity pattern.')
+            return
+        end if
+    end if
 
     ! finished:
     me%sparsity%sparsity_computed = .true.
@@ -1830,6 +1920,8 @@
     integer,intent(inout) :: n_linear_icol
     integer,intent(inout) :: n_linear_irow
     integer,intent(inout) :: n_linear_vals
+
+    if (me%exception_raised) return ! check for exceptions
 
     ! resize to correct size:
     if (allocated(me%sparsity%icol)) then
@@ -1893,13 +1985,18 @@
     integer :: n_linear_vals  !! `linear_vals` size counter
     type(meth_array) :: class_meths  !! set of finite diff methods to use
     real(wp),dimension(:),allocatable :: jac !! array of jacobian element values
+    integer :: info !! status output form [[dsm]]
 
     ! initialize:
     call me%destroy_sparsity_pattern()
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! error check:
     if (.not. allocated(me%xlow_for_sparsity) .or. .not. allocated(me%xhigh_for_sparsity)) then
-        error stop 'Error in compute_sparsity_random_2: the x bounds have not been set.'
+        call me%raise_exception(20,'compute_sparsity_random_2',&
+                                   'the x bounds have not been set.')
+        return
     end if
 
     ! compute the coefficients:
@@ -1945,6 +2042,7 @@
         me%sparsity%icol = [(icol, j=1,me%m)]
         do i = 1, me%num_sparsity_points
             call me%compute_jacobian_for_sparsity( icol, class_meths, xp(:,i), jac_array(i)%jac )
+            if (me%exception_raised) return ! check for exceptions
         end do
 
         ! check each row:
@@ -1986,7 +2084,14 @@
                                         n_linear_irow,n_linear_vals)
 
     call me%sparsity%compute_indices()
-    if (me%partition_sparsity_pattern) call me%sparsity%dsm_wrapper(me%n,me%m)
+    if (me%partition_sparsity_pattern) then
+        call me%sparsity%dsm_wrapper(me%n,me%m,info)
+        if (info/=1) then
+            call me%raise_exception(21,'compute_sparsity_random_2',&
+                                       'error partitioning sparsity pattern.')
+            return
+        end if
+    end if
     me%sparsity%sparsity_computed = .true.
 
     end subroutine compute_sparsity_random_2
@@ -2012,8 +2117,11 @@
     real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
                                                                           !! elements of the Jacobian)
 
+    if (me%exception_raised) return ! check for exceptions
+
     if (associated(me%compute_sparsity)) then
         call me%compute_sparsity(x)
+        if (me%exception_raised) return ! check for exceptions
         call me%get_sparsity_pattern(irow,icol,linear_irow,linear_icol,linear_vals)
     end if
 
@@ -2038,6 +2146,8 @@
                                                                           !! elements column indices
     real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
                                                                           !! elements of the Jacobian)
+
+    if (me%exception_raised) return ! check for exceptions
 
     if (allocated(me%sparsity%irow) .and. allocated(me%sparsity%icol)) then
         irow = me%sparsity%irow
@@ -2075,6 +2185,8 @@
     real(wp),dimension(:),allocatable :: jac_vec  !! sparse jacobian representation
     integer :: i !! counter
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! size output matrix:
     allocate(jac(me%m,me%n))
 
@@ -2083,6 +2195,7 @@
 
     ! compute sparse form of jacobian:
     call me%compute_jacobian(x,jac_vec)
+    if (me%exception_raised) return ! check for exceptions
 
     if (allocated(jac_vec)) then
         ! add the nonlinear elements:
@@ -2127,9 +2240,12 @@
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
+    if (me%exception_raised) return ! check for exceptions
+
     xp = x
     if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
     call me%compute_function(xp,f,idx)
+    if (me%exception_raised) return ! check for exceptions
     df(idx) = df(idx) + df_factor * f(idx)
 
     end subroutine perturb_x_and_compute_f
@@ -2156,8 +2272,11 @@
     integer :: r !! row number in full jacobian
     integer :: c !! column number in full jacobian
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! first compute the jacobian in sparse vector form:
     call me%compute_jacobian(x,jac)
+    if (me%exception_raised) return ! check for exceptions
 
     ! initialize output vector:
     z = 0.0_wp
@@ -2211,6 +2330,8 @@
 
     real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! if we don't have a sparsity pattern yet then compute it:
     ! [also computes the indices vector]
     if (.not. me%sparsity%sparsity_computed) call me%compute_sparsity(x)
@@ -2223,13 +2344,16 @@
     if (.not. me%use_diff) then
         ! only need this for the finite difference methods (not diff)
         call me%compute_perturbation_vector(x,dx)
+        if (me%exception_raised) return ! check for exceptions
     end if
 
     ! compute the jacobian:
     if (associated(me%jacobian_function)) then
         call me%jacobian_function(x,dx,jac)
     else
-        error stop 'Error in compute_jacobian: jacobian_function has not been associated.'
+        call me%raise_exception(22,'compute_jacobian',&
+                                   'jacobian_function has not been associated.')
+        return
     end if
 
     end subroutine compute_jacobian
@@ -2266,6 +2390,8 @@
     logical :: status_ok                    !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! Note that a sparsity pattern has already been set
 
     ! size the jacobian vector:
@@ -2273,6 +2399,7 @@
 
     ! compute the perturbation vector (really we only need dx(i)):
     call me%compute_sparsity_perturbation_vector(x,dx)
+    if (me%exception_raised) return ! check for exceptions
 
     ! initialize:
     jac = zero
@@ -2295,6 +2422,7 @@
             call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
                                             dx,fd%df_factors(j),&
                                             i,nonzero_elements_in_col,df)
+            if (me%exception_raised) return ! check for exceptions
         end do
         df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
                                         (fd%df_den_factor*dx(i))
@@ -2335,6 +2463,8 @@
     logical :: status_ok   !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! initialize:
     jac = zero
 
@@ -2357,6 +2487,7 @@
                     call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
                                                     dx,me%meth(i)%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
+                    if (me%exception_raised) return ! check for exceptions
                 end do
 
                 df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
@@ -2376,12 +2507,15 @@
                     call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
                                                     dx,fd%df_factors(j),&
                                                     i,nonzero_elements_in_col,df)
+                    if (me%exception_raised) return ! check for exceptions
                 end do
                 df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
                                               (fd%df_den_factor*dx(i))
 
             case default
-                error stop 'Error in compute_jacobian_standard: invalid mode'
+                call me%raise_exception(23,'compute_jacobian_standard',&
+                                           'invalid mode')
+                return
             end select
 
             ! put result into the output vector:
@@ -2431,6 +2565,8 @@
     integer :: icount   !! count of number of times a column has been perturbed
     logical :: use_info !! if we are reporting to the user
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! initialize:
     jac = zero
     use_info = associated(me%info_function)
@@ -2459,9 +2595,14 @@
 
         if (ifail==0 .or. ifail==1) then
             jac(i) = deriv
+        else if (ifail == -1) then
+            ! this indicates an exception was
+            ! already raised, so just return.
+            return
         else
-            error stop 'Error in compute_jacobian_with_diff: '//&
-                       'error computing derivative with DIFF.'
+            call me%raise_exception(24, 'compute_jacobian_with_diff',&
+                                        'error computing derivative with DIFF.')
+            return
         end if
 
         if (use_info) ic_prev = ic
@@ -2490,7 +2631,12 @@
         xp(ic) = xval
         call me%compute_function(xp,fvec,funcs_to_compute=[ir])
 
-        fx = fvec(ir)
+        if (me%exception_raised) then ! check for exceptions
+            fx = 0.0_wp
+            call me%terminate()
+        else
+            fx = fvec(ir)
+        end if
 
         end function dfunc
 
@@ -2527,6 +2673,8 @@
     logical                          :: status_ok     !! error flag
     integer                          :: num_nonzero_elements_in_col
 
+    if (me%exception_raised) return ! check for exceptions
+
     ! initialize:
     jac = zero
 
@@ -2535,7 +2683,13 @@
 
         ! get the columns in this group:
         call me%sparsity%columns_in_partition_group(igroup,n_cols,cols,&
-                                                    nonzero_rows,indices)
+                                                    nonzero_rows,indices,status_ok)
+        if (.not. status_ok) then
+            call me%raise_exception(25,'compute_jacobian_partitioned',&
+                                       'the partition has not been computed.')
+            return
+        end if
+
         if (n_cols>0) then
 
             if (allocated(nonzero_rows)) then
@@ -2552,6 +2706,7 @@
                          call me%perturb_x_and_compute_f_partitioned(x,me%meth(1)%dx_factors(j),&
                                                          dx,me%meth(1)%df_factors(j),&
                                                          cols,nonzero_rows,df)
+                         if (me%exception_raised) return ! check for exceptions
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
@@ -2573,6 +2728,7 @@
                                     dx(cols),me%class_meths(1),fd,status_ok)
 
                     if (.not. status_ok) then
+                        ! will not consider this a fatal error for now:
                         write(error_unit,'(A,1X,I5,1X,A,1X,*(I5,1X))') &
                               'Error in compute_jacobian_partitioned: '//&
                               'variable bounds violated for group: ',&
@@ -2586,6 +2742,7 @@
                         call me%perturb_x_and_compute_f_partitioned(x,fd%dx_factors(j),&
                                                         dx,fd%df_factors(j),&
                                                         cols,nonzero_rows,df)
+                        if (me%exception_raised) return ! check for exceptions
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
@@ -2598,7 +2755,8 @@
                     end do
 
                 case default
-                    error stop 'Error in compute_jacobian_partitioned: invalid mode'
+                    call me%raise_exception(26,'compute_jacobian_partitioned','invalid mode')
+                    return
                 end select
 
                 ! put result into the output vector:
@@ -2640,9 +2798,12 @@
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
+    if (me%exception_raised) return ! check for exceptions
+
     xp = x
     if (dx_factor/=zero) xp(columns) = xp(columns) + dx_factor * dx(columns)
     call me%compute_function(xp,f,idx)
+    if (me%exception_raised) return ! check for exceptions
     df(idx) = df(idx) + df_factor * f(idx)
 
     end subroutine perturb_x_and_compute_f_partitioned
@@ -2665,6 +2826,8 @@
 
     real(wp),parameter :: eps = epsilon(1.0_wp) !! the smallest allowed absolute step
 
+    if (me%exception_raised) return ! check for exceptions
+
     select case (perturb_mode)
     case(1)
         dx = abs(dpert)
@@ -2673,8 +2836,9 @@
     case(3)
         dx = abs(dpert) * (1.0_wp + abs(x))
     case default
-        error stop 'Error in compute_perturb_vector: '//&
-                   'invalid value for perturb_mode (must be 1, 2, or 3)'
+        call me%raise_exception(27,'compute_perturb_vector',&
+                                   'invalid value for perturb_mode (must be 1, 2, or 3)')
+        return
     end select
 
     ! make sure none are too small:
@@ -2699,6 +2863,8 @@
     real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0)
                                                !! for each variable
 
+    if (me%exception_raised) return ! check for exceptions
+
     call me%compute_perturb_vector(x,me%dpert,me%perturb_mode,dx)
 
     end subroutine compute_perturbation_vector
@@ -2717,6 +2883,8 @@
     real(wp),dimension(me%n),intent(in)  :: x  !! vector of variables (size `n`)
     real(wp),dimension(me%n),intent(out) :: dx !! absolute perturbation (>0)
                                                !! for each variable
+
+    if (me%exception_raised) return ! check for exceptions
 
     call me%compute_perturb_vector(x,me%dpert_for_sparsity,me%sparsity_perturb_mode,dx)
 
@@ -2828,6 +2996,104 @@
     call me%sparsity%print(me%n,me%m,iunit,dense=.true.)
 
     end subroutine print_sparsity_matrix
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  A user-callable routine. When called, it will terminate
+!  all computations and return. The `istat` return code will be
+!  set to `-1`. This can be called in the function or the info function.
+
+    subroutine terminate(me)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+
+    if (me%exception_raised) return ! check for existing exceptions
+
+    me%istat = -1
+    me%error_msg = 'Terminated by the user'
+    me%exception_raised = .true.
+
+    end subroutine terminate
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Raise an exception.
+
+    subroutine raise_exception(me,istat,routine,error_msg)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,intent(in)          :: istat      !! error code.
+    character(len=*),intent(in) :: routine    !! the routine where the error was raised.
+    character(len=*),intent(in) :: error_msg  !! error message string.
+
+    me%istat = istat
+    me%error_msg = 'Error in '//trim(routine)//' : '//trim(error_msg)
+    me%exception_raised = .true.
+
+    end subroutine raise_exception
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Clear all exceptions.
+
+    subroutine clear_exceptions(me)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+
+    me%istat = 0
+    if (allocated(me%error_msg)) deallocate(me%error_msg)
+    me%exception_raised = .false.
+
+    end subroutine clear_exceptions
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns True if an exception has been raised.
+
+    pure logical function failed(me)
+
+    implicit none
+
+    class(numdiff_type),intent(in) :: me
+
+    failed = me%exception_raised
+
+    end function failed
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns the current error code and message.
+
+    subroutine get_error_status(me,istat,error_msg)
+
+    implicit none
+
+    class(numdiff_type),intent(in) :: me
+    integer,intent(out),optional :: istat  !! error code (`istat=0` means no errors).
+    character(len=:),allocatable,intent(out),optional :: error_msg !! error message string.
+
+    if (present(istat)) istat = me%istat
+
+    if (present(error_msg)) then
+        if (allocated(me%error_msg)) then
+            error_msg = me%error_msg
+        else
+            error_msg = ''
+        end if
+    end if
+
+    end subroutine get_error_status
 !*******************************************************************************
 
 !*******************************************************************************
