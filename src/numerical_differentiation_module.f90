@@ -1096,6 +1096,11 @@
     real(wp),dimension(:),intent(in)  :: xlow    !! lower bounds on `x`
     real(wp),dimension(:),intent(in)  :: xhigh   !! upper bounds on `x`
 
+    integer :: i  !! counter for error print
+    character(len=:),allocatable :: error_info !! error message info
+    character(len=10) :: istr   !! for integer to string
+    character(len=30) :: xlow_str, xhigh_str !! for real to string
+
     if (me%exception_raised) return ! check for exceptions
 
     if (allocated(me%xlow))  deallocate(me%xlow)
@@ -1106,8 +1111,18 @@
                                   'invalid size of xlow or xhigh')
         return
     else if (any(xlow>=xhigh)) then
-        call me%raise_exception(4,'set_numdiff_bounds',&
-                                  'all xlow must be < xhigh')
+        error_info = 'all xlow must be < xhigh'
+        do i = 1, size(xlow)
+            if (xlow(i)>=xhigh(i)) then
+                write(istr,'(I10)') i
+                write(xlow_str,'(F30.16)') xlow(i)
+                write(xhigh_str,'(F30.16)') xhigh(i)
+                error_info = error_info//new_line('')//'  Error for optimization variable '//trim(adjustl(istr))//&
+                                ': xlow='//trim(adjustl(xlow_str))//&
+                                ' >= xhigh='//trim(adjustl(xhigh_str))
+            end if
+        end do
+        call me%raise_exception(4,'set_numdiff_bounds',error_info)
         return
     else
         allocate(me%xlow(me%n))
