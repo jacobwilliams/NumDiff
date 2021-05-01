@@ -39,3 +39,6 @@ bin
 Release
 Debug
 x64
+
+# mac
+.DS_Store
