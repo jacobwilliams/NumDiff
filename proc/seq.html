@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>seq &ndash; NumDiff</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../lists/files.html">Source Files</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+        
+            <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
+               
+            <li><a href="../lists/types.html">Derived Types</a></li>
+        
+        
+            </ul>
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>seq
+      <small>Subroutine</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title=" 1.2% of total for procedures.">36 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/dsm_module.f90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
+    
+     <li><a href='../module/dsm_module.html'>dsm_module</a></li>
+    
+  
+     <li class="active">seq</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/seq.html#src">seq</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>
+private subroutine seq(n, Indrow, Jpntr, Indcol, Ipntr, List, Ngrp, Maxgrp, Iwa)
+    
+    
+   
+</h2>
+    
+  
+
+
+    
+    <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
+  subroutine determines a consistent partition of the
+  columns of <code>a</code> by a sequential algorithm.</p>
+<p>a consistent partition is defined in terms of the loopless
+  graph <code>g</code> with vertices <code>a(j), j = 1,2,...,n</code> where <code>a(j)</code> is the
+  <code>j</code>-th column of <code>a</code> and with edge <code>(a(i),a(j))</code> if and only if
+  columns <code>i</code> and <code>j</code> have a non-zero in the same row position.</p>
+<p>a partition of the columns of a into groups is consistent
+  if the columns in any group are not adjacent in the graph <code>g</code>.
+  in graph-theory terminology, a consistent partition of the
+  columns of a corresponds to a coloring of the graph <code>g</code>.</p>
+<p>the subroutine examines the columns in the order specified
+  by the array list, and assigns the current column to the
+  group with the smallest possible number.</p>
+<p>note that the value of <code>m</code> is not needed by <code>seq</code> and is
+  therefore not present in the subroutine statement.</p>
+    
+
+    <h3>Arguments</h3>
+    
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-n~12"></span>integer</td>
+  <td></td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
+ of columns of <code>a</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-indrow~2"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(*)</td><td>::</td>
+  <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
+ indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-jpntr~2"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(n+1)</td><td>::</td>
+  <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
+ specifies the locations of the row indices in <code>indrow</code>.
+ the row indices for column <code>j</code> are
+ <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+ <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+ elements of the matrix <code>a</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-indcol~2"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(*)</td><td>::</td>
+  <td><strong>Indcol</strong></td><td><p>an integer input array which contains the
+ column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ipntr~2"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(*)</td><td>::</td>
+  <td><strong>Ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
+ specifies the locations of the column indices in <code>indcol</code>.
+ the column indices for row <code>i</code> are
+ <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+ <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+ elements of the matrix <code>a</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-list~2"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>List</strong></td><td><p>an integer input array of length <code>n</code> which specifies
+ the order to be used by the sequential algorithm.
+ the <code>j</code>-th column in this order is <code>list(j)</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ngrp"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>Ngrp</strong></td><td><p>an integer output array of length <code>n</code> which specifies
+ the partition of the columns of <code>a</code>. column <code>jcol</code> belongs
+ to group <code>ngrp(jcol)</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxgrp"></span>integer</td>
+  <td></td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>Maxgrp</strong></td><td><p>an integer output variable which specifies the
+ number of groups in the partition of the columns of <code>a</code>.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-iwa"></span>integer,</td>
+  <td></td>
+  <td></td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>Iwa</strong></td><td><p>an integer work array of length <code>n</code></p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    
+    
+    
+    
+     
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/seq.html#src">seq</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Ngrp</span><span class="p">,</span><span class="n">Maxgrp</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">integer</span>                <span class="kd">::</span> <span class="n">n</span>         <span class="c">!! a positive integer input variable set to the number</span>
+                                        <span class="c">!! of columns of `a`.</span>
+    <span class="kt">integer</span>                <span class="kd">::</span> <span class="n">Maxgrp</span>    <span class="c">!! an integer output variable which specifies the</span>
+                                        <span class="c">!! number of groups in the partition of the columns of `a`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Indrow</span>    <span class="c">!! an integer input array which contains the row</span>
+                                        <span class="c">!! indices for the non-zeroes in the matrix `a`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Jpntr</span>     <span class="c">!! an integer input array of length `n + 1` which</span>
+                                        <span class="c">!! specifies the locations of the row indices in `indrow`.</span>
+                                        <span class="c">!! the row indices for column `j` are</span>
+                                        <span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
+                                        <span class="c">!! **note** that `jpntr(n+1)-1` is then the number of non-zero</span>
+                                        <span class="c">!! elements of the matrix `a`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Indcol</span>    <span class="c">!! an integer input array which contains the</span>
+                                        <span class="c">!! column indices for the non-zeroes in the matrix `a`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Ipntr</span>     <span class="c">!! an integer input array of length `m + 1` which</span>
+                                        <span class="c">!! specifies the locations of the column indices in `indcol`.</span>
+                                        <span class="c">!! the column indices for row `i` are</span>
+                                        <span class="c">!! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.</span>
+                                        <span class="c">!! **note** that `ipntr(m+1)-1` is then the number of non-zero</span>
+                                        <span class="c">!! elements of the matrix `a`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">List</span>      <span class="c">!! an integer input array of length `n` which specifies</span>
+                                        <span class="c">!! the order to be used by the sequential algorithm.</span>
+                                        <span class="c">!! the `j`-th column in this order is `list(j)`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Ngrp</span>      <span class="c">!! an integer output array of length `n` which specifies</span>
+                                        <span class="c">!! the partition of the columns of `a`. column `jcol` belongs</span>
+                                        <span class="c">!! to group `ngrp(jcol)`.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Iwa</span>       <span class="c">!! an integer work array of length `n`</span>
+
+    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">ic</span> <span class="p">,</span> <span class="n">ip</span> <span class="p">,</span> <span class="n">ir</span> <span class="p">,</span> <span class="n">j</span> <span class="p">,</span> <span class="n">jcol</span> <span class="p">,</span> <span class="n">jp</span>
+
+    <span class="c">! initialization block.</span>
+
+    <span class="n">Maxgrp</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">do </span><span class="n">jp</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
+        <span class="n">Ngrp</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">Iwa</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">enddo</span>
+
+    <span class="c">! beginning of iteration loop.</span>
+    <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
+
+        <span class="n">jcol</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+
+        <span class="c">! find all columns adjacent to column jcol.</span>
+        <span class="c">!</span>
+        <span class="c">! determine all positions (ir,jcol) which correspond</span>
+        <span class="c">! to non-zeroes in the matrix.</span>
+        <span class="k">do </span><span class="n">jp</span> <span class="o">=</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span> <span class="p">,</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">ir</span> <span class="o">=</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
+            <span class="c">! for each row ir, determine all positions (ir,ic)</span>
+            <span class="c">! which correspond to non-zeroes in the matrix.</span>
+            <span class="k">do </span><span class="n">ip</span> <span class="o">=</span> <span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="p">,</span> <span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">ic</span> <span class="o">=</span> <span class="n">Indcol</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+                <span class="c">! array iwa marks the group numbers of the</span>
+                <span class="c">! columns which are adjacent to column jcol.</span>
+                <span class="n">Iwa</span><span class="p">(</span><span class="n">Ngrp</span><span class="p">(</span><span class="n">ic</span><span class="p">))</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">enddo</span>
+<span class="k">        enddo</span>
+
+        <span class="c">! assign the smallest un-marked group number to jcol.</span>
+        <span class="k">do </span><span class="n">jp</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">Maxgrp</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="o">/=</span><span class="n">j</span> <span class="p">)</span> <span class="k">then</span>
+<span class="k">                </span><span class="n">Maxgrp</span> <span class="o">=</span> <span class="n">Maxgrp</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">exit</span>
+<span class="k">            end if</span>
+<span class="k">        enddo</span>
+<span class="k">        </span><span class="n">Maxgrp</span> <span class="o">=</span> <span class="n">Maxgrp</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">Ngrp</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span> <span class="o">=</span> <span class="n">jp</span>
+
+    <span class="k">enddo</span>
+    <span class="c">! end of iteration loop.</span>
+
+    <span class="k">end subroutine </span><span class="n">seq</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+                                          </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> NumDiff was developed by Jacob Williams</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>

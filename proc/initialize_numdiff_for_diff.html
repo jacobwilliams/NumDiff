@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>initialize_numdiff_for_diff &ndash; NumDiff</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../lists/files.html">Source Files</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+        
+            <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
+               
+            <li><a href="../lists/types.html">Derived Types</a></li>
+        
+        
+            </ul>
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>initialize_numdiff_for_diff
+      <small>Subroutine</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title=" 2.0% of total for procedures.">61 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/numerical_differentiation_module.f90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+    
+     <li><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+    
+  
+     <li class="active">initialize_numdiff_for_diff</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/initialize_numdiff_for_diff.html#src">initialize_numdiff_for_diff</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>
+private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_func, sparsity_mode, info, chunk_size, eps, acc, cache_size, xlow_for_sparsity, xhigh_for_sparsity, dpert_for_sparsity, sparsity_perturb_mode, linear_sparsity_tol, function_precision_tol, num_sparsity_points)
+    
+    
+   
+</h2>
+    
+  
+
+
+    
+    <p>Alternate version of <a href="../proc/initialize_numdiff.html">initialize_numdiff</a> routine when
+  using <a href="../proc/diff.html">diff</a> to compute the Jacobian.</p>
+    
+
+    <h3>Arguments</h3>
+    
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-me~13"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>me</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-n~3"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>number of <code>x</code> variables</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-m~3"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>m</strong></td><td><p>number of <code>f</code> functions</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-xlow~4"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td></td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>xlow</strong></td><td><p>lower bounds on <code>x</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-xhigh~4"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td></td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>xhigh</strong></td><td><p>upper bounds on <code>x</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-problem_func~2"></span>procedure(<a href='../interface/func.html'>func</a>)</td>
+  <td></td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>problem_func</strong></td><td><p>the user function that defines the problem
+ (returns <code>m</code> functions)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-sparsity_mode"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>sparsity_mode</strong></td><td><p>the sparsity computation method:</p>
+<p><strong>1</strong> - assume dense,
+ <strong>2</strong> - three-point simple method,
+ <strong>3</strong> - will be specified by the user in
+ a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
+ <strong>4</strong> - computes a two-point jacobian
+ at <code>num_sparsity_points</code> points.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-info"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
+  <td></td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>info</strong></td><td><p>a function the user can define
+ which is called when each column
+ of the jacobian is computed.
+ It can be used to perform any
+ setup operations.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-chunk_size~3"></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>chunk_size</strong></td><td><p>chunk size for allocating the arrays
+ (must be &gt;0) [default is 100]</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-eps~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>eps</strong></td><td><p>tolerance parameter for <a href="../proc/diff.html">diff</a>
+ if not present, default is <code>1.0e-9_wp</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-acc~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>acc</strong></td><td><p>tolerance parameter for <a href="../proc/diff.html">diff</a>
+ if not present, default is <code>0.0_wp</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-cache_size"></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>cache_size</strong></td><td><p>if present, this is the cache size
+ for the function cache
+ (default is not to enable cache)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-xlow_for_sparsity~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>xlow_for_sparsity</strong></td><td><p>lower bounds on <code>x</code> used for
+ sparsity computation (when
+ <code>sparsity_mode</code> is 2). If not
+ present, then <code>xlow</code> is used.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-xhigh_for_sparsity~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>xhigh_for_sparsity</strong></td><td><p>upper bounds on <code>x</code> used for
+ sparsity computation (when
+ <code>sparsity_mode</code> is 2). If not
+ present, then <code>xhigh</code> is used.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dpert_for_sparsity~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td>dimension(n)</td><td>::</td>
+  <td><strong>dpert_for_sparsity</strong></td><td><p>required if <code>sparsity_mode=4</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-sparsity_perturb_mode~2"></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sparsity_perturb_mode</strong></td><td><p>perturbation mode (required if <code>sparsity_mode=4</code>):</p>
+<p><strong>1</strong> - perturbation is <code>dx=dpert</code>,
+ <strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+ <strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-linear_sparsity_tol~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>linear_sparsity_tol</strong></td><td><p>the equality tolerance for derivatives to
+ indicate a constant jacobian element (linear sparsity)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-function_precision_tol~2"></span>real(kind=wp),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>function_precision_tol</strong></td><td><p>the function precision. two functions values
+ that are the within this tolerance are
+ considered the same value. This is used
+ when estimating the sparsity pattern when
+ <code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-num_sparsity_points~2"></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>num_sparsity_points</strong></td><td><p>for <code>sparsity_mode=4</code>, the number of jacobian
+ evaluations used to estimate the sparsity pattern.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    
+    
+    
+    
+     
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/initialize_numdiff_for_diff.html#src">initialize_numdiff_for_diff</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">initialize_numdiff_for_diff</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">xlow</span><span class="p">,</span><span class="n">xhigh</span><span class="p">,&amp;</span>
+                                    <span class="n">problem_func</span><span class="p">,</span><span class="n">sparsity_mode</span><span class="p">,</span><span class="n">info</span><span class="p">,&amp;</span>
+                                    <span class="n">chunk_size</span><span class="p">,</span><span class="n">eps</span><span class="p">,</span><span class="n">acc</span><span class="p">,</span><span class="n">cache_size</span><span class="p">,&amp;</span>
+                                    <span class="n">xlow_for_sparsity</span><span class="p">,</span><span class="n">xhigh_for_sparsity</span><span class="p">,&amp;</span>
+                                    <span class="n">dpert_for_sparsity</span><span class="p">,</span><span class="n">sparsity_perturb_mode</span><span class="p">,&amp;</span>
+                                    <span class="n">linear_sparsity_tol</span><span class="p">,</span><span class="n">function_precision_tol</span><span class="p">,&amp;</span>
+                                    <span class="n">num_sparsity_points</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">me</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>               <span class="kd">::</span> <span class="n">n</span>             <span class="c">!! number of `x` variables</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>               <span class="kd">::</span> <span class="n">m</span>             <span class="c">!! number of `f` functions</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xlow</span>          <span class="c">!! lower bounds on `x`</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xhigh</span>         <span class="c">!! upper bounds on `x`</span>
+    <span class="k">procedure</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>                  <span class="kd">::</span> <span class="n">problem_func</span>  <span class="c">!! the user function that defines the problem</span>
+                                                      <span class="c">!! (returns `m` functions)</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>               <span class="kd">::</span> <span class="n">sparsity_mode</span> <span class="c">!! the sparsity computation method:</span>
+                                                      <span class="c">!!</span>
+                                                      <span class="c">!! **1** - assume dense,</span>
+                                                      <span class="c">!! **2** - three-point simple method,</span>
+                                                      <span class="c">!! **3** - will be specified by the user in</span>
+                                                      <span class="c">!! a subsequent call to [[set_sparsity_pattern]].</span>
+                                                      <span class="c">!! **4** - computes a two-point jacobian</span>
+                                                      <span class="c">!! at `num_sparsity_points` points.</span>
+    <span class="k">procedure</span><span class="p">(</span><span class="n">info_f</span><span class="p">),</span><span class="k">optional</span>       <span class="kd">::</span> <span class="n">info</span>          <span class="c">!! a function the user can define</span>
+                                                      <span class="c">!! which is called when each column</span>
+                                                      <span class="c">!! of the jacobian is computed.</span>
+                                                      <span class="c">!! It can be used to perform any</span>
+                                                      <span class="c">!! setup operations.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>      <span class="kd">::</span> <span class="n">chunk_size</span>    <span class="c">!! chunk size for allocating the arrays</span>
+                                                      <span class="c">!! (must be &gt;0) [default is 100]</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">eps</span>           <span class="c">!! tolerance parameter for [[diff]]</span>
+                                                      <span class="c">!! if not present, default is `1.0e-9_wp`</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>     <span class="kd">::</span> <span class="n">acc</span>           <span class="c">!! tolerance parameter for [[diff]]</span>
+                                                      <span class="c">!! if not present, default is `0.0_wp`</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>      <span class="kd">::</span> <span class="n">cache_size</span>    <span class="c">!! if present, this is the cache size</span>
+                                                      <span class="c">!! for the function cache</span>
+                                                      <span class="c">!! (default is not to enable cache)</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">xlow_for_sparsity</span>   <span class="c">!! lower bounds on `x` used for</span>
+                                                                     <span class="c">!! sparsity computation (when</span>
+                                                                     <span class="c">!! `sparsity_mode` is 2). If not</span>
+                                                                     <span class="c">!! present, then `xlow` is used.</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">xhigh_for_sparsity</span>  <span class="c">!! upper bounds on `x` used for</span>
+                                                                     <span class="c">!! sparsity computation (when</span>
+                                                                     <span class="c">!! `sparsity_mode` is 2). If not</span>
+                                                                     <span class="c">!! present, then `xhigh` is used.</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">dpert_for_sparsity</span>  <span class="c">!! required if `sparsity_mode=4`</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">sparsity_perturb_mode</span>   <span class="c">!! perturbation mode (required if `sparsity_mode=4`):</span>
+                                                           <span class="c">!!</span>
+                                                           <span class="c">!! **1** - perturbation is `dx=dpert`,</span>
+                                                           <span class="c">!! **2** - perturbation is `dx=dpert*x`,</span>
+                                                           <span class="c">!! **3** - perturbation is `dx=dpert*(1+x)`</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">num_sparsity_points</span>  <span class="c">!! for `sparsity_mode=4`, the number of jacobian</span>
+                                                        <span class="c">!! evaluations used to estimate the sparsity pattern.</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">linear_sparsity_tol</span> <span class="c">!! the equality tolerance for derivatives to</span>
+                                                        <span class="c">!! indicate a constant jacobian element (linear sparsity)</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">function_precision_tol</span>  <span class="c">!! the function precision. two functions values</span>
+                                                            <span class="c">!! that are the within this tolerance are</span>
+                                                            <span class="c">!! considered the same value. This is used</span>
+                                                            <span class="c">!! when estimating the sparsity pattern when</span>
+                                                            <span class="c">!! `sparsity_mode=2` in [[compute_sparsity_random]]</span>
+
+    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">cache</span>  <span class="c">!! if the cache is to be used</span>
+
+    <span class="n">me</span><span class="p">%</span><span class="n">use_diff</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+
+    <span class="c">! cache:</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="nb">present</span><span class="p">(</span><span class="n">cache_size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">cache_size</span><span class="o">&gt;</span><span class="mi">0</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">compute_function</span>  <span class="o">=&gt;</span> <span class="n">compute_function_with_cache</span>
+        <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">cache</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">cache_size</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">compute_function</span>  <span class="o">=&gt;</span> <span class="n">problem_func</span>
+        <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">cache</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span>
+    <span class="k">end if</span>
+
+    <span class="c">! functions:</span>
+    <span class="n">me</span><span class="p">%</span><span class="n">problem_func</span>      <span class="o">=&gt;</span> <span class="n">problem_func</span>
+    <span class="n">me</span><span class="p">%</span><span class="n">jacobian_function</span> <span class="o">=&gt;</span> <span class="n">compute_jacobian_with_diff</span>
+
+    <span class="c">! size of the problem:</span>
+    <span class="n">me</span><span class="p">%</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="n">me</span><span class="p">%</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
+
+    <span class="c">! input variable bounds:</span>
+    <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">set_numdiff_bounds</span><span class="p">(</span><span class="n">xlow</span><span class="p">,</span><span class="n">xhigh</span><span class="p">)</span>
+
+    <span class="c">! set the sparsity function</span>
+    <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">set_sparsity_mode</span><span class="p">(</span><span class="n">sparsity_mode</span><span class="p">,</span><span class="n">xlow_for_sparsity</span><span class="p">,</span><span class="n">xhigh_for_sparsity</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">sparsity_mode</span><span class="o">==</span><span class="mi">4</span><span class="p">)</span> <span class="k">then</span>
+        <span class="c">! these must be present, since we don&#39;t have a dpert and perturb mode for the gradients:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpert_for_sparsity</span><span class="p">)</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">sparsity_perturb_mode</span><span class="p">))</span> <span class="k">then</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">dpert_for_sparsity</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dpert_for_sparsity</span><span class="p">)</span>
+            <span class="c">! perturbation options:</span>
+            <span class="k">select case</span> <span class="p">(</span><span class="n">sparsity_perturb_mode</span><span class="p">)</span>
+            <span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">me</span><span class="p">%</span><span class="n">sparsity_perturb_mode</span> <span class="o">=</span> <span class="n">sparsity_perturb_mode</span>
+            <span class="k">case </span><span class="n">default</span>
+                <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;initialize_numdiff_for_diff&#39;</span><span class="p">,&amp;</span>
+                                          <span class="s1">&#39;sparsity_perturb_mode must be 1, 2, or 3.&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+<span class="k">            end select</span>
+<span class="k">        else</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;initialize_numdiff_for_diff&#39;</span><span class="p">,&amp;</span>
+                                      <span class="s1">&#39;missing required inputs for sparsity mode 4&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+<span class="k">        end if</span>
+<span class="k">    end if</span>
+    <span class="c">! if these aren&#39;t present, they will just keep the defaults:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">linear_sparsity_tol</span><span class="p">))</span>    <span class="n">me</span><span class="p">%</span><span class="n">linear_sparsity_tol</span>    <span class="o">=</span> <span class="n">linear_sparsity_tol</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">function_precision_tol</span><span class="p">))</span> <span class="n">me</span><span class="p">%</span><span class="n">function_precision_tol</span> <span class="o">=</span> <span class="n">function_precision_tol</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">num_sparsity_points</span><span class="p">))</span>    <span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span>    <span class="o">=</span> <span class="n">num_sparsity_points</span>
+
+    <span class="c">! optional:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">))</span>  <span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>         <span class="n">me</span><span class="p">%</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">acc</span><span class="p">))</span>         <span class="n">me</span><span class="p">%</span><span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">info</span><span class="p">))</span>        <span class="n">me</span><span class="p">%</span><span class="n">info_function</span> <span class="o">=&gt;</span> <span class="n">info</span>
+
+    <span class="k">end subroutine </span><span class="n">initialize_numdiff_for_diff</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+                                          </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> NumDiff was developed by Jacob Williams</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>
