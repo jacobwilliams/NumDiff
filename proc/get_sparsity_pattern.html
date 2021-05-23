@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.8% of total for procedures.">23 statements</a>
+    title=" 0.9% of total for procedures.">27 statements</a>
      </li> 
      
      
@@ -203,7 +203,7 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol, linear_vals)
+private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol, linear_vals, maxgrp, ngrp)
     
     
    
@@ -235,7 +235,7 @@ private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~31"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+  <td><span class="anchor" id="variable-me~40"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -322,6 +322,36 @@ private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxgrp~4"></span>integer,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>maxgrp</strong></td><td><p>DSM sparsity partition</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ngrp~4"></span>integer,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td>dimension(:), allocatable</td><td>::</td>
+  <td><strong>ngrp</strong></td><td><p>DSM sparsity partition</p></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -389,7 +419,9 @@ private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">get_sparsity_pattern</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">irow</span><span class="p">,</span><span class="n">icol</span><span class="p">,</span><span class="n">linear_irow</span><span class="p">,</span><span class="n">linear_icol</span><span class="p">,</span><span class="n">linear_vals</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">get_sparsity_pattern</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">irow</span><span class="p">,</span><span class="n">icol</span><span class="p">,&amp;</span>
+                                    <span class="n">linear_irow</span><span class="p">,</span><span class="n">linear_icol</span><span class="p">,</span><span class="n">linear_vals</span><span class="p">,&amp;</span>
+                                    <span class="n">maxgrp</span><span class="p">,</span><span class="n">ngrp</span><span class="p">)</span>
 
     <span class="k">implicit none</span>
 
@@ -402,6 +434,8 @@ private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol
                                                                           <span class="c">!! elements column indices</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">linear_vals</span> <span class="c">!! linear sparsity values (constant</span>
                                                                           <span class="c">!! elements of the Jacobian)</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span>                           <span class="kd">::</span> <span class="n">maxgrp</span>      <span class="c">!! DSM sparsity partition</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">ngrp</span>        <span class="c">!! DSM sparsity partition</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span> <span class="k">return</span> <span class="c">! check for exceptions</span>
 
@@ -421,7 +455,11 @@ private subroutine get_sparsity_pattern(me, irow, icol, linear_irow, linear_icol
 <span class="k">        if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">linear_vals</span><span class="p">))</span> <span class="n">linear_vals</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">linear_vals</span>
     <span class="k">end if</span>
 
-<span class="k">    end subroutine </span><span class="n">get_sparsity_pattern</span>
+    <span class="c">! optional DSM partition:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">ngrp</span><span class="p">)</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">ngrp</span><span class="p">))</span> <span class="n">ngrp</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">ngrp</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">maxgrp</span><span class="p">))</span> <span class="n">maxgrp</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">maxgrp</span>
+
+    <span class="k">end subroutine </span><span class="n">get_sparsity_pattern</span>
 </pre></div>
 
     </section>

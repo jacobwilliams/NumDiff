@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.1% of total for procedures.">34 statements</a>
+    title=" 1.2% of total for procedures.">38 statements</a>
      </li> 
      
      
@@ -239,7 +239,7 @@ private subroutine compute_jacobian_for_sparsity(me, i, class_meths, x, jac)
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~36"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+  <td><span class="anchor" id="variable-me~45"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -254,7 +254,7 @@ private subroutine compute_jacobian_for_sparsity(me, i, class_meths, x, jac)
   
 <tr>
   
-  <td><span class="anchor" id="variable-i~2"></span>integer,</td>
+  <td><span class="anchor" id="variable-i~5"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -284,7 +284,7 @@ private subroutine compute_jacobian_for_sparsity(me, i, class_meths, x, jac)
   
 <tr>
   
-  <td><span class="anchor" id="variable-x~18"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-x~20"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td></td>
   
@@ -418,8 +418,12 @@ private subroutine compute_jacobian_for_sparsity(me, i, class_meths, x, jac)
 
         <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">select_finite_diff_method</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">xlow_for_sparsity</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">xhigh_for_sparsity</span><span class="p">(</span><span class="n">i</span><span class="p">),&amp;</span>
                                             <span class="n">dx</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">class_meths</span><span class="p">,</span><span class="n">fd</span><span class="p">,</span><span class="n">status_ok</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="n">status_ok</span><span class="p">)</span> <span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,I5)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
-            <span class="s1">&#39;Error in compute_jacobian_for_sparsity: variable bounds violated for column: &#39;</span><span class="p">,</span><span class="n">i</span>
+        <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="n">status_ok</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">            if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">print_messages</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">                write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,I5)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+                <span class="s1">&#39;Error in compute_jacobian_for_sparsity: variable bounds violated for column: &#39;</span><span class="p">,</span><span class="n">i</span>
+            <span class="k">end if</span>
+<span class="k">        end if</span>
 
         <span class="c">! compute this column of the Jacobian:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">zero</span>

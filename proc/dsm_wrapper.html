@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.5% of total for procedures.">16 statements</a>
+    title=" 0.6% of total for procedures.">18 statements</a>
      </li> 
      
      
@@ -234,7 +234,7 @@ private subroutine dsm_wrapper(me, n, m, info)
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~20"></span>class(<a href='../type/sparsity_pattern.html'>sparsity_pattern</a>),</td>
+  <td><span class="anchor" id="variable-me~29"></span>class(<a href='../type/sparsity_pattern.html'>sparsity_pattern</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -249,7 +249,7 @@ private subroutine dsm_wrapper(me, n, m, info)
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~5"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~15"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -264,7 +264,7 @@ private subroutine dsm_wrapper(me, n, m, info)
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~5"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~10"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -279,7 +279,7 @@ private subroutine dsm_wrapper(me, n, m, info)
   
 <tr>
   
-  <td><span class="anchor" id="variable-info~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-info~4"></span>integer,</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -334,33 +334,33 @@ private subroutine dsm_wrapper(me, n, m, info)
 <path fill="none" stroke="#000000" d="M85,-33C93.54,-33 102.47,-33 110.81,-33"/>
 <polygon fill="#000000" stroke="#000000" points="110.97,-36.5 120.97,-33 110.97,-29.5 110.97,-36.5"/>
 </g>
-<!-- proc~srtdat -->
-<g id="proc~~dsm_wrapper~~CallsGraph_node3" class="node">
-<title>proc~srtdat</title>
-<g id="a_proc~~dsm_wrapper~~CallsGraph_node3"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
-<polygon fill="#d9534f" stroke="#d9534f" points="265,-66 211,-66 211,-42 265,-42 265,-66"/>
-<text text-anchor="middle" x="238" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~srtdat -->
-<g id="proc~~dsm_wrapper~~CallsGraph_edge2" class="edge">
-<title>proc~dsm&#45;&gt;proc~srtdat</title>
-<path fill="none" stroke="#000000" d="M175.4,-39.3C183.48,-41.23 192.51,-43.38 201.1,-45.43"/>
-<polygon fill="#000000" stroke="#000000" points="200.38,-48.86 210.92,-47.78 202,-42.05 200.38,-48.86"/>
-</g>
 <!-- proc~setr -->
-<g id="proc~~dsm_wrapper~~CallsGraph_node4" class="node">
+<g id="proc~~dsm_wrapper~~CallsGraph_node3" class="node">
 <title>proc~setr</title>
-<g id="a_proc~~dsm_wrapper~~CallsGraph_node4"><a xlink:href=".././proc/setr.html" xlink:title="setr">
-<polygon fill="#d9534f" stroke="#d9534f" points="265,-24 211,-24 211,0 265,0 265,-24"/>
-<text text-anchor="middle" x="238" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node3"><a xlink:href=".././proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="265,-66 211,-66 211,-42 265,-42 265,-66"/>
+<text text-anchor="middle" x="238" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~setr -->
-<g id="proc~~dsm_wrapper~~CallsGraph_edge3" class="edge">
+<g id="proc~~dsm_wrapper~~CallsGraph_edge2" class="edge">
 <title>proc~dsm&#45;&gt;proc~setr</title>
+<path fill="none" stroke="#000000" d="M175.4,-39.3C183.48,-41.23 192.51,-43.38 201.1,-45.43"/>
+<polygon fill="#000000" stroke="#000000" points="200.38,-48.86 210.92,-47.78 202,-42.05 200.38,-48.86"/>
+</g>
+<!-- proc~srtdat -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node4" class="node">
+<title>proc~srtdat</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node4"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="265,-24 211,-24 211,0 265,0 265,-24"/>
+<text text-anchor="middle" x="238" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge3" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
 <path fill="none" stroke="#000000" d="M175.4,-26.7C183.48,-24.77 192.51,-22.62 201.1,-20.57"/>
 <polygon fill="#000000" stroke="#000000" points="202,-23.95 210.92,-18.22 200.38,-17.14 202,-23.95"/>
 </g>
@@ -498,15 +498,17 @@ private subroutine dsm_wrapper(me, n, m, info)
     <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">info</span>  <span class="c">!! status output from [[dsm]]</span>
 
     <span class="kt">integer</span> <span class="kd">::</span> <span class="n">mingrp</span> <span class="c">!! for call to [[dsm]]</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ipntr</span>  <span class="c">!! for call to [[dsm]]</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kd">::</span> <span class="n">jpntr</span>  <span class="c">!! for call to [[dsm]]</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">irow</span>  <span class="c">!! for call to [[dsm]]</span>
-                                              <span class="c">!! (temp copy since [[dsm]]</span>
-                                              <span class="c">!! will modify it)</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">icol</span>  <span class="c">!! for call to [[dsm]]</span>
-                                              <span class="c">!! (temp copy since [[dsm]]</span>
-                                              <span class="c">!! will modify it)</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">ipntr</span>  <span class="c">!! for call to [[dsm]]</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">jpntr</span>  <span class="c">!! for call to [[dsm]]</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">irow</span>   <span class="c">!! for call to [[dsm]]</span>
+                                               <span class="c">!! (temp copy since [[dsm]]</span>
+                                               <span class="c">!! will modify it)</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">icol</span>   <span class="c">!! for call to [[dsm]]</span>
+                                               <span class="c">!! (temp copy since [[dsm]]</span>
+                                               <span class="c">!! will modify it)</span>
 
+    <span class="k">allocate</span><span class="p">(</span><span class="n">ipntr</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">allocate</span><span class="p">(</span><span class="n">jpntr</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">ngrp</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
     <span class="n">irow</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">irow</span>
     <span class="n">icol</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">icol</span>

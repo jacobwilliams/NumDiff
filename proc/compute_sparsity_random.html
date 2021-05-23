@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.0% of total for procedures.">89 statements</a>
+    title=" 2.9% of total for procedures.">89 statements</a>
      </li> 
      
      
@@ -236,7 +236,7 @@ private subroutine compute_sparsity_random(me, x)
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~27"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+  <td><span class="anchor" id="variable-me~36"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -251,7 +251,7 @@ private subroutine compute_sparsity_random(me, x)
   
 <tr>
   
-  <td><span class="anchor" id="variable-x~11"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-x~13"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td></td>
   
@@ -307,44 +307,44 @@ private subroutine compute_sparsity_random(me, x)
 <path fill="none" stroke="#000000" d="M108.85,-87.15C134.28,-97.16 170.51,-111.43 198.14,-122.3"/>
 <polygon fill="#000000" stroke="#000000" points="196.93,-125.59 207.52,-126 199.49,-119.08 196.93,-125.59"/>
 </g>
-<!-- xlow -->
+<!-- xhigh -->
 <g id="proc~~compute_sparsity_random~~CallsGraph_node3" class="node">
-<title>xlow</title>
+<title>xhigh</title>
 <polygon fill="#777777" stroke="#777777" points="266,-108 212,-108 212,-84 266,-84 266,-108"/>
-<text text-anchor="middle" x="239" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xlow</text>
+<text text-anchor="middle" x="239" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xhigh</text>
 </g>
-<!-- proc~compute_sparsity_random&#45;&gt;xlow -->
+<!-- proc~compute_sparsity_random&#45;&gt;xhigh -->
 <g id="proc~~compute_sparsity_random~~CallsGraph_edge2" class="edge">
-<title>proc~compute_sparsity_random&#45;&gt;xlow</title>
+<title>proc~compute_sparsity_random&#45;&gt;xhigh</title>
 <path fill="none" stroke="#000000" d="M154.25,-85.01C170.8,-87.18 187.56,-89.38 201.7,-91.24"/>
 <polygon fill="#000000" stroke="#000000" points="201.58,-94.75 211.95,-92.58 202.49,-87.81 201.58,-94.75"/>
 </g>
-<!-- xhigh -->
-<g id="proc~~compute_sparsity_random~~CallsGraph_node4" class="node">
-<title>xhigh</title>
-<polygon fill="#777777" stroke="#777777" points="266,-66 212,-66 212,-42 266,-42 266,-66"/>
-<text text-anchor="middle" x="239" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xhigh</text>
-</g>
-<!-- proc~compute_sparsity_random&#45;&gt;xhigh -->
-<g id="proc~~compute_sparsity_random~~CallsGraph_edge3" class="edge">
-<title>proc~compute_sparsity_random&#45;&gt;xhigh</title>
-<path fill="none" stroke="#000000" d="M154.25,-64.99C170.8,-62.82 187.56,-60.62 201.7,-58.76"/>
-<polygon fill="#000000" stroke="#000000" points="202.49,-62.19 211.95,-57.42 201.58,-55.25 202.49,-62.19"/>
-</g>
 <!-- proc~equal_within_tol -->
-<g id="proc~~compute_sparsity_random~~CallsGraph_node5" class="node">
+<g id="proc~~compute_sparsity_random~~CallsGraph_node4" class="node">
 <title>proc~equal_within_tol</title>
-<g id="a_proc~~compute_sparsity_random~~CallsGraph_node5"><a xlink:href=".././proc/equal_within_tol.html" xlink:title="equal_within_tol">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="288,-24 190,-24 190,0 288,0 288,-24"/>
-<text text-anchor="middle" x="239" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">equal_within_tol</text>
+<g id="a_proc~~compute_sparsity_random~~CallsGraph_node4"><a xlink:href=".././proc/equal_within_tol.html" xlink:title="equal_within_tol">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="288,-66 190,-66 190,-42 288,-42 288,-66"/>
+<text text-anchor="middle" x="239" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">equal_within_tol</text>
 </a>
 </g>
 </g>
 <!-- proc~compute_sparsity_random&#45;&gt;proc~equal_within_tol -->
-<g id="proc~~compute_sparsity_random~~CallsGraph_edge4" class="edge">
+<g id="proc~~compute_sparsity_random~~CallsGraph_edge3" class="edge">
 <title>proc~compute_sparsity_random&#45;&gt;proc~equal_within_tol</title>
-<path fill="none" stroke="#000000" d="M108.85,-62.85C134.28,-52.84 170.51,-38.57 198.14,-27.7"/>
-<polygon fill="#000000" stroke="#000000" points="199.49,-30.92 207.52,-24 196.93,-24.41 199.49,-30.92"/>
+<path fill="none" stroke="#000000" d="M154.25,-64.99C162.83,-63.87 171.48,-62.73 179.78,-61.64"/>
+<polygon fill="#000000" stroke="#000000" points="180.25,-65.11 189.71,-60.34 179.34,-58.17 180.25,-65.11"/>
+</g>
+<!-- xlow -->
+<g id="proc~~compute_sparsity_random~~CallsGraph_node5" class="node">
+<title>xlow</title>
+<polygon fill="#777777" stroke="#777777" points="266,-24 212,-24 212,0 266,0 266,-24"/>
+<text text-anchor="middle" x="239" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xlow</text>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;xlow -->
+<g id="proc~~compute_sparsity_random~~CallsGraph_edge4" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;xlow</title>
+<path fill="none" stroke="#000000" d="M108.85,-62.85C135.57,-52.33 174.25,-37.1 202.3,-26.06"/>
+<polygon fill="#000000" stroke="#000000" points="203.72,-29.26 211.75,-22.34 201.16,-22.74 203.72,-29.26"/>
 </g>
 <!-- proc~expand_vector_int -->
 <g id="proc~~compute_sparsity_random~~CallsGraph_node6" class="node">

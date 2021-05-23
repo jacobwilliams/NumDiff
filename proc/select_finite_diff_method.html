@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.1% of total for procedures.">33 statements</a>
+    title=" 1.1% of total for procedures.">35 statements</a>
      </li> 
      
      
@@ -235,7 +235,7 @@ private subroutine select_finite_diff_method(me, x, xlow, xhigh, dx, list_of_met
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~11"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+  <td><span class="anchor" id="variable-me~20"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -250,7 +250,7 @@ private subroutine select_finite_diff_method(me, x, xlow, xhigh, dx, list_of_met
   
 <tr>
   
-  <td><span class="anchor" id="variable-x~8"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-x~10"></span>real(kind=wp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -437,6 +437,8 @@ private subroutine select_finite_diff_method(me, x, xlow, xhigh, dx, list_of_met
 
     <span class="kt">integer</span>  <span class="kd">::</span> <span class="n">i</span>   <span class="c">!! counter</span>
     <span class="kt">integer</span>  <span class="kd">::</span> <span class="n">j</span>   <span class="c">!! counter</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xs</span>  <span class="c">!! if `x` is outside the bounds, this is the value</span>
+                    <span class="c">!! on the nearest bound. otherwise equal to `x`.</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xp</span>  <span class="c">!! perturbed `x` value</span>
 
     <span class="c">! initialize:</span>
@@ -444,13 +446,16 @@ private subroutine select_finite_diff_method(me, x, xlow, xhigh, dx, list_of_met
 
     <span class="k">if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span> <span class="k">return</span> <span class="c">! check for exceptions</span>
 
+    <span class="c">! make sure it is within the bounds</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">xhigh</span><span class="p">,</span><span class="nb">max</span><span class="p">(</span><span class="n">xlow</span><span class="p">,</span><span class="n">x</span><span class="p">))</span>
+
     <span class="c">! try all the methods in the class:</span>
     <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">list_of_methods</span><span class="p">%</span><span class="n">meth</span><span class="p">)</span>
         <span class="n">status_ok</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span> <span class="c">! will be set to false if any</span>
                            <span class="c">! perturbation violates the bounds</span>
         <span class="c">! check each of the perturbations:</span>
         <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">list_of_methods</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">dx_factors</span><span class="p">)</span>
-            <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">list_of_methods</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">dx_factors</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span>
+            <span class="n">xp</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">+</span> <span class="n">list_of_methods</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">dx_factors</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">xp</span> <span class="o">&lt;</span> <span class="n">xlow</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">xp</span> <span class="o">&gt;</span> <span class="n">xhigh</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">                </span><span class="n">status_ok</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
                 <span class="k">exit</span>

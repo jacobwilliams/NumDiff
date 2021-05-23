@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 2.0% of total for procedures.">61 statements</a>
+    title=" 2.1% of total for procedures.">63 statements</a>
      </li> 
      
      
@@ -203,7 +203,7 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_func, sparsity_mode, info, chunk_size, eps, acc, cache_size, xlow_for_sparsity, xhigh_for_sparsity, dpert_for_sparsity, sparsity_perturb_mode, linear_sparsity_tol, function_precision_tol, num_sparsity_points)
+private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_func, sparsity_mode, info, chunk_size, eps, acc, cache_size, xlow_for_sparsity, xhigh_for_sparsity, dpert_for_sparsity, sparsity_perturb_mode, linear_sparsity_tol, function_precision_tol, num_sparsity_points, print_messages)
     
     
    
@@ -235,7 +235,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-me~13"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+  <td><span class="anchor" id="variable-me~22"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -250,7 +250,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~13"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -265,7 +265,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~8"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -310,7 +310,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-problem_func~2"></span>procedure(<a href='../interface/func.html'>func</a>)</td>
+  <td><span class="anchor" id="variable-problem_func~2"></span>procedure(<a href='../interface/func~2.html'>func</a>)</td>
   <td></td>
   <td></td>
   
@@ -347,7 +347,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-info"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
+  <td><span class="anchor" id="variable-info~2"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
   <td></td>
   <td>optional</td>
   
@@ -366,7 +366,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-chunk_size~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-chunk_size~4"></span>integer,</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -382,7 +382,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-eps~2"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-eps~3"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td>optional</td>
   
@@ -545,6 +545,22 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-print_messages~2"></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>print_messages</strong></td><td><p>if true, print error messages to <code>error_unit</code>.
+ default is True.</p></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -618,7 +634,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
                                     <span class="n">xlow_for_sparsity</span><span class="p">,</span><span class="n">xhigh_for_sparsity</span><span class="p">,&amp;</span>
                                     <span class="n">dpert_for_sparsity</span><span class="p">,</span><span class="n">sparsity_perturb_mode</span><span class="p">,&amp;</span>
                                     <span class="n">linear_sparsity_tol</span><span class="p">,</span><span class="n">function_precision_tol</span><span class="p">,&amp;</span>
-                                    <span class="n">num_sparsity_points</span><span class="p">)</span>
+                                    <span class="n">num_sparsity_points</span><span class="p">,</span><span class="n">print_messages</span><span class="p">)</span>
 
     <span class="k">implicit none</span>
 
@@ -674,6 +690,8 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
                                                             <span class="c">!! considered the same value. This is used</span>
                                                             <span class="c">!! when estimating the sparsity pattern when</span>
                                                             <span class="c">!! `sparsity_mode=2` in [[compute_sparsity_random]]</span>
+    <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span> <span class="kd">::</span> <span class="n">print_messages</span> <span class="c">!! if true, print error messages to `error_unit`.</span>
+                                                  <span class="c">!! default is True.</span>
 
     <span class="kt">logical</span> <span class="kd">::</span> <span class="n">cache</span>  <span class="c">!! if the cache is to be used</span>
 
@@ -729,10 +747,11 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
     <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">num_sparsity_points</span><span class="p">))</span>    <span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span>    <span class="o">=</span> <span class="n">num_sparsity_points</span>
 
     <span class="c">! optional:</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">))</span>  <span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>         <span class="n">me</span><span class="p">%</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">acc</span><span class="p">))</span>         <span class="n">me</span><span class="p">%</span><span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">info</span><span class="p">))</span>        <span class="n">me</span><span class="p">%</span><span class="n">info_function</span> <span class="o">=&gt;</span> <span class="n">info</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">))</span>     <span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>            <span class="n">me</span><span class="p">%</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">acc</span><span class="p">))</span>            <span class="n">me</span><span class="p">%</span><span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">info</span><span class="p">))</span>           <span class="n">me</span><span class="p">%</span><span class="n">info_function</span> <span class="o">=&gt;</span> <span class="n">info</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">print_messages</span><span class="p">))</span> <span class="n">me</span><span class="p">%</span><span class="n">print_messages</span> <span class="o">=</span> <span class="n">print_messages</span>
 
     <span class="k">end subroutine </span><span class="n">initialize_numdiff_for_diff</span>
 </pre></div>
