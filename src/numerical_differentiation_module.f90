@@ -1505,15 +1505,17 @@
     integer,intent(out) :: info  !! status output from [[dsm]]
 
     integer :: mingrp !! for call to [[dsm]]
-    integer,dimension(m+1) :: ipntr  !! for call to [[dsm]]
-    integer,dimension(n+1) :: jpntr  !! for call to [[dsm]]
-    integer,dimension(:),allocatable :: irow  !! for call to [[dsm]]
-                                              !! (temp copy since [[dsm]]
-                                              !! will modify it)
-    integer,dimension(:),allocatable :: icol  !! for call to [[dsm]]
-                                              !! (temp copy since [[dsm]]
-                                              !! will modify it)
+    integer,dimension(:),allocatable :: ipntr  !! for call to [[dsm]]
+    integer,dimension(:),allocatable :: jpntr  !! for call to [[dsm]]
+    integer,dimension(:),allocatable :: irow   !! for call to [[dsm]]
+                                               !! (temp copy since [[dsm]]
+                                               !! will modify it)
+    integer,dimension(:),allocatable :: icol   !! for call to [[dsm]]
+                                               !! (temp copy since [[dsm]]
+                                               !! will modify it)
 
+    allocate(ipntr(m+1))
+    allocate(jpntr(n+1))
     allocate(me%ngrp(n))
     irow = me%irow
     icol = me%icol
@@ -1639,10 +1641,10 @@
     integer,dimension(:),intent(in),optional  :: linear_irow !! linear sparsity pattern nonzero elements row indices
     integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
     real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
-    integer,intent(in),optional                 :: maxgrp  !! DSM sparsity partition
-                                                           !! [only used if `me%partition_sparsity_pattern=True`]
-    integer,dimension(me%n),intent(in),optional :: ngrp    !! DSM sparsity partition
-                                                           !! [only used if `me%partition_sparsity_pattern=True`]
+    integer,intent(in),optional               :: maxgrp      !! DSM sparsity partition
+                                                             !! [only used if `me%partition_sparsity_pattern=True`]
+    integer,dimension(:),intent(in),optional  :: ngrp        !! DSM sparsity partition (size `n`)
+                                                             !! [only used if `me%partition_sparsity_pattern=True`]
 
     integer :: info !! status output form [[dsm]]
 
@@ -1665,7 +1667,7 @@
         if (me%partition_sparsity_pattern) then
             if (present(maxgrp) .and. present(ngrp)) then
                 ! use the user-input partition:
-                if (maxgrp>0 .and. all(ngrp>=1 .and. ngrp<=maxgrp)) then
+                if (maxgrp>0 .and. all(ngrp>=1 .and. ngrp<=maxgrp) .and. size(ngrp)==me%n) then
                     me%sparsity%maxgrp = maxgrp
                     me%sparsity%ngrp   = ngrp
                 else
