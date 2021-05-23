@@ -109,6 +109,9 @@
         real(wp),dimension(:),allocatable :: xlow  !! lower bounds on `x`
         real(wp),dimension(:),allocatable :: xhigh !! upper bounds on `x`
 
+        logical :: print_messages = .true. !! if true, warning messages are printed
+                                           !! to the `error_unit` for any errors.
+
         integer :: chunk_size = 100  !! chuck size for allocating the arrays (>0)
 
         integer :: perturb_mode = 1  !! perturbation mode:
@@ -416,9 +419,8 @@
     character(len=:),allocatable,intent(out) :: formula
 
     integer :: i !! counter
-    integer :: istat !! write `iostat` flag
-    character(len=10) :: x !! temp variable for integer to string conversion
-    character(len=10) :: f !! temp variable for integer to string conversion
+    character(len=:),allocatable :: x !! temp variable for integer to string conversion
+    character(len=:),allocatable :: f !! temp variable for integer to string conversion
 
     if (allocated(me%dx_factors) .and. allocated(me%df_factors)) then
 
@@ -436,9 +438,9 @@
                 formula = formula//'-f('
             else
                 if (i==1) then
-                    write(f,'(I10)',iostat=istat) int(me%df_factors(i))    ! integer to string
+                    f = integer_to_string(int(me%df_factors(i)))
                 else
-                    write(f,'(SP,I10)',iostat=istat) int(me%df_factors(i)) ! integer to string (with sign)
+                    f = integer_to_string(int(me%df_factors(i)), with_sign = .true.)
                 end if
                 formula = formula//trim(adjustl(f))//'f('
             end if
@@ -450,7 +452,7 @@
             elseif (int(me%dx_factors(i))==-1) then
                 formula = formula//'x-h'
             else
-                write(x,'(SP,I10)',iostat=istat) int(me%dx_factors(i)) ! integer to string (with sign)
+                x = integer_to_string(int(me%dx_factors(i)), with_sign = .true.)
                 formula = formula//'x'//trim(adjustl(x))//'h'
             end if
 
@@ -458,7 +460,7 @@
 
         end do
 
-        write(f,'(I10)',iostat=istat) int(me%df_den_factor) ! integer to string
+        f = integer_to_string(int(me%df_den_factor))
         if (int(me%df_den_factor)==1) then
             formula = formula//') / h'
         else
@@ -854,6 +856,8 @@
 
     integer  :: i   !! counter
     integer  :: j   !! counter
+    real(wp) :: xs  !! if `x` is outside the bounds, this is the value
+                    !! on the nearest bound. otherwise equal to `x`.
     real(wp) :: xp  !! perturbed `x` value
 
     ! initialize:
@@ -861,13 +865,16 @@
 
     if (me%exception_raised) return ! check for exceptions
 
+    ! make sure it is within the bounds
+    xs = min(xhigh,max(xlow,x))
+
     ! try all the methods in the class:
     do i = 1, size(list_of_methods%meth)
         status_ok = .true. ! will be set to false if any
                            ! perturbation violates the bounds
         ! check each of the perturbations:
         do j = 1, size(list_of_methods%meth(i)%dx_factors)
-            xp = x + list_of_methods%meth(i)%dx_factors(j)*dx
+            xp = xs + list_of_methods%meth(i)%dx_factors(j)*dx
             if (xp < xlow .or. xp > xhigh) then
                 status_ok = .false.
                 exit
@@ -915,11 +922,16 @@
     integer  :: i   !! counter
     integer  :: j   !! counter
     real(wp),dimension(size(x)) :: xp  !! perturbed `x` values
+    real(wp),dimension(size(x)) :: xs  !! if `x` is outside the bounds, this is the value
+                                       !! on the nearest bound. otherwise equal to `x`.
 
     ! initialize:
     status_ok = .false.
 
     if (me%exception_raised) return ! check for exceptions
+
+    ! make sure they are within the bounds
+    xs = min(xhigh,max(xlow,x))
 
     ! try all the methods in the class:
     do i = 1, size(list_of_methods%meth)
@@ -927,7 +939,7 @@
                            ! perturbation violates the bounds
         ! check each of the perturbations:
         do j = 1, size(list_of_methods%meth(i)%dx_factors)
-            xp = x + list_of_methods%meth(i)%dx_factors(j)*dx
+            xp = xs + list_of_methods%meth(i)%dx_factors(j)*dx
             if (any(xp < xlow) .or. any(xp > xhigh)) then
                 status_ok = .false.
                 exit
@@ -959,7 +971,7 @@
                                     xlow_for_sparsity,xhigh_for_sparsity,&
                                     dpert_for_sparsity,sparsity_perturb_mode,&
                                     linear_sparsity_tol,function_precision_tol,&
-                                    num_sparsity_points)
+                                    num_sparsity_points,print_messages)
 
     implicit none
 
@@ -1015,6 +1027,8 @@
                                                             !! considered the same value. This is used
                                                             !! when estimating the sparsity pattern when
                                                             !! `sparsity_mode=2` in [[compute_sparsity_random]]
+    logical,intent(in),optional :: print_messages !! if true, print error messages to `error_unit`.
+                                                  !! default is True.
 
     logical :: cache  !! if the cache is to be used
 
@@ -1070,10 +1084,11 @@
     if (present(num_sparsity_points))    me%num_sparsity_points    = num_sparsity_points
 
     ! optional:
-    if (present(chunk_size))  me%chunk_size = abs(chunk_size)
-    if (present(eps))         me%eps = eps
-    if (present(acc))         me%acc = acc
-    if (present(info))        me%info_function => info
+    if (present(chunk_size))     me%chunk_size = abs(chunk_size)
+    if (present(eps))            me%eps = eps
+    if (present(acc))            me%acc = acc
+    if (present(info))           me%info_function => info
+    if (present(print_messages)) me%print_messages = print_messages
 
     end subroutine initialize_numdiff_for_diff
 !*******************************************************************************
@@ -1098,7 +1113,7 @@
 
     integer :: i  !! counter for error print
     character(len=:),allocatable :: error_info !! error message info
-    character(len=10) :: istr   !! for integer to string
+    character(len=:),allocatable :: istr   !! for integer to string
     character(len=30) :: xlow_str, xhigh_str !! for real to string
 
     if (me%exception_raised) return ! check for exceptions
@@ -1114,7 +1129,7 @@
         error_info = 'all xlow must be < xhigh'
         do i = 1, size(xlow)
             if (xlow(i)>=xhigh(i)) then
-                write(istr,'(I10)') i
+                istr = integer_to_string(i)
                 write(xlow_str,'(F30.16)') xlow(i)
                 write(xhigh_str,'(F30.16)') xhigh(i)
                 error_info = error_info//new_line('')//'  Error for optimization variable '//trim(adjustl(istr))//&
@@ -1520,15 +1535,17 @@
     integer,intent(out) :: info  !! status output from [[dsm]]
 
     integer :: mingrp !! for call to [[dsm]]
-    integer,dimension(m+1) :: ipntr  !! for call to [[dsm]]
-    integer,dimension(n+1) :: jpntr  !! for call to [[dsm]]
-    integer,dimension(:),allocatable :: irow  !! for call to [[dsm]]
-                                              !! (temp copy since [[dsm]]
-                                              !! will modify it)
-    integer,dimension(:),allocatable :: icol  !! for call to [[dsm]]
-                                              !! (temp copy since [[dsm]]
-                                              !! will modify it)
+    integer,dimension(:),allocatable :: ipntr  !! for call to [[dsm]]
+    integer,dimension(:),allocatable :: jpntr  !! for call to [[dsm]]
+    integer,dimension(:),allocatable :: irow   !! for call to [[dsm]]
+                                               !! (temp copy since [[dsm]]
+                                               !! will modify it)
+    integer,dimension(:),allocatable :: icol   !! for call to [[dsm]]
+                                               !! (temp copy since [[dsm]]
+                                               !! will modify it)
 
+    allocate(ipntr(m+1))
+    allocate(jpntr(n+1))
     allocate(me%ngrp(n))
     irow = me%irow
     icol = me%icol
@@ -1644,7 +1661,7 @@
 !@note If specifying the linear pattern, all three optional arguments
 !      must be present.
 
-    subroutine set_sparsity_pattern(me,irow,icol,linear_irow,linear_icol,linear_vals)
+    subroutine set_sparsity_pattern(me,irow,icol,linear_irow,linear_icol,linear_vals,maxgrp,ngrp)
 
     implicit none
 
@@ -1654,6 +1671,10 @@
     integer,dimension(:),intent(in),optional  :: linear_irow !! linear sparsity pattern nonzero elements row indices
     integer,dimension(:),intent(in),optional  :: linear_icol !! linear sparsity pattern nonzero elements column indices
     real(wp),dimension(:),intent(in),optional :: linear_vals !! linear sparsity values (constant elements of the Jacobian)
+    integer,intent(in),optional               :: maxgrp      !! DSM sparsity partition
+                                                             !! [only used if `me%partition_sparsity_pattern=True`]
+    integer,dimension(:),intent(in),optional  :: ngrp        !! DSM sparsity partition (size `n`)
+                                                             !! [only used if `me%partition_sparsity_pattern=True`]
 
     integer :: info !! status output form [[dsm]]
 
@@ -1674,11 +1695,23 @@
 
         call me%sparsity%compute_indices()
         if (me%partition_sparsity_pattern) then
-            call me%sparsity%dsm_wrapper(me%n,me%m,info)
-            if (info/=1) then
-                call me%raise_exception(16,'set_sparsity_pattern',&
-                                           'error partitioning sparsity pattern.')
-                return
+            if (present(maxgrp) .and. present(ngrp)) then
+                ! use the user-input partition:
+                if (maxgrp>0 .and. all(ngrp>=1 .and. ngrp<=maxgrp) .and. size(ngrp)==me%n) then
+                    me%sparsity%maxgrp = maxgrp
+                    me%sparsity%ngrp   = ngrp
+                else
+                    call me%raise_exception(28,'set_sparsity_pattern',&
+                                            'invalid sparsity partition inputs.')
+                    return
+                end if
+            else
+                call me%sparsity%dsm_wrapper(me%n,me%m,info)
+                if (info/=1) then
+                    call me%raise_exception(16,'set_sparsity_pattern',&
+                                            'error partitioning sparsity pattern.')
+                    return
+                end if
             end if
         end if
 
@@ -2148,7 +2181,9 @@
 !  Returns the sparsity pattern from the class.
 !  If it hasn't been computed, the output arrays will not be allocated.
 
-    subroutine get_sparsity_pattern(me,irow,icol,linear_irow,linear_icol,linear_vals)
+    subroutine get_sparsity_pattern(me,irow,icol,&
+                                    linear_irow,linear_icol,linear_vals,&
+                                    maxgrp,ngrp)
 
     implicit none
 
@@ -2161,6 +2196,8 @@
                                                                           !! elements column indices
     real(wp),dimension(:),allocatable,intent(out),optional :: linear_vals !! linear sparsity values (constant
                                                                           !! elements of the Jacobian)
+    integer,intent(out),optional                           :: maxgrp      !! DSM sparsity partition
+    integer,dimension(:),allocatable,intent(out),optional  :: ngrp        !! DSM sparsity partition
 
     if (me%exception_raised) return ! check for exceptions
 
@@ -2179,6 +2216,10 @@
     if (present(linear_vals)) then
         if (allocated(me%sparsity%linear_vals)) linear_vals = me%sparsity%linear_vals
     end if
+
+    ! optional DSM partition:
+    if (present(ngrp) .and. allocated(me%sparsity%ngrp)) ngrp = me%sparsity%ngrp
+    if (present(maxgrp)) maxgrp = me%sparsity%maxgrp
 
     end subroutine get_sparsity_pattern
 !*******************************************************************************
@@ -2427,8 +2468,12 @@
 
         call me%select_finite_diff_method(x(i),me%xlow_for_sparsity(i),me%xhigh_for_sparsity(i),&
                                             dx(i),class_meths,fd,status_ok)
-        if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
-            'Error in compute_jacobian_for_sparsity: variable bounds violated for column: ',i
+        if (.not. status_ok) then
+            if (me%print_messages) then
+                write(error_unit,'(A,1X,I5)') &
+                'Error in compute_jacobian_for_sparsity: variable bounds violated for column: ',i
+            end if
+        end if
 
         ! compute this column of the Jacobian:
         df = zero
@@ -2512,8 +2557,12 @@
 
                 call me%select_finite_diff_method(x(i),me%xlow(i),me%xhigh(i),&
                                                   dx(i),me%class_meths(i),fd,status_ok)
-                if (.not. status_ok) write(error_unit,'(A,1X,I5)') &
-                    'Error in compute_jacobian_standard: variable bounds violated for column: ',i
+                if (.not. status_ok) then
+                    if (me%print_messages) then
+                        write(error_unit,'(A,1X,I5)') &
+                        'Error in compute_jacobian_standard: variable bounds violated for column: ',i
+                    end if
+                end if
 
                 ! compute this column of the Jacobian:
                 df = zero
@@ -2743,11 +2792,13 @@
                                     dx(cols),me%class_meths(1),fd,status_ok)
 
                     if (.not. status_ok) then
-                        ! will not consider this a fatal error for now:
-                        write(error_unit,'(A,1X,I5,1X,A,1X,*(I5,1X))') &
-                              'Error in compute_jacobian_partitioned: '//&
-                              'variable bounds violated for group: ',&
-                              igroup,'. columns: ',cols
+                        if (me%print_messages) then
+                            ! will not consider this a fatal error for now:
+                            write(error_unit,'(A,1X,I5,1X,A,1X,*(I5,1X))') &
+                                'Error in compute_jacobian_partitioned: '//&
+                                'variable bounds violated for group: ',&
+                                igroup,'. columns: ',cols
+                        end if
                     end if
 
                     ! compute the columns of the Jacobian in this group:
@@ -3109,6 +3160,43 @@
     end if
 
     end subroutine get_error_status
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Convert an integer to a string.
+
+    function integer_to_string(i, with_sign) result(str)
+
+    implicit none
+
+    integer,intent(in)           :: i           !! the integer
+    logical,intent(in),optional  :: with_sign   !! also include the sign (default is False)
+    character(len=:),allocatable :: str         !! integer converted to a string
+
+    integer :: istat !! `iostat` code for write statement
+    character(len=100) :: tmp !!
+    logical :: sgn !! local copy of `with_sign`
+
+    if (present(with_sign)) then
+        sgn = with_sign
+    else
+        sgn = .false.
+    end if
+
+    if (sgn) then
+        write(tmp,'(SP,I100)',iostat=istat) i
+    else
+        write(tmp,'(I100)',iostat=istat) i
+    end if
+
+    if (istat == 0) then
+        str = trim(adjustl(tmp))
+    else
+        str = '****'
+    end if
+
+    end function integer_to_string
 !*******************************************************************************
 
 !*******************************************************************************
