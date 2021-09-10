@@ -1,0 +1,29 @@
+name = "NumDiff"
+version = "1.5.0"
+author = "Jacob Williams"
+maintainer = "Jacob Williams"
+copyright = "Copyright (c) 2016-2021, Jacob Williams"
+license = "BSD-3"
+description = "Modern Fortran Numerical Differentiation Library"
+homepage = "https://github.com/jacobwilliams/NumDiff"
+
+[library]
+source-dir = "src"
+
+[install]
+library = true
+
+[build]
+auto-executables = false
+auto-examples = false
+auto-tests = false
+
+[[test]]
+name = "dsm_test"
+source-dir = "tests"
+main = "dsm_test.f90"
+
+[[test]]
+name = "test1"
+source-dir = "tests"
+main = "test1.f90"

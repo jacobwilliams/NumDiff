@@ -1,14 +1,15 @@
-# NumDiff
+![NumDiff](media/logo.png)
+============
 
 ## Brief description
 
-NumDiff provides a modern Fortran interface for computing the Jacobian (derivative) matrix of `m` nonlinear functions which depend on `n` variables. The Jacobian matrix is required for various applications, including numerical optimization. The library also provides for computing the sparsity of this matrix, and returning the Jacobian in sparse or dense form.
+**NumDiff** provides a modern Fortran interface for computing the Jacobian (derivative) matrix of `m` nonlinear functions which depend on `n` variables. The Jacobian matrix is required for various applications, including numerical optimization. It can also be used to test the accuracy of gradients computed by other means. The library also provides for computing the sparsity of this matrix, and returning the Jacobian in sparse or dense form.
 
 ## Status
 
 ![CI Status](https://github.com/jacobwilliams/NumDiff/actions/workflows/CI.yml/badge.svg)
 
-This is currently an experimental work in progress and is not production ready. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation. This code is hosted on GitHub at: https://github.com/jacobwilliams/NumDiff
+This is currently a work in progress. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation. This code is hosted on GitHub at: https://github.com/jacobwilliams/NumDiff
 
 ### To Do
 
@@ -42,6 +43,22 @@ This is currently an experimental work in progress and is not production ready. 
 - [ ] General code cleanup
 
 ## Building NumDiff
+
+### FPM
+
+A `fmp.toml` file is provided for compiling roots-fortran with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
+
+```
+  fpm build --profile release
+```
+
+And to run the unit tests:
+
+```
+  fpm test
+```
+
+### FoBiS
 
 A [FoBiS](https://github.com/szaghi/FoBiS) configuration file (`numdiff.fobis`) is also provided that can also build the library and examples. Use the `mode` flag to indicate what to build. For example:
 

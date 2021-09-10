@@ -28,11 +28,16 @@ jobs:
     - name: Setup Graphviz
       uses: ts-graphviz/setup-graphviz@v1
 
+    - name: Setup Fortran Package Manager
+      uses: fortran-lang/setup-fpm@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Install Python dependencies
       if: contains( matrix.os, 'ubuntu')
       run: |
         python -m pip install --upgrade pip
-        pip install ford FoBiS.py
+        pip install ford 
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Install GFortran Linux
@@ -46,13 +51,10 @@ jobs:
         --slave /usr/bingcov gcov /usr/bin/gcov-${GCC_V}
 
     - name: Compile
-      run: |
-        FoBiS.py build -f numdiff.fobis -mode tests-gnu
+      run: fpm build --profile release
 
     - name: Run tests
-      run: |
-        ./bin/dsm_test
-        ./bin/test1
+      run: fpm test
 
     - name: Build documentation
       run: ford ./numdiff.md
