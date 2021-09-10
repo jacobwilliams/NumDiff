@@ -72,8 +72,11 @@
                
             <li><a href="./lists/types.html">Derived Types</a></li>
         
+               
+        
         
             </ul>
+        
             </li>
 
 
@@ -91,6 +94,8 @@
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/absint.html">Abstract Interfaces</a></li>
                              
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
+
+
 
 
           </ul>
@@ -116,8 +121,9 @@
         	 
 	<p> Find us on&hellip;</p>
         <p>
-        	 
+			 
           <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/NumDiff" role="button">GitHub</a>
+			 
 			 
 			 
 			 
@@ -132,12 +138,12 @@
         <div class="col-md-8">
 		  
           <h1>NumDiff</h1>
-          <h1>NumDiff</h1>
+          <h1><img alt="NumDiff" src="media/logo.png"></h1>
 <h2>Brief description</h2>
-<p>NumDiff provides a modern Fortran interface for computing the Jacobian (derivative) matrix of <code>m</code> nonlinear functions which depend on <code>n</code> variables. The Jacobian matrix is required for various applications, including numerical optimization. The library also provides for computing the sparsity of this matrix, and returning the Jacobian in sparse or dense form.</p>
+<p><strong>NumDiff</strong> provides a modern Fortran interface for computing the Jacobian (derivative) matrix of <code>m</code> nonlinear functions which depend on <code>n</code> variables. The Jacobian matrix is required for various applications, including numerical optimization. It can also be used to test the accuracy of gradients computed by other means. The library also provides for computing the sparsity of this matrix, and returning the Jacobian in sparse or dense form.</p>
 <h2>Status</h2>
 <p><img alt="CI Status" src="https://github.com/jacobwilliams/NumDiff/actions/workflows/CI.yml/badge.svg"></p>
-<p>This is currently an experimental work in progress and is not production ready. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation. This code is hosted on GitHub at: https://github.com/jacobwilliams/NumDiff</p>
+<p>This is currently a work in progress. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation. This code is hosted on GitHub at: https://github.com/jacobwilliams/NumDiff</p>
 <h3>To Do</h3>
 <ul>
 <li>[x] Computing the nonlinear sparsity pattern</li>
@@ -170,6 +176,16 @@
 <li>[ ] General code cleanup</li>
 </ul>
 <h2>Building NumDiff</h2>
+<h3>FPM</h3>
+<p>A <code>fmp.toml</code> file is provided for compiling roots-fortran with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
+<div class="codehilite"><pre><span></span><code>  fpm build --profile release
+</code></pre></div>
+
+<p>And to run the unit tests:</p>
+<div class="codehilite"><pre><span></span><code>  fpm test
+</code></pre></div>
+
+<h3>FoBiS</h3>
 <p>A <a href="https://github.com/szaghi/FoBiS">FoBiS</a> configuration file (<code>numdiff.fobis</code>) is also provided that can also build the library and examples. Use the <code>mode</code> flag to indicate what to build. For example:</p>
 <ul>
 <li>To build all the examples using gfortran: <code>FoBiS.py build -f numdiff.fobis -mode tests-gnu</code></li>
@@ -203,7 +219,8 @@
               
               
               <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
-				  
+              
+              
 				  
               
               
@@ -219,319 +236,112 @@
       
       
       
+      
+      
 		
+        
       <div class="row">
+        
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
               <ul>
-                
-                  
                     <li><a href='./sourcefile/cache_module.f90.html'>cache_module.f90</a></li>
-                  
-                
                   
                     <li><a href='./sourcefile/diff_module.f90.html'>diff_module.f90</a></li>
                   
-                
-                  
                     <li><a href='./sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
-                  
-                
                   
                     <li><a href='./sourcefile/kinds_module.f90.html'>kinds_module.f90</a></li>
                   
-                
-                  
                     <li><a href='./sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
                   
-                
-                  
                     <li><a href='./sourcefile/utilities_module.f90.html'>utilities_module.f90</a></li>
-                  
-                
-              </ul>
+                  </ul>
           </div>
+        
           
 		  <div class="col-xs-6 col-sm-3">
               <h3>Modules</h3>
               <ul>
-                
-                  
                     <li><a href='./module/diff_module.html'>diff_module</a></li>
-                  
-                
                   
                     <li><a href='./module/dsm_module.html'>dsm_module</a></li>
                   
-                
-                  
                     <li><a href='./module/numdiff_cache_module.html'>numdiff_cache_module</a></li>
-                  
-                
                   
                     <li><a href='./module/numdiff_kinds_module.html'>numdiff_kinds_module</a></li>
                   
-                
-                  
                     <li><a href='./module/numdiff_utilities_module.html'>numdiff_utilities_module</a></li>
                   
-                
-                  
                     <li><a href='./module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
-                  
-                
-              </ul>
+                  </ul>
           </div>
           
           
 		  <div class="col-xs-6 col-sm-3">
               <h3>Procedures</h3>
               <ul>
-                
-                  
                     <li><a href='./proc/clear_exceptions.html'>clear_exceptions</a></li>
-                  
-                
                   
                     <li><a href='./proc/columns_in_partition_group.html'>columns_in_partition_group</a></li>
                   
-                
-                  
                     <li><a href='./proc/compute_function_with_cache.html'>compute_function_with_cache</a></li>
-                  
-                
                   
                     <li><a href='./proc/compute_indices.html'>compute_indices</a></li>
                   
-                
-                  
                     <li><a href='./proc/compute_jacobian.html'>compute_jacobian</a></li>
-                  
-                
                   
                     <li><a href='./proc/compute_jacobian_dense.html'>compute_jacobian_dense</a></li>
                   
-                
-                  
                     <li><a href='./proc/compute_jacobian_for_sparsity.html'>compute_jacobian_for_sparsity</a></li>
-                  
-                
                   
                     <li><a href='./proc/compute_jacobian_partitioned.html'>compute_jacobian_partitioned</a></li>
                   
-                
-                  
                     <li><a href='./proc/compute_jacobian_standard.html'>compute_jacobian_standard</a></li>
                   
-                
-                  
                     <li><a href='./proc/compute_jacobian_times_vector.html'>compute_jacobian_times_vector</a></li>
-                  
-                
-                  
-                    <li><a href="./lists/procedures.html"><em>All procedures&hellip;</em></a></li>
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-              </ul>
+                  </ul>
           </div>
           
           
 		  <div class="col-xs-6 col-sm-3">
               <h3>Derived Types</h3>
               <ul>
-                
-                  
                     <li><a href='./type/diff_func.html'>diff_func</a></li>
-                  
-                
                   
                     <li><a href='./type/finite_diff_method.html'>finite_diff_method</a></li>
                   
-                
-                  
                     <li><a href='./type/function_cache.html'>function_cache</a></li>
-                  
-                
                   
                     <li><a href='./type/fx.html'>fx</a></li>
                   
-                
-                  
                     <li><a href='./type/meth_array.html'>meth_array</a></li>
-                  
-                
                   
                     <li><a href='./type/numdiff_type.html'>numdiff_type</a></li>
                   
-                
-                  
                     <li><a href='./type/sparsity_pattern.html'>sparsity_pattern</a></li>
-                  
-                
-              </ul>
+                  </ul>
           </div>
           
       </div>
+      
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
-                                          </p></div>
-        <div class="col-xs-6 col-md-4 col-md-push-4">
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
+                                          </p>
+        </div>
+        <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
-            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            
             
           </p>
         </div>
-        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> NumDiff was developed by Jacob Williams</p></div>
       </div>
       <br>
       </div> <!-- /container -->    
