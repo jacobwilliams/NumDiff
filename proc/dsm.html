@@ -220,20 +220,20 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
 
     
     <p>The purpose of <code>dsm</code> is to determine an optimal or near-
-  optimal consistent partition of the columns of a sparse
-  <code>m</code> by <code>n</code> matrix <code>a</code>.</p>
+optimal consistent partition of the columns of a sparse
+<code>m</code> by <code>n</code> matrix <code>a</code>.</p>
 <p>the sparsity pattern of the matrix <code>a</code> is specified by
-  the arrays <code>indrow</code> and <code>indcol</code>. on input the indices
-  for the non-zero elements of <code>a</code> are</p>
+the arrays <code>indrow</code> and <code>indcol</code>. on input the indices
+for the non-zero elements of <code>a</code> are</p>
 <p><code>indrow(k),indcol(k), k = 1,2,...,npairs</code>.</p>
 <p>the (<code>indrow</code>,<code>indcol</code>) pairs may be specified in any order.
-  duplicate input pairs are permitted, but the subroutine
-  eliminates them.</p>
+duplicate input pairs are permitted, but the subroutine
+eliminates them.</p>
 <p>the subroutine partitions the columns of <code>a</code> into groups
-  such that columns in the same group do not have a
-  non-zero in the same row position. a partition of the
-  columns of <code>a</code> with this property is consistent with the
-  direct determination of <code>a</code>.</p>
+such that columns in the same group do not have a
+non-zero in the same row position. a partition of the
+columns of <code>a</code> with this property is consistent with the
+direct determination of <code>a</code>.</p>
     
 
     <h3>Arguments</h3>
@@ -254,7 +254,7 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~7"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~3"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -269,7 +269,7 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~9"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~3"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -290,7 +290,7 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
   <td></td><td>::</td>
   <td><strong>npairs</strong></td><td><p>number of (<code>indrow</code>,<code>indcol</code>) pairs used
- to describe the sparsity pattern of <code>a</code> (&gt;0)</p></td>
+to describe the sparsity pattern of <code>a</code> (&gt;0)</p></td>
   
 </tr>
 
@@ -306,10 +306,10 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
   <td>dimension(npairs)</td><td>::</td>
   <td><strong>indrow</strong></td><td><p>an integer array of length <code>npairs</code>. on input <code>indrow</code>
- must contain the row indices of the non-zero elements of <code>a</code>.
- on output <code>indrow</code> is permuted so that the corresponding
- column indices are in non-decreasing order. the column
- indices can be recovered from the array <code>jpntr</code>.</p></td>
+must contain the row indices of the non-zero elements of <code>a</code>.
+on output <code>indrow</code> is permuted so that the corresponding
+column indices are in non-decreasing order. the column
+indices can be recovered from the array <code>jpntr</code>.</p></td>
   
 </tr>
 
@@ -325,10 +325,10 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
   <td>dimension(npairs)</td><td>::</td>
   <td><strong>indcol</strong></td><td><p>an integer array of length <code>npairs</code>. on input <code>indcol</code>
- must contain the column indices of the non-zero elements of
- <code>a</code>. on output <code>indcol</code> is permuted so that the corresponding
- row indices are in non-decreasing order. the row indices
- can be recovered from the array <code>ipntr</code>.</p></td>
+must contain the column indices of the non-zero elements of
+<code>a</code>. on output <code>indcol</code> is permuted so that the corresponding
+row indices are in non-decreasing order. the row indices
+can be recovered from the array <code>ipntr</code>.</p></td>
   
 </tr>
 
@@ -338,13 +338,13 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
 <tr>
   
-  <td><span class="anchor" id="variable-ngrp~4"></span>integer,</td>
+  <td><span class="anchor" id="variable-ngrp~2"></span>integer,</td>
   <td>intent(out),</td>
   <td></td>
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>ngrp</strong></td><td><p>specifies the partition of the columns of <code>a</code>.
- column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
   
 </tr>
 
@@ -354,13 +354,13 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
 <tr>
   
-  <td><span class="anchor" id="variable-maxgrp~4"></span>integer,</td>
+  <td><span class="anchor" id="variable-maxgrp~2"></span>integer,</td>
   <td>intent(out)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>maxgrp</strong></td><td><p>the number of groups in the partition
- of the columns of <code>a</code>.</p></td>
+of the columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -376,8 +376,8 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
   <td></td><td>::</td>
   <td><strong>mingrp</strong></td><td><p>a lower bound for the number of groups
- in any consistent partition of the
- columns of <code>a</code>.</p></td>
+in any consistent partition of the
+columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -387,18 +387,18 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
 <tr>
   
-  <td><span class="anchor" id="variable-info~4"></span>integer,</td>
+  <td><span class="anchor" id="variable-info"></span>integer,</td>
   <td>intent(out)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>info</strong></td><td><p>for normal termination <code>info = 1</code>.
- if <code>m</code>, <code>n</code>, or <code>npairs</code> is not positive,
- then <code>info = 0</code>. if the k-th element of
- <code>indrow</code> is not an integer between
- 1 and m or the k-th element of <code>indcol</code>
- is not an integer between 1 and n,
- then <code>info = -k</code>.</p></td>
+if <code>m</code>, <code>n</code>, or <code>npairs</code> is not positive,
+then <code>info = 0</code>. if the k-th element of
+<code>indrow</code> is not an integer between
+1 and m or the k-th element of <code>indcol</code>
+is not an integer between 1 and n,
+then <code>info = -k</code>.</p></td>
   
 </tr>
 
@@ -414,11 +414,11 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
   <td>dimension(m+1)</td><td>::</td>
   <td><strong>ipntr</strong></td><td><p>an integer output array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- note that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+note that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -434,11 +434,11 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>jpntr</strong></td><td><p>jpntr is an integer output array of length n + 1 which
- specifies the locations of the row indices in indrow.
- the row indices for column j are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- note that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in indrow.
+the row indices for column j are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+note that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -470,119 +470,119 @@ public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, 
 <!-- proc~dsm -->
 <g id="proc~~dsm~~CallsGraph_node1" class="node">
 <title>proc~dsm</title>
-<polygon fill="none" stroke="black" points="54,-146 0,-146 0,-122 54,-122 54,-146"/>
-<text text-anchor="middle" x="27" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50">dsm</text>
-</g>
-<!-- proc~seq -->
-<g id="proc~~dsm~~CallsGraph_node2" class="node">
-<title>proc~seq</title>
-<g id="a_proc~~dsm~~CallsGraph_node2"><a xlink:href=".././proc/seq.html" xlink:title="seq">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-272 90,-272 90,-248 144,-248 144,-272"/>
-<text text-anchor="middle" x="117" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~seq -->
-<g id="proc~~dsm~~CallsGraph_edge1" class="edge">
-<title>proc~dsm&#45;&gt;proc~seq</title>
-<path fill="none" stroke="#000000" d="M33.44,-146.24C42.97,-166.82 64.12,-209.04 90,-239 90.6,-239.69 91.22,-240.38 91.86,-241.06"/>
-<polygon fill="#000000" stroke="#000000" points="89.55,-243.68 99.25,-247.95 94.32,-238.57 89.55,-243.68"/>
-</g>
-<!-- proc~srtdat -->
-<g id="proc~~dsm~~CallsGraph_node3" class="node">
-<title>proc~srtdat</title>
-<g id="a_proc~~dsm~~CallsGraph_node3"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-230 90,-230 90,-206 144,-206 144,-230"/>
-<text text-anchor="middle" x="117" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~srtdat -->
-<g id="proc~~dsm~~CallsGraph_edge2" class="edge">
-<title>proc~dsm&#45;&gt;proc~srtdat</title>
-<path fill="none" stroke="#000000" d="M39.04,-146.01C51.15,-159 71.35,-180.1 90,-197 90.82,-197.74 91.66,-198.49 92.51,-199.23"/>
-<polygon fill="#000000" stroke="#000000" points="90.46,-202.08 100.36,-205.85 94.97,-196.73 90.46,-202.08"/>
-</g>
-<!-- proc~slo -->
-<g id="proc~~dsm~~CallsGraph_node4" class="node">
-<title>proc~slo</title>
-<g id="a_proc~~dsm~~CallsGraph_node4"><a xlink:href=".././proc/slo.html" xlink:title="slo">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-188 90,-188 90,-164 144,-164 144,-188"/>
-<text text-anchor="middle" x="117" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~slo -->
-<g id="proc~~dsm~~CallsGraph_edge3" class="edge">
-<title>proc~dsm&#45;&gt;proc~slo</title>
-<path fill="none" stroke="#000000" d="M53.45,-146.15C62.21,-150.33 72.17,-155.08 81.52,-159.54"/>
-<polygon fill="#000000" stroke="#000000" points="80.07,-162.73 90.6,-163.88 83.09,-156.41 80.07,-162.73"/>
+<polygon fill="none" stroke="black" points="54,-148 0,-148 0,-124 54,-124 54,-148"/>
+<text text-anchor="middle" x="27" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50">dsm</text>
 </g>
 <!-- proc~setr -->
-<g id="proc~~dsm~~CallsGraph_node5" class="node">
+<g id="proc~~dsm~~CallsGraph_node2" class="node">
 <title>proc~setr</title>
-<g id="a_proc~~dsm~~CallsGraph_node5"><a xlink:href=".././proc/setr.html" xlink:title="setr">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-146 90,-146 90,-122 144,-122 144,-146"/>
-<text text-anchor="middle" x="117" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+<g id="a_proc~~dsm~~CallsGraph_node2"><a xlink:href=".././proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-272 90,-272 90,-248 144,-248 144,-272"/>
+<text text-anchor="middle" x="117" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~setr -->
-<g id="proc~~dsm~~CallsGraph_edge4" class="edge">
+<g id="proc~~dsm~~CallsGraph_edge1" class="edge">
 <title>proc~dsm&#45;&gt;proc~setr</title>
-<path fill="none" stroke="#000000" d="M54.4,-134C62.39,-134 71.31,-134 79.82,-134"/>
-<polygon fill="#000000" stroke="#000000" points="79.92,-137.5 89.92,-134 79.92,-130.5 79.92,-137.5"/>
-</g>
-<!-- proc~degr -->
-<g id="proc~~dsm~~CallsGraph_node6" class="node">
-<title>proc~degr</title>
-<g id="a_proc~~dsm~~CallsGraph_node6"><a xlink:href=".././proc/degr.html" xlink:title="degr">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-104 90,-104 90,-80 144,-80 144,-104"/>
-<text text-anchor="middle" x="117" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~degr -->
-<g id="proc~~dsm~~CallsGraph_edge5" class="edge">
-<title>proc~dsm&#45;&gt;proc~degr</title>
-<path fill="none" stroke="#000000" d="M53.45,-121.85C62.21,-117.67 72.17,-112.92 81.52,-108.46"/>
-<polygon fill="#000000" stroke="#000000" points="83.09,-111.59 90.6,-104.12 80.07,-105.27 83.09,-111.59"/>
-</g>
-<!-- proc~numsrt -->
-<g id="proc~~dsm~~CallsGraph_node7" class="node">
-<title>proc~numsrt</title>
-<g id="a_proc~~dsm~~CallsGraph_node7"><a xlink:href=".././proc/numsrt.html" xlink:title="numsrt">
-<polygon fill="#d9534f" stroke="#d9534f" points="234,-44 180,-44 180,-20 234,-20 234,-44"/>
-<text text-anchor="middle" x="207" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~numsrt -->
-<g id="proc~~dsm~~CallsGraph_edge6" class="edge">
-<title>proc~dsm&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M37.19,-121.63C48.27,-107.53 68.14,-84.67 90,-71 114.59,-55.62 145.94,-45.56 169.84,-39.51"/>
-<polygon fill="#000000" stroke="#000000" points="170.69,-42.9 179.59,-37.16 169.05,-36.1 170.69,-42.9"/>
+<path fill="none" stroke="#000000" d="M33.5,-148C43.1,-168.18 64.36,-209.57 90,-239 90.6,-239.69 91.23,-240.37 91.87,-241.05"/>
+<polygon fill="#000000" stroke="#000000" points="89.56,-243.68 99.27,-247.93 94.33,-238.56 89.56,-243.68"/>
 </g>
 <!-- proc~ido -->
-<g id="proc~~dsm~~CallsGraph_node8" class="node">
+<g id="proc~~dsm~~CallsGraph_node3" class="node">
 <title>proc~ido</title>
-<g id="a_proc~~dsm~~CallsGraph_node8"><a xlink:href=".././proc/ido.html" xlink:title="ido">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-24 90,-24 90,0 144,0 144,-24"/>
-<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+<g id="a_proc~~dsm~~CallsGraph_node3"><a xlink:href=".././proc/ido.html" xlink:title="ido">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-230 90,-230 90,-206 144,-206 144,-230"/>
+<text text-anchor="middle" x="117" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~ido -->
-<g id="proc~~dsm~~CallsGraph_edge7" class="edge">
+<g id="proc~~dsm~~CallsGraph_edge2" class="edge">
 <title>proc~dsm&#45;&gt;proc~ido</title>
-<path fill="none" stroke="#000000" d="M34.68,-121.92C45.31,-103.16 67.19,-66.25 90,-38 91.68,-35.91 93.52,-33.81 95.4,-31.76"/>
-<polygon fill="#000000" stroke="#000000" points="98.29,-33.8 102.74,-24.19 93.27,-28.93 98.29,-33.8"/>
+<path fill="none" stroke="#000000" d="M39.55,-148.05C51.77,-160.61 71.74,-180.72 90,-197 90.82,-197.73 91.67,-198.47 92.52,-199.22"/>
+<polygon fill="#000000" stroke="#000000" points="90.48,-202.07 100.39,-205.81 94.97,-196.7 90.48,-202.07"/>
+</g>
+<!-- proc~srtdat -->
+<g id="proc~~dsm~~CallsGraph_node4" class="node">
+<title>proc~srtdat</title>
+<g id="a_proc~~dsm~~CallsGraph_node4"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-188 90,-188 90,-164 144,-164 144,-188"/>
+<text text-anchor="middle" x="117" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="proc~~dsm~~CallsGraph_edge3" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
+<path fill="none" stroke="#000000" d="M54.4,-148C62.66,-151.75 71.9,-155.95 80.66,-159.94"/>
+<polygon fill="#000000" stroke="#000000" points="79.37,-163.19 89.92,-164.14 82.26,-156.82 79.37,-163.19"/>
+</g>
+<!-- proc~numsrt -->
+<g id="proc~~dsm~~CallsGraph_node5" class="node">
+<title>proc~numsrt</title>
+<g id="a_proc~~dsm~~CallsGraph_node5"><a xlink:href=".././proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-189 180,-189 180,-165 234,-165 234,-189"/>
+<text text-anchor="middle" x="207" y="-174.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~numsrt -->
+<g id="proc~~dsm~~CallsGraph_edge4" class="edge">
+<title>proc~dsm&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M54.08,-138.92C77.77,-141.89 113.56,-147.17 144,-155 152.59,-157.21 161.67,-160.1 170.15,-163.06"/>
+<polygon fill="#000000" stroke="#000000" points="169.18,-166.43 179.77,-166.52 171.55,-159.84 169.18,-166.43"/>
+</g>
+<!-- proc~seq -->
+<g id="proc~~dsm~~CallsGraph_node6" class="node">
+<title>proc~seq</title>
+<g id="a_proc~~dsm~~CallsGraph_node6"><a xlink:href=".././proc/seq.html" xlink:title="seq">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-108 90,-108 90,-84 144,-84 144,-108"/>
+<text text-anchor="middle" x="117" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~seq -->
+<g id="proc~~dsm~~CallsGraph_edge5" class="edge">
+<title>proc~dsm&#45;&gt;proc~seq</title>
+<path fill="none" stroke="#000000" d="M54.4,-124C62.66,-120.25 71.9,-116.05 80.66,-112.06"/>
+<polygon fill="#000000" stroke="#000000" points="82.26,-115.18 89.92,-107.86 79.37,-108.81 82.26,-115.18"/>
+</g>
+<!-- proc~slo -->
+<g id="proc~~dsm~~CallsGraph_node7" class="node">
+<title>proc~slo</title>
+<g id="a_proc~~dsm~~CallsGraph_node7"><a xlink:href=".././proc/slo.html" xlink:title="slo">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-66 90,-66 90,-42 144,-42 144,-66"/>
+<text text-anchor="middle" x="117" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~slo -->
+<g id="proc~~dsm~~CallsGraph_edge6" class="edge">
+<title>proc~dsm&#45;&gt;proc~slo</title>
+<path fill="none" stroke="#000000" d="M39.55,-123.95C51.77,-111.39 71.74,-91.28 90,-75 90.82,-74.27 91.67,-73.53 92.52,-72.78"/>
+<polygon fill="#000000" stroke="#000000" points="94.97,-75.3 100.39,-66.19 90.48,-69.93 94.97,-75.3"/>
+</g>
+<!-- proc~degr -->
+<g id="proc~~dsm~~CallsGraph_node8" class="node">
+<title>proc~degr</title>
+<g id="a_proc~~dsm~~CallsGraph_node8"><a xlink:href=".././proc/degr.html" xlink:title="degr">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-24 90,-24 90,0 144,0 144,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~degr -->
+<g id="proc~~dsm~~CallsGraph_edge7" class="edge">
+<title>proc~dsm&#45;&gt;proc~degr</title>
+<path fill="none" stroke="#000000" d="M33.5,-124C43.1,-103.82 64.36,-62.43 90,-33 90.6,-32.31 91.23,-31.63 91.87,-30.95"/>
+<polygon fill="#000000" stroke="#000000" points="94.33,-33.44 99.27,-24.07 89.56,-28.32 94.33,-33.44"/>
 </g>
 <!-- proc~ido&#45;&gt;proc~numsrt -->
 <g id="proc~~dsm~~CallsGraph_edge8" class="edge">
 <title>proc~ido&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M144.4,-18C152.48,-19.84 161.51,-21.89 170.1,-23.84"/>
-<polygon fill="#000000" stroke="#000000" points="169.39,-27.27 179.92,-26.07 170.94,-20.44 169.39,-27.27"/>
+<path fill="none" stroke="#000000" d="M143.93,-205.92C152.36,-201.99 161.86,-197.57 170.84,-193.38"/>
+<polygon fill="#000000" stroke="#000000" points="172.37,-196.53 179.95,-189.13 169.41,-190.19 172.37,-196.53"/>
 </g>
 </g>
 </svg>

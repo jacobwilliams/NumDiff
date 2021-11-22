@@ -220,7 +220,7 @@ private subroutine select_finite_diff_method(me, x, xlow, xhigh, dx, list_of_met
 
     
     <p>Select a finite diff method of a given <code>class</code> so that the perturbations
-  of <code>x</code> will not violate the variable bounds.</p>
+of <code>x</code> will not violate the variable bounds.</p>
     
 
     <h3>Arguments</h3>
@@ -352,9 +352,9 @@ private subroutine select_finite_diff_method(me, x, xlow, xhigh, dx, list_of_met
   
   <td></td><td>::</td>
   <td><strong>status_ok</strong></td><td><p>true if it really doesn't violate the bounds
- (say, the bounds are very close to each other)
- if <code>status_ok=False</code>, then the first method in
- the given class is returned in <code>fd</code>.</p></td>
+(say, the bounds are very close to each other)
+if <code>status_ok=False</code>, then the first method in
+the given class is returned in <code>fd</code>.</p></td>
   
 </tr>
 

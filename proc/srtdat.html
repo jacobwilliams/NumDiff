@@ -220,17 +220,17 @@ private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
 
     
     <p>given the non-zero elements of an <code>m</code> by <code>n</code> matrix <code>a</code> in
-  arbitrary order as specified by their row and column
-  indices, this subroutine permutes these elements so
-  that their column indices are in non-decreasing order.</p>
+arbitrary order as specified by their row and column
+indices, this subroutine permutes these elements so
+that their column indices are in non-decreasing order.</p>
 <p>on input it is assumed that the elements are specified in</p>
 <p><code>indrow(k),indcol(k), k = 1,...,nnz</code>.</p>
 <p>on output the elements are permuted so that <code>indcol</code> is
-  in non-decreasing order. in addition, the array <code>jpntr</code>
-  is set so that the row indices for column <code>j</code> are</p>
+in non-decreasing order. in addition, the array <code>jpntr</code>
+is set so that the row indices for column <code>j</code> are</p>
 <p><code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.</p>
 <p>note that the value of <code>m</code> is not needed by srtdat and is
-  therefore not present in the subroutine statement.</p>
+therefore not present in the subroutine statement.</p>
     
 
     <h3>Arguments</h3>
@@ -251,13 +251,13 @@ private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~16"></span>integer</td>
+  <td><span class="anchor" id="variable-n~10"></span>integer</td>
   <td></td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -273,7 +273,7 @@ private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
   
   <td></td><td>::</td>
   <td><strong>Nnz</strong></td><td><p>a positive integer input variable set to the number
- of non-zero elements of <code>a</code>.</p></td>
+of non-zero elements of <code>a</code>.</p></td>
   
 </tr>
 
@@ -289,9 +289,9 @@ private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
   
   <td>dimension(Nnz)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer array of length <code>nnz</code>. on input <code>indrow</code>
- must contain the row indices of the non-zero elements of <code>a</code>.
- on output <code>indrow</code> is permuted so that the corresponding
- column indices of <code>indcol</code> are in non-decreasing order.</p></td>
+must contain the row indices of the non-zero elements of <code>a</code>.
+on output <code>indrow</code> is permuted so that the corresponding
+column indices of <code>indcol</code> are in non-decreasing order.</p></td>
   
 </tr>
 
@@ -307,9 +307,9 @@ private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
   
   <td>dimension(Nnz)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer array of length <code>nnz</code>. on input <code>indcol</code>
- must contain the column indices of the non-zero elements
- of <code>a</code>. on output <code>indcol</code> is permuted so that these indices
- are in non-decreasing order.</p></td>
+must contain the column indices of the non-zero elements
+of <code>a</code>. on output <code>indcol</code> is permuted so that these indices
+are in non-decreasing order.</p></td>
   
 </tr>
 
@@ -325,11 +325,11 @@ private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer output array of length <code>n + 1</code> which
- specifies the locations of the row indices in the output
- <code>indrow</code>. the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(1)</code> is set to 1 and that <code>jpntr(n+1)-1</code>
- is then <code>nnz</code>.</p></td>
+specifies the locations of the row indices in the output
+<code>indrow</code>. the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(1)</code> is set to 1 and that <code>jpntr(n+1)-1</code>
+is then <code>nnz</code>.</p></td>
   
 </tr>
 

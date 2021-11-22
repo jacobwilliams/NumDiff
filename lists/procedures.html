@@ -141,40 +141,40 @@ All Procedures &ndash; NumDiff
   It uses <code>class_meths</code> and the sparsity dperts and bounds.</p><a href="../proc/compute_jacobian_for_sparsity.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_jacobian_partitioned.html'>compute_jacobian_partitioned</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute the Jacobian using finite differences,
-  (using the partitioned sparsity pattern to compute multiple columns
-  at a time).</p></td></tr>
+(using the partitioned sparsity pattern to compute multiple columns
+at a time).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_jacobian_standard.html'>compute_jacobian_standard</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute the Jacobian using finite differences.
-  (one column at a time)</p></td></tr>
+(one column at a time)</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_jacobian_times_vector.html'>compute_jacobian_times_vector</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Returns the product <code>J*v</code>, where <code>J</code> is the <code>m x n</code> Jacobian matrix
   and <code>v</code> is an <code>n x 1</code> vector.</p><a href="../proc/compute_jacobian_times_vector.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_jacobian_with_diff.html'>compute_jacobian_with_diff</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute the Jacobian one element at a time using the Neville's process
-  algorithm <a href="../proc/diff.html">diff</a>. This takes a very large number of function evaluations,
-  but should give a very accurate answer.</p></td></tr>
+algorithm <a href="../proc/diff.html">diff</a>. This takes a very large number of function evaluations,
+but should give a very accurate answer.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_perturb_vector.html'>compute_perturb_vector</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute <code>dx</code>, the perturbation vector for <code>x</code></p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_perturbation_vector.html'>compute_perturbation_vector</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute <code>dx</code>, the perturbation vector for <code>x</code> used
-  when computing the gradients.</p></td></tr>
+when computing the gradients.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_sparsity_dense.html'>compute_sparsity_dense</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>assume all elements of Jacobian are non-zero.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_sparsity_pattern.html'>compute_sparsity_pattern</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Computes the sparsity pattern and return it.
-  Uses the settings currently in the class.</p></td></tr>
+Uses the settings currently in the class.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_sparsity_perturbation_vector.html'>compute_sparsity_perturbation_vector</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute <code>dx</code>, the perturbation vector for <code>x</code> used
-  when computing the sparsity pattern.</p></td></tr>
+when computing the sparsity pattern.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_sparsity_random.html'>compute_sparsity_random</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute the sparsity pattern by computing the function at three
-  "random" points in the [<code>xlow_for_sparsity</code>, <code>xhigh_for_sparsity</code>] interval
-  and checking if the function values are the same.</p></td></tr>
+"random" points in the [<code>xlow_for_sparsity</code>, <code>xhigh_for_sparsity</code>] interval
+and checking if the function values are the same.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/compute_sparsity_random_2.html'>compute_sparsity_random_2</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Compute the sparsity pattern by computing a 2-point jacobian at a specified
-  number of "random" points (<code>num_sparsity_points</code>) in the
-  [<code>xlow_for_sparsity</code>, <code>xhigh_for_sparsity</code>] interval and checking if
-  they are the same.</p></td></tr>
+number of "random" points (<code>num_sparsity_points</code>) in the
+[<code>xlow_for_sparsity</code>, <code>xhigh_for_sparsity</code>] interval and checking if
+they are the same.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/degr.html'>degr</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>Given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>,
   this subroutine determines the degree sequence for
@@ -189,26 +189,26 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/destroy_sparsity_pattern.html'>destroy_sparsity_pattern</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Destroy the sparsity pattern in the class.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/diff.html'>diff</a></td><td><a href='../module/diff_module.html'>diff_module</a></td><td>Subroutine</td><td><p>the procedure <code>diff</code> calculates the first, second or
-  third order derivative of a function by using neville's process to
-  extrapolate from a sequence of simple polynomial approximations based on
-  interpolating points distributed symmetrically about <code>x0</code> (or lying only on
-  one side of <code>x0</code> should this be necessary).  if the specified tolerance is
-  non-zero then the procedure attempts to satisfy this absolute or relative
-  accuracy requirement, while if it is unsuccessful or if the tolerance is
-  set to zero then the result having the minimum achievable estimated error
-  is returned instead.</p></td></tr>
+third order derivative of a function by using neville's process to
+extrapolate from a sequence of simple polynomial approximations based on
+interpolating points distributed symmetrically about <code>x0</code> (or lying only on
+one side of <code>x0</code> should this be necessary).  if the specified tolerance is
+non-zero then the procedure attempts to satisfy this absolute or relative
+accuracy requirement, while if it is unsuccessful or if the tolerance is
+set to zero then the result having the minimum achievable estimated error
+is returned instead.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/divide_interval.html'>divide_interval</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Function</td><td><p>Returns a set of slightly randomized equally-spaced
   points that divide an interval.</p><a href="../proc/divide_interval.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/dsm.html'>dsm</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>The purpose of <code>dsm</code> is to determine an optimal or near-
-  optimal consistent partition of the columns of a sparse
-  <code>m</code> by <code>n</code> matrix <code>a</code>.</p><a href="../proc/dsm.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+optimal consistent partition of the columns of a sparse
+<code>m</code> by <code>n</code> matrix <code>a</code>.</p><a href="../proc/dsm.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/dsm_wrapper.html'>dsm_wrapper</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Wrapper for <a href="../proc/dsm.html">dsm</a> to compute the sparsity pattern partition.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/equal_within_tol.html'>equal_within_tol</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Function</td><td><p>Returns true if the values in the array are the same
-  (to within the specified absolute tolerance).</p></td></tr>
+(to within the specified absolute tolerance).</p></td></tr>
 			 
 			   <tr><td><a href='../interface/expand_vector.html'>expand_vector</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Interface</td><td></td></tr>
 			 
@@ -217,12 +217,12 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/expand_vector_real.html'>expand_vector_real</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Subroutine</td><td><p>Add elements to the real vector in chunks.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/faccur.html'>faccur</a></td><td><a href='../module/diff_module.html'>diff_module</a></td><td>Subroutine</td><td><p>This procedure attempts to estimate the level of rounding errors in
- the calculated function values near the point <code>x0+h0</code> by fitting a
- least-squares straight-line approximation to the function at the
- six points <code>x0+h0-j*h1</code>, (<code>j = 0,1,3,5,7,9</code>), and then setting <code>facc</code> to
- twice the largest deviation of the function values from this line.
- <code>hi</code> is adjusted if necessary so that it is approximately 8 times the
- smallest spacing at which the function values are unequal near <code>x0+h0</code>.</p></td></tr>
+the calculated function values near the point <code>x0+h0</code> by fitting a
+least-squares straight-line approximation to the function at the
+six points <code>x0+h0-j*h1</code>, (<code>j = 0,1,3,5,7,9</code>), and then setting <code>facc</code> to
+twice the largest deviation of the function values from this line.
+<code>hi</code> is adjusted if necessary so that it is approximately 8 times the
+smallest spacing at which the function values are unequal near <code>x0+h0</code>.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/failed.html'>failed</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Function</td><td><p>Returns True if an exception has been raised.</p></td></tr>
 			 
@@ -237,7 +237,7 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/generate_dense_sparsity_partition.html'>generate_dense_sparsity_partition</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Generate a "dense" sparsity partition.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/get_all_methods_in_class.html'>get_all_methods_in_class</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Function</td><td><p>Returns all the methods with the given <code>class</code>
-  (i.e., number of points in the formula).</p></td></tr>
+(i.e., number of points in the formula).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/get_error_status.html'>get_error_status</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Returns the current error code and message.</p></td></tr>
 			 
@@ -250,15 +250,15 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/get_formula.html'>get_formula</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Return a string with the finite difference formula.</p><a href="../proc/get_formula.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/get_from_cache.html'>get_from_cache</a></td><td><a href='../module/numdiff_cache_module.html'>numdiff_cache_module</a></td><td>Subroutine</td><td><p>Check if the <code>x</code> vector is in the cache, if so return <code>f</code>.
-  Note that only some of the elements may be present, so it will return
-  the ones there are there, and indicate which ones were found.</p></td></tr>
+Note that only some of the elements may be present, so it will return
+the ones there are there, and indicate which ones were found.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/get_sparsity_pattern.html'>get_sparsity_pattern</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Returns the sparsity pattern from the class.
-  If it hasn't been computed, the output arrays will not be allocated.</p></td></tr>
+If it hasn't been computed, the output arrays will not be allocated.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/ido.html'>ido</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines an incidence-degree ordering of the
-  columns of <code>a</code>.</p><a href="../proc/ido.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+subroutine determines an incidence-degree ordering of the
+columns of <code>a</code>.</p><a href="../proc/ido.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/initialize_cache.html'>initialize_cache</a></td><td><a href='../module/numdiff_cache_module.html'>numdiff_cache_module</a></td><td>Subroutine</td><td><p>Initialize the cache. Must be called first before use.</p></td></tr>
 			 
@@ -267,7 +267,7 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/initialize_numdiff.html'>initialize_numdiff</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Initialize a <a href="../type/numdiff_type.html">numdiff_type</a> class. This must be called first.</p><a href="../proc/initialize_numdiff.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/initialize_numdiff_for_diff.html'>initialize_numdiff_for_diff</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Alternate version of <a href="../proc/initialize_numdiff.html">initialize_numdiff</a> routine when
-  using <a href="../proc/diff.html">diff</a> to compute the Jacobian.</p></td></tr>
+using <a href="../proc/diff.html">diff</a> to compute the Jacobian.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/integer_to_string.html'>integer_to_string</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Function</td><td><p>Convert an integer to a string.</p></td></tr>
 			 
@@ -277,12 +277,12 @@ All Procedures &ndash; NumDiff
   ascending or descending order.</p><a href="../proc/numsrt.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/perturb_x_and_compute_f.html'>perturb_x_and_compute_f</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Perturb the specified optimization variable, and compute the function.
-  This routine is designed so that <code>df</code> is accumulated as each function
-  evaluation is done, to avoid having to allocate more temporary storage.</p></td></tr>
+This routine is designed so that <code>df</code> is accumulated as each function
+evaluation is done, to avoid having to allocate more temporary storage.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/perturb_x_and_compute_f_partitioned.html'>perturb_x_and_compute_f_partitioned</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Perturb the specified optimization variable, and compute the function.
-  This routine is designed so that <code>df</code> is accumulated as each function
-  evaluation is done, to avoid having to allocate more temporary storage.</p></td></tr>
+This routine is designed so that <code>df</code> is accumulated as each function
+evaluation is done, to avoid having to allocate more temporary storage.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/print_cache.html'>print_cache</a></td><td><a href='../module/numdiff_cache_module.html'>numdiff_cache_module</a></td><td>Subroutine</td><td><p>Print the contents of the cache. Used for debugging.</p></td></tr>
 			 
@@ -301,17 +301,17 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/resize_sparsity_vectors.html'>resize_sparsity_vectors</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Resize the sparsity arrays after accumulating them.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/select_finite_diff_method.html'>select_finite_diff_method</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Select a finite diff method of a given <code>class</code> so that the perturbations
-  of <code>x</code> will not violate the variable bounds.</p></td></tr>
+of <code>x</code> will not violate the variable bounds.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/select_finite_diff_method_for_partition_group.html'>select_finite_diff_method_for_partition_group</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Select a finite diff method of a given <code>class</code> so that the perturbations
-  of <code>x</code> will not violate the variable bounds for any variable in the group.</p><a href="../proc/select_finite_diff_method_for_partition_group.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+of <code>x</code> will not violate the variable bounds for any variable in the group.</p><a href="../proc/select_finite_diff_method_for_partition_group.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/seq.html'>seq</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines a consistent partition of the
-  columns of <code>a</code> by a sequential algorithm.</p><a href="../proc/seq.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+subroutine determines a consistent partition of the
+columns of <code>a</code> by a sequential algorithm.</p><a href="../proc/seq.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/set_function.html'>set_function</a></td><td><a href='../module/diff_module.html'>diff_module</a></td><td>Subroutine</td><td><p>Set the function in a <a href="../type/diff_func.html">diff_func</a>.
-  Must be called before <a href="../proc/diff.html">diff</a>.</p></td></tr>
+ Must be called before <a href="../proc/diff.html">diff</a>.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/set_numdiff_bounds.html'>set_numdiff_bounds</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>Change the variable bounds in a <a href="../type/numdiff_type.html">numdiff_type</a>.</p><a href="../proc/set_numdiff_bounds.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
@@ -323,27 +323,27 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/set_sparsity_pattern.html'>set_sparsity_pattern</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>To specify the sparsity pattern directly if it is already known.</p><a href="../proc/set_sparsity_pattern.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/setr.html'>setr</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>given a column-oriented definition of the sparsity pattern
-  of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
-  row-oriented definition of the sparsity pattern of <code>a</code>.</p><a href="../proc/setr.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
+row-oriented definition of the sparsity pattern of <code>a</code>.</p><a href="../proc/setr.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/slo.html'>slo</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines the smallest-last ordering of the
-  columns of <code>a</code>.</p><a href="../proc/slo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+subroutine determines the smallest-last ordering of the
+columns of <code>a</code>.</p><a href="../proc/slo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../interface/sort_ascending.html'>sort_ascending</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Interface</td><td></td></tr>
 			 
 			   <tr><td><a href='../proc/sort_ascending_int.html'>sort_ascending_int</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Subroutine</td><td><p>Sorts an integer array <code>ivec</code> in increasing order.
-  Uses a basic recursive quicksort
-  (with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p></td></tr>
+Uses a basic recursive quicksort
+(with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/sort_ascending_real.html'>sort_ascending_real</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Subroutine</td><td><p>Sorts a real array <code>ivec</code> in increasing order.
-  Uses a basic recursive quicksort
-  (with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p></td></tr>
+Uses a basic recursive quicksort
+(with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/srtdat.html'>srtdat</a></td><td><a href='../module/dsm_module.html'>dsm_module</a></td><td>Subroutine</td><td><p>given the non-zero elements of an <code>m</code> by <code>n</code> matrix <code>a</code> in
-  arbitrary order as specified by their row and column
-  indices, this subroutine permutes these elements so
-  that their column indices are in non-decreasing order.</p><a href="../proc/srtdat.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+arbitrary order as specified by their row and column
+indices, this subroutine permutes these elements so
+that their column indices are in non-decreasing order.</p><a href="../proc/srtdat.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../interface/swap.html'>swap</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Interface</td><td></td></tr>
 			 
@@ -352,11 +352,11 @@ All Procedures &ndash; NumDiff
 			   <tr><td><a href='../proc/swap_real.html'>swap_real</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Subroutine</td><td><p>Swap two integer values.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/terminate.html'>terminate</a></td><td><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></td><td>Subroutine</td><td><p>A user-callable routine. When called, it will terminate
-  all computations and return. The <code>istat</code> return code will be
-  set to <code>-1</code>. This can be called in the function or the info function.</p></td></tr>
+all computations and return. The <code>istat</code> return code will be
+set to <code>-1</code>. This can be called in the function or the info function.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/terminate~2.html'>terminate</a></td><td><a href='../module/diff_module.html'>diff_module</a></td><td>Subroutine</td><td><p>Can be called by the user in the function to terminate the computation.
-  This will set <code>ifail=-1</code>.</p></td></tr>
+This will set <code>ifail=-1</code>.</p></td></tr>
 			 
 			   <tr><td><a href='../interface/unique.html'>unique</a></td><td><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></td><td>Interface</td><td></td></tr>
 			 
@@ -373,176 +373,206 @@ All Procedures &ndash; NumDiff
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: call~~graph~~CallGraph Pages: 1 -->
-<svg id="callgraphCallGraph" width="855pt" height="1765pt"
- viewBox="0.00 0.00 855.00 1764.82" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="call~~graph~~CallGraph" class="graph" transform="scale(1.4 1.4) rotate(0) translate(4 2475)">
+<svg id="callgraphCallGraph" width="855pt" height="1779pt"
+ viewBox="0.00 0.00 855.00 1779.05" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="call~~graph~~CallGraph" class="graph" transform="scale(1.4 1.4) rotate(0) translate(4 2495)">
 <title>call~~graph~~CallGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-2475 1197,-2475 1197,4 -4,4"/>
-<!-- proc~dsm -->
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-2495 1197,-2495 1197,4 -4,4"/>
+<!-- proc~set_numdiff_bounds -->
 <g id="call~~graph~~CallGraph_node1" class="node">
-<title>proc~dsm</title>
-<g id="a_call~~graph~~CallGraph_node1"><a xlink:href=".././proc/dsm.html" xlink:title="dsm">
-<polygon fill="#d9534f" stroke="#d9534f" points="388,-146 334,-146 334,-122 388,-122 388,-146"/>
-<text text-anchor="middle" x="361" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
+<title>proc~set_numdiff_bounds</title>
+<g id="a_call~~graph~~CallGraph_node1"><a xlink:href=".././proc/set_numdiff_bounds.html" xlink:title="set_numdiff_bounds">
+<polygon fill="#d9534f" stroke="#d9534f" points="613.5,-433 494.5,-433 494.5,-409 613.5,-409 613.5,-433"/>
+<text text-anchor="middle" x="554" y="-418.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_numdiff_bounds</text>
 </a>
 </g>
 </g>
-<!-- proc~srtdat -->
-<g id="call~~graph~~CallGraph_node3" class="node">
-<title>proc~srtdat</title>
-<g id="a_call~~graph~~CallGraph_node3"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
-<polygon fill="#d9534f" stroke="#d9534f" points="581,-272 527,-272 527,-248 581,-248 581,-272"/>
-<text text-anchor="middle" x="554" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+<!-- proc~integer_to_string -->
+<g id="call~~graph~~CallGraph_node53" class="node">
+<title>proc~integer_to_string</title>
+<g id="a_call~~graph~~CallGraph_node53"><a xlink:href=".././proc/integer_to_string.html" xlink:title="integer_to_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="792,-412 690,-412 690,-388 792,-388 792,-412"/>
+<text text-anchor="middle" x="741" y="-397.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">integer_to_string</text>
 </a>
 </g>
 </g>
-<!-- proc~dsm&#45;&gt;proc~srtdat -->
-<g id="call~~graph~~CallGraph_edge2" class="edge">
-<title>proc~dsm&#45;&gt;proc~srtdat</title>
-<path fill="none" stroke="#000000" d="M370.92,-146.16C387.74,-168.18 426.4,-214.64 470,-239 484.23,-246.95 501.51,-251.95 516.6,-255.06"/>
-<polygon fill="#000000" stroke="#000000" points="516.17,-258.54 526.64,-256.92 517.45,-251.65 516.17,-258.54"/>
-</g>
-<!-- proc~setr -->
-<g id="call~~graph~~CallGraph_node7" class="node">
-<title>proc~setr</title>
-<g id="a_call~~graph~~CallGraph_node7"><a xlink:href=".././proc/setr.html" xlink:title="setr">
-<polygon fill="#d9534f" stroke="#d9534f" points="581,-230 527,-230 527,-206 581,-206 581,-230"/>
-<text text-anchor="middle" x="554" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~setr -->
-<g id="call~~graph~~CallGraph_edge4" class="edge">
-<title>proc~dsm&#45;&gt;proc~setr</title>
-<path fill="none" stroke="#000000" d="M379.18,-146.07C399.85,-160.11 436.04,-183.12 470,-197 484.98,-203.12 502.23,-207.83 517.11,-211.23"/>
-<polygon fill="#000000" stroke="#000000" points="516.46,-214.67 526.98,-213.37 517.95,-207.83 516.46,-214.67"/>
-</g>
-<!-- proc~seq -->
-<g id="call~~graph~~CallGraph_node38" class="node">
-<title>proc~seq</title>
-<g id="a_call~~graph~~CallGraph_node38"><a xlink:href=".././proc/seq.html" xlink:title="seq">
-<polygon fill="#d9534f" stroke="#d9534f" points="581,-188 527,-188 527,-164 581,-164 581,-188"/>
-<text text-anchor="middle" x="554" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~seq -->
+<!-- proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string -->
 <g id="call~~graph~~CallGraph_edge1" class="edge">
-<title>proc~dsm&#45;&gt;proc~seq</title>
-<path fill="none" stroke="#000000" d="M388.16,-139.75C421.5,-147.08 479.3,-159.79 516.84,-168.05"/>
-<polygon fill="#000000" stroke="#000000" points="516.33,-171.52 526.85,-170.25 517.84,-164.68 516.33,-171.52"/>
+<title>proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string</title>
+<path fill="none" stroke="#000000" d="M613.54,-414.36C634.64,-411.96 658.49,-409.25 679.74,-406.84"/>
+<polygon fill="#000000" stroke="#000000" points="680.39,-410.29 689.94,-405.68 679.61,-403.33 680.39,-410.29"/>
 </g>
-<!-- proc~slo -->
-<g id="call~~graph~~CallGraph_node46" class="node">
-<title>proc~slo</title>
-<g id="a_call~~graph~~CallGraph_node46"><a xlink:href=".././proc/slo.html" xlink:title="slo">
-<polygon fill="#d9534f" stroke="#d9534f" points="581,-146 527,-146 527,-122 581,-122 581,-146"/>
-<text text-anchor="middle" x="554" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
+<!-- proc~get_formula -->
+<g id="call~~graph~~CallGraph_node2" class="node">
+<title>proc~get_formula</title>
+<g id="a_call~~graph~~CallGraph_node2"><a xlink:href=".././proc/get_formula.html" xlink:title="get_formula">
+<polygon fill="#d9534f" stroke="#d9534f" points="592.5,-391 515.5,-391 515.5,-367 592.5,-367 592.5,-391"/>
+<text text-anchor="middle" x="554" y="-376.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_formula</text>
 </a>
 </g>
 </g>
-<!-- proc~dsm&#45;&gt;proc~slo -->
-<g id="call~~graph~~CallGraph_edge3" class="edge">
-<title>proc~dsm&#45;&gt;proc~slo</title>
-<path fill="none" stroke="#000000" d="M388.16,-134C421.5,-134 479.3,-134 516.84,-134"/>
-<polygon fill="#000000" stroke="#000000" points="516.85,-137.5 526.85,-134 516.85,-130.5 516.85,-137.5"/>
+<!-- proc~get_formula&#45;&gt;proc~integer_to_string -->
+<g id="call~~graph~~CallGraph_edge2" class="edge">
+<title>proc~get_formula&#45;&gt;proc~integer_to_string</title>
+<path fill="none" stroke="#000000" d="M592.88,-383.3C617.83,-386.13 651.04,-389.9 679.59,-393.14"/>
+<polygon fill="#000000" stroke="#000000" points="679.55,-396.66 689.88,-394.31 680.34,-389.7 679.55,-396.66"/>
 </g>
-<!-- proc~ido -->
-<g id="call~~graph~~CallGraph_node77" class="node">
-<title>proc~ido</title>
-<g id="a_call~~graph~~CallGraph_node77"><a xlink:href=".././proc/ido.html" xlink:title="ido">
-<polygon fill="#d9534f" stroke="#d9534f" points="581,-104 527,-104 527,-80 581,-80 581,-104"/>
-<text text-anchor="middle" x="554" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+<!-- proc~terminate~2 -->
+<g id="call~~graph~~CallGraph_node3" class="node">
+<title>proc~terminate~2</title>
+<g id="a_call~~graph~~CallGraph_node3"><a xlink:href=".././proc/terminate~2.html" xlink:title="terminate">
+<polygon fill="#d9534f" stroke="#d9534f" points="158.5,-403 93.5,-403 93.5,-379 158.5,-379 158.5,-403"/>
+<text text-anchor="middle" x="126" y="-388.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">terminate</text>
 </a>
 </g>
 </g>
-<!-- proc~dsm&#45;&gt;proc~ido -->
-<g id="call~~graph~~CallGraph_edge7" class="edge">
-<title>proc~dsm&#45;&gt;proc~ido</title>
-<path fill="none" stroke="#000000" d="M388.16,-128.25C421.5,-120.92 479.3,-108.21 516.84,-99.95"/>
-<polygon fill="#000000" stroke="#000000" points="517.84,-103.32 526.85,-97.75 516.33,-96.48 517.84,-103.32"/>
+<!-- proc~swap_int -->
+<g id="call~~graph~~CallGraph_node4" class="node">
+<title>proc~swap_int</title>
+<g id="a_call~~graph~~CallGraph_node4"><a xlink:href=".././proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="390,-517 332,-517 332,-493 390,-493 390,-517"/>
+<text text-anchor="middle" x="361" y="-502.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm -->
+<g id="call~~graph~~CallGraph_node5" class="node">
+<title>proc~dsm</title>
+<g id="a_call~~graph~~CallGraph_node5"><a xlink:href=".././proc/dsm.html" xlink:title="dsm">
+<polygon fill="#d9534f" stroke="#d9534f" points="388,-601 334,-601 334,-577 388,-577 388,-601"/>
+<text text-anchor="middle" x="361" y="-586.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
+</a>
+</g>
 </g>
 <!-- proc~numsrt -->
-<g id="call~~graph~~CallGraph_node78" class="node">
+<g id="call~~graph~~CallGraph_node9" class="node">
 <title>proc~numsrt</title>
-<g id="a_call~~graph~~CallGraph_node78"><a xlink:href=".././proc/numsrt.html" xlink:title="numsrt">
-<polygon fill="#d9534f" stroke="#d9534f" points="768,-84 714,-84 714,-60 768,-60 768,-84"/>
-<text text-anchor="middle" x="741" y="-69.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
+<g id="a_call~~graph~~CallGraph_node9"><a xlink:href=".././proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="768,-600 714,-600 714,-576 768,-576 768,-600"/>
+<text text-anchor="middle" x="741" y="-585.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~numsrt -->
 <g id="call~~graph~~CallGraph_edge6" class="edge">
 <title>proc~dsm&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M376.92,-121.78C396.75,-106.42 433.54,-80.86 470,-71 551.07,-49.08 650.91,-58.33 703.54,-65.86"/>
-<polygon fill="#000000" stroke="#000000" points="703.31,-69.36 713.72,-67.38 704.35,-62.44 703.31,-69.36"/>
+<path fill="none" stroke="#000000" d="M369.66,-601.14C385.21,-624.46 422.99,-674.92 470,-694 539.18,-722.09 569.29,-723.24 638,-694 678.6,-676.72 710.86,-634.48 727.54,-608.84"/>
+<polygon fill="#000000" stroke="#000000" points="730.6,-610.55 732.97,-600.23 724.68,-606.82 730.6,-610.55"/>
+</g>
+<!-- proc~srtdat -->
+<g id="call~~graph~~CallGraph_node16" class="node">
+<title>proc~srtdat</title>
+<g id="a_call~~graph~~CallGraph_node16"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="581,-685 527,-685 527,-661 581,-661 581,-685"/>
+<text text-anchor="middle" x="554" y="-670.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="call~~graph~~CallGraph_edge5" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
+<path fill="none" stroke="#000000" d="M379.18,-601.07C399.85,-615.11 436.04,-638.12 470,-652 484.98,-658.12 502.23,-662.83 517.11,-666.23"/>
+<polygon fill="#000000" stroke="#000000" points="516.46,-669.67 526.98,-668.37 517.95,-662.83 516.46,-669.67"/>
+</g>
+<!-- proc~seq -->
+<g id="call~~graph~~CallGraph_node17" class="node">
+<title>proc~seq</title>
+<g id="a_call~~graph~~CallGraph_node17"><a xlink:href=".././proc/seq.html" xlink:title="seq">
+<polygon fill="#d9534f" stroke="#d9534f" points="581,-643 527,-643 527,-619 581,-619 581,-643"/>
+<text text-anchor="middle" x="554" y="-628.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~seq -->
+<g id="call~~graph~~CallGraph_edge7" class="edge">
+<title>proc~dsm&#45;&gt;proc~seq</title>
+<path fill="none" stroke="#000000" d="M388.16,-594.75C421.5,-602.08 479.3,-614.79 516.84,-623.05"/>
+<polygon fill="#000000" stroke="#000000" points="516.33,-626.52 526.85,-625.25 517.84,-619.68 516.33,-626.52"/>
+</g>
+<!-- proc~setr -->
+<g id="call~~graph~~CallGraph_node41" class="node">
+<title>proc~setr</title>
+<g id="a_call~~graph~~CallGraph_node41"><a xlink:href=".././proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="581,-601 527,-601 527,-577 581,-577 581,-601"/>
+<text text-anchor="middle" x="554" y="-586.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~setr -->
+<g id="call~~graph~~CallGraph_edge3" class="edge">
+<title>proc~dsm&#45;&gt;proc~setr</title>
+<path fill="none" stroke="#000000" d="M388.16,-589C421.5,-589 479.3,-589 516.84,-589"/>
+<polygon fill="#000000" stroke="#000000" points="516.85,-592.5 526.85,-589 516.85,-585.5 516.85,-592.5"/>
 </g>
 <!-- proc~degr -->
-<g id="call~~graph~~CallGraph_node82" class="node">
+<g id="call~~graph~~CallGraph_node55" class="node">
 <title>proc~degr</title>
-<g id="a_call~~graph~~CallGraph_node82"><a xlink:href=".././proc/degr.html" xlink:title="degr">
-<polygon fill="#d9534f" stroke="#d9534f" points="581,-24 527,-24 527,0 581,0 581,-24"/>
-<text text-anchor="middle" x="554" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
+<g id="a_call~~graph~~CallGraph_node55"><a xlink:href=".././proc/degr.html" xlink:title="degr">
+<polygon fill="#d9534f" stroke="#d9534f" points="581,-559 527,-559 527,-535 581,-535 581,-559"/>
+<text text-anchor="middle" x="554" y="-544.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~degr -->
-<g id="call~~graph~~CallGraph_edge5" class="edge">
+<g id="call~~graph~~CallGraph_edge9" class="edge">
 <title>proc~dsm&#45;&gt;proc~degr</title>
-<path fill="none" stroke="#000000" d="M372.41,-121.87C390.37,-101.68 429.18,-61.11 470,-38 484.41,-29.84 501.71,-23.9 516.78,-19.77"/>
-<polygon fill="#000000" stroke="#000000" points="517.98,-23.08 526.79,-17.2 516.23,-16.3 517.98,-23.08"/>
+<path fill="none" stroke="#000000" d="M388.16,-583.25C421.5,-575.92 479.3,-563.21 516.84,-554.95"/>
+<polygon fill="#000000" stroke="#000000" points="517.84,-558.32 526.85,-552.75 516.33,-551.48 517.84,-558.32"/>
 </g>
-<!-- proc~diff -->
-<g id="call~~graph~~CallGraph_node2" class="node">
-<title>proc~diff</title>
-<g id="a_call~~graph~~CallGraph_node2"><a xlink:href=".././proc/diff.html" xlink:title="diff">
-<polygon fill="#d9534f" stroke="#d9534f" points="153,-188 99,-188 99,-164 153,-164 153,-188"/>
-<text text-anchor="middle" x="126" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">diff</text>
+<!-- proc~slo -->
+<g id="call~~graph~~CallGraph_node58" class="node">
+<title>proc~slo</title>
+<g id="a_call~~graph~~CallGraph_node58"><a xlink:href=".././proc/slo.html" xlink:title="slo">
+<polygon fill="#d9534f" stroke="#d9534f" points="581,-517 527,-517 527,-493 581,-493 581,-517"/>
+<text text-anchor="middle" x="554" y="-502.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
 </a>
 </g>
 </g>
-<!-- proc~compute_jacobian_partitioned -->
-<g id="call~~graph~~CallGraph_node4" class="node">
-<title>proc~compute_jacobian_partitioned</title>
-<g id="a_call~~graph~~CallGraph_node4"><a xlink:href=".././proc/compute_jacobian_partitioned.html" xlink:title="compute_jacobian_partitioned">
-<polygon fill="#d9534f" stroke="#d9534f" points="213.5,-230 38.5,-230 38.5,-206 213.5,-206 213.5,-230"/>
-<text text-anchor="middle" x="126" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_partitioned</text>
+<!-- proc~dsm&#45;&gt;proc~slo -->
+<g id="call~~graph~~CallGraph_edge8" class="edge">
+<title>proc~dsm&#45;&gt;proc~slo</title>
+<path fill="none" stroke="#000000" d="M379.18,-576.93C399.85,-562.89 436.04,-539.88 470,-526 484.98,-519.88 502.23,-515.17 517.11,-511.77"/>
+<polygon fill="#000000" stroke="#000000" points="517.95,-515.17 526.98,-509.63 516.46,-508.33 517.95,-515.17"/>
+</g>
+<!-- proc~ido -->
+<g id="call~~graph~~CallGraph_node78" class="node">
+<title>proc~ido</title>
+<g id="a_call~~graph~~CallGraph_node78"><a xlink:href=".././proc/ido.html" xlink:title="ido">
+<polygon fill="#d9534f" stroke="#d9534f" points="581,-475 527,-475 527,-451 581,-451 581,-475"/>
+<text text-anchor="middle" x="554" y="-460.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
 </a>
 </g>
 </g>
-<!-- proc~columns_in_partition_group -->
-<g id="call~~graph~~CallGraph_node5" class="node">
-<title>proc~columns_in_partition_group</title>
-<g id="a_call~~graph~~CallGraph_node5"><a xlink:href=".././proc/columns_in_partition_group.html" xlink:title="columns_in_partition_group">
-<polygon fill="#d9534f" stroke="#d9534f" points="205.5,-272 46.5,-272 46.5,-248 205.5,-248 205.5,-272"/>
-<text text-anchor="middle" x="126" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">columns_in_partition_group</text>
-</a>
+<!-- proc~dsm&#45;&gt;proc~ido -->
+<g id="call~~graph~~CallGraph_edge4" class="edge">
+<title>proc~dsm&#45;&gt;proc~ido</title>
+<path fill="none" stroke="#000000" d="M377.18,-576.8C392.15,-564.53 415.42,-544.77 434,-526 451.3,-508.53 449.1,-496.95 470,-484 483.96,-475.35 501.33,-470.25 516.57,-467.25"/>
+<polygon fill="#000000" stroke="#000000" points="517.46,-470.65 526.71,-465.5 516.26,-463.75 517.46,-470.65"/>
 </g>
-</g>
-<!-- proc~set_function -->
+<!-- proc~initialize_numdiff_for_diff -->
 <g id="call~~graph~~CallGraph_node6" class="node">
-<title>proc~set_function</title>
-<g id="a_call~~graph~~CallGraph_node6"><a xlink:href=".././proc/set_function.html" xlink:title="set_function">
-<polygon fill="#d9534f" stroke="#d9534f" points="164.5,-314 87.5,-314 87.5,-290 164.5,-290 164.5,-314"/>
-<text text-anchor="middle" x="126" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_function</text>
+<title>proc~initialize_numdiff_for_diff</title>
+<g id="a_call~~graph~~CallGraph_node6"><a xlink:href=".././proc/initialize_numdiff_for_diff.html" xlink:title="initialize_numdiff_for_diff">
+<polygon fill="#d9534f" stroke="#d9534f" points="199,-643 53,-643 53,-619 199,-619 199,-643"/>
+<text text-anchor="middle" x="126" y="-628.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_numdiff_for_diff</text>
 </a>
 </g>
 </g>
-<!-- proc~destroy_cache -->
+<!-- proc~compute_jacobian_dense -->
+<g id="call~~graph~~CallGraph_node7" class="node">
+<title>proc~compute_jacobian_dense</title>
+<g id="a_call~~graph~~CallGraph_node7"><a xlink:href=".././proc/compute_jacobian_dense.html" xlink:title="compute_jacobian_dense">
+<polygon fill="#d9534f" stroke="#d9534f" points="200,-685 52,-685 52,-661 200,-661 200,-685"/>
+<text text-anchor="middle" x="126" y="-670.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_dense</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f -->
 <g id="call~~graph~~CallGraph_node8" class="node">
-<title>proc~destroy_cache</title>
-<g id="a_call~~graph~~CallGraph_node8"><a xlink:href=".././proc/destroy_cache.html" xlink:title="destroy_cache">
-<polygon fill="#d9534f" stroke="#d9534f" points="170.5,-356 81.5,-356 81.5,-332 170.5,-332 170.5,-356"/>
-<text text-anchor="middle" x="126" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_cache</text>
-</a>
-</g>
-</g>
-<!-- proc~sort_ascending_real -->
-<g id="call~~graph~~CallGraph_node9" class="node">
-<title>proc~sort_ascending_real</title>
-<g id="a_call~~graph~~CallGraph_node9"><a xlink:href=".././proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
-<polygon fill="#d9534f" stroke="#d9534f" points="1193,-609 1075,-609 1075,-585 1193,-585 1193,-609"/>
-<text text-anchor="middle" x="1134" y="-594.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+<title>proc~perturb_x_and_compute_f</title>
+<g id="a_call~~graph~~CallGraph_node8"><a xlink:href=".././proc/perturb_x_and_compute_f.html" xlink:title="perturb_x_and_compute_f">
+<polygon fill="#d9534f" stroke="#d9534f" points="201.5,-727 50.5,-727 50.5,-703 201.5,-703 201.5,-727"/>
+<text text-anchor="middle" x="126" y="-712.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">perturb_x_and_compute_f</text>
 </a>
 </g>
 </g>
@@ -550,844 +580,814 @@ All Procedures &ndash; NumDiff
 <g id="call~~graph~~CallGraph_node10" class="node">
 <title>proc~get_all_methods_in_class</title>
 <g id="a_call~~graph~~CallGraph_node10"><a xlink:href=".././proc/get_all_methods_in_class.html" xlink:title="get_all_methods_in_class">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="434,-666 288,-666 288,-642 434,-642 434,-666"/>
-<text text-anchor="middle" x="361" y="-651.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_all_methods_in_class</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="434,-310 288,-310 288,-286 434,-286 434,-310"/>
+<text text-anchor="middle" x="361" y="-295.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_all_methods_in_class</text>
 </a>
 </g>
 </g>
 <!-- proc~get_finite_difference_method -->
-<g id="call~~graph~~CallGraph_node34" class="node">
+<g id="call~~graph~~CallGraph_node73" class="node">
 <title>proc~get_finite_difference_method</title>
-<g id="a_call~~graph~~CallGraph_node34"><a xlink:href=".././proc/get_finite_difference_method.html" xlink:title="get_finite_difference_method">
-<polygon fill="#d9534f" stroke="#d9534f" points="638,-666 470,-666 470,-642 638,-642 638,-666"/>
-<text text-anchor="middle" x="554" y="-651.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_difference_method</text>
+<g id="a_call~~graph~~CallGraph_node73"><a xlink:href=".././proc/get_finite_difference_method.html" xlink:title="get_finite_difference_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="638,-349 470,-349 470,-325 638,-325 638,-349"/>
+<text text-anchor="middle" x="554" y="-334.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_difference_method</text>
 </a>
 </g>
 </g>
 <!-- proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method -->
-<g id="call~~graph~~CallGraph_edge8" class="edge">
-<title>proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method</title>
-<path fill="none" stroke="#000000" d="M434.21,-654C442.56,-654 451.17,-654 459.75,-654"/>
-<polygon fill="#000000" stroke="#000000" points="459.79,-657.5 469.79,-654 459.79,-650.5 459.79,-657.5"/>
-</g>
-<!-- proc~compute_jacobian_dense -->
-<g id="call~~graph~~CallGraph_node11" class="node">
-<title>proc~compute_jacobian_dense</title>
-<g id="a_call~~graph~~CallGraph_node11"><a xlink:href=".././proc/compute_jacobian_dense.html" xlink:title="compute_jacobian_dense">
-<polygon fill="#d9534f" stroke="#d9534f" points="200,-728 52,-728 52,-704 200,-704 200,-728"/>
-<text text-anchor="middle" x="126" y="-713.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_dense</text>
-</a>
-</g>
-</g>
-<!-- proc~terminate~2 -->
-<g id="call~~graph~~CallGraph_node12" class="node">
-<title>proc~terminate~2</title>
-<g id="a_call~~graph~~CallGraph_node12"><a xlink:href=".././proc/terminate~2.html" xlink:title="terminate">
-<polygon fill="#d9534f" stroke="#d9534f" points="158.5,-770 93.5,-770 93.5,-746 158.5,-746 158.5,-770"/>
-<text text-anchor="middle" x="126" y="-755.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">terminate</text>
-</a>
-</g>
-</g>
-<!-- proc~get_finite_diff_formula -->
-<g id="call~~graph~~CallGraph_node13" class="node">
-<title>proc~get_finite_diff_formula</title>
-<g id="a_call~~graph~~CallGraph_node13"><a xlink:href=".././proc/get_finite_diff_formula.html" xlink:title="get_finite_diff_formula">
-<polygon fill="#d9534f" stroke="#d9534f" points="427,-624 295,-624 295,-600 427,-600 427,-624"/>
-<text text-anchor="middle" x="361" y="-609.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_diff_formula</text>
-</a>
-</g>
-</g>
-<!-- proc~get_formula -->
-<g id="call~~graph~~CallGraph_node32" class="node">
-<title>proc~get_formula</title>
-<g id="a_call~~graph~~CallGraph_node32"><a xlink:href=".././proc/get_formula.html" xlink:title="get_formula">
-<polygon fill="#d9534f" stroke="#d9534f" points="592.5,-624 515.5,-624 515.5,-600 592.5,-600 592.5,-624"/>
-<text text-anchor="middle" x="554" y="-609.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_formula</text>
-</a>
-</g>
-</g>
-<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_formula -->
-<g id="call~~graph~~CallGraph_edge9" class="edge">
-<title>proc~get_finite_diff_formula&#45;&gt;proc~get_formula</title>
-<path fill="none" stroke="#000000" d="M427.2,-612C452.8,-612 481.65,-612 505.26,-612"/>
-<polygon fill="#000000" stroke="#000000" points="505.36,-615.5 515.36,-612 505.36,-608.5 505.36,-615.5"/>
-</g>
-<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method -->
 <g id="call~~graph~~CallGraph_edge10" class="edge">
-<title>proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method</title>
-<path fill="none" stroke="#000000" d="M416.73,-624.04C439.11,-628.96 465.16,-634.69 488.46,-639.81"/>
-<polygon fill="#000000" stroke="#000000" points="487.74,-643.23 498.26,-641.96 489.24,-636.4 487.74,-643.23"/>
-</g>
-<!-- proc~unique_int -->
-<g id="call~~graph~~CallGraph_node14" class="node">
-<title>proc~unique_int</title>
-<g id="a_call~~graph~~CallGraph_node14"><a xlink:href=".././proc/unique_int.html" xlink:title="unique_int">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="775,-540 707,-540 707,-516 775,-516 775,-540"/>
-<text text-anchor="middle" x="741" y="-525.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
-</a>
-</g>
-</g>
-<!-- interface~expand_vector -->
-<g id="call~~graph~~CallGraph_node40" class="node">
-<title>interface~expand_vector</title>
-<g id="a_call~~graph~~CallGraph_node40"><a xlink:href=".././interface/expand_vector.html" xlink:title="expand_vector">
-<polygon fill="#a7506f" stroke="#a7506f" points="987,-500 896,-500 896,-476 987,-476 987,-500"/>
-<text text-anchor="middle" x="941.5" y="-485.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
-</a>
-</g>
-</g>
-<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
-<g id="call~~graph~~CallGraph_edge11" class="edge">
-<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
-<path fill="none" stroke="#000000" d="M775.22,-521.3C805.36,-515.23 850.36,-506.16 885.8,-499.02"/>
-<polygon fill="#000000" stroke="#000000" points="886.88,-502.38 895.99,-496.97 885.49,-495.51 886.88,-502.38"/>
-</g>
-<!-- interface~sort_ascending -->
-<g id="call~~graph~~CallGraph_node68" class="node">
-<title>interface~sort_ascending</title>
-<g id="a_call~~graph~~CallGraph_node68"><a xlink:href=".././interface/sort_ascending.html" xlink:title="sort_ascending">
-<polygon fill="#a7506f" stroke="#a7506f" points="988,-577 895,-577 895,-553 988,-553 988,-577"/>
-<text text-anchor="middle" x="941.5" y="-562.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
-</a>
-</g>
-</g>
-<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
-<g id="call~~graph~~CallGraph_edge12" class="edge">
-<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
-<path fill="none" stroke="#000000" d="M775.22,-534.19C805.06,-539.75 849.46,-548.03 884.73,-554.6"/>
-<polygon fill="#000000" stroke="#000000" points="884.41,-558.11 894.89,-556.5 885.7,-551.22 884.41,-558.11"/>
-</g>
-<!-- proc~compute_sparsity_random_2 -->
-<g id="call~~graph~~CallGraph_node15" class="node">
-<title>proc~compute_sparsity_random_2</title>
-<g id="a_call~~graph~~CallGraph_node15"><a xlink:href=".././proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
-<polygon fill="#d9534f" stroke="#d9534f" points="209,-541 43,-541 43,-517 209,-517 209,-541"/>
-<text text-anchor="middle" x="126" y="-526.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class -->
-<g id="call~~graph~~CallGraph_edge13" class="edge">
-<title>proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class</title>
-<path fill="none" stroke="#000000" d="M142.56,-541.27C170.3,-562.63 230.8,-606.86 288,-633 292.36,-634.99 296.95,-636.85 301.63,-638.56"/>
-<polygon fill="#000000" stroke="#000000" points="300.68,-641.94 311.27,-641.88 302.96,-635.32 300.68,-641.94"/>
-</g>
-<!-- proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector -->
-<g id="call~~graph~~CallGraph_edge15" class="edge">
-<title>proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector</title>
-<path fill="none" stroke="#000000" d="M202.58,-516.98C229.47,-513.15 260.03,-509.31 288,-507 508.97,-488.74 773.28,-487.29 885.64,-487.63"/>
-<polygon fill="#000000" stroke="#000000" points="885.7,-491.13 895.71,-487.66 885.72,-484.13 885.7,-491.13"/>
-</g>
-<!-- proc~equal_within_tol -->
-<g id="call~~graph~~CallGraph_node51" class="node">
-<title>proc~equal_within_tol</title>
-<g id="a_call~~graph~~CallGraph_node51"><a xlink:href=".././proc/equal_within_tol.html" xlink:title="equal_within_tol">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="410,-460 312,-460 312,-436 410,-436 410,-460"/>
-<text text-anchor="middle" x="361" y="-445.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">equal_within_tol</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_sparsity_random_2&#45;&gt;proc~equal_within_tol -->
-<g id="call~~graph~~CallGraph_edge16" class="edge">
-<title>proc~compute_sparsity_random_2&#45;&gt;proc~equal_within_tol</title>
-<path fill="none" stroke="#000000" d="M161.63,-516.96C202.61,-502.71 270.93,-478.97 315.72,-463.39"/>
-<polygon fill="#000000" stroke="#000000" points="316.88,-466.69 325.18,-460.11 314.58,-460.08 316.88,-466.69"/>
-</g>
-<!-- proc~divide_interval -->
-<g id="call~~graph~~CallGraph_node55" class="node">
-<title>proc~divide_interval</title>
-<g id="a_call~~graph~~CallGraph_node55"><a xlink:href=".././proc/divide_interval.html" xlink:title="divide_interval">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="406.5,-582 315.5,-582 315.5,-558 406.5,-558 406.5,-582"/>
-<text text-anchor="middle" x="361" y="-567.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">divide_interval</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval -->
-<g id="call~~graph~~CallGraph_edge14" class="edge">
-<title>proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval</title>
-<path fill="none" stroke="#000000" d="M195.33,-541.02C230.38,-547.19 272.49,-554.6 305.35,-560.38"/>
-<polygon fill="#000000" stroke="#000000" points="304.78,-563.84 315.23,-562.12 305.99,-556.94 304.78,-563.84"/>
-</g>
-<!-- proc~perturb_x_and_compute_f -->
-<g id="call~~graph~~CallGraph_node16" class="node">
-<title>proc~perturb_x_and_compute_f</title>
-<g id="a_call~~graph~~CallGraph_node16"><a xlink:href=".././proc/perturb_x_and_compute_f.html" xlink:title="perturb_x_and_compute_f">
-<polygon fill="#d9534f" stroke="#d9534f" points="201.5,-812 50.5,-812 50.5,-788 201.5,-788 201.5,-812"/>
-<text text-anchor="middle" x="126" y="-797.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">perturb_x_and_compute_f</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_sparsity_perturbation_vector -->
-<g id="call~~graph~~CallGraph_node17" class="node">
-<title>proc~compute_sparsity_perturbation_vector</title>
-<g id="a_call~~graph~~CallGraph_node17"><a xlink:href=".././proc/compute_sparsity_perturbation_vector.html" xlink:title="compute_sparsity_perturbation_vector">
-<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-854 17.5,-854 17.5,-830 234.5,-830 234.5,-854"/>
-<text text-anchor="middle" x="126" y="-839.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_perturbation_vector</text>
-</a>
-</g>
-</g>
-<!-- proc~destroy_numdiff_type -->
-<g id="call~~graph~~CallGraph_node18" class="node">
-<title>proc~destroy_numdiff_type</title>
-<g id="a_call~~graph~~CallGraph_node18"><a xlink:href=".././proc/destroy_numdiff_type.html" xlink:title="destroy_numdiff_type">
-<polygon fill="#d9534f" stroke="#d9534f" points="189.5,-896 62.5,-896 62.5,-872 189.5,-872 189.5,-896"/>
-<text text-anchor="middle" x="126" y="-881.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_numdiff_type</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_jacobian_for_sparsity -->
-<g id="call~~graph~~CallGraph_node19" class="node">
-<title>proc~compute_jacobian_for_sparsity</title>
-<g id="a_call~~graph~~CallGraph_node19"><a xlink:href=".././proc/compute_jacobian_for_sparsity.html" xlink:title="compute_jacobian_for_sparsity">
-<polygon fill="#d9534f" stroke="#d9534f" points="215,-938 37,-938 37,-914 215,-914 215,-938"/>
-<text text-anchor="middle" x="126" y="-923.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_for_sparsity</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_perturbation_vector -->
-<g id="call~~graph~~CallGraph_node20" class="node">
-<title>proc~compute_perturbation_vector</title>
-<g id="a_call~~graph~~CallGraph_node20"><a xlink:href=".././proc/compute_perturbation_vector.html" xlink:title="compute_perturbation_vector">
-<polygon fill="#d9534f" stroke="#d9534f" points="211.5,-980 40.5,-980 40.5,-956 211.5,-956 211.5,-980"/>
-<text text-anchor="middle" x="126" y="-965.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_perturbation_vector</text>
-</a>
-</g>
-</g>
-<!-- proc~faccur -->
-<g id="call~~graph~~CallGraph_node21" class="node">
-<title>proc~faccur</title>
-<g id="a_call~~graph~~CallGraph_node21"><a xlink:href=".././proc/faccur.html" xlink:title="faccur">
-<polygon fill="#d9534f" stroke="#d9534f" points="153,-1022 99,-1022 99,-998 153,-998 153,-1022"/>
-<text text-anchor="middle" x="126" y="-1007.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">faccur</text>
-</a>
-</g>
-</g>
-<!-- proc~set_sparsity_pattern -->
-<g id="call~~graph~~CallGraph_node22" class="node">
-<title>proc~set_sparsity_pattern</title>
-<g id="a_call~~graph~~CallGraph_node22"><a xlink:href=".././proc/set_sparsity_pattern.html" xlink:title="set_sparsity_pattern">
-<polygon fill="#d9534f" stroke="#d9534f" points="185.5,-1064 66.5,-1064 66.5,-1040 185.5,-1040 185.5,-1064"/>
-<text text-anchor="middle" x="126" y="-1049.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_sparsity_pattern</text>
-</a>
-</g>
-</g>
-<!-- interface~finite_diff_method -->
-<g id="call~~graph~~CallGraph_node23" class="node">
-<title>interface~finite_diff_method</title>
-<g id="a_call~~graph~~CallGraph_node23"><a xlink:href=".././interface/finite_diff_method.html" xlink:title="finite_diff_method">
-<polygon fill="#a7506f" stroke="#a7506f" points="795.5,-666 686.5,-666 686.5,-642 795.5,-642 795.5,-666"/>
-<text text-anchor="middle" x="741" y="-651.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_method</text>
-</a>
-</g>
-</g>
-<!-- proc~initialize_finite_difference_method -->
-<g id="call~~graph~~CallGraph_node62" class="node">
-<title>proc~initialize_finite_difference_method</title>
-<g id="a_call~~graph~~CallGraph_node62"><a xlink:href=".././proc/initialize_finite_difference_method.html" xlink:title="initialize_finite_difference_method">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="1039,-666 844,-666 844,-642 1039,-642 1039,-666"/>
-<text text-anchor="middle" x="941.5" y="-651.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_finite_difference_method</text>
-</a>
-</g>
-</g>
-<!-- interface~finite_diff_method&#45;&gt;proc~initialize_finite_difference_method -->
-<g id="call~~graph~~CallGraph_edge17" class="edge">
-<title>interface~finite_diff_method&#45;&gt;proc~initialize_finite_difference_method</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M795.72,-654C807.61,-654 820.62,-654 833.8,-654"/>
-<polygon fill="#000000" stroke="#000000" points="833.91,-657.5 843.91,-654 833.91,-650.5 833.91,-657.5"/>
-</g>
-<!-- proc~compute_indices -->
-<g id="call~~graph~~CallGraph_node24" class="node">
-<title>proc~compute_indices</title>
-<g id="a_call~~graph~~CallGraph_node24"><a xlink:href=".././proc/compute_indices.html" xlink:title="compute_indices">
-<polygon fill="#d9534f" stroke="#d9534f" points="177.5,-1106 74.5,-1106 74.5,-1082 177.5,-1082 177.5,-1106"/>
-<text text-anchor="middle" x="126" y="-1091.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_indices</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_sparsity_pattern -->
-<g id="call~~graph~~CallGraph_node25" class="node">
-<title>proc~compute_sparsity_pattern</title>
-<g id="a_call~~graph~~CallGraph_node25"><a xlink:href=".././proc/compute_sparsity_pattern.html" xlink:title="compute_sparsity_pattern">
-<polygon fill="#d9534f" stroke="#d9534f" points="201.5,-1148 50.5,-1148 50.5,-1124 201.5,-1124 201.5,-1148"/>
-<text text-anchor="middle" x="126" y="-1133.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_pattern</text>
-</a>
-</g>
-</g>
-<!-- proc~initialize_cache -->
-<g id="call~~graph~~CallGraph_node26" class="node">
-<title>proc~initialize_cache</title>
-<g id="a_call~~graph~~CallGraph_node26"><a xlink:href=".././proc/initialize_cache.html" xlink:title="initialize_cache">
-<polygon fill="#d9534f" stroke="#d9534f" points="173,-1190 79,-1190 79,-1166 173,-1166 173,-1190"/>
-<text text-anchor="middle" x="126" y="-1175.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_cache</text>
-</a>
-</g>
-</g>
-<!-- proc~destroy_sparsity_pattern -->
-<g id="call~~graph~~CallGraph_node27" class="node">
-<title>proc~destroy_sparsity_pattern</title>
-<g id="a_call~~graph~~CallGraph_node27"><a xlink:href=".././proc/destroy_sparsity_pattern.html" xlink:title="destroy_sparsity_pattern">
-<polygon fill="#d9534f" stroke="#d9534f" points="197,-1232 55,-1232 55,-1208 197,-1208 197,-1232"/>
-<text text-anchor="middle" x="126" y="-1217.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_sparsity_pattern</text>
-</a>
-</g>
-</g>
-<!-- proc~vector_djb_hash -->
-<g id="call~~graph~~CallGraph_node28" class="node">
-<title>proc~vector_djb_hash</title>
-<g id="a_call~~graph~~CallGraph_node28"><a xlink:href=".././proc/vector_djb_hash.html" xlink:title="vector_djb_hash">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="410.5,-1274 311.5,-1274 311.5,-1250 410.5,-1250 410.5,-1274"/>
-<text text-anchor="middle" x="361" y="-1259.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vector_djb_hash</text>
-</a>
-</g>
-</g>
-<!-- proc~swap_int -->
-<g id="call~~graph~~CallGraph_node29" class="node">
-<title>proc~swap_int</title>
-<g id="a_call~~graph~~CallGraph_node29"><a xlink:href=".././proc/swap_int.html" xlink:title="swap_int">
-<polygon fill="#d9534f" stroke="#d9534f" points="390,-1358 332,-1358 332,-1334 390,-1334 390,-1358"/>
-<text text-anchor="middle" x="361" y="-1343.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
-</a>
-</g>
-</g>
-<!-- proc~initialize_numdiff -->
-<g id="call~~graph~~CallGraph_node30" class="node">
-<title>proc~initialize_numdiff</title>
-<g id="a_call~~graph~~CallGraph_node30"><a xlink:href=".././proc/initialize_numdiff.html" xlink:title="initialize_numdiff">
-<polygon fill="#d9534f" stroke="#d9534f" points="177.5,-686 74.5,-686 74.5,-662 177.5,-662 177.5,-686"/>
-<text text-anchor="middle" x="126" y="-671.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_numdiff</text>
-</a>
-</g>
-</g>
-<!-- proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class -->
-<g id="call~~graph~~CallGraph_edge18" class="edge">
-<title>proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class</title>
-<path fill="none" stroke="#000000" d="M177.56,-669.66C206.79,-667.15 244.28,-663.93 277.67,-661.07"/>
-<polygon fill="#000000" stroke="#000000" points="278.22,-664.53 287.88,-660.19 277.62,-657.56 278.22,-664.53"/>
-</g>
-<!-- proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method -->
-<g id="call~~graph~~CallGraph_edge19" class="edge">
-<title>proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method</title>
-<path fill="none" stroke="#000000" d="M177.64,-676.96C238.6,-679.89 344,-682.88 434,-675 451.21,-673.49 469.66,-670.78 486.77,-667.8"/>
-<polygon fill="#000000" stroke="#000000" points="487.45,-671.23 496.67,-666.02 486.21,-664.34 487.45,-671.23"/>
-</g>
-<!-- proc~fdjs -->
-<g id="call~~graph~~CallGraph_node31" class="node">
-<title>proc~fdjs</title>
-<g id="a_call~~graph~~CallGraph_node31"><a xlink:href=".././proc/fdjs.html" xlink:title="fdjs">
-<polygon fill="#d9534f" stroke="#d9534f" points="153,-1379 99,-1379 99,-1355 153,-1355 153,-1379"/>
-<text text-anchor="middle" x="126" y="-1364.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fdjs</text>
-</a>
-</g>
-</g>
-<!-- proc~integer_to_string -->
-<g id="call~~graph~~CallGraph_node63" class="node">
-<title>proc~integer_to_string</title>
-<g id="a_call~~graph~~CallGraph_node63"><a xlink:href=".././proc/integer_to_string.html" xlink:title="integer_to_string">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="792,-624 690,-624 690,-600 792,-600 792,-624"/>
-<text text-anchor="middle" x="741" y="-609.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">integer_to_string</text>
-</a>
-</g>
-</g>
-<!-- proc~get_formula&#45;&gt;proc~integer_to_string -->
-<g id="call~~graph~~CallGraph_edge20" class="edge">
-<title>proc~get_formula&#45;&gt;proc~integer_to_string</title>
-<path fill="none" stroke="#000000" d="M592.88,-612C617.83,-612 651.04,-612 679.59,-612"/>
-<polygon fill="#000000" stroke="#000000" points="679.88,-615.5 689.88,-612 679.88,-608.5 679.88,-615.5"/>
-</g>
-<!-- proc~print_cache -->
-<g id="call~~graph~~CallGraph_node33" class="node">
-<title>proc~print_cache</title>
-<g id="a_call~~graph~~CallGraph_node33"><a xlink:href=".././proc/print_cache.html" xlink:title="print_cache">
-<polygon fill="#d9534f" stroke="#d9534f" points="163.5,-1421 88.5,-1421 88.5,-1397 163.5,-1397 163.5,-1421"/>
-<text text-anchor="middle" x="126" y="-1406.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_cache</text>
-</a>
-</g>
-</g>
-<!-- proc~get_finite_difference_method&#45;&gt;interface~finite_diff_method -->
-<g id="call~~graph~~CallGraph_edge21" class="edge">
-<title>proc~get_finite_difference_method&#45;&gt;interface~finite_diff_method</title>
-<path fill="none" stroke="#000000" d="M638.03,-654C650.86,-654 663.94,-654 676.26,-654"/>
-<polygon fill="#000000" stroke="#000000" points="676.41,-657.5 686.41,-654 676.41,-650.5 676.41,-657.5"/>
-</g>
-<!-- proc~destroy_sparsity -->
-<g id="call~~graph~~CallGraph_node35" class="node">
-<title>proc~destroy_sparsity</title>
-<g id="a_call~~graph~~CallGraph_node35"><a xlink:href=".././proc/destroy_sparsity.html" xlink:title="destroy_sparsity">
-<polygon fill="#d9534f" stroke="#d9534f" points="175,-1463 77,-1463 77,-1439 175,-1439 175,-1463"/>
-<text text-anchor="middle" x="126" y="-1448.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_sparsity</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm_wrapper -->
-<g id="call~~graph~~CallGraph_node36" class="node">
-<title>proc~dsm_wrapper</title>
-<g id="a_call~~graph~~CallGraph_node36"><a xlink:href=".././proc/dsm_wrapper.html" xlink:title="dsm_wrapper">
-<polygon fill="#d9534f" stroke="#d9534f" points="168.5,-146 83.5,-146 83.5,-122 168.5,-122 168.5,-146"/>
-<text text-anchor="middle" x="126" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm_wrapper</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
-<g id="call~~graph~~CallGraph_edge22" class="edge">
-<title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
-<path fill="none" stroke="#000000" d="M168.66,-134C212.82,-134 281.87,-134 323.83,-134"/>
-<polygon fill="#000000" stroke="#000000" points="323.88,-137.5 333.88,-134 323.88,-130.5 323.88,-137.5"/>
-</g>
-<!-- proc~select_finite_diff_method -->
-<g id="call~~graph~~CallGraph_node37" class="node">
-<title>proc~select_finite_diff_method</title>
-<g id="a_call~~graph~~CallGraph_node37"><a xlink:href=".././proc/select_finite_diff_method.html" xlink:title="select_finite_diff_method">
-<polygon fill="#d9534f" stroke="#d9534f" points="198.5,-1505 53.5,-1505 53.5,-1481 198.5,-1481 198.5,-1505"/>
-<text text-anchor="middle" x="126" y="-1490.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_finite_diff_method</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_function_with_cache -->
-<g id="call~~graph~~CallGraph_node39" class="node">
-<title>proc~compute_function_with_cache</title>
-<g id="a_call~~graph~~CallGraph_node39"><a xlink:href=".././proc/compute_function_with_cache.html" xlink:title="compute_function_with_cache">
-<polygon fill="#d9534f" stroke="#d9534f" points="212.5,-1547 39.5,-1547 39.5,-1523 212.5,-1523 212.5,-1547"/>
-<text text-anchor="middle" x="126" y="-1532.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_function_with_cache</text>
-</a>
-</g>
-</g>
-<!-- proc~expand_vector_int -->
-<g id="call~~graph~~CallGraph_node52" class="node">
-<title>proc~expand_vector_int</title>
-<g id="a_call~~graph~~CallGraph_node52"><a xlink:href=".././proc/expand_vector_int.html" xlink:title="expand_vector_int">
-<polygon fill="#d9534f" stroke="#d9534f" points="1188.5,-505 1079.5,-505 1079.5,-481 1188.5,-481 1188.5,-505"/>
-<text text-anchor="middle" x="1134" y="-490.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
-</a>
-</g>
-</g>
-<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
-<g id="call~~graph~~CallGraph_edge24" class="edge">
-<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M987.16,-489.17C1011.64,-489.81 1042.39,-490.62 1069.34,-491.33"/>
-<polygon fill="#000000" stroke="#000000" points="1069.38,-494.83 1079.46,-491.59 1069.56,-487.83 1069.38,-494.83"/>
-</g>
-<!-- proc~expand_vector_real -->
-<g id="call~~graph~~CallGraph_node57" class="node">
-<title>proc~expand_vector_real</title>
-<g id="a_call~~graph~~CallGraph_node57"><a xlink:href=".././proc/expand_vector_real.html" xlink:title="expand_vector_real">
-<polygon fill="#d9534f" stroke="#d9534f" points="1192,-463 1076,-463 1076,-439 1192,-439 1192,-463"/>
-<text text-anchor="middle" x="1134" y="-448.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
-</a>
-</g>
-</g>
-<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
-<g id="call~~graph~~CallGraph_edge23" class="edge">
-<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M987.16,-479.33C1010.66,-474.76 1039.95,-469.07 1066.11,-463.99"/>
-<polygon fill="#000000" stroke="#000000" points="1066.81,-467.42 1075.96,-462.08 1065.47,-460.55 1066.81,-467.42"/>
-</g>
-<!-- proc~set_numdiff_sparsity_bounds -->
-<g id="call~~graph~~CallGraph_node41" class="node">
-<title>proc~set_numdiff_sparsity_bounds</title>
-<g id="a_call~~graph~~CallGraph_node41"><a xlink:href=".././proc/set_numdiff_sparsity_bounds.html" xlink:title="set_numdiff_sparsity_bounds">
-<polygon fill="#d9534f" stroke="#d9534f" points="209,-1589 43,-1589 43,-1565 209,-1565 209,-1589"/>
-<text text-anchor="middle" x="126" y="-1574.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_numdiff_sparsity_bounds</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_perturb_vector -->
-<g id="call~~graph~~CallGraph_node42" class="node">
-<title>proc~compute_perturb_vector</title>
-<g id="a_call~~graph~~CallGraph_node42"><a xlink:href=".././proc/compute_perturb_vector.html" xlink:title="compute_perturb_vector">
-<polygon fill="#d9534f" stroke="#d9534f" points="198,-1631 54,-1631 54,-1607 198,-1607 198,-1631"/>
-<text text-anchor="middle" x="126" y="-1616.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_perturb_vector</text>
-</a>
-</g>
-</g>
-<!-- proc~set_numdiff_bounds -->
-<g id="call~~graph~~CallGraph_node43" class="node">
-<title>proc~set_numdiff_bounds</title>
-<g id="a_call~~graph~~CallGraph_node43"><a xlink:href=".././proc/set_numdiff_bounds.html" xlink:title="set_numdiff_bounds">
-<polygon fill="#d9534f" stroke="#d9534f" points="613.5,-582 494.5,-582 494.5,-558 613.5,-558 613.5,-582"/>
-<text text-anchor="middle" x="554" y="-567.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_numdiff_bounds</text>
-</a>
-</g>
-</g>
-<!-- proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string -->
-<g id="call~~graph~~CallGraph_edge25" class="edge">
-<title>proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string</title>
-<path fill="none" stroke="#000000" d="M608.01,-582.04C630.43,-587.12 656.65,-593.08 679.79,-598.33"/>
-<polygon fill="#000000" stroke="#000000" points="679.31,-601.81 689.84,-600.61 680.86,-594.99 679.31,-601.81"/>
-</g>
-<!-- proc~print_sparsity_pattern -->
-<g id="call~~graph~~CallGraph_node44" class="node">
-<title>proc~print_sparsity_pattern</title>
-<g id="a_call~~graph~~CallGraph_node44"><a xlink:href=".././proc/print_sparsity_pattern.html" xlink:title="print_sparsity_pattern">
-<polygon fill="#d9534f" stroke="#d9534f" points="190,-1673 62,-1673 62,-1649 190,-1649 190,-1673"/>
-<text text-anchor="middle" x="126" y="-1658.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_sparsity_pattern</text>
-</a>
-</g>
-</g>
-<!-- proc~swap_real -->
-<g id="call~~graph~~CallGraph_node45" class="node">
-<title>proc~swap_real</title>
-<g id="a_call~~graph~~CallGraph_node45"><a xlink:href=".././proc/swap_real.html" xlink:title="swap_real">
-<polygon fill="#d9534f" stroke="#d9534f" points="393.5,-1316 328.5,-1316 328.5,-1292 393.5,-1292 393.5,-1316"/>
-<text text-anchor="middle" x="361" y="-1301.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
-</a>
-</g>
-</g>
-<!-- proc~select_finite_diff_method_for_partition_group -->
-<g id="call~~graph~~CallGraph_node47" class="node">
-<title>proc~select_finite_diff_method_for_partition_group</title>
-<g id="a_call~~graph~~CallGraph_node47"><a xlink:href=".././proc/select_finite_diff_method_for_partition_group.html" xlink:title="select_finite_diff_method_for_partition_group">
-<polygon fill="#d9534f" stroke="#d9534f" points="252,-1715 0,-1715 0,-1691 252,-1691 252,-1715"/>
-<text text-anchor="middle" x="126" y="-1700.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_finite_diff_method_for_partition_group</text>
-</a>
-</g>
-</g>
-<!-- proc~get_from_cache -->
-<g id="call~~graph~~CallGraph_node48" class="node">
-<title>proc~get_from_cache</title>
-<g id="a_call~~graph~~CallGraph_node48"><a xlink:href=".././proc/get_from_cache.html" xlink:title="get_from_cache">
-<polygon fill="#d9534f" stroke="#d9534f" points="174.5,-1274 77.5,-1274 77.5,-1250 174.5,-1250 174.5,-1274"/>
-<text text-anchor="middle" x="126" y="-1259.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_from_cache</text>
-</a>
-</g>
-</g>
-<!-- proc~get_from_cache&#45;&gt;proc~vector_djb_hash -->
-<g id="call~~graph~~CallGraph_edge26" class="edge">
-<title>proc~get_from_cache&#45;&gt;proc~vector_djb_hash</title>
-<path fill="none" stroke="#000000" d="M174.71,-1262C211.26,-1262 261.87,-1262 300.96,-1262"/>
-<polygon fill="#000000" stroke="#000000" points="301.15,-1265.5 311.15,-1262 301.15,-1258.5 301.15,-1265.5"/>
-</g>
-<!-- proc~set_sparsity_mode -->
-<g id="call~~graph~~CallGraph_node49" class="node">
-<title>proc~set_sparsity_mode</title>
-<g id="a_call~~graph~~CallGraph_node49"><a xlink:href=".././proc/set_sparsity_mode.html" xlink:title="set_sparsity_mode">
-<polygon fill="#d9534f" stroke="#d9534f" points="181.5,-1757 70.5,-1757 70.5,-1733 181.5,-1733 181.5,-1757"/>
-<text text-anchor="middle" x="126" y="-1742.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_sparsity_mode</text>
-</a>
-</g>
-</g>
-<!-- proc~initialize_numdiff_for_diff -->
-<g id="call~~graph~~CallGraph_node50" class="node">
-<title>proc~initialize_numdiff_for_diff</title>
-<g id="a_call~~graph~~CallGraph_node50"><a xlink:href=".././proc/initialize_numdiff_for_diff.html" xlink:title="initialize_numdiff_for_diff">
-<polygon fill="#d9534f" stroke="#d9534f" points="199,-1799 53,-1799 53,-1775 199,-1775 199,-1799"/>
-<text text-anchor="middle" x="126" y="-1784.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_numdiff_for_diff</text>
-</a>
-</g>
-</g>
-<!-- proc~print_sparsity -->
-<g id="call~~graph~~CallGraph_node53" class="node">
-<title>proc~print_sparsity</title>
-<g id="a_call~~graph~~CallGraph_node53"><a xlink:href=".././proc/print_sparsity.html" xlink:title="print_sparsity">
-<polygon fill="#d9534f" stroke="#d9534f" points="168,-1841 84,-1841 84,-1817 168,-1817 168,-1841"/>
-<text text-anchor="middle" x="126" y="-1826.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_sparsity</text>
-</a>
-</g>
-</g>
-<!-- proc~put_in_cache -->
-<g id="call~~graph~~CallGraph_node54" class="node">
-<title>proc~put_in_cache</title>
-<g id="a_call~~graph~~CallGraph_node54"><a xlink:href=".././proc/put_in_cache.html" xlink:title="put_in_cache">
-<polygon fill="#d9534f" stroke="#d9534f" points="402,-540 320,-540 320,-516 402,-516 402,-540"/>
-<text text-anchor="middle" x="361" y="-525.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_in_cache</text>
-</a>
-</g>
-</g>
-<!-- interface~unique -->
-<g id="call~~graph~~CallGraph_node76" class="node">
-<title>interface~unique</title>
-<g id="a_call~~graph~~CallGraph_node76"><a xlink:href=".././interface/unique.html" xlink:title="unique">
-<polygon fill="#a7506f" stroke="#a7506f" points="581,-540 527,-540 527,-516 581,-516 581,-540"/>
-<text text-anchor="middle" x="554" y="-525.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
-</a>
-</g>
-</g>
-<!-- proc~put_in_cache&#45;&gt;interface~unique -->
-<g id="call~~graph~~CallGraph_edge27" class="edge">
-<title>proc~put_in_cache&#45;&gt;interface~unique</title>
-<path fill="none" stroke="#000000" d="M402.04,-528C435.9,-528 483.98,-528 516.73,-528"/>
-<polygon fill="#000000" stroke="#000000" points="516.78,-531.5 526.78,-528 516.78,-524.5 516.78,-531.5"/>
-</g>
-<!-- proc~divide_interval&#45;&gt;interface~unique -->
-<g id="call~~graph~~CallGraph_edge28" class="edge">
-<title>proc~divide_interval&#45;&gt;interface~unique</title>
-<path fill="none" stroke="#000000" d="M406.78,-560.15C440.26,-552.79 485.47,-542.85 516.71,-535.98"/>
-<polygon fill="#000000" stroke="#000000" points="517.71,-539.34 526.73,-533.78 516.21,-532.51 517.71,-539.34"/>
-</g>
-<!-- proc~compute_jacobian_times_vector -->
-<g id="call~~graph~~CallGraph_node56" class="node">
-<title>proc~compute_jacobian_times_vector</title>
-<g id="a_call~~graph~~CallGraph_node56"><a xlink:href=".././proc/compute_jacobian_times_vector.html" xlink:title="compute_jacobian_times_vector">
-<polygon fill="#d9534f" stroke="#d9534f" points="218,-1883 34,-1883 34,-1859 218,-1859 218,-1883"/>
-<text text-anchor="middle" x="126" y="-1868.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_times_vector</text>
-</a>
-</g>
-</g>
-<!-- proc~sort_ascending_int -->
-<g id="call~~graph~~CallGraph_node58" class="node">
-<title>proc~sort_ascending_int</title>
-<g id="a_call~~graph~~CallGraph_node58"><a xlink:href=".././proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
-<polygon fill="#d9534f" stroke="#d9534f" points="1190,-567 1078,-567 1078,-543 1190,-543 1190,-567"/>
-<text text-anchor="middle" x="1134" y="-552.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_jacobian_standard -->
-<g id="call~~graph~~CallGraph_node59" class="node">
-<title>proc~compute_jacobian_standard</title>
-<g id="a_call~~graph~~CallGraph_node59"><a xlink:href=".././proc/compute_jacobian_standard.html" xlink:title="compute_jacobian_standard">
-<polygon fill="#d9534f" stroke="#d9534f" points="207.5,-1925 44.5,-1925 44.5,-1901 207.5,-1901 207.5,-1925"/>
-<text text-anchor="middle" x="126" y="-1910.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_standard</text>
-</a>
-</g>
-</g>
-<!-- proc~terminate -->
-<g id="call~~graph~~CallGraph_node60" class="node">
-<title>proc~terminate</title>
-<g id="a_call~~graph~~CallGraph_node60"><a xlink:href=".././proc/terminate.html" xlink:title="terminate">
-<polygon fill="#d9534f" stroke="#d9534f" points="158.5,-1967 93.5,-1967 93.5,-1943 158.5,-1943 158.5,-1967"/>
-<text text-anchor="middle" x="126" y="-1952.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">terminate</text>
-</a>
-</g>
-</g>
-<!-- proc~compute_jacobian_with_diff -->
-<g id="call~~graph~~CallGraph_node61" class="node">
-<title>proc~compute_jacobian_with_diff</title>
-<g id="a_call~~graph~~CallGraph_node61"><a xlink:href=".././proc/compute_jacobian_with_diff.html" xlink:title="compute_jacobian_with_diff">
-<polygon fill="#d9534f" stroke="#d9534f" points="206,-2009 46,-2009 46,-1985 206,-1985 206,-2009"/>
-<text text-anchor="middle" x="126" y="-1994.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_with_diff</text>
+<title>proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M420.86,-310.02C440.83,-314.1 463.32,-318.69 484.01,-322.91"/>
+<polygon fill="#000000" stroke="#000000" points="483.5,-326.38 494,-324.95 484.9,-319.52 483.5,-326.38"/>
+</g>
+<!-- proc~destroy_cache -->
+<g id="call~~graph~~CallGraph_node11" class="node">
+<title>proc~destroy_cache</title>
+<g id="a_call~~graph~~CallGraph_node11"><a xlink:href=".././proc/destroy_cache.html" xlink:title="destroy_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="170.5,-769 81.5,-769 81.5,-745 170.5,-745 170.5,-769"/>
+<text text-anchor="middle" x="126" y="-754.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_cache</text>
 </a>
 </g>
 </g>
 <!-- proc~compute_jacobian -->
-<g id="call~~graph~~CallGraph_node64" class="node">
+<g id="call~~graph~~CallGraph_node12" class="node">
 <title>proc~compute_jacobian</title>
-<g id="a_call~~graph~~CallGraph_node64"><a xlink:href=".././proc/compute_jacobian.html" xlink:title="compute_jacobian">
-<polygon fill="#d9534f" stroke="#d9534f" points="181.5,-2051 70.5,-2051 70.5,-2027 181.5,-2027 181.5,-2051"/>
-<text text-anchor="middle" x="126" y="-2036.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian</text>
+<g id="a_call~~graph~~CallGraph_node12"><a xlink:href=".././proc/compute_jacobian.html" xlink:title="compute_jacobian">
+<polygon fill="#d9534f" stroke="#d9534f" points="181.5,-811 70.5,-811 70.5,-787 181.5,-787 181.5,-811"/>
+<text text-anchor="middle" x="126" y="-796.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian</text>
 </a>
 </g>
 </g>
-<!-- proc~failed -->
-<g id="call~~graph~~CallGraph_node65" class="node">
-<title>proc~failed</title>
-<g id="a_call~~graph~~CallGraph_node65"><a xlink:href=".././proc/failed.html" xlink:title="failed">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="153,-2093 99,-2093 99,-2069 153,-2069 153,-2093"/>
-<text text-anchor="middle" x="126" y="-2078.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">failed</text>
+<!-- proc~diff -->
+<g id="call~~graph~~CallGraph_node13" class="node">
+<title>proc~diff</title>
+<g id="a_call~~graph~~CallGraph_node13"><a xlink:href=".././proc/diff.html" xlink:title="diff">
+<polygon fill="#d9534f" stroke="#d9534f" points="153,-853 99,-853 99,-829 153,-829 153,-853"/>
+<text text-anchor="middle" x="126" y="-838.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">diff</text>
 </a>
 </g>
 </g>
-<!-- proc~raise_exception -->
-<g id="call~~graph~~CallGraph_node66" class="node">
-<title>proc~raise_exception</title>
-<g id="a_call~~graph~~CallGraph_node66"><a xlink:href=".././proc/raise_exception.html" xlink:title="raise_exception">
-<polygon fill="#d9534f" stroke="#d9534f" points="174,-2135 78,-2135 78,-2111 174,-2111 174,-2135"/>
-<text text-anchor="middle" x="126" y="-2120.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">raise_exception</text>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="call~~graph~~CallGraph_node14" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<g id="a_call~~graph~~CallGraph_node14"><a xlink:href=".././proc/compute_jacobian_for_sparsity.html" xlink:title="compute_jacobian_for_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="215,-895 37,-895 37,-871 215,-871 215,-895"/>
+<text text-anchor="middle" x="126" y="-880.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_for_sparsity</text>
 </a>
 </g>
 </g>
-<!-- proc~get_error_status -->
-<g id="call~~graph~~CallGraph_node67" class="node">
-<title>proc~get_error_status</title>
-<g id="a_call~~graph~~CallGraph_node67"><a xlink:href=".././proc/get_error_status.html" xlink:title="get_error_status">
-<polygon fill="#d9534f" stroke="#d9534f" points="175,-2177 77,-2177 77,-2153 175,-2153 175,-2177"/>
-<text text-anchor="middle" x="126" y="-2162.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_error_status</text>
+<!-- proc~print_sparsity -->
+<g id="call~~graph~~CallGraph_node15" class="node">
+<title>proc~print_sparsity</title>
+<g id="a_call~~graph~~CallGraph_node15"><a xlink:href=".././proc/print_sparsity.html" xlink:title="print_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="168,-937 84,-937 84,-913 168,-913 168,-937"/>
+<text text-anchor="middle" x="126" y="-922.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_sparsity</text>
 </a>
 </g>
 </g>
-<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
-<g id="call~~graph~~CallGraph_edge30" class="edge">
-<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M988.13,-572.66C1011.06,-576.52 1039.32,-581.26 1064.77,-585.54"/>
-<polygon fill="#000000" stroke="#000000" points="1064.3,-589.01 1074.74,-587.21 1065.46,-582.11 1064.3,-589.01"/>
-</g>
-<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
-<g id="call~~graph~~CallGraph_edge29" class="edge">
-<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M988.13,-562.6C1011.94,-561.36 1041.48,-559.8 1067.67,-558.43"/>
-<polygon fill="#000000" stroke="#000000" points="1068.1,-561.91 1077.9,-557.89 1067.73,-554.92 1068.1,-561.91"/>
-</g>
-<!-- proc~compute_sparsity_random -->
-<g id="call~~graph~~CallGraph_node69" class="node">
-<title>proc~compute_sparsity_random</title>
-<g id="a_call~~graph~~CallGraph_node69"><a xlink:href=".././proc/compute_sparsity_random.html" xlink:title="compute_sparsity_random">
-<polygon fill="#d9534f" stroke="#d9534f" points="203,-398 49,-398 49,-374 203,-374 203,-398"/>
-<text text-anchor="middle" x="126" y="-383.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random</text>
+<!-- interface~expand_vector -->
+<g id="call~~graph~~CallGraph_node18" class="node">
+<title>interface~expand_vector</title>
+<g id="a_call~~graph~~CallGraph_node18"><a xlink:href=".././interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="987,-186 896,-186 896,-162 987,-162 987,-186"/>
+<text text-anchor="middle" x="941.5" y="-171.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
 </a>
 </g>
 </g>
-<!-- proc~compute_sparsity_random&#45;&gt;interface~expand_vector -->
-<g id="call~~graph~~CallGraph_edge33" class="edge">
-<title>proc~compute_sparsity_random&#45;&gt;interface~expand_vector</title>
-<path fill="none" stroke="#000000" d="M203.17,-385.43C229.98,-385.25 260.33,-385.09 288,-385 352.89,-384.8 369.44,-378.5 434,-385 601.17,-401.82 794.74,-449.13 886.68,-473.34"/>
-<polygon fill="#000000" stroke="#000000" points="886.02,-476.78 896.58,-475.96 887.81,-470.02 886.02,-476.78"/>
-</g>
-<!-- proc~compute_sparsity_random&#45;&gt;proc~equal_within_tol -->
-<g id="call~~graph~~CallGraph_edge34" class="edge">
-<title>proc~compute_sparsity_random&#45;&gt;proc~equal_within_tol</title>
-<path fill="none" stroke="#000000" d="M172.2,-398.03C210.1,-408.11 264.36,-422.55 304.82,-433.32"/>
-<polygon fill="#000000" stroke="#000000" points="303.96,-436.71 314.53,-435.9 305.76,-429.95 303.96,-436.71"/>
-</g>
-<!-- xlow -->
-<g id="call~~graph~~CallGraph_node84" class="node">
-<title>xlow</title>
-<polygon fill="#777777" stroke="#777777" points="388,-338 334,-338 334,-314 388,-314 388,-338"/>
-<text text-anchor="middle" x="361" y="-323.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xlow</text>
-</g>
-<!-- proc~compute_sparsity_random&#45;&gt;xlow -->
-<g id="call~~graph~~CallGraph_edge32" class="edge">
-<title>proc~compute_sparsity_random&#45;&gt;xlow</title>
-<path fill="none" stroke="#000000" d="M203.15,-375.46C219.39,-372.58 236.36,-369.1 252,-365 252.12,-364.97 292.72,-350.31 324.1,-338.97"/>
-<polygon fill="#000000" stroke="#000000" points="325.68,-342.12 333.9,-335.43 323.3,-335.54 325.68,-342.12"/>
-</g>
-<!-- xhigh -->
-<g id="call~~graph~~CallGraph_node85" class="node">
-<title>xhigh</title>
-<polygon fill="#777777" stroke="#777777" points="388,-418 334,-418 334,-394 388,-394 388,-418"/>
-<text text-anchor="middle" x="361" y="-403.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xhigh</text>
-</g>
-<!-- proc~compute_sparsity_random&#45;&gt;xhigh -->
-<g id="call~~graph~~CallGraph_edge31" class="edge">
-<title>proc~compute_sparsity_random&#45;&gt;xhigh</title>
-<path fill="none" stroke="#000000" d="M203.29,-392.55C243.72,-396.02 291.5,-400.12 323.58,-402.87"/>
-<polygon fill="#000000" stroke="#000000" points="323.56,-406.39 333.83,-403.75 324.16,-399.41 323.56,-406.39"/>
-</g>
-<!-- interface~swap -->
-<g id="call~~graph~~CallGraph_node70" class="node">
-<title>interface~swap</title>
-<g id="a_call~~graph~~CallGraph_node70"><a xlink:href=".././interface/swap.html" xlink:title="swap">
-<polygon fill="#a7506f" stroke="#a7506f" points="153,-1337 99,-1337 99,-1313 153,-1313 153,-1337"/>
-<text text-anchor="middle" x="126" y="-1322.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+<!-- proc~expand_vector_int -->
+<g id="call~~graph~~CallGraph_node68" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_call~~graph~~CallGraph_node68"><a xlink:href=".././proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1188.5,-191 1079.5,-191 1079.5,-167 1188.5,-167 1188.5,-191"/>
+<text text-anchor="middle" x="1134" y="-176.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
 </a>
 </g>
 </g>
-<!-- interface~swap&#45;&gt;proc~swap_int -->
-<g id="call~~graph~~CallGraph_edge36" class="edge">
-<title>interface~swap&#45;&gt;proc~swap_int</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M153.28,-1327.37C194.32,-1331.07 273.88,-1338.24 321.44,-1342.52"/>
-<polygon fill="#000000" stroke="#000000" points="321.37,-1346.03 331.65,-1343.44 322,-1339.06 321.37,-1346.03"/>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="call~~graph~~CallGraph_edge11" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M987.16,-175.17C1011.64,-175.81 1042.39,-176.62 1069.34,-177.33"/>
+<polygon fill="#000000" stroke="#000000" points="1069.38,-180.83 1079.46,-177.59 1069.56,-173.83 1069.38,-180.83"/>
 </g>
-<!-- interface~swap&#45;&gt;proc~swap_real -->
-<g id="call~~graph~~CallGraph_edge35" class="edge">
-<title>interface~swap&#45;&gt;proc~swap_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M153.28,-1322.63C193.41,-1319.01 270.37,-1312.08 318.22,-1307.77"/>
-<polygon fill="#000000" stroke="#000000" points="318.61,-1311.24 328.26,-1306.86 317.99,-1304.27 318.61,-1311.24"/>
-</g>
-<!-- proc~print_sparsity_matrix -->
-<g id="call~~graph~~CallGraph_node71" class="node">
-<title>proc~print_sparsity_matrix</title>
-<g id="a_call~~graph~~CallGraph_node71"><a xlink:href=".././proc/print_sparsity_matrix.html" xlink:title="print_sparsity_matrix">
-<polygon fill="#d9534f" stroke="#d9534f" points="188,-2219 64,-2219 64,-2195 188,-2195 188,-2219"/>
-<text text-anchor="middle" x="126" y="-2204.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_sparsity_matrix</text>
+<!-- proc~expand_vector_real -->
+<g id="call~~graph~~CallGraph_node77" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_call~~graph~~CallGraph_node77"><a xlink:href=".././proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1192,-149 1076,-149 1076,-125 1192,-125 1192,-149"/>
+<text text-anchor="middle" x="1134" y="-134.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
 </a>
 </g>
 </g>
-<!-- proc~unique_real -->
-<g id="call~~graph~~CallGraph_node72" class="node">
-<title>proc~unique_real</title>
-<g id="a_call~~graph~~CallGraph_node72"><a xlink:href=".././proc/unique_real.html" xlink:title="unique_real">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="778.5,-582 703.5,-582 703.5,-558 778.5,-558 778.5,-582"/>
-<text text-anchor="middle" x="741" y="-567.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="call~~graph~~CallGraph_edge12" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M987.16,-165.33C1010.66,-160.76 1039.95,-155.07 1066.11,-149.99"/>
+<polygon fill="#000000" stroke="#000000" points="1066.81,-153.42 1075.96,-148.08 1065.47,-146.55 1066.81,-153.42"/>
+</g>
+<!-- proc~compute_sparsity_perturbation_vector -->
+<g id="call~~graph~~CallGraph_node19" class="node">
+<title>proc~compute_sparsity_perturbation_vector</title>
+<g id="a_call~~graph~~CallGraph_node19"><a xlink:href=".././proc/compute_sparsity_perturbation_vector.html" xlink:title="compute_sparsity_perturbation_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-979 17.5,-979 17.5,-955 234.5,-955 234.5,-979"/>
+<text text-anchor="middle" x="126" y="-964.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_perturbation_vector</text>
 </a>
 </g>
 </g>
-<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
-<g id="call~~graph~~CallGraph_edge37" class="edge">
-<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
-<path fill="none" stroke="#000000" d="M778.59,-559.24C788.24,-556.17 798.58,-552.65 808,-549 842.49,-535.63 880.76,-517.66 907.26,-504.69"/>
-<polygon fill="#000000" stroke="#000000" points="909.04,-507.72 916.47,-500.16 905.95,-501.44 909.04,-507.72"/>
-</g>
-<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
-<g id="call~~graph~~CallGraph_edge38" class="edge">
-<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
-<path fill="none" stroke="#000000" d="M778.87,-569.07C808.54,-568.32 850.72,-567.26 884.55,-566.41"/>
-<polygon fill="#000000" stroke="#000000" points="884.85,-569.9 894.75,-566.15 884.67,-562.91 884.85,-569.9"/>
-</g>
-<!-- proc~perturb_x_and_compute_f_partitioned -->
-<g id="call~~graph~~CallGraph_node73" class="node">
-<title>proc~perturb_x_and_compute_f_partitioned</title>
-<g id="a_call~~graph~~CallGraph_node73"><a xlink:href=".././proc/perturb_x_and_compute_f_partitioned.html" xlink:title="perturb_x_and_compute_f_partitioned">
-<polygon fill="#d9534f" stroke="#d9534f" points="233,-2261 19,-2261 19,-2237 233,-2237 233,-2261"/>
-<text text-anchor="middle" x="126" y="-2246.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">perturb_x_and_compute_f_partitioned</text>
+<!-- proc~equal_within_tol -->
+<g id="call~~graph~~CallGraph_node20" class="node">
+<title>proc~equal_within_tol</title>
+<g id="a_call~~graph~~CallGraph_node20"><a xlink:href=".././proc/equal_within_tol.html" xlink:title="equal_within_tol">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="410,-146 312,-146 312,-122 410,-122 410,-146"/>
+<text text-anchor="middle" x="361" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">equal_within_tol</text>
 </a>
 </g>
 </g>
-<!-- proc~generate_dense_sparsity_partition -->
-<g id="call~~graph~~CallGraph_node74" class="node">
-<title>proc~generate_dense_sparsity_partition</title>
-<g id="a_call~~graph~~CallGraph_node74"><a xlink:href=".././proc/generate_dense_sparsity_partition.html" xlink:title="generate_dense_sparsity_partition">
-<polygon fill="#d9534f" stroke="#d9534f" points="224,-2303 28,-2303 28,-2279 224,-2279 224,-2303"/>
-<text text-anchor="middle" x="126" y="-2288.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">generate_dense_sparsity_partition</text>
+<!-- proc~vector_djb_hash -->
+<g id="call~~graph~~CallGraph_node21" class="node">
+<title>proc~vector_djb_hash</title>
+<g id="a_call~~graph~~CallGraph_node21"><a xlink:href=".././proc/vector_djb_hash.html" xlink:title="vector_djb_hash">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="410.5,-1021 311.5,-1021 311.5,-997 410.5,-997 410.5,-1021"/>
+<text text-anchor="middle" x="361" y="-1006.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vector_djb_hash</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="call~~graph~~CallGraph_node22" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_call~~graph~~CallGraph_node22"><a xlink:href=".././proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="209,-227 43,-227 43,-203 209,-203 209,-227"/>
+<text text-anchor="middle" x="126" y="-212.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class -->
+<g id="call~~graph~~CallGraph_edge15" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M156.11,-227.06C188.15,-240.13 241.32,-261.23 288,-277 293.99,-279.02 300.3,-281.03 306.59,-282.97"/>
+<polygon fill="#000000" stroke="#000000" points="305.83,-286.39 316.41,-285.92 307.85,-279.69 305.83,-286.39"/>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector -->
+<g id="call~~graph~~CallGraph_edge16" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M202.58,-202.98C229.47,-199.15 260.03,-195.31 288,-193 508.97,-174.74 773.28,-173.29 885.64,-173.63"/>
+<polygon fill="#000000" stroke="#000000" points="885.7,-177.13 895.71,-173.66 885.72,-170.13 885.7,-177.13"/>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~equal_within_tol -->
+<g id="call~~graph~~CallGraph_edge14" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~equal_within_tol</title>
+<path fill="none" stroke="#000000" d="M161.63,-202.96C202.61,-188.71 270.93,-164.97 315.72,-149.39"/>
+<polygon fill="#000000" stroke="#000000" points="316.88,-152.69 325.18,-146.11 314.58,-146.08 316.88,-152.69"/>
+</g>
+<!-- proc~divide_interval -->
+<g id="call~~graph~~CallGraph_node32" class="node">
+<title>proc~divide_interval</title>
+<g id="a_call~~graph~~CallGraph_node32"><a xlink:href=".././proc/divide_interval.html" xlink:title="divide_interval">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="406.5,-268 315.5,-268 315.5,-244 406.5,-244 406.5,-268"/>
+<text text-anchor="middle" x="361" y="-253.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">divide_interval</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval -->
+<g id="call~~graph~~CallGraph_edge13" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval</title>
+<path fill="none" stroke="#000000" d="M195.33,-227.02C230.38,-233.19 272.49,-240.6 305.35,-246.38"/>
+<polygon fill="#000000" stroke="#000000" points="304.78,-249.84 315.23,-248.12 305.99,-242.94 304.78,-249.84"/>
+</g>
+<!-- proc~set_function -->
+<g id="call~~graph~~CallGraph_node23" class="node">
+<title>proc~set_function</title>
+<g id="a_call~~graph~~CallGraph_node23"><a xlink:href=".././proc/set_function.html" xlink:title="set_function">
+<polygon fill="#d9534f" stroke="#d9534f" points="164.5,-1063 87.5,-1063 87.5,-1039 164.5,-1039 164.5,-1063"/>
+<text text-anchor="middle" x="126" y="-1048.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_function</text>
 </a>
 </g>
 </g>
 <!-- proc~print_finite_difference_method -->
-<g id="call~~graph~~CallGraph_node75" class="node">
+<g id="call~~graph~~CallGraph_node24" class="node">
 <title>proc~print_finite_difference_method</title>
-<g id="a_call~~graph~~CallGraph_node75"><a xlink:href=".././proc/print_finite_difference_method.html" xlink:title="print_finite_difference_method">
-<polygon fill="#d9534f" stroke="#d9534f" points="213.5,-2345 38.5,-2345 38.5,-2321 213.5,-2321 213.5,-2345"/>
-<text text-anchor="middle" x="126" y="-2330.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_finite_difference_method</text>
+<g id="a_call~~graph~~CallGraph_node24"><a xlink:href=".././proc/print_finite_difference_method.html" xlink:title="print_finite_difference_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="213.5,-1105 38.5,-1105 38.5,-1081 213.5,-1081 213.5,-1105"/>
+<text text-anchor="middle" x="126" y="-1090.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_finite_difference_method</text>
+</a>
+</g>
+</g>
+<!-- proc~select_finite_diff_method_for_partition_group -->
+<g id="call~~graph~~CallGraph_node25" class="node">
+<title>proc~select_finite_diff_method_for_partition_group</title>
+<g id="a_call~~graph~~CallGraph_node25"><a xlink:href=".././proc/select_finite_diff_method_for_partition_group.html" xlink:title="select_finite_diff_method_for_partition_group">
+<polygon fill="#d9534f" stroke="#d9534f" points="252,-1147 0,-1147 0,-1123 252,-1123 252,-1147"/>
+<text text-anchor="middle" x="126" y="-1132.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_finite_diff_method_for_partition_group</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="call~~graph~~CallGraph_node26" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_call~~graph~~CallGraph_node26"><a xlink:href=".././proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1193,-285 1075,-285 1075,-261 1193,-261 1193,-285"/>
+<text text-anchor="middle" x="1134" y="-270.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- proc~select_finite_diff_method -->
+<g id="call~~graph~~CallGraph_node27" class="node">
+<title>proc~select_finite_diff_method</title>
+<g id="a_call~~graph~~CallGraph_node27"><a xlink:href=".././proc/select_finite_diff_method.html" xlink:title="select_finite_diff_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="198.5,-1189 53.5,-1189 53.5,-1165 198.5,-1165 198.5,-1189"/>
+<text text-anchor="middle" x="126" y="-1174.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_finite_diff_method</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_mode -->
+<g id="call~~graph~~CallGraph_node28" class="node">
+<title>proc~set_sparsity_mode</title>
+<g id="a_call~~graph~~CallGraph_node28"><a xlink:href=".././proc/set_sparsity_mode.html" xlink:title="set_sparsity_mode">
+<polygon fill="#d9534f" stroke="#d9534f" points="181.5,-1231 70.5,-1231 70.5,-1207 181.5,-1207 181.5,-1231"/>
+<text text-anchor="middle" x="126" y="-1216.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_sparsity_mode</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_function_with_cache -->
+<g id="call~~graph~~CallGraph_node29" class="node">
+<title>proc~compute_function_with_cache</title>
+<g id="a_call~~graph~~CallGraph_node29"><a xlink:href=".././proc/compute_function_with_cache.html" xlink:title="compute_function_with_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="212.5,-1273 39.5,-1273 39.5,-1249 212.5,-1249 212.5,-1273"/>
+<text text-anchor="middle" x="126" y="-1258.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_function_with_cache</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending -->
+<g id="call~~graph~~CallGraph_node30" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_call~~graph~~CallGraph_node30"><a xlink:href=".././interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="988,-248 895,-248 895,-224 988,-224 988,-248"/>
+<text text-anchor="middle" x="941.5" y="-233.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="call~~graph~~CallGraph_edge17" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M988.13,-244.86C1011.06,-249.32 1039.32,-254.8 1064.77,-259.75"/>
+<polygon fill="#000000" stroke="#000000" points="1064.26,-263.21 1074.74,-261.68 1065.59,-256.34 1064.26,-263.21"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="call~~graph~~CallGraph_node51" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_call~~graph~~CallGraph_node51"><a xlink:href=".././proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1190,-243 1078,-243 1078,-219 1190,-219 1190,-243"/>
+<text text-anchor="middle" x="1134" y="-228.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="call~~graph~~CallGraph_edge18" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M988.13,-234.8C1011.94,-234.18 1041.48,-233.4 1067.67,-232.71"/>
+<polygon fill="#000000" stroke="#000000" points="1068,-236.21 1077.9,-232.45 1067.81,-229.21 1068,-236.21"/>
+</g>
+<!-- proc~compute_perturbation_vector -->
+<g id="call~~graph~~CallGraph_node31" class="node">
+<title>proc~compute_perturbation_vector</title>
+<g id="a_call~~graph~~CallGraph_node31"><a xlink:href=".././proc/compute_perturbation_vector.html" xlink:title="compute_perturbation_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="211.5,-1315 40.5,-1315 40.5,-1291 211.5,-1291 211.5,-1315"/>
+<text text-anchor="middle" x="126" y="-1300.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_perturbation_vector</text>
+</a>
+</g>
+</g>
+<!-- interface~unique -->
+<g id="call~~graph~~CallGraph_node38" class="node">
+<title>interface~unique</title>
+<g id="a_call~~graph~~CallGraph_node38"><a xlink:href=".././interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="581,-247 527,-247 527,-223 581,-223 581,-247"/>
+<text text-anchor="middle" x="554" y="-232.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~divide_interval&#45;&gt;interface~unique -->
+<g id="call~~graph~~CallGraph_edge19" class="edge">
+<title>proc~divide_interval&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M406.78,-251.08C440.26,-247.4 485.47,-242.43 516.71,-238.99"/>
+<polygon fill="#000000" stroke="#000000" points="517.17,-242.46 526.73,-237.89 516.41,-235.5 517.17,-242.46"/>
+</g>
+<!-- proc~compute_jacobian_times_vector -->
+<g id="call~~graph~~CallGraph_node33" class="node">
+<title>proc~compute_jacobian_times_vector</title>
+<g id="a_call~~graph~~CallGraph_node33"><a xlink:href=".././proc/compute_jacobian_times_vector.html" xlink:title="compute_jacobian_times_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="218,-1357 34,-1357 34,-1333 218,-1333 218,-1357"/>
+<text text-anchor="middle" x="126" y="-1342.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_times_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~swap_real -->
+<g id="call~~graph~~CallGraph_node34" class="node">
+<title>proc~swap_real</title>
+<g id="a_call~~graph~~CallGraph_node34"><a xlink:href=".././proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="393.5,-475 328.5,-475 328.5,-451 393.5,-451 393.5,-475"/>
+<text text-anchor="middle" x="361" y="-460.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap -->
+<g id="call~~graph~~CallGraph_node35" class="node">
+<title>interface~swap</title>
+<g id="a_call~~graph~~CallGraph_node35"><a xlink:href=".././interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="153,-496 99,-496 99,-472 153,-472 153,-496"/>
+<text text-anchor="middle" x="126" y="-481.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="call~~graph~~CallGraph_edge20" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M153.28,-486.37C194.32,-490.07 273.88,-497.24 321.44,-501.52"/>
+<polygon fill="#000000" stroke="#000000" points="321.37,-505.03 331.65,-502.44 322,-498.06 321.37,-505.03"/>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="call~~graph~~CallGraph_edge21" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M153.28,-481.63C193.41,-478.01 270.37,-471.08 318.22,-466.77"/>
+<polygon fill="#000000" stroke="#000000" points="318.61,-470.24 328.26,-465.86 317.99,-463.27 318.61,-470.24"/>
+</g>
+<!-- proc~print_cache -->
+<g id="call~~graph~~CallGraph_node36" class="node">
+<title>proc~print_cache</title>
+<g id="a_call~~graph~~CallGraph_node36"><a xlink:href=".././proc/print_cache.html" xlink:title="print_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="163.5,-1399 88.5,-1399 88.5,-1375 163.5,-1375 163.5,-1399"/>
+<text text-anchor="middle" x="126" y="-1384.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_pattern -->
+<g id="call~~graph~~CallGraph_node37" class="node">
+<title>proc~compute_sparsity_pattern</title>
+<g id="a_call~~graph~~CallGraph_node37"><a xlink:href=".././proc/compute_sparsity_pattern.html" xlink:title="compute_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="201.5,-1441 50.5,-1441 50.5,-1417 201.5,-1417 201.5,-1441"/>
+<text text-anchor="middle" x="126" y="-1426.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_real -->
+<g id="call~~graph~~CallGraph_node70" class="node">
+<title>proc~unique_real</title>
+<g id="a_call~~graph~~CallGraph_node70"><a xlink:href=".././proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="778.5,-268 703.5,-268 703.5,-244 778.5,-244 778.5,-268"/>
+<text text-anchor="middle" x="741" y="-253.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="call~~graph~~CallGraph_edge22" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M581.11,-237.96C610.12,-241.26 657.54,-246.64 693.04,-250.67"/>
+<polygon fill="#000000" stroke="#000000" points="692.84,-254.17 703.17,-251.82 693.63,-247.21 692.84,-254.17"/>
+</g>
+<!-- proc~unique_int -->
+<g id="call~~graph~~CallGraph_node83" class="node">
+<title>proc~unique_int</title>
+<g id="a_call~~graph~~CallGraph_node83"><a xlink:href=".././proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="775,-226 707,-226 707,-202 775,-202 775,-226"/>
+<text text-anchor="middle" x="741" y="-211.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
 </a>
 </g>
 </g>
 <!-- interface~unique&#45;&gt;proc~unique_int -->
-<g id="call~~graph~~CallGraph_edge39" class="edge">
+<g id="call~~graph~~CallGraph_edge23" class="edge">
 <title>interface~unique&#45;&gt;proc~unique_int</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M581.11,-528C611.12,-528 660.82,-528 696.66,-528"/>
-<polygon fill="#000000" stroke="#000000" points="696.83,-531.5 706.83,-528 696.83,-524.5 696.83,-531.5"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M581.11,-232.04C611.12,-228.63 660.82,-222.99 696.66,-218.92"/>
+<polygon fill="#000000" stroke="#000000" points="697.29,-222.37 706.83,-217.77 696.5,-215.42 697.29,-222.37"/>
 </g>
-<!-- interface~unique&#45;&gt;proc~unique_real -->
-<g id="call~~graph~~CallGraph_edge40" class="edge">
-<title>interface~unique&#45;&gt;proc~unique_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M581.11,-533.93C610.12,-540.51 657.54,-551.28 693.04,-559.34"/>
-<polygon fill="#000000" stroke="#000000" points="692.65,-562.84 703.17,-561.64 694.2,-556.01 692.65,-562.84"/>
+<!-- proc~initialize_cache -->
+<g id="call~~graph~~CallGraph_node39" class="node">
+<title>proc~initialize_cache</title>
+<g id="a_call~~graph~~CallGraph_node39"><a xlink:href=".././proc/initialize_cache.html" xlink:title="initialize_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="173,-1483 79,-1483 79,-1459 173,-1459 173,-1483"/>
+<text text-anchor="middle" x="126" y="-1468.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_cache</text>
+</a>
 </g>
-<!-- proc~ido&#45;&gt;proc~numsrt -->
-<g id="call~~graph~~CallGraph_edge41" class="edge">
-<title>proc~ido&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M581.11,-89.18C613.11,-85.72 667.52,-79.84 703.61,-75.93"/>
-<polygon fill="#000000" stroke="#000000" points="704.15,-79.4 713.72,-74.84 703.4,-72.44 704.15,-79.4"/>
 </g>
-<!-- proc~clear_exceptions -->
-<g id="call~~graph~~CallGraph_node79" class="node">
-<title>proc~clear_exceptions</title>
-<g id="a_call~~graph~~CallGraph_node79"><a xlink:href=".././proc/clear_exceptions.html" xlink:title="clear_exceptions">
-<polygon fill="#d9534f" stroke="#d9534f" points="177,-2387 75,-2387 75,-2363 177,-2363 177,-2387"/>
-<text text-anchor="middle" x="126" y="-2372.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">clear_exceptions</text>
+<!-- proc~perturb_x_and_compute_f_partitioned -->
+<g id="call~~graph~~CallGraph_node40" class="node">
+<title>proc~perturb_x_and_compute_f_partitioned</title>
+<g id="a_call~~graph~~CallGraph_node40"><a xlink:href=".././proc/perturb_x_and_compute_f_partitioned.html" xlink:title="perturb_x_and_compute_f_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="233,-1525 19,-1525 19,-1501 233,-1501 233,-1525"/>
+<text text-anchor="middle" x="126" y="-1510.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">perturb_x_and_compute_f_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned -->
+<g id="call~~graph~~CallGraph_node42" class="node">
+<title>proc~compute_jacobian_partitioned</title>
+<g id="a_call~~graph~~CallGraph_node42"><a xlink:href=".././proc/compute_jacobian_partitioned.html" xlink:title="compute_jacobian_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="213.5,-1567 38.5,-1567 38.5,-1543 213.5,-1543 213.5,-1567"/>
+<text text-anchor="middle" x="126" y="-1552.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~print_sparsity_matrix -->
+<g id="call~~graph~~CallGraph_node43" class="node">
+<title>proc~print_sparsity_matrix</title>
+<g id="a_call~~graph~~CallGraph_node43"><a xlink:href=".././proc/print_sparsity_matrix.html" xlink:title="print_sparsity_matrix">
+<polygon fill="#d9534f" stroke="#d9534f" points="188,-1609 64,-1609 64,-1585 188,-1585 188,-1609"/>
+<text text-anchor="middle" x="126" y="-1594.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_sparsity_matrix</text>
+</a>
+</g>
+</g>
+<!-- proc~columns_in_partition_group -->
+<g id="call~~graph~~CallGraph_node44" class="node">
+<title>proc~columns_in_partition_group</title>
+<g id="a_call~~graph~~CallGraph_node44"><a xlink:href=".././proc/columns_in_partition_group.html" xlink:title="columns_in_partition_group">
+<polygon fill="#d9534f" stroke="#d9534f" points="205.5,-1651 46.5,-1651 46.5,-1627 205.5,-1627 205.5,-1651"/>
+<text text-anchor="middle" x="126" y="-1636.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">columns_in_partition_group</text>
+</a>
+</g>
+</g>
+<!-- proc~put_in_cache -->
+<g id="call~~graph~~CallGraph_node45" class="node">
+<title>proc~put_in_cache</title>
+<g id="a_call~~graph~~CallGraph_node45"><a xlink:href=".././proc/put_in_cache.html" xlink:title="put_in_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="402,-226 320,-226 320,-202 402,-202 402,-226"/>
+<text text-anchor="middle" x="361" y="-211.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_in_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~put_in_cache&#45;&gt;interface~unique -->
+<g id="call~~graph~~CallGraph_edge24" class="edge">
+<title>proc~put_in_cache&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M402.04,-218.4C435.9,-222.12 483.98,-227.41 516.73,-231.01"/>
+<polygon fill="#000000" stroke="#000000" points="516.46,-234.5 526.78,-232.12 517.22,-227.55 516.46,-234.5"/>
+</g>
+<!-- proc~compute_jacobian_standard -->
+<g id="call~~graph~~CallGraph_node46" class="node">
+<title>proc~compute_jacobian_standard</title>
+<g id="a_call~~graph~~CallGraph_node46"><a xlink:href=".././proc/compute_jacobian_standard.html" xlink:title="compute_jacobian_standard">
+<polygon fill="#d9534f" stroke="#d9534f" points="207.5,-1693 44.5,-1693 44.5,-1669 207.5,-1669 207.5,-1693"/>
+<text text-anchor="middle" x="126" y="-1678.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_standard</text>
+</a>
+</g>
+</g>
+<!-- proc~get_finite_diff_formula -->
+<g id="call~~graph~~CallGraph_node47" class="node">
+<title>proc~get_finite_diff_formula</title>
+<g id="a_call~~graph~~CallGraph_node47"><a xlink:href=".././proc/get_finite_diff_formula.html" xlink:title="get_finite_diff_formula">
+<polygon fill="#d9534f" stroke="#d9534f" points="427,-391 295,-391 295,-367 427,-367 427,-391"/>
+<text text-anchor="middle" x="361" y="-376.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_diff_formula</text>
+</a>
+</g>
+</g>
+<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_formula -->
+<g id="call~~graph~~CallGraph_edge25" class="edge">
+<title>proc~get_finite_diff_formula&#45;&gt;proc~get_formula</title>
+<path fill="none" stroke="#000000" d="M427.2,-379C452.8,-379 481.65,-379 505.26,-379"/>
+<polygon fill="#000000" stroke="#000000" points="505.36,-382.5 515.36,-379 505.36,-375.5 505.36,-382.5"/>
+</g>
+<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method -->
+<g id="call~~graph~~CallGraph_edge26" class="edge">
+<title>proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M416.73,-366.96C439.11,-362.04 465.16,-356.31 488.46,-351.19"/>
+<polygon fill="#000000" stroke="#000000" points="489.24,-354.6 498.26,-349.04 487.74,-347.77 489.24,-354.6"/>
+</g>
+<!-- proc~terminate -->
+<g id="call~~graph~~CallGraph_node48" class="node">
+<title>proc~terminate</title>
+<g id="a_call~~graph~~CallGraph_node48"><a xlink:href=".././proc/terminate.html" xlink:title="terminate">
+<polygon fill="#d9534f" stroke="#d9534f" points="158.5,-1735 93.5,-1735 93.5,-1711 158.5,-1711 158.5,-1735"/>
+<text text-anchor="middle" x="126" y="-1720.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">terminate</text>
+</a>
+</g>
+</g>
+<!-- proc~fdjs -->
+<g id="call~~graph~~CallGraph_node49" class="node">
+<title>proc~fdjs</title>
+<g id="a_call~~graph~~CallGraph_node49"><a xlink:href=".././proc/fdjs.html" xlink:title="fdjs">
+<polygon fill="#d9534f" stroke="#d9534f" points="153,-1777 99,-1777 99,-1753 153,-1753 153,-1777"/>
+<text text-anchor="middle" x="126" y="-1762.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fdjs</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_with_diff -->
+<g id="call~~graph~~CallGraph_node50" class="node">
+<title>proc~compute_jacobian_with_diff</title>
+<g id="a_call~~graph~~CallGraph_node50"><a xlink:href=".././proc/compute_jacobian_with_diff.html" xlink:title="compute_jacobian_with_diff">
+<polygon fill="#d9534f" stroke="#d9534f" points="206,-1819 46,-1819 46,-1795 206,-1795 206,-1819"/>
+<text text-anchor="middle" x="126" y="-1804.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_with_diff</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_finite_difference_method -->
+<g id="call~~graph~~CallGraph_node52" class="node">
+<title>proc~initialize_finite_difference_method</title>
+<g id="a_call~~graph~~CallGraph_node52"><a xlink:href=".././proc/initialize_finite_difference_method.html" xlink:title="initialize_finite_difference_method">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1039,-349 844,-349 844,-325 1039,-325 1039,-349"/>
+<text text-anchor="middle" x="941.5" y="-334.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_finite_difference_method</text>
+</a>
+</g>
+</g>
+<!-- proc~get_from_cache -->
+<g id="call~~graph~~CallGraph_node54" class="node">
+<title>proc~get_from_cache</title>
+<g id="a_call~~graph~~CallGraph_node54"><a xlink:href=".././proc/get_from_cache.html" xlink:title="get_from_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="174.5,-1021 77.5,-1021 77.5,-997 174.5,-997 174.5,-1021"/>
+<text text-anchor="middle" x="126" y="-1006.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_from_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~get_from_cache&#45;&gt;proc~vector_djb_hash -->
+<g id="call~~graph~~CallGraph_edge27" class="edge">
+<title>proc~get_from_cache&#45;&gt;proc~vector_djb_hash</title>
+<path fill="none" stroke="#000000" d="M174.71,-1009C211.26,-1009 261.87,-1009 300.96,-1009"/>
+<polygon fill="#000000" stroke="#000000" points="301.15,-1012.5 311.15,-1009 301.15,-1005.5 301.15,-1012.5"/>
+</g>
+<!-- proc~get_error_status -->
+<g id="call~~graph~~CallGraph_node56" class="node">
+<title>proc~get_error_status</title>
+<g id="a_call~~graph~~CallGraph_node56"><a xlink:href=".././proc/get_error_status.html" xlink:title="get_error_status">
+<polygon fill="#d9534f" stroke="#d9534f" points="175,-1861 77,-1861 77,-1837 175,-1837 175,-1861"/>
+<text text-anchor="middle" x="126" y="-1846.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_error_status</text>
+</a>
+</g>
+</g>
+<!-- proc~destroy_numdiff_type -->
+<g id="call~~graph~~CallGraph_node57" class="node">
+<title>proc~destroy_numdiff_type</title>
+<g id="a_call~~graph~~CallGraph_node57"><a xlink:href=".././proc/destroy_numdiff_type.html" xlink:title="destroy_numdiff_type">
+<polygon fill="#d9534f" stroke="#d9534f" points="189.5,-1903 62.5,-1903 62.5,-1879 189.5,-1879 189.5,-1903"/>
+<text text-anchor="middle" x="126" y="-1888.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_numdiff_type</text>
+</a>
+</g>
+</g>
+<!-- proc~raise_exception -->
+<g id="call~~graph~~CallGraph_node59" class="node">
+<title>proc~raise_exception</title>
+<g id="a_call~~graph~~CallGraph_node59"><a xlink:href=".././proc/raise_exception.html" xlink:title="raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="174,-1945 78,-1945 78,-1921 174,-1921 174,-1945"/>
+<text text-anchor="middle" x="126" y="-1930.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~faccur -->
+<g id="call~~graph~~CallGraph_node60" class="node">
+<title>proc~faccur</title>
+<g id="a_call~~graph~~CallGraph_node60"><a xlink:href=".././proc/faccur.html" xlink:title="faccur">
+<polygon fill="#d9534f" stroke="#d9534f" points="153,-1987 99,-1987 99,-1963 153,-1963 153,-1987"/>
+<text text-anchor="middle" x="126" y="-1972.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">faccur</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern -->
+<g id="call~~graph~~CallGraph_node61" class="node">
+<title>proc~set_sparsity_pattern</title>
+<g id="a_call~~graph~~CallGraph_node61"><a xlink:href=".././proc/set_sparsity_pattern.html" xlink:title="set_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="185.5,-2029 66.5,-2029 66.5,-2005 185.5,-2005 185.5,-2029"/>
+<text text-anchor="middle" x="126" y="-2014.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~print_sparsity_pattern -->
+<g id="call~~graph~~CallGraph_node62" class="node">
+<title>proc~print_sparsity_pattern</title>
+<g id="a_call~~graph~~CallGraph_node62"><a xlink:href=".././proc/print_sparsity_pattern.html" xlink:title="print_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="190,-2071 62,-2071 62,-2047 190,-2047 190,-2071"/>
+<text text-anchor="middle" x="126" y="-2056.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random -->
+<g id="call~~graph~~CallGraph_node63" class="node">
+<title>proc~compute_sparsity_random</title>
+<g id="a_call~~graph~~CallGraph_node63"><a xlink:href=".././proc/compute_sparsity_random.html" xlink:title="compute_sparsity_random">
+<polygon fill="#d9534f" stroke="#d9534f" points="203,-86 49,-86 49,-62 203,-62 203,-86"/>
+<text text-anchor="middle" x="126" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;interface~expand_vector -->
+<g id="call~~graph~~CallGraph_edge31" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M203.17,-83.36C365.78,-103.35 743.62,-149.8 885.42,-167.23"/>
+<polygon fill="#000000" stroke="#000000" points="885.26,-170.74 895.61,-168.48 886.11,-163.79 885.26,-170.74"/>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;proc~equal_within_tol -->
+<g id="call~~graph~~CallGraph_edge29" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;proc~equal_within_tol</title>
+<path fill="none" stroke="#000000" d="M173.87,-86.07C211.24,-95.69 263.69,-109.2 303.4,-119.43"/>
+<polygon fill="#000000" stroke="#000000" points="302.65,-122.85 313.2,-121.95 304.39,-116.07 302.65,-122.85"/>
+</g>
+<!-- xhigh -->
+<g id="call~~graph~~CallGraph_node84" class="node">
+<title>xhigh</title>
+<polygon fill="#777777" stroke="#777777" points="388,-66 334,-66 334,-42 388,-42 388,-66"/>
+<text text-anchor="middle" x="361" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xhigh</text>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;xhigh -->
+<g id="call~~graph~~CallGraph_edge30" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;xhigh</title>
+<path fill="none" stroke="#000000" d="M203.29,-67.45C243.72,-63.98 291.5,-59.88 323.58,-57.13"/>
+<polygon fill="#000000" stroke="#000000" points="324.16,-60.59 333.83,-56.25 323.56,-53.61 324.16,-60.59"/>
+</g>
+<!-- xlow -->
+<g id="call~~graph~~CallGraph_node85" class="node">
+<title>xlow</title>
+<polygon fill="#777777" stroke="#777777" points="388,-24 334,-24 334,0 388,0 388,-24"/>
+<text text-anchor="middle" x="361" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xlow</text>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;xlow -->
+<g id="call~~graph~~CallGraph_edge28" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;xlow</title>
+<path fill="none" stroke="#000000" d="M172.2,-61.97C216.49,-50.19 283.11,-32.46 323.95,-21.59"/>
+<polygon fill="#000000" stroke="#000000" points="324.98,-24.94 333.75,-18.99 323.18,-18.17 324.98,-24.94"/>
+</g>
+<!-- proc~compute_indices -->
+<g id="call~~graph~~CallGraph_node64" class="node">
+<title>proc~compute_indices</title>
+<g id="a_call~~graph~~CallGraph_node64"><a xlink:href=".././proc/compute_indices.html" xlink:title="compute_indices">
+<polygon fill="#d9534f" stroke="#d9534f" points="177.5,-2113 74.5,-2113 74.5,-2089 177.5,-2089 177.5,-2113"/>
+<text text-anchor="middle" x="126" y="-2098.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_indices</text>
 </a>
 </g>
 </g>
 <!-- proc~resize_sparsity_vectors -->
-<g id="call~~graph~~CallGraph_node80" class="node">
+<g id="call~~graph~~CallGraph_node65" class="node">
 <title>proc~resize_sparsity_vectors</title>
-<g id="a_call~~graph~~CallGraph_node80"><a xlink:href=".././proc/resize_sparsity_vectors.html" xlink:title="resize_sparsity_vectors">
-<polygon fill="#d9534f" stroke="#d9534f" points="808,-338 674,-338 674,-314 808,-314 808,-338"/>
-<text text-anchor="middle" x="741" y="-323.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">resize_sparsity_vectors</text>
+<g id="a_call~~graph~~CallGraph_node65"><a xlink:href=".././proc/resize_sparsity_vectors.html" xlink:title="resize_sparsity_vectors">
+<polygon fill="#d9534f" stroke="#d9534f" points="808,-66 674,-66 674,-42 808,-42 808,-66"/>
+<text text-anchor="middle" x="741" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">resize_sparsity_vectors</text>
 </a>
 </g>
 </g>
 <!-- proc~resize_sparsity_vectors&#45;&gt;interface~expand_vector -->
-<g id="call~~graph~~CallGraph_edge42" class="edge">
+<g id="call~~graph~~CallGraph_edge32" class="edge">
 <title>proc~resize_sparsity_vectors&#45;&gt;interface~expand_vector</title>
-<path fill="none" stroke="#000000" d="M780.71,-338.09C790.04,-341.84 799.69,-346.48 808,-352 857.25,-384.75 902.56,-438.41 925.25,-467.57"/>
-<polygon fill="#000000" stroke="#000000" points="922.69,-469.98 931.55,-475.79 928.24,-465.72 922.69,-469.98"/>
+<path fill="none" stroke="#000000" d="M777.31,-66.1C787.45,-70.05 798.36,-74.78 808,-80 849,-102.2 892.3,-134.92 917.83,-155.33"/>
+<polygon fill="#000000" stroke="#000000" points="915.8,-158.18 925.78,-161.74 920.2,-152.73 915.8,-158.18"/>
+</g>
+<!-- proc~compute_perturb_vector -->
+<g id="call~~graph~~CallGraph_node66" class="node">
+<title>proc~compute_perturb_vector</title>
+<g id="a_call~~graph~~CallGraph_node66"><a xlink:href=".././proc/compute_perturb_vector.html" xlink:title="compute_perturb_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="198,-2155 54,-2155 54,-2131 198,-2131 198,-2155"/>
+<text text-anchor="middle" x="126" y="-2140.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_perturb_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~destroy_sparsity_pattern -->
+<g id="call~~graph~~CallGraph_node67" class="node">
+<title>proc~destroy_sparsity_pattern</title>
+<g id="a_call~~graph~~CallGraph_node67"><a xlink:href=".././proc/destroy_sparsity_pattern.html" xlink:title="destroy_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="197,-2197 55,-2197 55,-2173 197,-2173 197,-2197"/>
+<text text-anchor="middle" x="126" y="-2182.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_sparsity_pattern</text>
+</a>
+</g>
 </g>
 <!-- proc~get_sparsity_pattern -->
-<g id="call~~graph~~CallGraph_node81" class="node">
+<g id="call~~graph~~CallGraph_node69" class="node">
 <title>proc~get_sparsity_pattern</title>
-<g id="a_call~~graph~~CallGraph_node81"><a xlink:href=".././proc/get_sparsity_pattern.html" xlink:title="get_sparsity_pattern">
-<polygon fill="#d9534f" stroke="#d9534f" points="186.5,-2429 65.5,-2429 65.5,-2405 186.5,-2405 186.5,-2429"/>
-<text text-anchor="middle" x="126" y="-2414.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_sparsity_pattern</text>
+<g id="a_call~~graph~~CallGraph_node69"><a xlink:href=".././proc/get_sparsity_pattern.html" xlink:title="get_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="186.5,-2239 65.5,-2239 65.5,-2215 186.5,-2215 186.5,-2239"/>
+<text text-anchor="middle" x="126" y="-2224.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="call~~graph~~CallGraph_edge33" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M778.79,-245.72C788.43,-242.64 798.73,-239 808,-235 824.8,-227.74 827.55,-223.03 844,-215 862.22,-206.1 882.85,-197.18 900.34,-189.95"/>
+<polygon fill="#000000" stroke="#000000" points="901.78,-193.15 909.71,-186.12 899.13,-186.67 901.78,-193.15"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="call~~graph~~CallGraph_edge34" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M778.87,-252.29C808.54,-249.3 850.72,-245.05 884.55,-241.64"/>
+<polygon fill="#000000" stroke="#000000" points="885.15,-245.09 894.75,-240.61 884.45,-238.13 885.15,-245.09"/>
+</g>
+<!-- proc~generate_dense_sparsity_partition -->
+<g id="call~~graph~~CallGraph_node71" class="node">
+<title>proc~generate_dense_sparsity_partition</title>
+<g id="a_call~~graph~~CallGraph_node71"><a xlink:href=".././proc/generate_dense_sparsity_partition.html" xlink:title="generate_dense_sparsity_partition">
+<polygon fill="#d9534f" stroke="#d9534f" points="224,-2281 28,-2281 28,-2257 224,-2257 224,-2281"/>
+<text text-anchor="middle" x="126" y="-2266.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">generate_dense_sparsity_partition</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff -->
+<g id="call~~graph~~CallGraph_node72" class="node">
+<title>proc~initialize_numdiff</title>
+<g id="a_call~~graph~~CallGraph_node72"><a xlink:href=".././proc/initialize_numdiff.html" xlink:title="initialize_numdiff">
+<polygon fill="#d9534f" stroke="#d9534f" points="177.5,-330 74.5,-330 74.5,-306 177.5,-306 177.5,-330"/>
+<text text-anchor="middle" x="126" y="-315.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_numdiff</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class -->
+<g id="call~~graph~~CallGraph_edge35" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M177.56,-313.66C206.79,-311.15 244.28,-307.93 277.67,-305.07"/>
+<polygon fill="#000000" stroke="#000000" points="278.22,-308.53 287.88,-304.19 277.62,-301.56 278.22,-308.53"/>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method -->
+<g id="call~~graph~~CallGraph_edge36" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M177.54,-320.25C246.97,-323.35 373.1,-328.98 459.88,-332.85"/>
+<polygon fill="#000000" stroke="#000000" points="459.85,-336.35 469.99,-333.3 460.16,-329.36 459.85,-336.35"/>
+</g>
+<!-- interface~finite_diff_method -->
+<g id="call~~graph~~CallGraph_node81" class="node">
+<title>interface~finite_diff_method</title>
+<g id="a_call~~graph~~CallGraph_node81"><a xlink:href=".././interface/finite_diff_method.html" xlink:title="finite_diff_method">
+<polygon fill="#a7506f" stroke="#a7506f" points="795.5,-349 686.5,-349 686.5,-325 795.5,-325 795.5,-349"/>
+<text text-anchor="middle" x="741" y="-334.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_method</text>
+</a>
+</g>
+</g>
+<!-- proc~get_finite_difference_method&#45;&gt;interface~finite_diff_method -->
+<g id="call~~graph~~CallGraph_edge37" class="edge">
+<title>proc~get_finite_difference_method&#45;&gt;interface~finite_diff_method</title>
+<path fill="none" stroke="#000000" d="M638.03,-337C650.86,-337 663.94,-337 676.26,-337"/>
+<polygon fill="#000000" stroke="#000000" points="676.41,-340.5 686.41,-337 676.41,-333.5 676.41,-340.5"/>
+</g>
+<!-- proc~destroy_sparsity -->
+<g id="call~~graph~~CallGraph_node74" class="node">
+<title>proc~destroy_sparsity</title>
+<g id="a_call~~graph~~CallGraph_node74"><a xlink:href=".././proc/destroy_sparsity.html" xlink:title="destroy_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="175,-2323 77,-2323 77,-2299 175,-2299 175,-2323"/>
+<text text-anchor="middle" x="126" y="-2308.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy_sparsity</text>
 </a>
 </g>
 </g>
 <!-- proc~compute_sparsity_dense -->
-<g id="call~~graph~~CallGraph_node83" class="node">
+<g id="call~~graph~~CallGraph_node75" class="node">
 <title>proc~compute_sparsity_dense</title>
-<g id="a_call~~graph~~CallGraph_node83"><a xlink:href=".././proc/compute_sparsity_dense.html" xlink:title="compute_sparsity_dense">
-<polygon fill="#d9534f" stroke="#d9534f" points="198,-2471 54,-2471 54,-2447 198,-2447 198,-2471"/>
-<text text-anchor="middle" x="126" y="-2456.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_dense</text>
+<g id="a_call~~graph~~CallGraph_node75"><a xlink:href=".././proc/compute_sparsity_dense.html" xlink:title="compute_sparsity_dense">
+<polygon fill="#d9534f" stroke="#d9534f" points="198,-2365 54,-2365 54,-2341 198,-2341 198,-2365"/>
+<text text-anchor="middle" x="126" y="-2350.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_dense</text>
 </a>
 </g>
+</g>
+<!-- proc~dsm_wrapper -->
+<g id="call~~graph~~CallGraph_node76" class="node">
+<title>proc~dsm_wrapper</title>
+<g id="a_call~~graph~~CallGraph_node76"><a xlink:href=".././proc/dsm_wrapper.html" xlink:title="dsm_wrapper">
+<polygon fill="#d9534f" stroke="#d9534f" points="168.5,-601 83.5,-601 83.5,-577 168.5,-577 168.5,-601"/>
+<text text-anchor="middle" x="126" y="-586.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm_wrapper</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
+<g id="call~~graph~~CallGraph_edge38" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
+<path fill="none" stroke="#000000" d="M168.66,-589C212.82,-589 281.87,-589 323.83,-589"/>
+<polygon fill="#000000" stroke="#000000" points="323.88,-592.5 333.88,-589 323.88,-585.5 323.88,-592.5"/>
+</g>
+<!-- proc~ido&#45;&gt;proc~numsrt -->
+<g id="call~~graph~~CallGraph_edge39" class="edge">
+<title>proc~ido&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M581.06,-465.88C598.14,-468.63 620.47,-473.93 638,-484 675.14,-505.34 707.78,-543.96 725.62,-567.66"/>
+<polygon fill="#000000" stroke="#000000" points="722.97,-569.96 731.71,-575.94 728.61,-565.81 722.97,-569.96"/>
+</g>
+<!-- proc~set_numdiff_sparsity_bounds -->
+<g id="call~~graph~~CallGraph_node79" class="node">
+<title>proc~set_numdiff_sparsity_bounds</title>
+<g id="a_call~~graph~~CallGraph_node79"><a xlink:href=".././proc/set_numdiff_sparsity_bounds.html" xlink:title="set_numdiff_sparsity_bounds">
+<polygon fill="#d9534f" stroke="#d9534f" points="209,-2407 43,-2407 43,-2383 209,-2383 209,-2407"/>
+<text text-anchor="middle" x="126" y="-2392.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_numdiff_sparsity_bounds</text>
+</a>
+</g>
+</g>
+<!-- proc~failed -->
+<g id="call~~graph~~CallGraph_node80" class="node">
+<title>proc~failed</title>
+<g id="a_call~~graph~~CallGraph_node80"><a xlink:href=".././proc/failed.html" xlink:title="failed">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="153,-2449 99,-2449 99,-2425 153,-2425 153,-2449"/>
+<text text-anchor="middle" x="126" y="-2434.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">failed</text>
+</a>
+</g>
+</g>
+<!-- interface~finite_diff_method&#45;&gt;proc~initialize_finite_difference_method -->
+<g id="call~~graph~~CallGraph_edge40" class="edge">
+<title>interface~finite_diff_method&#45;&gt;proc~initialize_finite_difference_method</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M795.72,-337C807.61,-337 820.62,-337 833.8,-337"/>
+<polygon fill="#000000" stroke="#000000" points="833.91,-340.5 843.91,-337 833.91,-333.5 833.91,-340.5"/>
+</g>
+<!-- proc~clear_exceptions -->
+<g id="call~~graph~~CallGraph_node82" class="node">
+<title>proc~clear_exceptions</title>
+<g id="a_call~~graph~~CallGraph_node82"><a xlink:href=".././proc/clear_exceptions.html" xlink:title="clear_exceptions">
+<polygon fill="#d9534f" stroke="#d9534f" points="177,-2491 75,-2491 75,-2467 177,-2467 177,-2491"/>
+<text text-anchor="middle" x="126" y="-2476.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">clear_exceptions</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="call~~graph~~CallGraph_edge41" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M775.22,-207.3C805.36,-201.23 850.36,-192.16 885.8,-185.02"/>
+<polygon fill="#000000" stroke="#000000" points="886.88,-188.38 895.99,-182.97 885.49,-181.51 886.88,-188.38"/>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="call~~graph~~CallGraph_edge42" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M775.22,-217.68C805.06,-220.99 849.46,-225.91 884.73,-229.82"/>
+<polygon fill="#000000" stroke="#000000" points="884.56,-233.32 894.89,-230.94 885.33,-226.36 884.56,-233.32"/>
 </g>
 </g>
 </svg>

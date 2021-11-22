@@ -220,8 +220,8 @@ private subroutine perturb_x_and_compute_f_partitioned(me, x, dx_factor, dx, df_
 
     
     <p>Perturb the specified optimization variable, and compute the function.
-  This routine is designed so that <code>df</code> is accumulated as each function
-  evaluation is done, to avoid having to allocate more temporary storage.</p>
+This routine is designed so that <code>df</code> is accumulated as each function
+evaluation is done, to avoid having to allocate more temporary storage.</p>
     
 
     <h3>Arguments</h3>
@@ -338,8 +338,8 @@ private subroutine perturb_x_and_compute_f_partitioned(me, x, dx_factor, dx, df_
   
   <td>dimension(:)</td><td>::</td>
   <td><strong>idx</strong></td><td><p>the elements in this
- column of the Jacobian
- to compute (passed to function)</p></td>
+column of the Jacobian
+to compute (passed to function)</p></td>
   
 </tr>
 
@@ -355,8 +355,8 @@ private subroutine perturb_x_and_compute_f_partitioned(me, x, dx_factor, dx, df_
   
   <td>dimension(me%m)</td><td>::</td>
   <td><strong>df</strong></td><td><p>the accumulated function value
- note: for the first call, this
- should be set to zero</p></td>
+note: for the first call, this
+should be set to zero</p></td>
   
 </tr>
 

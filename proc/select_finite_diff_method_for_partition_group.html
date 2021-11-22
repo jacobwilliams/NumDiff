@@ -220,7 +220,7 @@ private subroutine select_finite_diff_method_for_partition_group(me, x, xlow, xh
 
     
     <p>Select a finite diff method of a given <code>class</code> so that the perturbations
-  of <code>x</code> will not violate the variable bounds for any variable in the group.</p>
+of <code>x</code> will not violate the variable bounds for any variable in the group.</p>
 <p>The <code>x</code> vector are only the variables in a group (not the full variable vector)</p>
     
 
@@ -353,9 +353,9 @@ private subroutine select_finite_diff_method_for_partition_group(me, x, xlow, xh
   
   <td></td><td>::</td>
   <td><strong>status_ok</strong></td><td><p>true if it really doesn't violate the bounds
- (say, the bounds are very close to each other)
- if <code>status_ok=False</code>, then the first method in
- the given class is returned in <code>fd</code>.</p></td>
+(say, the bounds are very close to each other)
+if <code>status_ok=False</code>, then the first method in
+the given class is returned in <code>fd</code>.</p></td>
   
 </tr>
 

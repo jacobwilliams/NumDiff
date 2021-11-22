@@ -220,7 +220,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
 
     
     <p>Alternate version of <a href="../proc/initialize_numdiff.html">initialize_numdiff</a> routine when
-  using <a href="../proc/diff.html">diff</a> to compute the Jacobian.</p>
+using <a href="../proc/diff.html">diff</a> to compute the Jacobian.</p>
     
 
     <h3>Arguments</h3>
@@ -256,7 +256,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~12"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -271,7 +271,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~7"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -322,7 +322,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>problem_func</strong></td><td><p>the user function that defines the problem
- (returns <code>m</code> functions)</p></td>
+(returns <code>m</code> functions)</p></td>
   
 </tr>
 
@@ -339,11 +339,11 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   <td></td><td>::</td>
   <td><strong>sparsity_mode</strong></td><td><p>the sparsity computation method:</p>
 <p><strong>1</strong> - assume dense,
- <strong>2</strong> - three-point simple method,
- <strong>3</strong> - will be specified by the user in
- a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
- <strong>4</strong> - computes a two-point jacobian
- at <code>num_sparsity_points</code> points.</p></td>
+<strong>2</strong> - three-point simple method,
+<strong>3</strong> - will be specified by the user in
+a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
+<strong>4</strong> - computes a two-point jacobian
+at <code>num_sparsity_points</code> points.</p></td>
   
 </tr>
 
@@ -353,16 +353,16 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
 <tr>
   
-  <td><span class="anchor" id="variable-info"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
+  <td><span class="anchor" id="variable-info~2"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
   <td></td>
   <td>optional</td>
   
   <td></td><td>::</td>
   <td><strong>info</strong></td><td><p>a function the user can define
- which is called when each column
- of the jacobian is computed.
- It can be used to perform any
- setup operations.</p></td>
+which is called when each column
+of the jacobian is computed.
+It can be used to perform any
+setup operations.</p></td>
   
 </tr>
 
@@ -378,7 +378,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>chunk_size</strong></td><td><p>chunk size for allocating the arrays
- (must be &gt;0) [default is 100]</p></td>
+(must be &gt;0) [default is 100]</p></td>
   
 </tr>
 
@@ -394,7 +394,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>eps</strong></td><td><p>tolerance parameter for <a href="../proc/diff.html">diff</a>
- if not present, default is <code>1.0e-9_wp</code></p></td>
+if not present, default is <code>1.0e-9_wp</code></p></td>
   
 </tr>
 
@@ -410,7 +410,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>acc</strong></td><td><p>tolerance parameter for <a href="../proc/diff.html">diff</a>
- if not present, default is <code>0.0_wp</code></p></td>
+if not present, default is <code>0.0_wp</code></p></td>
   
 </tr>
 
@@ -426,8 +426,8 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>cache_size</strong></td><td><p>if present, this is the cache size
- for the function cache
- (default is not to enable cache)</p></td>
+for the function cache
+(default is not to enable cache)</p></td>
   
 </tr>
 
@@ -443,9 +443,9 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>xlow_for_sparsity</strong></td><td><p>lower bounds on <code>x</code> used for
- sparsity computation (when
- <code>sparsity_mode</code> is 2). If not
- present, then <code>xlow</code> is used.</p></td>
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xlow</code> is used.</p></td>
   
 </tr>
 
@@ -461,9 +461,9 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>xhigh_for_sparsity</strong></td><td><p>upper bounds on <code>x</code> used for
- sparsity computation (when
- <code>sparsity_mode</code> is 2). If not
- present, then <code>xhigh</code> is used.</p></td>
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xhigh</code> is used.</p></td>
   
 </tr>
 
@@ -495,8 +495,8 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   <td></td><td>::</td>
   <td><strong>sparsity_perturb_mode</strong></td><td><p>perturbation mode (required if <code>sparsity_mode=4</code>):</p>
 <p><strong>1</strong> - perturbation is <code>dx=dpert</code>,
- <strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
- <strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p></td>
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p></td>
   
 </tr>
 
@@ -512,7 +512,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>linear_sparsity_tol</strong></td><td><p>the equality tolerance for derivatives to
- indicate a constant jacobian element (linear sparsity)</p></td>
+indicate a constant jacobian element (linear sparsity)</p></td>
   
 </tr>
 
@@ -528,10 +528,10 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>function_precision_tol</strong></td><td><p>the function precision. two functions values
- that are the within this tolerance are
- considered the same value. This is used
- when estimating the sparsity pattern when
- <code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a></p></td>
+that are the within this tolerance are
+considered the same value. This is used
+when estimating the sparsity pattern when
+<code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a></p></td>
   
 </tr>
 
@@ -547,7 +547,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>num_sparsity_points</strong></td><td><p>for <code>sparsity_mode=4</code>, the number of jacobian
- evaluations used to estimate the sparsity pattern.</p></td>
+evaluations used to estimate the sparsity pattern.</p></td>
   
 </tr>
 
@@ -563,7 +563,7 @@ private subroutine initialize_numdiff_for_diff(me, n, m, xlow, xhigh, problem_fu
   
   <td></td><td>::</td>
   <td><strong>print_messages</strong></td><td><p>if true, print error messages to <code>error_unit</code>.
- default is True.</p></td>
+default is True.</p></td>
   
 </tr>
 

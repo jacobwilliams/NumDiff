@@ -220,14 +220,14 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
 
     
     <p>the procedure <code>diff</code> calculates the first, second or
-  third order derivative of a function by using neville's process to
-  extrapolate from a sequence of simple polynomial approximations based on
-  interpolating points distributed symmetrically about <code>x0</code> (or lying only on
-  one side of <code>x0</code> should this be necessary).  if the specified tolerance is
-  non-zero then the procedure attempts to satisfy this absolute or relative
-  accuracy requirement, while if it is unsuccessful or if the tolerance is
-  set to zero then the result having the minimum achievable estimated error
-  is returned instead.</p>
+third order derivative of a function by using neville's process to
+extrapolate from a sequence of simple polynomial approximations based on
+interpolating points distributed symmetrically about <code>x0</code> (or lying only on
+one side of <code>x0</code> should this be necessary).  if the specified tolerance is
+non-zero then the procedure attempts to satisfy this absolute or relative
+accuracy requirement, while if it is unsuccessful or if the tolerance is
+set to zero then the result having the minimum achievable estimated error
+is returned instead.</p>
     
 
     <h3>Arguments</h3>
@@ -269,7 +269,7 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>iord</strong></td><td><p>1, 2 or 3 specifies that the first, second or third order
- derivative,respectively, is required.</p></td>
+derivative,respectively, is required.</p></td>
   
 </tr>
 
@@ -300,8 +300,8 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>xmin</strong></td><td><p><code>xmin</code>, <code>xmax</code> restrict the interpolating points to lie in [<code>xmin</code>, <code>xmax</code>], which
- should be the largest interval including <code>x0</code> in which the function is
- calculable and continuous.</p></td>
+should be the largest interval including <code>x0</code> in which the function is
+calculable and continuous.</p></td>
   
 </tr>
 
@@ -317,8 +317,8 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>xmax</strong></td><td><p><code>xmin</code>, <code>xmax</code> restrict the interpolating points to lie in [<code>xmin</code>, <code>xmax</code>], which
- should be the largest interval including <code>x0</code> in which the function is
- calculable and continuous.</p></td>
+should be the largest interval including <code>x0</code> in which the function is
+calculable and continuous.</p></td>
   
 </tr>
 
@@ -334,11 +334,11 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>eps</strong></td><td><p>denotes the tolerance, either absolute or relative. <code>eps=0</code> specifies that
- the error is to be minimised, while <code>eps&gt;0</code> or <code>eps&lt;0</code> specifies that the
- absolute or relative error, respectively, must not exceed <code>abs(eps)</code> if
- possible.  the accuracy requirement should not be made stricter than
- necessary, since the amount of computation tends to increase as
- the magnitude of <code>eps</code> decreases, and is particularly high when <code>eps=0</code>.</p></td>
+the error is to be minimised, while <code>eps&gt;0</code> or <code>eps&lt;0</code> specifies that the
+absolute or relative error, respectively, must not exceed <code>abs(eps)</code> if
+possible.  the accuracy requirement should not be made stricter than
+necessary, since the amount of computation tends to increase as
+the magnitude of <code>eps</code> decreases, and is particularly high when <code>eps=0</code>.</p></td>
   
 </tr>
 
@@ -354,9 +354,9 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>accr</strong></td><td><p>denotes that the absolute (<code>accr&gt;0</code>) or relative (<code>accr&lt;0</code>) errors in the
- computed values of the function are most unlikely to exceed <code>abs(accr)</code>, which
- should be as small as possible.  if the user cannot estimate <code>accr</code> with
- complete confidence, then it should be set to zero.</p></td>
+computed values of the function are most unlikely to exceed <code>abs(accr)</code>, which
+should be as small as possible.  if the user cannot estimate <code>accr</code> with
+complete confidence, then it should be set to zero.</p></td>
   
 </tr>
 
@@ -387,9 +387,9 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>error</strong></td><td><p>an estimated upper bound on the magnitude of the absolute error in
- the calculated result.  it should always be examined, since in extreme case
- may indicate that there are no correct significant digits in the value
- returned for derivative.</p></td>
+the calculated result.  it should always be examined, since in extreme case
+may indicate that there are no correct significant digits in the value
+returned for derivative.</p></td>
   
 </tr>
 
@@ -405,13 +405,13 @@ private subroutine diff(me, iord, x0, xmin, xmax, eps, accr, deriv, error, ifail
   
   <td></td><td>::</td>
   <td><strong>ifail</strong></td><td><p>will have one of the following values on exit:
-  <em>0</em> the procedure was successful.
-  <em>1</em> the estimated error in the result exceeds the (non-zero) requested
-      error, but the most accurate result possible has been returned.
-  <em>2</em> input data incorrect (derivative and error will be undefined).
-  <em>3</em> the interval [<code>xmin</code>, <code>xmax</code>] is too small (derivative and error will be
-      undefined).
-  <em>-1</em> stopped by the user.</p></td>
+ <em>0</em> the procedure was successful.
+ <em>1</em> the estimated error in the result exceeds the (non-zero) requested
+     error, but the most accurate result possible has been returned.
+ <em>2</em> input data incorrect (derivative and error will be undefined).
+ <em>3</em> the interval [<code>xmin</code>, <code>xmax</code>] is too small (derivative and error will be
+     undefined).
+ <em>-1</em> stopped by the user.</p></td>
   
 </tr>
 

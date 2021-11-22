@@ -220,17 +220,17 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
 
     
     <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines an incidence-degree ordering of the
-  columns of <code>a</code>.</p>
+subroutine determines an incidence-degree ordering of the
+columns of <code>a</code>.</p>
 <p>the incidence-degree ordering is defined for the loopless
-  graph <code>g</code> with vertices <code>a(j), j = 1,2,...,n</code> where <code>a(j)</code> is the
-  <code>j</code>-th column of <code>a</code> and with edge <code>(a(i),a(j))</code> if and only if
-  columns <code>i</code> and <code>j</code> have a non-zero in the same row position.</p>
+graph <code>g</code> with vertices <code>a(j), j = 1,2,...,n</code> where <code>a(j)</code> is the
+<code>j</code>-th column of <code>a</code> and with edge <code>(a(i),a(j))</code> if and only if
+columns <code>i</code> and <code>j</code> have a non-zero in the same row position.</p>
 <p>the incidence-degree ordering is determined recursively by
-  letting <code>list(k), k = 1,...,n</code> be a column with maximal
-  incidence to the subgraph spanned by the ordered columns.
-  among all the columns of maximal incidence, <code>ido</code> chooses a
-  column of maximal degree.</p>
+letting <code>list(k), k = 1,...,n</code> be a column with maximal
+incidence to the subgraph spanned by the ordered columns.
+among all the columns of maximal incidence, <code>ido</code> chooses a
+column of maximal degree.</p>
     
 
     <h3>Arguments</h3>
@@ -251,13 +251,13 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~8"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~4"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
- of rows of <code>a</code>.</p></td>
+of rows of <code>a</code>.</p></td>
   
 </tr>
 
@@ -267,13 +267,13 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~11"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~5"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -289,7 +289,7 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -305,11 +305,11 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -325,7 +325,7 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer input array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -341,11 +341,11 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td>dimension(m+1)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -361,8 +361,8 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Ndeg</strong></td><td><p>an integer input array of length <code>n</code> which specifies
- the degree sequence. the degree of the <code>j</code>-th column
- of <code>a</code> is <code>ndeg(j)</code>.</p></td>
+the degree sequence. the degree of the <code>j</code>-th column
+of <code>a</code> is <code>ndeg(j)</code>.</p></td>
   
 </tr>
 
@@ -378,8 +378,8 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>List</strong></td><td><p>an integer output array of length <code>n</code> which specifies
- the incidence-degree ordering of the columns of <code>a</code>. the <code>j</code>-th
- column in this order is <code>list(j)</code>.</p></td>
+the incidence-degree ordering of the columns of <code>a</code>. the <code>j</code>-th
+column in this order is <code>list(j)</code>.</p></td>
   
 </tr>
 
@@ -395,7 +395,7 @@ private subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, I
   
   <td></td><td>::</td>
   <td><strong>Maxclq</strong></td><td><p>an integer output variable set to the size
- of the largest clique found during the ordering.</p></td>
+of the largest clique found during the ordering.</p></td>
   
 </tr>
 

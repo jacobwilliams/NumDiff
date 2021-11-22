@@ -254,7 +254,7 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~12"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~6"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -290,9 +290,9 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Num</strong></td><td><p>an input array of length <code>n</code> which contains the
- sequence of integers to be grouped and sorted. it
- is assumed that the integers are each from the set
- <code>0,1,...,nmax</code>.</p></td>
+sequence of integers to be grouped and sorted. it
+is assumed that the integers are each from the set
+<code>0,1,...,nmax</code>.</p></td>
   
 </tr>
 
@@ -308,9 +308,9 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
   
   <td></td><td>::</td>
   <td><strong>Mode</strong></td><td><p>an integer input variable. the sequence <code>num</code> is
- sorted in ascending order if <code>mode</code> is positive and in
- descending order if <code>mode</code> is negative. if <code>mode</code> is 0,
- no sorting is done.</p></td>
+sorted in ascending order if <code>mode</code> is positive and in
+descending order if <code>mode</code> is negative. if <code>mode</code> is 0,
+no sorting is done.</p></td>
   
 </tr>
 
@@ -326,10 +326,10 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Index</strong></td><td><p>an integer output array of length <code>n</code> set so
- that the sequence
- <code>num(index(i)), i = 1,2,...,n</code>
- is sorted according to the setting of mode.
- if <code>mode</code> is 0, <code>index</code> is not referenced.</p></td>
+that the sequence
+<code>num(index(i)), i = 1,2,...,n</code>
+is sorted according to the setting of mode.
+if <code>mode</code> is 0, <code>index</code> is not referenced.</p></td>
   
 </tr>
 
@@ -345,9 +345,9 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
   
   <td>dimension(0:Nmax)</td><td>::</td>
   <td><strong>Last</strong></td><td><p>an integer output array of length <code>nmax + 1</code>. the
- index of <code>num</code> for the last occurrence of <code>l</code> is <code>last(l)</code>
- for any <code>l = 0,1,...,nmax</code> unless <code>last(l) = 0</code>. in
- this case <code>l</code> does not appear in <code>num</code>.</p></td>
+index of <code>num</code> for the last occurrence of <code>l</code> is <code>last(l)</code>
+for any <code>l = 0,1,...,nmax</code> unless <code>last(l) = 0</code>. in
+this case <code>l</code> does not appear in <code>num</code>.</p></td>
   
 </tr>
 
@@ -363,10 +363,10 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Next</strong></td><td><p>an integer output array of length <code>n</code>. if
- <code>num(k) = l</code>, then the index of <code>num</code> for the previous
- occurrence of <code>l</code> is <code>next(k)</code> for any <code>l = 0,1,...,nmax</code>
- unless <code>next(k) = 0</code>. in this case there is no previous
- occurrence of <code>l</code> in <code>num</code>.</p></td>
+<code>num(k) = l</code>, then the index of <code>num</code> for the previous
+occurrence of <code>l</code> is <code>next(k)</code> for any <code>l = 0,1,...,nmax</code>
+unless <code>next(k) = 0</code>. in this case there is no previous
+occurrence of <code>l</code> in <code>num</code>.</p></td>
   
 </tr>
 
@@ -402,41 +402,41 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
 <polygon fill="none" stroke="black" points="355,-44 301,-44 301,-20 355,-20 355,-44"/>
 <text text-anchor="middle" x="328" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50">numsrt</text>
 </g>
-<!-- proc~ido -->
-<g id="proc~~numsrt~~CalledByGraph_node2" class="node">
-<title>proc~ido</title>
-<g id="a_proc~~numsrt~~CalledByGraph_node2"><a xlink:href=".././proc/ido.html" xlink:title="ido">
-<polygon fill="#d9534f" stroke="#d9534f" points="265,-24 211,-24 211,0 265,0 265,-24"/>
-<text text-anchor="middle" x="238" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
-</a>
-</g>
-</g>
-<!-- proc~ido&#45;&gt;proc~numsrt -->
-<g id="proc~~numsrt~~CalledByGraph_edge1" class="edge">
-<title>proc~ido&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M265.4,-18C273.48,-19.84 282.51,-21.89 291.1,-23.84"/>
-<polygon fill="#000000" stroke="#000000" points="290.39,-27.27 300.92,-26.07 291.94,-20.44 290.39,-27.27"/>
-</g>
 <!-- proc~dsm -->
-<g id="proc~~numsrt~~CalledByGraph_node3" class="node">
+<g id="proc~~numsrt~~CalledByGraph_node2" class="node">
 <title>proc~dsm</title>
-<g id="a_proc~~numsrt~~CalledByGraph_node3"><a xlink:href=".././proc/dsm.html" xlink:title="dsm">
+<g id="a_proc~~numsrt~~CalledByGraph_node2"><a xlink:href=".././proc/dsm.html" xlink:title="dsm">
 <polygon fill="#d9534f" stroke="#d9534f" points="175,-44 121,-44 121,-20 175,-20 175,-44"/>
 <text text-anchor="middle" x="148" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~numsrt -->
-<g id="proc~~numsrt~~CalledByGraph_edge2" class="edge">
+<g id="proc~~numsrt~~CalledByGraph_edge1" class="edge">
 <title>proc~dsm&#45;&gt;proc~numsrt</title>
 <path fill="none" stroke="#000000" d="M175.24,-32.52C186.28,-32.71 199.27,-32.91 211,-33 235,-33.19 241,-33.19 265,-33 273.25,-32.93 282.12,-32.82 290.49,-32.69"/>
 <polygon fill="#000000" stroke="#000000" points="290.81,-36.18 300.76,-32.52 290.7,-29.18 290.81,-36.18"/>
 </g>
+<!-- proc~ido -->
+<g id="proc~~numsrt~~CalledByGraph_node3" class="node">
+<title>proc~ido</title>
+<g id="a_proc~~numsrt~~CalledByGraph_node3"><a xlink:href=".././proc/ido.html" xlink:title="ido">
+<polygon fill="#d9534f" stroke="#d9534f" points="265,-24 211,-24 211,0 265,0 265,-24"/>
+<text text-anchor="middle" x="238" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+</a>
+</g>
+</g>
 <!-- proc~dsm&#45;&gt;proc~ido -->
-<g id="proc~~numsrt~~CalledByGraph_edge3" class="edge">
+<g id="proc~~numsrt~~CalledByGraph_edge4" class="edge">
 <title>proc~dsm&#45;&gt;proc~ido</title>
 <path fill="none" stroke="#000000" d="M175.4,-26C183.48,-24.16 192.51,-22.11 201.1,-20.16"/>
 <polygon fill="#000000" stroke="#000000" points="201.94,-23.56 210.92,-17.93 200.39,-16.73 201.94,-23.56"/>
+</g>
+<!-- proc~ido&#45;&gt;proc~numsrt -->
+<g id="proc~~numsrt~~CalledByGraph_edge2" class="edge">
+<title>proc~ido&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M265.4,-18C273.48,-19.84 282.51,-21.89 291.1,-23.84"/>
+<polygon fill="#000000" stroke="#000000" points="290.39,-27.27 300.92,-26.07 291.94,-20.44 290.39,-27.27"/>
 </g>
 <!-- proc~dsm_wrapper -->
 <g id="proc~~numsrt~~CalledByGraph_node4" class="node">
@@ -448,7 +448,7 @@ private subroutine numsrt(n, Nmax, Num, Mode, Index, Last, Next)
 </g>
 </g>
 <!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
-<g id="proc~~numsrt~~CalledByGraph_edge4" class="edge">
+<g id="proc~~numsrt~~CalledByGraph_edge3" class="edge">
 <title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
 <path fill="none" stroke="#000000" d="M85,-32C93.54,-32 102.47,-32 110.81,-32"/>
 <polygon fill="#000000" stroke="#000000" points="110.97,-35.5 120.97,-32 110.97,-28.5 110.97,-35.5"/>

@@ -431,41 +431,41 @@
 <polygon fill="none" stroke="black" points="143,-44 0,-44 0,-20 143,-20 143,-44"/>
 <text text-anchor="middle" x="71.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_utilities_module</text>
 </g>
-<!-- module~numdiff_cache_module -->
-<g id="module~~numdiff_utilities_module~~UsedByGraph_node2" class="node">
-<title>module~numdiff_cache_module</title>
-<g id="a_module~~numdiff_utilities_module~~UsedByGraph_node2"><a xlink:href=".././module/numdiff_cache_module.html" xlink:title="numdiff_cache_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="316,-24 179,-24 179,0 316,0 316,-24"/>
-<text text-anchor="middle" x="247.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_cache_module</text>
-</a>
-</g>
-</g>
-<!-- module~numdiff_cache_module&#45;&gt;module~numdiff_utilities_module -->
-<g id="module~~numdiff_utilities_module~~UsedByGraph_edge1" class="edge">
-<title>module~numdiff_cache_module&#45;&gt;module~numdiff_utilities_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M178.73,-19.79C170.36,-20.75 161.74,-21.74 153.21,-22.72"/>
-<polygon fill="#000000" stroke="#000000" points="152.78,-19.25 143.25,-23.87 153.58,-26.2 152.78,-19.25"/>
-</g>
 <!-- module~numerical_differentiation_module -->
-<g id="module~~numdiff_utilities_module~~UsedByGraph_node3" class="node">
+<g id="module~~numdiff_utilities_module~~UsedByGraph_node2" class="node">
 <title>module~numerical_differentiation_module</title>
-<g id="a_module~~numdiff_utilities_module~~UsedByGraph_node3"><a xlink:href=".././module/numerical_differentiation_module.html" xlink:title="numerical_differentiation_module">
+<g id="a_module~~numdiff_utilities_module~~UsedByGraph_node2"><a xlink:href=".././module/numerical_differentiation_module.html" xlink:title="numerical_differentiation_module">
 <polygon fill="#337ab7" stroke="#337ab7" points="545,-44 352,-44 352,-20 545,-20 545,-44"/>
 <text text-anchor="middle" x="448.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numerical_differentiation_module</text>
 </a>
 </g>
 </g>
 <!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_utilities_module -->
-<g id="module~~numdiff_utilities_module~~UsedByGraph_edge2" class="edge">
+<g id="module~~numdiff_utilities_module~~UsedByGraph_edge1" class="edge">
 <title>module~numerical_differentiation_module&#45;&gt;module~numdiff_utilities_module</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M351.98,-32.81C339.87,-32.89 327.64,-32.96 316,-33 255.11,-33.23 239.89,-33.29 179,-33 170.69,-32.96 162.02,-32.9 153.37,-32.84"/>
 <polygon fill="#000000" stroke="#000000" points="153.28,-29.34 143.25,-32.76 153.22,-36.34 153.28,-29.34"/>
+</g>
+<!-- module~numdiff_cache_module -->
+<g id="module~~numdiff_utilities_module~~UsedByGraph_node3" class="node">
+<title>module~numdiff_cache_module</title>
+<g id="a_module~~numdiff_utilities_module~~UsedByGraph_node3"><a xlink:href=".././module/numdiff_cache_module.html" xlink:title="numdiff_cache_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="316,-24 179,-24 179,0 316,0 316,-24"/>
+<text text-anchor="middle" x="247.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_cache_module</text>
+</a>
+</g>
 </g>
 <!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_cache_module -->
 <g id="module~~numdiff_utilities_module~~UsedByGraph_edge3" class="edge">
 <title>module~numerical_differentiation_module&#45;&gt;module~numdiff_cache_module</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M351.79,-22.38C343.22,-21.52 334.62,-20.66 326.23,-19.81"/>
 <polygon fill="#000000" stroke="#000000" points="326.43,-16.31 316.13,-18.8 325.73,-23.28 326.43,-16.31"/>
+</g>
+<!-- module~numdiff_cache_module&#45;&gt;module~numdiff_utilities_module -->
+<g id="module~~numdiff_utilities_module~~UsedByGraph_edge2" class="edge">
+<title>module~numdiff_cache_module&#45;&gt;module~numdiff_utilities_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M178.73,-19.79C170.36,-20.75 161.74,-21.74 153.21,-22.72"/>
+<polygon fill="#000000" stroke="#000000" points="152.78,-19.25 143.25,-23.87 153.58,-26.2 152.78,-19.25"/>
 </g>
 </g>
 </svg>
@@ -745,8 +745,8 @@ private pure subroutine <a href='../proc/expand_vector_int.html'>expand_vector_i
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>counter for last element added to <code>vec</code>.
- must be initialized to <code>size(vec)</code>
- (or 0 if not allocated) before first call</p></td>
+must be initialized to <code>size(vec)</code>
+(or 0 if not allocated) before first call</p></td>
   
 </tr>
 
@@ -792,7 +792,7 @@ private pure subroutine <a href='../proc/expand_vector_int.html'>expand_vector_i
   
   <td></td><td>::</td>
   <td><strong>finished</strong></td><td><p>set to true to return <code>vec</code>
- as its correct size (<code>n</code>)</p></td>
+as its correct size (<code>n</code>)</p></td>
   
 </tr>
 
@@ -864,8 +864,8 @@ private pure subroutine <a href='../proc/expand_vector_real.html'>expand_vector_
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>counter for last element added to <code>vec</code>.
- must be initialized to <code>size(vec)</code>
- (or 0 if not allocated) before first call</p></td>
+must be initialized to <code>size(vec)</code>
+(or 0 if not allocated) before first call</p></td>
   
 </tr>
 
@@ -911,7 +911,7 @@ private pure subroutine <a href='../proc/expand_vector_real.html'>expand_vector_
   
   <td></td><td>::</td>
   <td><strong>finished</strong></td><td><p>set to true to return <code>vec</code>
- as its correct size (<code>n</code>)</p></td>
+as its correct size (<code>n</code>)</p></td>
   
 </tr>
 
@@ -1132,8 +1132,8 @@ private subroutine <a href='../proc/sort_ascending_int.html'>sort_ascending_int<
 
 
 <p>Sorts an integer array <code>ivec</code> in increasing order.
-  Uses a basic recursive quicksort
-  (with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
+Uses a basic recursive quicksort
+(with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
     
     <h4>Arguments</h4>
     
@@ -1190,8 +1190,8 @@ private subroutine <a href='../proc/sort_ascending_real.html'>sort_ascending_rea
 
 
 <p>Sorts a real array <code>ivec</code> in increasing order.
-  Uses a basic recursive quicksort
-  (with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
+Uses a basic recursive quicksort
+(with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
     
     <h4>Arguments</h4>
     
@@ -1589,7 +1589,7 @@ public pure function <a href='../proc/equal_within_tol.html'>equal_within_tol</a
 
 
 <p>Returns true if the values in the array are the same
-  (to within the specified absolute tolerance).</p>
+(to within the specified absolute tolerance).</p>
     
     <h4>Arguments</h4>
     
@@ -1648,7 +1648,7 @@ public pure function <a href='../proc/equal_within_tol.html'>equal_within_tol</a
      <h4>Return Value <small>logical
   </small></h4>
   <p>true if they are equal
- within the tolerance</p>
+within the tolerance</p>
     
 
   </div>
@@ -1792,8 +1792,8 @@ private pure subroutine <a href='../proc/expand_vector_int.html'>expand_vector_i
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>counter for last element added to <code>vec</code>.
- must be initialized to <code>size(vec)</code>
- (or 0 if not allocated) before first call</p></td>
+must be initialized to <code>size(vec)</code>
+(or 0 if not allocated) before first call</p></td>
   
 </tr>
 
@@ -1839,7 +1839,7 @@ private pure subroutine <a href='../proc/expand_vector_int.html'>expand_vector_i
   
   <td></td><td>::</td>
   <td><strong>finished</strong></td><td><p>set to true to return <code>vec</code>
- as its correct size (<code>n</code>)</p></td>
+as its correct size (<code>n</code>)</p></td>
   
 </tr>
 
@@ -1914,8 +1914,8 @@ private pure subroutine <a href='../proc/expand_vector_real.html'>expand_vector_
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>counter for last element added to <code>vec</code>.
- must be initialized to <code>size(vec)</code>
- (or 0 if not allocated) before first call</p></td>
+must be initialized to <code>size(vec)</code>
+(or 0 if not allocated) before first call</p></td>
   
 </tr>
 
@@ -1961,7 +1961,7 @@ private pure subroutine <a href='../proc/expand_vector_real.html'>expand_vector_
   
   <td></td><td>::</td>
   <td><strong>finished</strong></td><td><p>set to true to return <code>vec</code>
- as its correct size (<code>n</code>)</p></td>
+as its correct size (<code>n</code>)</p></td>
   
 </tr>
 
@@ -1995,8 +1995,8 @@ private subroutine <a href='../proc/sort_ascending_int.html'>sort_ascending_int<
 
 
 <p>Sorts an integer array <code>ivec</code> in increasing order.
-  Uses a basic recursive quicksort
-  (with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
+Uses a basic recursive quicksort
+(with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
     
     <h4>Arguments</h4>
     
@@ -2056,8 +2056,8 @@ private subroutine <a href='../proc/sort_ascending_real.html'>sort_ascending_rea
 
 
 <p>Sorts a real array <code>ivec</code> in increasing order.
-  Uses a basic recursive quicksort
-  (with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
+Uses a basic recursive quicksort
+(with insertion sort for partitions with <script type="math/tex">\le</script> 20 elements).</p>
     
     <h4>Arguments</h4>
     

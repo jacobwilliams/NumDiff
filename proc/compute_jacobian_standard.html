@@ -220,7 +220,7 @@ private subroutine compute_jacobian_standard(me, x, dx, jac)
 
     
     <p>Compute the Jacobian using finite differences.
-  (one column at a time)</p>
+(one column at a time)</p>
     
 
     <h3>Arguments</h3>
@@ -277,7 +277,7 @@ private subroutine compute_jacobian_standard(me, x, dx, jac)
   
   <td>dimension(me%n)</td><td>::</td>
   <td><strong>dx</strong></td><td><p>absolute perturbation (&gt;0)
- for each variable</p></td>
+for each variable</p></td>
   
 </tr>
 
@@ -293,7 +293,7 @@ private subroutine compute_jacobian_standard(me, x, dx, jac)
   
   <td>dimension(:)</td><td>::</td>
   <td><strong>jac</strong></td><td><p>sparse jacobian vector (size
- <code>num_nonzero_elements</code>)</p></td>
+<code>num_nonzero_elements</code>)</p></td>
   
 </tr>
 

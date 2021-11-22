@@ -261,12 +261,12 @@ private subroutine set_sparsity_mode(me, sparsity_mode, xlow_for_sparsity, xhigh
   
   <td></td><td>::</td>
   <td><strong>sparsity_mode</strong></td><td><p>the sparsity computation method:
- <strong>1</strong> - assume dense,
- <strong>2</strong> - three-point simple method,
- <strong>3</strong> - will be specified by the user in
- a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
- <strong>4</strong> - computes a two-point jacobian
- at <code>num_sparsity_points</code> points.</p></td>
+<strong>1</strong> - assume dense,
+<strong>2</strong> - three-point simple method,
+<strong>3</strong> - will be specified by the user in
+a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
+<strong>4</strong> - computes a two-point jacobian
+at <code>num_sparsity_points</code> points.</p></td>
   
 </tr>
 
@@ -282,9 +282,9 @@ private subroutine set_sparsity_mode(me, sparsity_mode, xlow_for_sparsity, xhigh
   
   <td>dimension(:)</td><td>::</td>
   <td><strong>xlow_for_sparsity</strong></td><td><p>lower bounds on <code>x</code> used for
- sparsity computation (when
- <code>sparsity_mode</code> is 2). If not
- present, then <code>xlow</code> is used.</p></td>
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xlow</code> is used.</p></td>
   
 </tr>
 
@@ -300,9 +300,9 @@ private subroutine set_sparsity_mode(me, sparsity_mode, xlow_for_sparsity, xhigh
   
   <td>dimension(:)</td><td>::</td>
   <td><strong>xhigh_for_sparsity</strong></td><td><p>upper bounds on <code>x</code> used for
- sparsity computation (when
- <code>sparsity_mode</code> is 2). If not
- present, then <code>xhigh</code> is used.</p></td>
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xhigh</code> is used.</p></td>
   
 </tr>
 

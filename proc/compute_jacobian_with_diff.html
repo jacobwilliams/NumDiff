@@ -220,8 +220,8 @@ private subroutine compute_jacobian_with_diff(me, x, dx, jac)
 
     
     <p>Compute the Jacobian one element at a time using the Neville's process
-  algorithm <a href="../proc/diff.html">diff</a>. This takes a very large number of function evaluations,
-  but should give a very accurate answer.</p>
+algorithm <a href="../proc/diff.html">diff</a>. This takes a very large number of function evaluations,
+but should give a very accurate answer.</p>
     
 
     <h3>Arguments</h3>
@@ -278,7 +278,7 @@ private subroutine compute_jacobian_with_diff(me, x, dx, jac)
   
   <td>dimension(me%n)</td><td>::</td>
   <td><strong>dx</strong></td><td><p>absolute perturbation (&gt;0)
- for each variable</p></td>
+for each variable</p></td>
   
 </tr>
 
@@ -294,7 +294,7 @@ private subroutine compute_jacobian_with_diff(me, x, dx, jac)
   
   <td>dimension(:)</td><td>::</td>
   <td><strong>jac</strong></td><td><p>sparse jacobian vector (size
- <code>num_nonzero_elements</code>)</p></td>
+<code>num_nonzero_elements</code>)</p></td>
   
 </tr>
 

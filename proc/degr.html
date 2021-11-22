@@ -249,13 +249,13 @@ private subroutine degr(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~10"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~4"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -271,7 +271,7 @@ private subroutine degr(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -287,11 +287,11 @@ private subroutine degr(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -307,7 +307,7 @@ private subroutine degr(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>indcol</strong></td><td><p>an integer input array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -323,11 +323,11 @@ private subroutine degr(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -343,8 +343,8 @@ private subroutine degr(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>ndeg</strong></td><td><p>an integer output array of length <code>n</code> which
- specifies the degree sequence. the degree of the
- <code>j</code>-th column of <code>a</code> is <code>ndeg(j)</code>.</p></td>
+specifies the degree sequence. the degree of the
+<code>j</code>-th column of <code>a</code> is <code>ndeg(j)</code>.</p></td>
   
 </tr>
 

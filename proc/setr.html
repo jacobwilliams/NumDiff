@@ -220,11 +220,11 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
 
     
     <p>given a column-oriented definition of the sparsity pattern
-  of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
-  row-oriented definition of the sparsity pattern of <code>a</code>.</p>
+of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
+row-oriented definition of the sparsity pattern of <code>a</code>.</p>
 <p>on input the column-oriented definition is specified by
-  the arrays <code>indrow</code> and <code>jpntr</code>. on output the row-oriented
-  definition is specified by the arrays <code>indcol</code> and <code>ipntr</code>.</p>
+the arrays <code>indrow</code> and <code>jpntr</code>. on output the row-oriented
+definition is specified by the arrays <code>indcol</code> and <code>ipntr</code>.</p>
     
 
     <h3>Arguments</h3>
@@ -245,13 +245,13 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~9"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~5"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
- of rows of <code>a</code>.</p></td>
+of rows of <code>a</code>.</p></td>
   
 </tr>
 
@@ -261,13 +261,13 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~14"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~8"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -283,7 +283,7 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -299,11 +299,11 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -319,7 +319,7 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer output array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -335,11 +335,11 @@ private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
   
   <td>dimension(m+1)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer output array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(1)</code> is set to 1 and that <code>ipntr(m+1)-1</code> is
- then the number of non-zero elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(1)</code> is set to 1 and that <code>ipntr(m+1)-1</code> is
+then the number of non-zero elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 

@@ -577,8 +577,8 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
 
 
 <p>The purpose of <code>dsm</code> is to determine an optimal or near-
-  optimal consistent partition of the columns of a sparse
-  <code>m</code> by <code>n</code> matrix <code>a</code>.</p><a href="../proc/dsm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+optimal consistent partition of the columns of a sparse
+<code>m</code> by <code>n</code> matrix <code>a</code>.</p><a href="../proc/dsm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -635,7 +635,7 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td></td><td>::</td>
   <td><strong>npairs</strong></td><td><p>number of (<code>indrow</code>,<code>indcol</code>) pairs used
- to describe the sparsity pattern of <code>a</code> (&gt;0)</p></td>
+to describe the sparsity pattern of <code>a</code> (&gt;0)</p></td>
   
 </tr>
 
@@ -651,10 +651,10 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td>dimension(npairs)</td><td>::</td>
   <td><strong>indrow</strong></td><td><p>an integer array of length <code>npairs</code>. on input <code>indrow</code>
- must contain the row indices of the non-zero elements of <code>a</code>.
- on output <code>indrow</code> is permuted so that the corresponding
- column indices are in non-decreasing order. the column
- indices can be recovered from the array <code>jpntr</code>.</p></td>
+must contain the row indices of the non-zero elements of <code>a</code>.
+on output <code>indrow</code> is permuted so that the corresponding
+column indices are in non-decreasing order. the column
+indices can be recovered from the array <code>jpntr</code>.</p></td>
   
 </tr>
 
@@ -670,10 +670,10 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td>dimension(npairs)</td><td>::</td>
   <td><strong>indcol</strong></td><td><p>an integer array of length <code>npairs</code>. on input <code>indcol</code>
- must contain the column indices of the non-zero elements of
- <code>a</code>. on output <code>indcol</code> is permuted so that the corresponding
- row indices are in non-decreasing order. the row indices
- can be recovered from the array <code>ipntr</code>.</p></td>
+must contain the column indices of the non-zero elements of
+<code>a</code>. on output <code>indcol</code> is permuted so that the corresponding
+row indices are in non-decreasing order. the row indices
+can be recovered from the array <code>ipntr</code>.</p></td>
   
 </tr>
 
@@ -689,7 +689,7 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>ngrp</strong></td><td><p>specifies the partition of the columns of <code>a</code>.
- column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
   
 </tr>
 
@@ -705,7 +705,7 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td></td><td>::</td>
   <td><strong>maxgrp</strong></td><td><p>the number of groups in the partition
- of the columns of <code>a</code>.</p></td>
+of the columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -721,8 +721,8 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td></td><td>::</td>
   <td><strong>mingrp</strong></td><td><p>a lower bound for the number of groups
- in any consistent partition of the
- columns of <code>a</code>.</p></td>
+in any consistent partition of the
+columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -738,12 +738,12 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td></td><td>::</td>
   <td><strong>info</strong></td><td><p>for normal termination <code>info = 1</code>.
- if <code>m</code>, <code>n</code>, or <code>npairs</code> is not positive,
- then <code>info = 0</code>. if the k-th element of
- <code>indrow</code> is not an integer between
- 1 and m or the k-th element of <code>indcol</code>
- is not an integer between 1 and n,
- then <code>info = -k</code>.</p></td>
+if <code>m</code>, <code>n</code>, or <code>npairs</code> is not positive,
+then <code>info = 0</code>. if the k-th element of
+<code>indrow</code> is not an integer between
+1 and m or the k-th element of <code>indcol</code>
+is not an integer between 1 and n,
+then <code>info = -k</code>.</p></td>
   
 </tr>
 
@@ -759,11 +759,11 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td>dimension(m+1)</td><td>::</td>
   <td><strong>ipntr</strong></td><td><p>an integer output array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- note that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+note that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -779,11 +779,11 @@ public subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indco
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>jpntr</strong></td><td><p>jpntr is an integer output array of length n + 1 which
- specifies the locations of the row indices in indrow.
- the row indices for column j are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- note that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in indrow.
+the row indices for column j are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+note that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -845,7 +845,7 @@ private subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -861,7 +861,7 @@ private subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -877,11 +877,11 @@ private subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -897,7 +897,7 @@ private subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>indcol</strong></td><td><p>an integer input array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -913,11 +913,11 @@ private subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -933,8 +933,8 @@ private subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>ndeg</strong></td><td><p>an integer output array of length <code>n</code> which
- specifies the degree sequence. the degree of the
- <code>j</code>-th column of <code>a</code> is <code>ndeg(j)</code>.</p></td>
+specifies the degree sequence. the degree of the
+<code>j</code>-th column of <code>a</code> is <code>ndeg(j)</code>.</p></td>
   
 </tr>
 
@@ -983,8 +983,8 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
 
 
 <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines an incidence-degree ordering of the
-  columns of <code>a</code>.</p><a href="../proc/ido.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+subroutine determines an incidence-degree ordering of the
+columns of <code>a</code>.</p><a href="../proc/ido.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -1011,7 +1011,7 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
- of rows of <code>a</code>.</p></td>
+of rows of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1027,7 +1027,7 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1043,7 +1043,7 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1059,11 +1059,11 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1079,7 +1079,7 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer input array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1095,11 +1095,11 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td>dimension(m+1)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1115,8 +1115,8 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Ndeg</strong></td><td><p>an integer input array of length <code>n</code> which specifies
- the degree sequence. the degree of the <code>j</code>-th column
- of <code>a</code> is <code>ndeg(j)</code>.</p></td>
+the degree sequence. the degree of the <code>j</code>-th column
+of <code>a</code> is <code>ndeg(j)</code>.</p></td>
   
 </tr>
 
@@ -1132,8 +1132,8 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>List</strong></td><td><p>an integer output array of length <code>n</code> which specifies
- the incidence-degree ordering of the columns of <code>a</code>. the <code>j</code>-th
- column in this order is <code>list(j)</code>.</p></td>
+the incidence-degree ordering of the columns of <code>a</code>. the <code>j</code>-th
+column in this order is <code>list(j)</code>.</p></td>
   
 </tr>
 
@@ -1149,7 +1149,7 @@ private subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indco
   
   <td></td><td>::</td>
   <td><strong>Maxclq</strong></td><td><p>an integer output variable set to the size
- of the largest clique found during the ordering.</p></td>
+of the largest clique found during the ordering.</p></td>
   
 </tr>
 
@@ -1302,9 +1302,9 @@ private subroutine <a href='../proc/numsrt.html'>numsrt</a>(n, Nmax, Num, Mode, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Num</strong></td><td><p>an input array of length <code>n</code> which contains the
- sequence of integers to be grouped and sorted. it
- is assumed that the integers are each from the set
- <code>0,1,...,nmax</code>.</p></td>
+sequence of integers to be grouped and sorted. it
+is assumed that the integers are each from the set
+<code>0,1,...,nmax</code>.</p></td>
   
 </tr>
 
@@ -1320,9 +1320,9 @@ private subroutine <a href='../proc/numsrt.html'>numsrt</a>(n, Nmax, Num, Mode, 
   
   <td></td><td>::</td>
   <td><strong>Mode</strong></td><td><p>an integer input variable. the sequence <code>num</code> is
- sorted in ascending order if <code>mode</code> is positive and in
- descending order if <code>mode</code> is negative. if <code>mode</code> is 0,
- no sorting is done.</p></td>
+sorted in ascending order if <code>mode</code> is positive and in
+descending order if <code>mode</code> is negative. if <code>mode</code> is 0,
+no sorting is done.</p></td>
   
 </tr>
 
@@ -1338,10 +1338,10 @@ private subroutine <a href='../proc/numsrt.html'>numsrt</a>(n, Nmax, Num, Mode, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Index</strong></td><td><p>an integer output array of length <code>n</code> set so
- that the sequence
- <code>num(index(i)), i = 1,2,...,n</code>
- is sorted according to the setting of mode.
- if <code>mode</code> is 0, <code>index</code> is not referenced.</p></td>
+that the sequence
+<code>num(index(i)), i = 1,2,...,n</code>
+is sorted according to the setting of mode.
+if <code>mode</code> is 0, <code>index</code> is not referenced.</p></td>
   
 </tr>
 
@@ -1357,9 +1357,9 @@ private subroutine <a href='../proc/numsrt.html'>numsrt</a>(n, Nmax, Num, Mode, 
   
   <td>dimension(0:Nmax)</td><td>::</td>
   <td><strong>Last</strong></td><td><p>an integer output array of length <code>nmax + 1</code>. the
- index of <code>num</code> for the last occurrence of <code>l</code> is <code>last(l)</code>
- for any <code>l = 0,1,...,nmax</code> unless <code>last(l) = 0</code>. in
- this case <code>l</code> does not appear in <code>num</code>.</p></td>
+index of <code>num</code> for the last occurrence of <code>l</code> is <code>last(l)</code>
+for any <code>l = 0,1,...,nmax</code> unless <code>last(l) = 0</code>. in
+this case <code>l</code> does not appear in <code>num</code>.</p></td>
   
 </tr>
 
@@ -1375,10 +1375,10 @@ private subroutine <a href='../proc/numsrt.html'>numsrt</a>(n, Nmax, Num, Mode, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Next</strong></td><td><p>an integer output array of length <code>n</code>. if
- <code>num(k) = l</code>, then the index of <code>num</code> for the previous
- occurrence of <code>l</code> is <code>next(k)</code> for any <code>l = 0,1,...,nmax</code>
- unless <code>next(k) = 0</code>. in this case there is no previous
- occurrence of <code>l</code> in <code>num</code>.</p></td>
+<code>num(k) = l</code>, then the index of <code>num</code> for the previous
+occurrence of <code>l</code> is <code>next(k)</code> for any <code>l = 0,1,...,nmax</code>
+unless <code>next(k) = 0</code>. in this case there is no previous
+occurrence of <code>l</code> in <code>num</code>.</p></td>
   
 </tr>
 
@@ -1412,8 +1412,8 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
 
 
 <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines a consistent partition of the
-  columns of <code>a</code> by a sequential algorithm.</p><a href="../proc/seq.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+subroutine determines a consistent partition of the
+columns of <code>a</code> by a sequential algorithm.</p><a href="../proc/seq.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -1440,7 +1440,7 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1456,7 +1456,7 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1472,11 +1472,11 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1492,7 +1492,7 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer input array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1508,11 +1508,11 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1528,8 +1528,8 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>List</strong></td><td><p>an integer input array of length <code>n</code> which specifies
- the order to be used by the sequential algorithm.
- the <code>j</code>-th column in this order is <code>list(j)</code>.</p></td>
+the order to be used by the sequential algorithm.
+the <code>j</code>-th column in this order is <code>list(j)</code>.</p></td>
   
 </tr>
 
@@ -1545,8 +1545,8 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Ngrp</strong></td><td><p>an integer output array of length <code>n</code> which specifies
- the partition of the columns of <code>a</code>. column <code>jcol</code> belongs
- to group <code>ngrp(jcol)</code>.</p></td>
+the partition of the columns of <code>a</code>. column <code>jcol</code> belongs
+to group <code>ngrp(jcol)</code>.</p></td>
   
 </tr>
 
@@ -1562,7 +1562,7 @@ private subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, 
   
   <td></td><td>::</td>
   <td><strong>Maxgrp</strong></td><td><p>an integer output variable which specifies the
- number of groups in the partition of the columns of <code>a</code>.</p></td>
+number of groups in the partition of the columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1611,8 +1611,8 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
 
 
 <p>given a column-oriented definition of the sparsity pattern
-  of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
-  row-oriented definition of the sparsity pattern of <code>a</code>.</p><a href="../proc/setr.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
+row-oriented definition of the sparsity pattern of <code>a</code>.</p><a href="../proc/setr.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -1639,7 +1639,7 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
   
   <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
- of rows of <code>a</code>.</p></td>
+of rows of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1655,7 +1655,7 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1671,7 +1671,7 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1687,11 +1687,11 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1707,7 +1707,7 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer output array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1723,11 +1723,11 @@ private subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Ind
   
   <td>dimension(m+1)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer output array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(1)</code> is set to 1 and that <code>ipntr(m+1)-1</code> is
- then the number of non-zero elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(1)</code> is set to 1 and that <code>ipntr(m+1)-1</code> is
+then the number of non-zero elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1776,8 +1776,8 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
 
 
 <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
-  subroutine determines the smallest-last ordering of the
-  columns of <code>a</code>.</p><a href="../proc/slo.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+subroutine determines the smallest-last ordering of the
+columns of <code>a</code>.</p><a href="../proc/slo.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -1804,7 +1804,7 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -1820,7 +1820,7 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1836,11 +1836,11 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
- specifies the locations of the row indices in <code>indrow</code>.
- the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1856,7 +1856,7 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer input array which contains the
- column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
+column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1872,11 +1872,11 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer input array of length <code>m + 1</code> which
- specifies the locations of the column indices in <code>indcol</code>.
- the column indices for row <code>i</code> are
- <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
- <strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
- elements of the matrix <code>a</code>.</p></td>
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p></td>
   
 </tr>
 
@@ -1892,8 +1892,8 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Ndeg</strong></td><td><p>an integer input array of length <code>n</code> which specifies
- the degree sequence. the degree of the <code>j</code>-th column
- of <code>a</code> is <code>ndeg(j)</code>.</p></td>
+the degree sequence. the degree of the <code>j</code>-th column
+of <code>a</code> is <code>ndeg(j)</code>.</p></td>
   
 </tr>
 
@@ -1909,8 +1909,8 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>List</strong></td><td><p>an integer output array of length <code>n</code> which specifies
- the smallest-last ordering of the columns of <code>a</code>. the <code>j</code>-th
- column in this order is <code>list(j)</code>.</p></td>
+the smallest-last ordering of the columns of <code>a</code>. the <code>j</code>-th
+column in this order is <code>list(j)</code>.</p></td>
   
 </tr>
 
@@ -1926,7 +1926,7 @@ private subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, 
   
   <td></td><td>::</td>
   <td><strong>Maxclq</strong></td><td><p>an integer output variable set to the size
- of the largest clique found during the ordering.</p></td>
+of the largest clique found during the ordering.</p></td>
   
 </tr>
 
@@ -2020,9 +2020,9 @@ private subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indc
 
 
 <p>given the non-zero elements of an <code>m</code> by <code>n</code> matrix <code>a</code> in
-  arbitrary order as specified by their row and column
-  indices, this subroutine permutes these elements so
-  that their column indices are in non-decreasing order.</p><a href="../proc/srtdat.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+arbitrary order as specified by their row and column
+indices, this subroutine permutes these elements so
+that their column indices are in non-decreasing order.</p><a href="../proc/srtdat.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -2049,7 +2049,7 @@ private subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indc
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of <code>a</code>.</p></td>
+of columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -2065,7 +2065,7 @@ private subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indc
   
   <td></td><td>::</td>
   <td><strong>Nnz</strong></td><td><p>a positive integer input variable set to the number
- of non-zero elements of <code>a</code>.</p></td>
+of non-zero elements of <code>a</code>.</p></td>
   
 </tr>
 
@@ -2081,9 +2081,9 @@ private subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indc
   
   <td>dimension(Nnz)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer array of length <code>nnz</code>. on input <code>indrow</code>
- must contain the row indices of the non-zero elements of <code>a</code>.
- on output <code>indrow</code> is permuted so that the corresponding
- column indices of <code>indcol</code> are in non-decreasing order.</p></td>
+must contain the row indices of the non-zero elements of <code>a</code>.
+on output <code>indrow</code> is permuted so that the corresponding
+column indices of <code>indcol</code> are in non-decreasing order.</p></td>
   
 </tr>
 
@@ -2099,9 +2099,9 @@ private subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indc
   
   <td>dimension(Nnz)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer array of length <code>nnz</code>. on input <code>indcol</code>
- must contain the column indices of the non-zero elements
- of <code>a</code>. on output <code>indcol</code> is permuted so that these indices
- are in non-decreasing order.</p></td>
+must contain the column indices of the non-zero elements
+of <code>a</code>. on output <code>indcol</code> is permuted so that these indices
+are in non-decreasing order.</p></td>
   
 </tr>
 
@@ -2117,11 +2117,11 @@ private subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indc
   
   <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer output array of length <code>n + 1</code> which
- specifies the locations of the row indices in the output
- <code>indrow</code>. the row indices for column <code>j</code> are
- <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
- <strong>note</strong> that <code>jpntr(1)</code> is set to 1 and that <code>jpntr(n+1)-1</code>
- is then <code>nnz</code>.</p></td>
+specifies the locations of the row indices in the output
+<code>indrow</code>. the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(1)</code> is set to 1 and that <code>jpntr(n+1)-1</code>
+is then <code>nnz</code>.</p></td>
   
 </tr>
 
@@ -2200,7 +2200,7 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
- of rows of the jacobian matrix.</p></td>
+of rows of the jacobian matrix.</p></td>
   
 </tr>
 
@@ -2216,7 +2216,7 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of the jacobian matrix.</p></td>
+of columns of the jacobian matrix.</p></td>
   
 </tr>
 
@@ -2232,9 +2232,9 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td></td><td>::</td>
   <td><strong>Col</strong></td><td><p>a logical input variable. if <code>col</code> is set true, then the
- jacobian approximations are stored into a column-oriented
- pattern. if <code>col</code> is set false, then the jacobian
- approximations are stored into a row-oriented pattern.</p></td>
+jacobian approximations are stored into a column-oriented
+pattern. if <code>col</code> is set false, then the jacobian
+approximations are stored into a row-oriented pattern.</p></td>
   
 </tr>
 
@@ -2250,9 +2250,9 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Ind</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the jacobian matrix
- if <code>col</code> is true, and contains the column indices for
- the non-zeroes in the jacobian matrix if <code>col</code> is false.</p></td>
+indices for the non-zeroes in the jacobian matrix
+if <code>col</code> is true, and contains the column indices for
+the non-zeroes in the jacobian matrix if <code>col</code> is false.</p></td>
   
 </tr>
 
@@ -2268,15 +2268,15 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Npntr</strong></td><td><p>an integer input array which specifies the
- locations of the row indices in <code>ind</code> if <code>col</code> is true, and
- specifies the locations of the column indices in <code>ind</code> if
- <code>col</code> is false. if <code>col</code> is true, the indices for column <code>j</code> are
-       <code>ind(k), k = npntr(j),...,npntr(j+1)-1</code>.
- if <code>col</code> is false, the indices for row <code>i</code> are
-       <code>ind(k), k = npntr(i),...,npntr(i+1)-1</code>.
- <strong><em>Note</em></strong> that <code>npntr(n+1)-1</code> if <code>col</code> is true, or <code>npntr(m+1)-1</code>
- if <code>col</code> is false, is then the number of non-zero elements
- of the jacobian matrix.</p></td>
+locations of the row indices in <code>ind</code> if <code>col</code> is true, and
+specifies the locations of the column indices in <code>ind</code> if
+<code>col</code> is false. if <code>col</code> is true, the indices for column <code>j</code> are
+      <code>ind(k), k = npntr(j),...,npntr(j+1)-1</code>.
+if <code>col</code> is false, the indices for row <code>i</code> are
+      <code>ind(k), k = npntr(i),...,npntr(i+1)-1</code>.
+<strong><em>Note</em></strong> that <code>npntr(n+1)-1</code> if <code>col</code> is true, or <code>npntr(m+1)-1</code>
+if <code>col</code> is false, is then the number of non-zero elements
+of the jacobian matrix.</p></td>
   
 </tr>
 
@@ -2292,8 +2292,8 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Ngrp</strong></td><td><p>an integer input array of length <code>n</code> which specifies
- the partition of the columns of the jacobian matrix.
- column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
+the partition of the columns of the jacobian matrix.
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
   
 </tr>
 
@@ -2309,8 +2309,8 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td></td><td>::</td>
   <td><strong>Numgrp</strong></td><td><p>a positive integer input variable set to a group
- number in the partition. the columns of the jacobian
- matrix in this group are to be estimated on this call.</p></td>
+number in the partition. the columns of the jacobian
+matrix in this group are to be estimated on this call.</p></td>
   
 </tr>
 
@@ -2326,8 +2326,8 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>d</strong></td><td><p>an input array of length <code>n</code> which contains the
- difference parameter vector for the estimate of
- the jacobian matrix columns in group <code>numgrp</code>.</p></td>
+difference parameter vector for the estimate of
+the jacobian matrix columns in group <code>numgrp</code>.</p></td>
   
 </tr>
 
@@ -2343,8 +2343,8 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td>dimension(m)</td><td>::</td>
   <td><strong>Fjacd</strong></td><td><p>an input array of length <code>m</code> which contains
- an approximation to the difference vector <code>jac*d</code>,
- where <code>jac</code> denotes the jacobian matrix.</p></td>
+an approximation to the difference vector <code>jac*d</code>,
+where <code>jac</code> denotes the jacobian matrix.</p></td>
   
 </tr>
 
@@ -2360,10 +2360,10 @@ public subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ng
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Fjac</strong></td><td><p>an output array of length <code>nnz</code>, where <code>nnz</code> is the
- number of its non-zero elements. at each call of <code>fdjs</code>,
- <code>fjac</code> is updated to include the non-zero elements of the
- jacobian matrix for those columns in group <code>numgrp</code>. <code>fjac</code>
- should not be altered between successive calls to <code>fdjs</code>.</p></td>
+number of its non-zero elements. at each call of <code>fdjs</code>,
+<code>fjac</code> is updated to include the non-zero elements of the
+jacobian matrix for those columns in group <code>numgrp</code>. <code>fjac</code>
+should not be altered between successive calls to <code>fdjs</code>.</p></td>
   
 </tr>
 

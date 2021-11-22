@@ -476,7 +476,7 @@
   <td>private</td>
   <td></td><td>::</td>
   <td><strong>num_nonzero_elements</strong></td><td> =</td><td>0</td><td><p>number of nonzero elements in the jacobian
- (will be the dimension of <code>irow</code> and <code>icol</code>)</p></td>
+(will be the dimension of <code>irow</code> and <code>icol</code>)</p></td>
   
 </tr>
 
@@ -589,8 +589,8 @@
   <td>private,</td>
   <td>dimension(:), allocatable</td><td>::</td>
   <td><strong>indices</strong></td><td></td><td></td><td><p>index vector
- <code>[1,2,...,num_nonzero_elements]</code>
- for putting <code>df</code> into <code>jac</code></p></td>
+<code>[1,2,...,num_nonzero_elements]</code>
+for putting <code>df</code> into <code>jac</code></p></td>
   
 </tr>
 
@@ -605,7 +605,7 @@
   <td>private</td>
   <td></td><td>::</td>
   <td><strong>maxgrp</strong></td><td> =</td><td>0</td><td><p>the number of groups in the partition
- of the columns of <code>a</code>.</p></td>
+of the columns of <code>a</code>.</p></td>
   
 </tr>
 
@@ -620,8 +620,8 @@
   <td>private,</td>
   <td>dimension(:), allocatable</td><td>::</td>
   <td><strong>ngrp</strong></td><td></td><td></td><td><p>specifies the partition of the columns of <code>a</code>.
- column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.
- <code>size(n)</code></p></td>
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.
+<code>size(n)</code></p></td>
   
 </tr>
 
@@ -1000,7 +1000,7 @@ private subroutine <a href='../proc/print_sparsity.html'>print_sparsity</a>(me, 
   
   <td></td><td>::</td>
   <td><strong>iunit</strong></td><td><p>file unit to write to.
- (assumed to be already opened)</p></td>
+(assumed to be already opened)</p></td>
   
 </tr>
 
@@ -1016,8 +1016,8 @@ private subroutine <a href='../proc/print_sparsity.html'>print_sparsity</a>(me, 
   
   <td></td><td>::</td>
   <td><strong>dense</strong></td><td><p>if present and true, the matrix form
- of the sparsity pattern is printed
- (default is vector form)</p></td>
+of the sparsity pattern is printed
+(default is vector form)</p></td>
   
 </tr>
 
@@ -1135,7 +1135,7 @@ private subroutine <a href='../proc/columns_in_partition_group.html'>columns_in_
   
   <td>dimension(:), allocatable</td><td>::</td>
   <td><strong>cols</strong></td><td><p>the column numbers in the <code>igroup</code> group.
- (if none, then it is not allocated)</p></td>
+(if none, then it is not allocated)</p></td>
   
 </tr>
 
@@ -1151,7 +1151,7 @@ private subroutine <a href='../proc/columns_in_partition_group.html'>columns_in_
   
   <td>dimension(:), allocatable</td><td>::</td>
   <td><strong>nonzero_rows</strong></td><td><p>the row numbers of all the nonzero
- Jacobian elements in this group</p></td>
+Jacobian elements in this group</p></td>
   
 </tr>
 

@@ -269,13 +269,13 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
 <tr>
   
-  <td><span class="anchor" id="variable-m~10"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~6"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
- of rows of the jacobian matrix.</p></td>
+of rows of the jacobian matrix.</p></td>
   
 </tr>
 
@@ -285,13 +285,13 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
 <tr>
   
-  <td><span class="anchor" id="variable-n~17"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~11"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
- of columns of the jacobian matrix.</p></td>
+of columns of the jacobian matrix.</p></td>
   
 </tr>
 
@@ -307,9 +307,9 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td></td><td>::</td>
   <td><strong>Col</strong></td><td><p>a logical input variable. if <code>col</code> is set true, then the
- jacobian approximations are stored into a column-oriented
- pattern. if <code>col</code> is set false, then the jacobian
- approximations are stored into a row-oriented pattern.</p></td>
+jacobian approximations are stored into a column-oriented
+pattern. if <code>col</code> is set false, then the jacobian
+approximations are stored into a row-oriented pattern.</p></td>
   
 </tr>
 
@@ -325,9 +325,9 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Ind</strong></td><td><p>an integer input array which contains the row
- indices for the non-zeroes in the jacobian matrix
- if <code>col</code> is true, and contains the column indices for
- the non-zeroes in the jacobian matrix if <code>col</code> is false.</p></td>
+indices for the non-zeroes in the jacobian matrix
+if <code>col</code> is true, and contains the column indices for
+the non-zeroes in the jacobian matrix if <code>col</code> is false.</p></td>
   
 </tr>
 
@@ -343,15 +343,15 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Npntr</strong></td><td><p>an integer input array which specifies the
- locations of the row indices in <code>ind</code> if <code>col</code> is true, and
- specifies the locations of the column indices in <code>ind</code> if
- <code>col</code> is false. if <code>col</code> is true, the indices for column <code>j</code> are
-       <code>ind(k), k = npntr(j),...,npntr(j+1)-1</code>.
- if <code>col</code> is false, the indices for row <code>i</code> are
-       <code>ind(k), k = npntr(i),...,npntr(i+1)-1</code>.
- <strong><em>Note</em></strong> that <code>npntr(n+1)-1</code> if <code>col</code> is true, or <code>npntr(m+1)-1</code>
- if <code>col</code> is false, is then the number of non-zero elements
- of the jacobian matrix.</p></td>
+locations of the row indices in <code>ind</code> if <code>col</code> is true, and
+specifies the locations of the column indices in <code>ind</code> if
+<code>col</code> is false. if <code>col</code> is true, the indices for column <code>j</code> are
+      <code>ind(k), k = npntr(j),...,npntr(j+1)-1</code>.
+if <code>col</code> is false, the indices for row <code>i</code> are
+      <code>ind(k), k = npntr(i),...,npntr(i+1)-1</code>.
+<strong><em>Note</em></strong> that <code>npntr(n+1)-1</code> if <code>col</code> is true, or <code>npntr(m+1)-1</code>
+if <code>col</code> is false, is then the number of non-zero elements
+of the jacobian matrix.</p></td>
   
 </tr>
 
@@ -367,8 +367,8 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>Ngrp</strong></td><td><p>an integer input array of length <code>n</code> which specifies
- the partition of the columns of the jacobian matrix.
- column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
+the partition of the columns of the jacobian matrix.
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
   
 </tr>
 
@@ -384,8 +384,8 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td></td><td>::</td>
   <td><strong>Numgrp</strong></td><td><p>a positive integer input variable set to a group
- number in the partition. the columns of the jacobian
- matrix in this group are to be estimated on this call.</p></td>
+number in the partition. the columns of the jacobian
+matrix in this group are to be estimated on this call.</p></td>
   
 </tr>
 
@@ -401,8 +401,8 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td>dimension(n)</td><td>::</td>
   <td><strong>d</strong></td><td><p>an input array of length <code>n</code> which contains the
- difference parameter vector for the estimate of
- the jacobian matrix columns in group <code>numgrp</code>.</p></td>
+difference parameter vector for the estimate of
+the jacobian matrix columns in group <code>numgrp</code>.</p></td>
   
 </tr>
 
@@ -418,8 +418,8 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td>dimension(m)</td><td>::</td>
   <td><strong>Fjacd</strong></td><td><p>an input array of length <code>m</code> which contains
- an approximation to the difference vector <code>jac*d</code>,
- where <code>jac</code> denotes the jacobian matrix.</p></td>
+an approximation to the difference vector <code>jac*d</code>,
+where <code>jac</code> denotes the jacobian matrix.</p></td>
   
 </tr>
 
@@ -435,10 +435,10 @@ public subroutine fdjs(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)
   
   <td>dimension(*)</td><td>::</td>
   <td><strong>Fjac</strong></td><td><p>an output array of length <code>nnz</code>, where <code>nnz</code> is the
- number of its non-zero elements. at each call of <code>fdjs</code>,
- <code>fjac</code> is updated to include the non-zero elements of the
- jacobian matrix for those columns in group <code>numgrp</code>. <code>fjac</code>
- should not be altered between successive calls to <code>fdjs</code>.</p></td>
+number of its non-zero elements. at each call of <code>fdjs</code>,
+<code>fjac</code> is updated to include the non-zero elements of the
+jacobian matrix for those columns in group <code>numgrp</code>. <code>fjac</code>
+should not be altered between successive calls to <code>fdjs</code>.</p></td>
   
 </tr>
 
