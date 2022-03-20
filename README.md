@@ -48,36 +48,28 @@ This is currently a work in progress. The goal is a comprehensive library that c
 
 ### FPM
 
-A `fmp.toml` file is provided for compiling roots-fortran with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
+A [Fortran Package Manager](https://github.com/fortran-lang/fpm) manifest file is included, so that the library and tests cases can be compiled with FPM. For example:
 
 ```
-  fpm build --profile release
+fpm build --profile release
+fpm test --profile release
 ```
 
-And to run the unit tests:
+To use `NumDiff` within your FPM project, add the following to your `fpm.toml` file:
+```toml
+[dependencies]
+NumDiff = { git="https://github.com/jacobwilliams/NumDiff.git" }
+```
+
+To generate the documentation using [FORD](https://github.com/Fortran-FOSS-Programmers/ford), run:
 
 ```
-  fpm test
+  ford numdiff.md
 ```
-
-### FoBiS
-
-A [FoBiS](https://github.com/szaghi/FoBiS) configuration file (`numdiff.fobis`) is also provided that can also build the library and examples. Use the `mode` flag to indicate what to build. For example:
-
-  * To build all the examples using gfortran: `FoBiS.py build -f numdiff.fobis -mode tests-gnu`
-  * To build all the examples using ifort: `FoBiS.py build -f numdiff.fobis -mode tests-intel`
-  * To build a static library using gfortran: `FoBiS.py build -f numdiff.fobis -mode static-gnu`
-  * To build a static library using ifort: `FoBiS.py build -f numdiff.fobis -mode static-intel`
-
-  The full set of modes are: `static-gnu`, `static-gnu-debug`, `static-intel`, `static-intel-debug`, `shared-gnu`, `shared-gnu-debug`, `shared-intel`, `shared-intel-debug`, `tests-gnu`, `tests-gnu-debug`, `tests-intel`, `tests-intel-debug`
-
-  To generate the documentation using [ford](https://github.com/Fortran-FOSS-Programmers/ford), run: ```FoBis.py rule --execute makedoc -f numdiff.fobis```
-
-  To run the test programs, run: ```FoBis.py rule --execute tests -f numdiff.fobis```
 
 ## Documentation
 
-The latest API documentation can be found [here](http://jacobwilliams.github.io/NumDiff/). This was generated from the source code using [FORD](https://github.com/Fortran-FOSS-Programmers/ford) (note that the included `build.sh` script will also generate these files).
+The latest API documentation can be found [here](https://jacobwilliams.github.io/NumDiff/). This was generated from the source code using [FORD](https://github.com/Fortran-FOSS-Programmers/ford) (note that the included `build.sh` script will also generate these files).
 
 ## License
 
@@ -85,5 +77,5 @@ The NumDiff source code and related files and documentation are distributed unde
 
 ## References
 
- * J. Oliver, "An algorithm for numerical differentiation of a function of one real variable", Journal of Computational and Applied Mathematics 6 (2) (1980) 145–160.  Fortran 77 code from [NIST](ftp://math.nist.gov/pub/repository/diff/src/DIFF)
+ * J. Oliver, "An algorithm for numerical differentiation of a function of one real variable", Journal of Computational and Applied Mathematics 6 (2) (1980) 145-160.  Fortran 77 code from [NIST](ftp://math.nist.gov/pub/repository/diff/src/DIFF)
  * Thomas F. Coleman, Burton S. Garbow, Jorge J. More, "Algorithm 618: FORTRAN subroutines for estimating sparse Jacobian Matrices", ACM Transactions on Mathematical Software (TOMS), Volume 10 Issue 3, Sept. 1984, Pages 346-347
