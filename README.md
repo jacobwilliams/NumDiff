@@ -7,7 +7,9 @@
 
 ## Status
 
+[![GitHub release](https://img.shields.io/github/release/jacobwilliams/NumDiff.svg?style=plastic)](https://github.com/jacobwilliams/NumDiff/releases/latest)
 ![CI Status](https://github.com/jacobwilliams/NumDiff/actions/workflows/CI.yml/badge.svg)
+[![codecov](https://codecov.io/gh/jacobwilliams/NumDiff/branch/master/graph/badge.svg?token=43HK33CSMY)](https://codecov.io/gh/jacobwilliams/NumDiff)
 
 This is currently a work in progress. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation. This code is hosted on GitHub at: https://github.com/jacobwilliams/NumDiff
 
