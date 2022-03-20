@@ -6,8 +6,9 @@
 
     program test1
 
-    use iso_fortran_env, only: wp => real64, output_unit, error_unit
+    use iso_fortran_env, only: output_unit, error_unit
     use numerical_differentiation_module
+    use numdiff_kinds_module, only: wp
 
     implicit none
 
