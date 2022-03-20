@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>setr
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 0.9% of total for procedures.">29 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/dsm_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
-    
      <li><a href='../module/dsm_module.html'>dsm_module</a></li>
-    
-  
      <li class="active">setr</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,173 +120,85 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)
+    <h2>private subroutine setr(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>given a column-oriented definition of the sparsity pattern
 of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
 row-oriented definition of the sparsity pattern of <code>a</code>.</p>
 <p>on input the column-oriented definition is specified by
 the arrays <code>indrow</code> and <code>jpntr</code>. on output the row-oriented
 definition is specified by the arrays <code>indcol</code> and <code>ipntr</code>.</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-m~5"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-m~9"></span>integer,</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>a positive integer input variable set to the number
 of rows of <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-n~8"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-n~14"></span>integer,</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
 of columns of <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-indrow~3"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(*)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(*)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer input array which contains the row
 indices for the non-zeroes in the matrix <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-jpntr~3"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(n+1)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer input array of length <code>n + 1</code> which
 specifies the locations of the row indices in <code>indrow</code>.
 the row indices for column <code>j</code> are
 <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
 <strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
 elements of the matrix <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-indcol~3"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(*)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(*)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer output array which contains the
 column indices for the non-zeroes in the matrix <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ipntr~3"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(m+1)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(m+1)</td><td>::</td>
   <td><strong>Ipntr</strong></td><td><p>an integer output array of length <code>m + 1</code> which
 specifies the locations of the column indices in <code>indcol</code>.
 the column indices for row <code>i</code> are
 <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
 <strong>note</strong> that <code>ipntr(1)</code> is set to 1 and that <code>ipntr(m+1)-1</code> is
 then the number of non-zero elements of the matrix <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-iwa~2"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(m)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(m)</td><td>::</td>
   <td><strong>Iwa</strong></td><td><p>an integer work array of length <code>m</code>.</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -483,34 +314,11 @@ then the number of non-zero elements of the matrix <code>a</code>.</p></td>
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -518,111 +326,96 @@ then the number of non-zero elements of the matrix <code>a</code>.</p></td>
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">setr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">setr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">m</span>       <span class="c">!! a positive integer input variable set to the number</span>
-                                      <span class="c">!! of rows of `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">n</span>       <span class="c">!! a positive integer input variable set to the number</span>
-                                      <span class="c">!! of columns of `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Indrow</span>  <span class="c">!! an integer input array which contains the row</span>
-                                      <span class="c">!! indices for the non-zeroes in the matrix `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Jpntr</span>   <span class="c">!! an integer input array of length `n + 1` which</span>
-                                      <span class="c">!! specifies the locations of the row indices in `indrow`.</span>
-                                      <span class="c">!! the row indices for column `j` are</span>
-                                      <span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
-                                      <span class="c">!! **note** that `jpntr(n+1)-1` is then the number of non-zero</span>
-                                      <span class="c">!! elements of the matrix `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Indcol</span>  <span class="c">!! an integer output array which contains the</span>
-                                      <span class="c">!! column indices for the non-zeroes in the matrix `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Ipntr</span>   <span class="c">!! an integer output array of length `m + 1` which</span>
-                                      <span class="c">!! specifies the locations of the column indices in `indcol`.</span>
-                                      <span class="c">!! the column indices for row `i` are</span>
-                                      <span class="c">!! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.</span>
-                                      <span class="c">!! **note** that `ipntr(1)` is set to 1 and that `ipntr(m+1)-1` is</span>
-                                      <span class="c">!! then the number of non-zero elements of the matrix `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Iwa</span>     <span class="c">!! an integer work array of length `m`.</span>
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w">       </span><span class="c">!! a positive integer input variable set to the number</span>
+<span class="w">                                      </span><span class="c">!! of rows of `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">       </span><span class="c">!! a positive integer input variable set to the number</span>
+<span class="w">                                      </span><span class="c">!! of columns of `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">Indrow</span><span class="w">  </span><span class="c">!! an integer input array which contains the row</span>
+<span class="w">                                      </span><span class="c">!! indices for the non-zeroes in the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Jpntr</span><span class="w">   </span><span class="c">!! an integer input array of length `n + 1` which</span>
+<span class="w">                                      </span><span class="c">!! specifies the locations of the row indices in `indrow`.</span>
+<span class="w">                                      </span><span class="c">!! the row indices for column `j` are</span>
+<span class="w">                                      </span><span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
+<span class="w">                                      </span><span class="c">!! **note** that `jpntr(n+1)-1` is then the number of non-zero</span>
+<span class="w">                                      </span><span class="c">!! elements of the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">Indcol</span><span class="w">  </span><span class="c">!! an integer output array which contains the</span>
+<span class="w">                                      </span><span class="c">!! column indices for the non-zeroes in the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Ipntr</span><span class="w">   </span><span class="c">!! an integer output array of length `m + 1` which</span>
+<span class="w">                                      </span><span class="c">!! specifies the locations of the column indices in `indcol`.</span>
+<span class="w">                                      </span><span class="c">!! the column indices for row `i` are</span>
+<span class="w">                                      </span><span class="c">!! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.</span>
+<span class="w">                                      </span><span class="c">!! **note** that `ipntr(1)` is set to 1 and that `ipntr(m+1)-1` is</span>
+<span class="w">                                      </span><span class="c">!! then the number of non-zero elements of the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">Iwa</span><span class="w">     </span><span class="c">!! an integer work array of length `m`.</span>
 
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">ir</span> <span class="p">,</span> <span class="n">jcol</span> <span class="p">,</span> <span class="n">jp</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ir</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">jcol</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">jp</span><span class="w"></span>
 
-    <span class="c">! store in array iwa the counts of non-zeroes in the rows.</span>
+<span class="w">    </span><span class="c">! store in array iwa the counts of non-zeroes in the rows.</span>
 
-    <span class="k">do </span><span class="n">ir</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">m</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">enddo</span>
-<span class="k">    do </span><span class="n">jp</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">))</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">enddo</span>
+<span class="w">    </span><span class="k">do </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    do </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span><span class="w"></span>
 
-    <span class="c">! set pointers to the start of the rows in indcol.</span>
+<span class="w">    </span><span class="c">! set pointers to the start of the rows in indcol.</span>
 
-    <span class="n">Ipntr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">do </span><span class="n">ir</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">m</span>
-        <span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="o">+</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="o">=</span> <span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span>
-    <span class="k">enddo</span>
+<span class="w">    </span><span class="n">Ipntr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
+<span class="w">        </span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span><span class="w"></span>
 
-    <span class="c">! fill indcol.</span>
+<span class="w">    </span><span class="c">! fill indcol.</span>
 
-    <span class="k">do </span><span class="n">jcol</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
-        <span class="k">do </span><span class="n">jp</span> <span class="o">=</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span> <span class="p">,</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="n">ir</span> <span class="o">=</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
-            <span class="n">Indcol</span><span class="p">(</span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">))</span> <span class="o">=</span> <span class="n">jcol</span>
-            <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">enddo</span>
+<span class="w">    </span><span class="k">do </span><span class="n">jcol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">        </span><span class="k">do </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">Indcol</span><span class="p">(</span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jcol</span><span class="w"></span>
+<span class="w">            </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="k">enddo</span>
 <span class="k">    enddo</span>
 
-<span class="k">    end subroutine </span><span class="n">setr</span>
+<span class="k">    end subroutine </span><span class="n">setr</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -650,14 +443,11 @@ then the number of non-zero elements of the matrix <code>a</code>.</p></td>
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

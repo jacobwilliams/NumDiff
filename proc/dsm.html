@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>dsm
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 2.3% of total for procedures.">69 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/dsm_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
-    
      <li><a href='../module/dsm_module.html'>dsm_module</a></li>
-    
-  
      <li class="active">dsm</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,24 +120,14 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, ipntr, jpntr)
+    <h2>public subroutine dsm(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, ipntr, jpntr)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>The purpose of <code>dsm</code> is to determine an optimal or near-
 optimal consistent partition of the columns of a sparse
 <code>m</code> by <code>n</code> matrix <code>a</code>.</p>
@@ -234,164 +143,76 @@ such that columns in the same group do not have a
 non-zero in the same row position. a partition of the
 columns of <code>a</code> with this property is consistent with the
 direct determination of <code>a</code>.</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-m~3"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-m~7"></span>integer,</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>number of rows of <code>a</code> (&gt;0)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-n~3"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-n~9"></span>integer,</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>number of columns of <code>a</code> (&gt;0)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-npairs"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>npairs</strong></td><td><p>number of (<code>indrow</code>,<code>indcol</code>) pairs used
 to describe the sparsity pattern of <code>a</code> (&gt;0)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-indrow"></span>integer,</td>
-  <td>intent(inout),</td>
-  <td></td>
-  
-  <td>dimension(npairs)</td><td>::</td>
+<td>intent(inout),</td>
+  <td></td>  <td>dimension(npairs)</td><td>::</td>
   <td><strong>indrow</strong></td><td><p>an integer array of length <code>npairs</code>. on input <code>indrow</code>
 must contain the row indices of the non-zero elements of <code>a</code>.
 on output <code>indrow</code> is permuted so that the corresponding
 column indices are in non-decreasing order. the column
 indices can be recovered from the array <code>jpntr</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-indcol"></span>integer,</td>
-  <td>intent(inout),</td>
-  <td></td>
-  
-  <td>dimension(npairs)</td><td>::</td>
+<td>intent(inout),</td>
+  <td></td>  <td>dimension(npairs)</td><td>::</td>
   <td><strong>indcol</strong></td><td><p>an integer array of length <code>npairs</code>. on input <code>indcol</code>
 must contain the column indices of the non-zero elements of
 <code>a</code>. on output <code>indcol</code> is permuted so that the corresponding
 row indices are in non-decreasing order. the row indices
 can be recovered from the array <code>ipntr</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-ngrp~2"></span>integer,</td>
-  <td>intent(out),</td>
-  <td></td>
-  
-  <td>dimension(n)</td><td>::</td>
+  <td><span class="anchor" id="variable-ngrp~4"></span>integer,</td>
+<td>intent(out),</td>
+  <td></td>  <td>dimension(n)</td><td>::</td>
   <td><strong>ngrp</strong></td><td><p>specifies the partition of the columns of <code>a</code>.
 column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-maxgrp~2"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-maxgrp~4"></span>integer,</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>maxgrp</strong></td><td><p>the number of groups in the partition
 of the columns of <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-mingrp"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>mingrp</strong></td><td><p>a lower bound for the number of groups
 in any consistent partition of the
 columns of <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-info"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-info~4"></span>integer,</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>info</strong></td><td><p>for normal termination <code>info = 1</code>.
 if <code>m</code>, <code>n</code>, or <code>npairs</code> is not positive,
 then <code>info = 0</code>. if the k-th element of
@@ -399,58 +220,33 @@ then <code>info = 0</code>. if the k-th element of
 1 and m or the k-th element of <code>indcol</code>
 is not an integer between 1 and n,
 then <code>info = -k</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ipntr"></span>integer,</td>
-  <td>intent(out),</td>
-  <td></td>
-  
-  <td>dimension(m+1)</td><td>::</td>
+<td>intent(out),</td>
+  <td></td>  <td>dimension(m+1)</td><td>::</td>
   <td><strong>ipntr</strong></td><td><p>an integer output array of length <code>m + 1</code> which
 specifies the locations of the column indices in <code>indcol</code>.
 the column indices for row <code>i</code> are
 <code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
 note that <code>ipntr(m+1)-1</code> is then the number of non-zero
 elements of the matrix <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-jpntr"></span>integer,</td>
-  <td>intent(out),</td>
-  <td></td>
-  
-  <td>dimension(n+1)</td><td>::</td>
+<td>intent(out),</td>
+  <td></td>  <td>dimension(n+1)</td><td>::</td>
   <td><strong>jpntr</strong></td><td><p>jpntr is an integer output array of length n + 1 which
 specifies the locations of the row indices in indrow.
 the row indices for column j are
 <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
 note that <code>jpntr(n+1)-1</code> is then the number of non-zero
 elements of the matrix <code>a</code>.</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -462,127 +258,127 @@ elements of the matrix <code>a</code>.</p></td>
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: proc~~dsm~~CallsGraph Pages: 1 -->
-<svg id="procdsmCallsGraph" width="242pt" height="280pt"
- viewBox="0.00 0.00 242.00 280.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~dsm~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 276)">
+<svg id="procdsmCallsGraph" width="242pt" height="263pt"
+ viewBox="0.00 0.00 242.00 262.71" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~dsm~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 258.71)">
 <title>proc~~dsm~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-276 238,-276 238,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-258.71 238,-258.71 238,4 -4,4"/>
 <!-- proc~dsm -->
 <g id="proc~~dsm~~CallsGraph_node1" class="node">
 <title>proc~dsm</title>
-<polygon fill="none" stroke="black" points="54,-148 0,-148 0,-124 54,-124 54,-148"/>
-<text text-anchor="middle" x="27" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50">dsm</text>
+<polygon fill="none" stroke="black" points="54,-150 0,-150 0,-126 54,-126 54,-150"/>
+<text text-anchor="middle" x="27" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50">dsm</text>
 </g>
-<!-- proc~setr -->
+<!-- proc~numsrt -->
 <g id="proc~~dsm~~CallsGraph_node2" class="node">
-<title>proc~setr</title>
-<g id="a_proc~~dsm~~CallsGraph_node2"><a xlink:href=".././proc/setr.html" xlink:title="setr">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-272 90,-272 90,-248 144,-248 144,-272"/>
-<text text-anchor="middle" x="117" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+<title>proc~numsrt</title>
+<g id="a_proc~~dsm~~CallsGraph_node2"><a xlink:href=".././proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-254 180,-254 180,-230 234,-230 234,-254"/>
+<text text-anchor="middle" x="207" y="-239.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
 </a>
 </g>
 </g>
-<!-- proc~dsm&#45;&gt;proc~setr -->
+<!-- proc~dsm&#45;&gt;proc~numsrt -->
 <g id="proc~~dsm~~CallsGraph_edge1" class="edge">
-<title>proc~dsm&#45;&gt;proc~setr</title>
-<path fill="none" stroke="#000000" d="M33.5,-148C43.1,-168.18 64.36,-209.57 90,-239 90.6,-239.69 91.23,-240.37 91.87,-241.05"/>
-<polygon fill="#000000" stroke="#000000" points="89.56,-243.68 99.27,-247.93 94.33,-238.56 89.56,-243.68"/>
+<title>proc~dsm&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M30.97,-150.27C37.3,-173.35 54.52,-222.74 90,-243 114.03,-256.72 145.67,-255.42 169.84,-251.28"/>
+<polygon fill="#000000" stroke="#000000" points="170.54,-254.71 179.69,-249.37 169.21,-247.84 170.54,-254.71"/>
 </g>
 <!-- proc~ido -->
 <g id="proc~~dsm~~CallsGraph_node3" class="node">
 <title>proc~ido</title>
 <g id="a_proc~~dsm~~CallsGraph_node3"><a xlink:href=".././proc/ido.html" xlink:title="ido">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-230 90,-230 90,-206 144,-206 144,-230"/>
-<text text-anchor="middle" x="117" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-234 90,-234 90,-210 144,-210 144,-234"/>
+<text text-anchor="middle" x="117" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~ido -->
 <g id="proc~~dsm~~CallsGraph_edge2" class="edge">
 <title>proc~dsm&#45;&gt;proc~ido</title>
-<path fill="none" stroke="#000000" d="M39.55,-148.05C51.77,-160.61 71.74,-180.72 90,-197 90.82,-197.73 91.67,-198.47 92.52,-199.22"/>
-<polygon fill="#000000" stroke="#000000" points="90.48,-202.07 100.39,-205.81 94.97,-196.7 90.48,-202.07"/>
-</g>
-<!-- proc~srtdat -->
-<g id="proc~~dsm~~CallsGraph_node4" class="node">
-<title>proc~srtdat</title>
-<g id="a_proc~~dsm~~CallsGraph_node4"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-188 90,-188 90,-164 144,-164 144,-188"/>
-<text text-anchor="middle" x="117" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~srtdat -->
-<g id="proc~~dsm~~CallsGraph_edge3" class="edge">
-<title>proc~dsm&#45;&gt;proc~srtdat</title>
-<path fill="none" stroke="#000000" d="M54.4,-148C62.66,-151.75 71.9,-155.95 80.66,-159.94"/>
-<polygon fill="#000000" stroke="#000000" points="79.37,-163.19 89.92,-164.14 82.26,-156.82 79.37,-163.19"/>
-</g>
-<!-- proc~numsrt -->
-<g id="proc~~dsm~~CallsGraph_node5" class="node">
-<title>proc~numsrt</title>
-<g id="a_proc~~dsm~~CallsGraph_node5"><a xlink:href=".././proc/numsrt.html" xlink:title="numsrt">
-<polygon fill="#d9534f" stroke="#d9534f" points="234,-189 180,-189 180,-165 234,-165 234,-189"/>
-<text text-anchor="middle" x="207" y="-174.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~numsrt -->
-<g id="proc~~dsm~~CallsGraph_edge4" class="edge">
-<title>proc~dsm&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M54.08,-138.92C77.77,-141.89 113.56,-147.17 144,-155 152.59,-157.21 161.67,-160.1 170.15,-163.06"/>
-<polygon fill="#000000" stroke="#000000" points="169.18,-166.43 179.77,-166.52 171.55,-159.84 169.18,-166.43"/>
-</g>
-<!-- proc~seq -->
-<g id="proc~~dsm~~CallsGraph_node6" class="node">
-<title>proc~seq</title>
-<g id="a_proc~~dsm~~CallsGraph_node6"><a xlink:href=".././proc/seq.html" xlink:title="seq">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-108 90,-108 90,-84 144,-84 144,-108"/>
-<text text-anchor="middle" x="117" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~seq -->
-<g id="proc~~dsm~~CallsGraph_edge5" class="edge">
-<title>proc~dsm&#45;&gt;proc~seq</title>
-<path fill="none" stroke="#000000" d="M54.4,-124C62.66,-120.25 71.9,-116.05 80.66,-112.06"/>
-<polygon fill="#000000" stroke="#000000" points="82.26,-115.18 89.92,-107.86 79.37,-108.81 82.26,-115.18"/>
-</g>
-<!-- proc~slo -->
-<g id="proc~~dsm~~CallsGraph_node7" class="node">
-<title>proc~slo</title>
-<g id="a_proc~~dsm~~CallsGraph_node7"><a xlink:href=".././proc/slo.html" xlink:title="slo">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-66 90,-66 90,-42 144,-42 144,-66"/>
-<text text-anchor="middle" x="117" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
-</a>
-</g>
-</g>
-<!-- proc~dsm&#45;&gt;proc~slo -->
-<g id="proc~~dsm~~CallsGraph_edge6" class="edge">
-<title>proc~dsm&#45;&gt;proc~slo</title>
-<path fill="none" stroke="#000000" d="M39.55,-123.95C51.77,-111.39 71.74,-91.28 90,-75 90.82,-74.27 91.67,-73.53 92.52,-72.78"/>
-<polygon fill="#000000" stroke="#000000" points="94.97,-75.3 100.39,-66.19 90.48,-69.93 94.97,-75.3"/>
+<path fill="none" stroke="#000000" d="M39.04,-150.01C51.15,-163 71.35,-184.1 90,-201 90.82,-201.74 91.66,-202.49 92.51,-203.23"/>
+<polygon fill="#000000" stroke="#000000" points="90.46,-206.08 100.36,-209.85 94.97,-200.73 90.46,-206.08"/>
 </g>
 <!-- proc~degr -->
-<g id="proc~~dsm~~CallsGraph_node8" class="node">
+<g id="proc~~dsm~~CallsGraph_node4" class="node">
 <title>proc~degr</title>
-<g id="a_proc~~dsm~~CallsGraph_node8"><a xlink:href=".././proc/degr.html" xlink:title="degr">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-24 90,-24 90,0 144,0 144,-24"/>
-<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
+<g id="a_proc~~dsm~~CallsGraph_node4"><a xlink:href=".././proc/degr.html" xlink:title="degr">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-192 90,-192 90,-168 144,-168 144,-192"/>
+<text text-anchor="middle" x="117" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
 </a>
 </g>
 </g>
 <!-- proc~dsm&#45;&gt;proc~degr -->
-<g id="proc~~dsm~~CallsGraph_edge7" class="edge">
+<g id="proc~~dsm~~CallsGraph_edge3" class="edge">
 <title>proc~dsm&#45;&gt;proc~degr</title>
-<path fill="none" stroke="#000000" d="M33.5,-124C43.1,-103.82 64.36,-62.43 90,-33 90.6,-32.31 91.23,-31.63 91.87,-30.95"/>
-<polygon fill="#000000" stroke="#000000" points="94.33,-33.44 99.27,-24.07 89.56,-28.32 94.33,-33.44"/>
+<path fill="none" stroke="#000000" d="M53.45,-150.15C62.21,-154.33 72.17,-159.08 81.52,-163.54"/>
+<polygon fill="#000000" stroke="#000000" points="80.07,-166.73 90.6,-167.88 83.09,-160.41 80.07,-166.73"/>
+</g>
+<!-- proc~seq -->
+<g id="proc~~dsm~~CallsGraph_node5" class="node">
+<title>proc~seq</title>
+<g id="a_proc~~dsm~~CallsGraph_node5"><a xlink:href=".././proc/seq.html" xlink:title="seq">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-150 90,-150 90,-126 144,-126 144,-150"/>
+<text text-anchor="middle" x="117" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~seq -->
+<g id="proc~~dsm~~CallsGraph_edge4" class="edge">
+<title>proc~dsm&#45;&gt;proc~seq</title>
+<path fill="none" stroke="#000000" d="M54.4,-138C62.39,-138 71.31,-138 79.82,-138"/>
+<polygon fill="#000000" stroke="#000000" points="79.92,-141.5 89.92,-138 79.92,-134.5 79.92,-141.5"/>
+</g>
+<!-- proc~srtdat -->
+<g id="proc~~dsm~~CallsGraph_node6" class="node">
+<title>proc~srtdat</title>
+<g id="a_proc~~dsm~~CallsGraph_node6"><a xlink:href=".././proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-108 90,-108 90,-84 144,-84 144,-108"/>
+<text text-anchor="middle" x="117" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="proc~~dsm~~CallsGraph_edge5" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
+<path fill="none" stroke="#000000" d="M53.45,-125.85C62.21,-121.67 72.17,-116.92 81.52,-112.46"/>
+<polygon fill="#000000" stroke="#000000" points="83.09,-115.59 90.6,-108.12 80.07,-109.27 83.09,-115.59"/>
+</g>
+<!-- proc~setr -->
+<g id="proc~~dsm~~CallsGraph_node7" class="node">
+<title>proc~setr</title>
+<g id="a_proc~~dsm~~CallsGraph_node7"><a xlink:href=".././proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-66 90,-66 90,-42 144,-42 144,-66"/>
+<text text-anchor="middle" x="117" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~setr -->
+<g id="proc~~dsm~~CallsGraph_edge6" class="edge">
+<title>proc~dsm&#45;&gt;proc~setr</title>
+<path fill="none" stroke="#000000" d="M39.04,-125.99C51.15,-113 71.35,-91.9 90,-75 90.82,-74.26 91.66,-73.51 92.51,-72.77"/>
+<polygon fill="#000000" stroke="#000000" points="94.97,-75.27 100.36,-66.15 90.46,-69.92 94.97,-75.27"/>
+</g>
+<!-- proc~slo -->
+<g id="proc~~dsm~~CallsGraph_node8" class="node">
+<title>proc~slo</title>
+<g id="a_proc~~dsm~~CallsGraph_node8"><a xlink:href=".././proc/slo.html" xlink:title="slo">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-24 90,-24 90,0 144,0 144,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~slo -->
+<g id="proc~~dsm~~CallsGraph_edge7" class="edge">
+<title>proc~dsm&#45;&gt;proc~slo</title>
+<path fill="none" stroke="#000000" d="M33.44,-125.76C42.97,-105.18 64.12,-62.96 90,-33 90.6,-32.31 91.22,-31.62 91.86,-30.94"/>
+<polygon fill="#000000" stroke="#000000" points="94.32,-33.43 99.25,-24.05 89.55,-28.32 94.32,-33.43"/>
 </g>
 <!-- proc~ido&#45;&gt;proc~numsrt -->
 <g id="proc~~dsm~~CallsGraph_edge8" class="edge">
 <title>proc~ido&#45;&gt;proc~numsrt</title>
-<path fill="none" stroke="#000000" d="M143.93,-205.92C152.36,-201.99 161.86,-197.57 170.84,-193.38"/>
-<polygon fill="#000000" stroke="#000000" points="172.37,-196.53 179.95,-189.13 169.41,-190.19 172.37,-196.53"/>
+<path fill="none" stroke="#000000" d="M144.4,-228C152.48,-229.84 161.51,-231.89 170.1,-233.84"/>
+<polygon fill="#000000" stroke="#000000" points="169.39,-237.27 179.92,-236.07 170.94,-230.44 169.39,-237.27"/>
 </g>
 </g>
 </svg>
@@ -647,8 +443,6 @@ elements of the matrix <code>a</code>.</p></td>
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -749,34 +543,11 @@ elements of the matrix <code>a</code>.</p></td>
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -784,206 +555,191 @@ elements of the matrix <code>a</code>.</p></td>
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">dsm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Npairs</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ngrp</span><span class="p">,</span><span class="n">Maxgrp</span><span class="p">,</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">Info</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">dsm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Npairs</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ngrp</span><span class="p">,</span><span class="n">Maxgrp</span><span class="p">,</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">Info</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">m</span>       <span class="c">!! number of rows of `a` (&gt;0)</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">n</span>       <span class="c">!! number of columns of `a` (&gt;0)</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">npairs</span>  <span class="c">!! number of (`indrow`,`indcol`) pairs used</span>
-                                     <span class="c">!! to describe the sparsity pattern of `a` (&gt;0)</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">maxgrp</span>  <span class="c">!! the number of groups in the partition</span>
-                                     <span class="c">!! of the columns of `a`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">mingrp</span>  <span class="c">!! a lower bound for the number of groups</span>
-                                     <span class="c">!! in any consistent partition of the</span>
-                                     <span class="c">!! columns of `a`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">info</span>    <span class="c">!! for normal termination `info = 1`.</span>
-                                     <span class="c">!! if `m`, `n`, or `npairs` is not positive,</span>
-                                     <span class="c">!! then `info = 0`. if the k-th element of</span>
-                                     <span class="c">!! `indrow` is not an integer between</span>
-                                     <span class="c">!! 1 and m or the k-th element of `indcol`</span>
-                                     <span class="c">!! is not an integer between 1 and n,</span>
-                                     <span class="c">!! then `info = -k`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">npairs</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">indrow</span>  <span class="c">!! an integer array of length `npairs`. on input `indrow`</span>
-                                                         <span class="c">!! must contain the row indices of the non-zero elements of `a`.</span>
-                                                         <span class="c">!! on output `indrow` is permuted so that the corresponding</span>
-                                                         <span class="c">!! column indices are in non-decreasing order. the column</span>
-                                                         <span class="c">!! indices can be recovered from the array `jpntr`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">npairs</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">indcol</span>  <span class="c">!! an integer array of length `npairs`. on input `indcol`</span>
-                                                         <span class="c">!! must contain the column indices of the non-zero elements of</span>
-                                                         <span class="c">!! `a`. on output `indcol` is permuted so that the corresponding</span>
-                                                         <span class="c">!! row indices are in non-decreasing order. the row indices</span>
-                                                         <span class="c">!! can be recovered from the array `ipntr`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ngrp</span>   <span class="c">!! specifies the partition of the columns of `a`.</span>
-                                                 <span class="c">!! column `jcol` belongs to group `ngrp(jcol)`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ipntr</span>   <span class="c">!! an integer output array of length `m + 1` which</span>
-                                                    <span class="c">!! specifies the locations of the column indices in `indcol`.</span>
-                                                    <span class="c">!! the column indices for row `i` are</span>
-                                                    <span class="c">!! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.</span>
-                                                    <span class="c">!! note that `ipntr(m+1)-1` is then the number of non-zero</span>
-                                                    <span class="c">!! elements of the matrix `a`.</span>
-      <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">jpntr</span>   <span class="c">!! jpntr is an integer output array of length n + 1 which</span>
-                                                    <span class="c">!! specifies the locations of the row indices in indrow.</span>
-                                                    <span class="c">!! the row indices for column j are</span>
-                                                    <span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
-                                                    <span class="c">!! note that `jpntr(n+1)-1` is then the number of non-zero</span>
-                                                    <span class="c">!! elements of the matrix `a`.</span>
+<span class="k">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w">       </span><span class="c">!! number of rows of `a` (&gt;0)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">       </span><span class="c">!! number of columns of `a` (&gt;0)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">npairs</span><span class="w">  </span><span class="c">!! number of (`indrow`,`indcol`) pairs used</span>
+<span class="w">                                     </span><span class="c">!! to describe the sparsity pattern of `a` (&gt;0)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">maxgrp</span><span class="w">  </span><span class="c">!! the number of groups in the partition</span>
+<span class="w">                                     </span><span class="c">!! of the columns of `a`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mingrp</span><span class="w">  </span><span class="c">!! a lower bound for the number of groups</span>
+<span class="w">                                     </span><span class="c">!! in any consistent partition of the</span>
+<span class="w">                                     </span><span class="c">!! columns of `a`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">info</span><span class="w">    </span><span class="c">!! for normal termination `info = 1`.</span>
+<span class="w">                                     </span><span class="c">!! if `m`, `n`, or `npairs` is not positive,</span>
+<span class="w">                                     </span><span class="c">!! then `info = 0`. if the k-th element of</span>
+<span class="w">                                     </span><span class="c">!! `indrow` is not an integer between</span>
+<span class="w">                                     </span><span class="c">!! 1 and m or the k-th element of `indcol`</span>
+<span class="w">                                     </span><span class="c">!! is not an integer between 1 and n,</span>
+<span class="w">                                     </span><span class="c">!! then `info = -k`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">npairs</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">indrow</span><span class="w">  </span><span class="c">!! an integer array of length `npairs`. on input `indrow`</span>
+<span class="w">                                                         </span><span class="c">!! must contain the row indices of the non-zero elements of `a`.</span>
+<span class="w">                                                         </span><span class="c">!! on output `indrow` is permuted so that the corresponding</span>
+<span class="w">                                                         </span><span class="c">!! column indices are in non-decreasing order. the column</span>
+<span class="w">                                                         </span><span class="c">!! indices can be recovered from the array `jpntr`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">npairs</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">indcol</span><span class="w">  </span><span class="c">!! an integer array of length `npairs`. on input `indcol`</span>
+<span class="w">                                                         </span><span class="c">!! must contain the column indices of the non-zero elements of</span>
+<span class="w">                                                         </span><span class="c">!! `a`. on output `indcol` is permuted so that the corresponding</span>
+<span class="w">                                                         </span><span class="c">!! row indices are in non-decreasing order. the row indices</span>
+<span class="w">                                                         </span><span class="c">!! can be recovered from the array `ipntr`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ngrp</span><span class="w">   </span><span class="c">!! specifies the partition of the columns of `a`.</span>
+<span class="w">                                                 </span><span class="c">!! column `jcol` belongs to group `ngrp(jcol)`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ipntr</span><span class="w">   </span><span class="c">!! an integer output array of length `m + 1` which</span>
+<span class="w">                                                    </span><span class="c">!! specifies the locations of the column indices in `indcol`.</span>
+<span class="w">                                                    </span><span class="c">!! the column indices for row `i` are</span>
+<span class="w">                                                    </span><span class="c">!! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.</span>
+<span class="w">                                                    </span><span class="c">!! note that `ipntr(m+1)-1` is then the number of non-zero</span>
+<span class="w">                                                    </span><span class="c">!! elements of the matrix `a`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jpntr</span><span class="w">   </span><span class="c">!! jpntr is an integer output array of length n + 1 which</span>
+<span class="w">                                                    </span><span class="c">!! specifies the locations of the row indices in indrow.</span>
+<span class="w">                                                    </span><span class="c">!! the row indices for column j are</span>
+<span class="w">                                                    </span><span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
+<span class="w">                                                    </span><span class="c">!! note that `jpntr(n+1)-1` is then the number of non-zero</span>
+<span class="w">                                                    </span><span class="c">!! elements of the matrix `a`.</span>
 
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">6</span><span class="o">*</span><span class="n">n</span><span class="p">))</span> <span class="kd">::</span> <span class="n">iwa</span>     <span class="c">!! an integer work array</span>
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span> <span class="p">,</span> <span class="n">ir</span> <span class="p">,</span> <span class="n">j</span> <span class="p">,</span> <span class="n">jp</span> <span class="p">,</span> <span class="n">k</span> <span class="p">,</span> <span class="n">maxclq</span> <span class="p">,</span> <span class="n">nnz</span> <span class="p">,</span> <span class="n">numgrp</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">6</span><span class="o">*</span><span class="n">n</span><span class="p">))</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iwa</span><span class="w">     </span><span class="c">!! an integer work array</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">ir</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">jp</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">maxclq</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">nnz</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">numgrp</span><span class="w"></span>
 
-    <span class="c">!  check the input data.</span>
+<span class="w">    </span><span class="c">!  check the input data.</span>
 
-    <span class="n">Info</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="n">m</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">n</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">Npairs</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">)</span> <span class="k">return</span>
-<span class="k">    do </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">Npairs</span>
-        <span class="n">Info</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&gt;</span><span class="n">m</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&gt;</span><span class="n">n</span> <span class="p">)</span> <span class="k">return</span>
+<span class="w">    </span><span class="n">Info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">m</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">n</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">Npairs</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">    do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Npairs</span><span class="w"></span>
+<span class="w">        </span><span class="n">Info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">k</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&gt;</span><span class="n">m</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">&gt;</span><span class="n">n</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
 <span class="k">    enddo</span>
-<span class="k">    </span><span class="n">Info</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">    </span><span class="n">Info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
 
-    <span class="c">!  sort the data structure by columns.</span>
+<span class="w">    </span><span class="c">!  sort the data structure by columns.</span>
 
-    <span class="k">call </span><span class="n">srtdat</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Npairs</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span>
+<span class="w">    </span><span class="k">call </span><span class="n">srtdat</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Npairs</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c">!  compress the data and determine the number of</span>
-    <span class="c">!  non-zero elements of a.</span>
+<span class="w">    </span><span class="c">!  compress the data and determine the number of</span>
+<span class="w">    </span><span class="c">!  non-zero elements of a.</span>
 
-    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">m</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">enddo</span>
-<span class="k">    </span><span class="n">nnz</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">nnz</span>
-        <span class="k">do </span><span class="n">jp</span> <span class="o">=</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="p">,</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="n">ir</span> <span class="o">=</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="o">/=</span><span class="n">j</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">                </span><span class="n">Indrow</span><span class="p">(</span><span class="n">nnz</span><span class="p">)</span> <span class="o">=</span> <span class="n">ir</span>
-                <span class="n">nnz</span> <span class="o">=</span> <span class="n">nnz</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span>
-            <span class="k">endif</span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    </span><span class="n">nnz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">        </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nnz</span><span class="w"></span>
+<span class="w">        </span><span class="k">do </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="o">/=</span><span class="n">j</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">Indrow</span><span class="p">(</span><span class="n">nnz</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ir</span><span class="w"></span>
+<span class="w">                </span><span class="n">nnz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nnz</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">                </span><span class="n">Iwa</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
+<span class="w">            </span><span class="k">endif</span>
 <span class="k">        enddo</span>
-<span class="k">        </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">k</span>
-    <span class="k">enddo</span>
-<span class="k">    </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">nnz</span>
+<span class="k">        </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nnz</span><span class="w"></span>
 
-    <span class="c">!  extend the data structure to rows.</span>
+<span class="w">    </span><span class="c">!  extend the data structure to rows.</span>
 
-    <span class="k">call </span><span class="n">setr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span>
+<span class="w">    </span><span class="k">call </span><span class="n">setr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c">!  determine a lower bound for the number of groups.</span>
+<span class="w">    </span><span class="c">!  determine a lower bound for the number of groups.</span>
 
-    <span class="n">Mingrp</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">m</span>
-        <span class="n">Mingrp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">Ipntr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-    <span class="k">enddo</span>
+<span class="w">    </span><span class="n">Mingrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
+<span class="w">        </span><span class="n">Mingrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">Ipntr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span><span class="w"></span>
 
-    <span class="c">!  determine the degree sequence for the intersection</span>
-    <span class="c">!  graph of the columns of a.</span>
+<span class="w">    </span><span class="c">!  determine the degree sequence for the intersection</span>
+<span class="w">    </span><span class="c">!  graph of the columns of a.</span>
 
-    <span class="k">call </span><span class="n">degr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="k">call </span><span class="n">degr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
 
-    <span class="c">!  color the intersection graph of the columns of a</span>
-    <span class="c">!  with the smallest-last (sl) ordering.</span>
+<span class="w">    </span><span class="c">!  color the intersection graph of the columns of a</span>
+<span class="w">    </span><span class="c">!  with the smallest-last (sl) ordering.</span>
 
-    <span class="k">call </span><span class="n">slo</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">maxclq</span><span class="p">,&amp;</span>
-                <span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-    <span class="k">call </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Ngrp</span><span class="p">,</span><span class="n">Maxgrp</span><span class="p">,</span>      <span class="p">&amp;</span>
-                <span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">Mingrp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">maxclq</span><span class="p">)</span>
+<span class="w">    </span><span class="k">call </span><span class="n">slo</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">maxclq</span><span class="p">,&amp;</span><span class="w"></span>
+<span class="w">                </span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Ngrp</span><span class="p">,</span><span class="n">Maxgrp</span><span class="p">,</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                </span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="n">Mingrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">maxclq</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c">!  exit if the smallest-last ordering is optimal.</span>
+<span class="w">    </span><span class="c">!  exit if the smallest-last ordering is optimal.</span>
 
-    <span class="k">if</span> <span class="p">(</span> <span class="n">Maxgrp</span><span class="o">==</span><span class="n">Mingrp</span> <span class="p">)</span> <span class="k">return</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Maxgrp</span><span class="o">==</span><span class="n">Mingrp</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"></span>
 
-    <span class="c">!  color the intersection graph of the columns of a</span>
-    <span class="c">!  with the incidence-degree (id) ordering.</span>
+<span class="w">    </span><span class="c">!  color the intersection graph of the columns of a</span>
+<span class="w">    </span><span class="c">!  with the incidence-degree (id) ordering.</span>
 
-    <span class="k">call </span><span class="n">ido</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>     <span class="p">&amp;</span>
-                <span class="n">maxclq</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-    <span class="k">call </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">numgrp</span><span class="p">,</span>    <span class="p">&amp;</span>
-                <span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">Mingrp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">maxclq</span><span class="p">)</span>
+<span class="w">    </span><span class="k">call </span><span class="n">ido</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                </span><span class="n">maxclq</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">numgrp</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                </span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="n">Mingrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">Mingrp</span><span class="p">,</span><span class="n">maxclq</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c">!  retain the better of the two orderings so far.</span>
+<span class="w">    </span><span class="c">!  retain the better of the two orderings so far.</span>
 
-    <span class="k">if</span> <span class="p">(</span> <span class="n">numgrp</span><span class="o">&lt;</span><span class="n">Maxgrp</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">Maxgrp</span> <span class="o">=</span> <span class="n">numgrp</span>
-        <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
-            <span class="n">Ngrp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-        <span class="k">enddo</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">numgrp</span><span class="o">&lt;</span><span class="n">Maxgrp</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">Maxgrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numgrp</span><span class="w"></span>
+<span class="w">        </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">            </span><span class="n">Ngrp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">enddo</span><span class="w"></span>
 
-        <span class="c">!  exit if the incidence-degree ordering is optimal.</span>
+<span class="w">        </span><span class="c">!  exit if the incidence-degree ordering is optimal.</span>
 
-        <span class="k">if</span> <span class="p">(</span> <span class="n">Maxgrp</span><span class="o">==</span><span class="n">Mingrp</span> <span class="p">)</span> <span class="k">return</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Maxgrp</span><span class="o">==</span><span class="n">Mingrp</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">    endif</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">!  color the intersection graph of the columns of a</span>
+<span class="w">    </span><span class="c">!  with the largest-first (lf) ordering.</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">numsrt</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">numgrp</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                </span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">!  retain the best of the three orderings and exit.</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">numgrp</span><span class="o">&lt;</span><span class="n">Maxgrp</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">Maxgrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numgrp</span><span class="w"></span>
+<span class="w">        </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">            </span><span class="n">Ngrp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">enddo</span>
 <span class="k">    endif</span>
 
-    <span class="c">!  color the intersection graph of the columns of a</span>
-    <span class="c">!  with the largest-first (lf) ordering.</span>
-
-    <span class="k">call </span><span class="n">numsrt</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-    <span class="k">call </span><span class="n">seq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">Iwa</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">numgrp</span><span class="p">,</span>    <span class="p">&amp;</span>
-                <span class="n">Iwa</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-
-    <span class="c">!  retain the best of the three orderings and exit.</span>
-
-    <span class="k">if</span> <span class="p">(</span> <span class="n">numgrp</span><span class="o">&lt;</span><span class="n">Maxgrp</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">Maxgrp</span> <span class="o">=</span> <span class="n">numgrp</span>
-        <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
-            <span class="n">Ngrp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-        <span class="k">enddo</span>
-<span class="k">    endif</span>
-
-<span class="k">    end subroutine </span><span class="n">dsm</span>
+<span class="k">    end subroutine </span><span class="n">dsm</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -1011,14 +767,11 @@ elements of the matrix <code>a</code>.</p></td>
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

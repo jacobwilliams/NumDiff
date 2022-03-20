@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>integer_to_string
       <small>Function</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 0.8% of total for procedures.">24 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/numerical_differentiation_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
-    
      <li><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
-    
-  
      <li class="active">integer_to_string</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,88 +120,38 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private function integer_to_string(i, with_sign) result(str)
+    <h2>private function integer_to_string(i, with_sign) result(str)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Convert an integer to a string.</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-i~2"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>i</strong></td><td><p>the integer</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-with_sign"></span>logical,</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
+<td>intent(in),</td>
+  <td>optional</td>  <td></td><td>::</td>
   <td><strong>with_sign</strong></td><td><p>also include the sign (default is False)</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
-    
-    
-    
-    
-   <h3>Return Value <small><span class="anchor" id="variable-str"></span>character(len=:),
-  allocatable</small></h3>
+   <h3>Return Value <small><span class="anchor" id="variable-str"></span>character(len=:),allocatable</small></h3>
     <p>integer converted to a string</p>
-    
-    
     <br>
-    
-    
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -305,50 +174,50 @@ private function integer_to_string(i, with_sign) result(str)
 <polygon fill="none" stroke="black" points="425,-45 323,-45 323,-21 425,-21 425,-45"/>
 <text text-anchor="middle" x="374" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">integer_to_string</text>
 </g>
-<!-- proc~get_formula -->
-<g id="proc~~integer_to_string~~CalledByGraph_node2" class="node">
-<title>proc~get_formula</title>
-<g id="a_proc~~integer_to_string~~CalledByGraph_node2"><a xlink:href=".././proc/get_formula.html" xlink:title="get_formula">
-<polygon fill="#d9534f" stroke="#d9534f" points="266,-66 189,-66 189,-42 266,-42 266,-66"/>
-<text text-anchor="middle" x="227.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_formula</text>
-</a>
-</g>
-</g>
-<!-- proc~get_formula&#45;&gt;proc~integer_to_string -->
-<g id="proc~~integer_to_string~~CalledByGraph_edge1" class="edge">
-<title>proc~get_formula&#45;&gt;proc~integer_to_string</title>
-<path fill="none" stroke="#000000" d="M266.09,-48.54C280.29,-46.47 296.83,-44.07 312.59,-41.78"/>
-<polygon fill="#000000" stroke="#000000" points="313.42,-45.2 322.81,-40.29 312.41,-38.27 313.42,-45.2"/>
-</g>
 <!-- proc~set_numdiff_bounds -->
-<g id="proc~~integer_to_string~~CalledByGraph_node3" class="node">
+<g id="proc~~integer_to_string~~CalledByGraph_node2" class="node">
 <title>proc~set_numdiff_bounds</title>
-<g id="a_proc~~integer_to_string~~CalledByGraph_node3"><a xlink:href=".././proc/set_numdiff_bounds.html" xlink:title="set_numdiff_bounds">
-<polygon fill="#d9534f" stroke="#d9534f" points="287,-24 168,-24 168,0 287,0 287,-24"/>
-<text text-anchor="middle" x="227.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_numdiff_bounds</text>
+<g id="a_proc~~integer_to_string~~CalledByGraph_node2"><a xlink:href=".././proc/set_numdiff_bounds.html" xlink:title="set_numdiff_bounds">
+<polygon fill="#d9534f" stroke="#d9534f" points="287,-66 168,-66 168,-42 287,-42 287,-66"/>
+<text text-anchor="middle" x="227.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_numdiff_bounds</text>
 </a>
 </g>
 </g>
 <!-- proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string -->
-<g id="proc~~integer_to_string~~CalledByGraph_edge2" class="edge">
+<g id="proc~~integer_to_string~~CalledByGraph_edge1" class="edge">
 <title>proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string</title>
-<path fill="none" stroke="#000000" d="M287.27,-20.54C295.61,-21.75 304.19,-23 312.55,-24.21"/>
-<polygon fill="#000000" stroke="#000000" points="312.21,-27.7 322.61,-25.68 313.22,-20.78 312.21,-27.7"/>
+<path fill="none" stroke="#000000" d="M287.27,-45.46C295.61,-44.25 304.19,-43 312.55,-41.79"/>
+<polygon fill="#000000" stroke="#000000" points="313.22,-45.22 322.61,-40.32 312.21,-38.3 313.22,-45.22"/>
+</g>
+<!-- proc~get_formula -->
+<g id="proc~~integer_to_string~~CalledByGraph_node3" class="node">
+<title>proc~get_formula</title>
+<g id="a_proc~~integer_to_string~~CalledByGraph_node3"><a xlink:href=".././proc/get_formula.html" xlink:title="get_formula">
+<polygon fill="#d9534f" stroke="#d9534f" points="266,-24 189,-24 189,0 266,0 266,-24"/>
+<text text-anchor="middle" x="227.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_formula</text>
+</a>
+</g>
+</g>
+<!-- proc~get_formula&#45;&gt;proc~integer_to_string -->
+<g id="proc~~integer_to_string~~CalledByGraph_edge2" class="edge">
+<title>proc~get_formula&#45;&gt;proc~integer_to_string</title>
+<path fill="none" stroke="#000000" d="M266.09,-17.46C280.29,-19.53 296.83,-21.93 312.59,-24.22"/>
+<polygon fill="#000000" stroke="#000000" points="312.41,-27.73 322.81,-25.71 313.42,-20.8 312.41,-27.73"/>
 </g>
 <!-- proc~get_finite_diff_formula -->
 <g id="proc~~integer_to_string~~CalledByGraph_node4" class="node">
 <title>proc~get_finite_diff_formula</title>
 <g id="a_proc~~integer_to_string~~CalledByGraph_node4"><a xlink:href=".././proc/get_finite_diff_formula.html" xlink:title="get_finite_diff_formula">
-<polygon fill="#d9534f" stroke="#d9534f" points="132,-66 0,-66 0,-42 132,-42 132,-66"/>
-<text text-anchor="middle" x="66" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_diff_formula</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="132,-24 0,-24 0,0 132,0 132,-24"/>
+<text text-anchor="middle" x="66" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_diff_formula</text>
 </a>
 </g>
 </g>
 <!-- proc~get_finite_diff_formula&#45;&gt;proc~get_formula -->
 <g id="proc~~integer_to_string~~CalledByGraph_edge3" class="edge">
 <title>proc~get_finite_diff_formula&#45;&gt;proc~get_formula</title>
-<path fill="none" stroke="#000000" d="M132.33,-54C147.84,-54 164.1,-54 178.66,-54"/>
-<polygon fill="#000000" stroke="#000000" points="178.93,-57.5 188.93,-54 178.93,-50.5 178.93,-57.5"/>
+<path fill="none" stroke="#000000" d="M132.33,-12C147.84,-12 164.1,-12 178.66,-12"/>
+<polygon fill="#000000" stroke="#000000" points="178.93,-15.5 188.93,-12 178.93,-8.5 178.93,-15.5"/>
 </g>
 </g>
 </svg>
@@ -413,34 +282,11 @@ private function integer_to_string(i, with_sign) result(str)
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -448,86 +294,71 @@ private function integer_to_string(i, with_sign) result(str)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">function </span><span class="n">integer_to_string</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">with_sign</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">function </span><span class="n">integer_to_string</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">with_sign</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">str</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">i</span>           <span class="c">!! the integer</span>
-    <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span>  <span class="kd">::</span> <span class="n">with_sign</span>   <span class="c">!! also include the sign (default is False)</span>
-    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">str</span>         <span class="c">!! integer converted to a string</span>
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w">           </span><span class="c">!! the integer</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">with_sign</span><span class="w">   </span><span class="c">!! also include the sign (default is False)</span>
+<span class="w">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">str</span><span class="w">         </span><span class="c">!! integer converted to a string</span>
 
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">istat</span> <span class="c">!! `iostat` code for write statement</span>
-    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span> <span class="c">!!</span>
-    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">sgn</span> <span class="c">!! local copy of `with_sign`</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">istat</span><span class="w"> </span><span class="c">!! `iostat` code for write statement</span>
+<span class="w">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="c">!!</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sgn</span><span class="w"> </span><span class="c">!! local copy of `with_sign`</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">with_sign</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">sgn</span> <span class="o">=</span> <span class="n">with_sign</span>
-    <span class="k">else</span>
-<span class="k">        </span><span class="n">sgn</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-    <span class="k">end if</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">with_sign</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">sgn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">with_sign</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">sgn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    if</span> <span class="p">(</span><span class="n">sgn</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        write</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="s1">&#39;(SP,I100)&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span> <span class="n">i</span>
-    <span class="k">else</span>
-<span class="k">        write</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="s1">&#39;(I100)&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span> <span class="n">i</span>
-    <span class="k">end if</span>
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">sgn</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        write</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="s1">&#39;(SP,I100)&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        write</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="s1">&#39;(I100)&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    if</span> <span class="p">(</span><span class="n">istat</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">str</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span>
-    <span class="k">else</span>
-<span class="k">        </span><span class="n">str</span> <span class="o">=</span> <span class="s1">&#39;****&#39;</span>
-    <span class="k">end if</span>
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">istat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;****&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    end function </span><span class="n">integer_to_string</span>
+<span class="k">    end function </span><span class="n">integer_to_string</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -555,14 +386,11 @@ private function integer_to_string(i, with_sign) result(str)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

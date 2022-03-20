@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>srtdat
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 1.2% of total for procedures.">37 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/dsm_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
-    
      <li><a href='../module/dsm_module.html'>dsm_module</a></li>
-    
-  
      <li class="active">srtdat</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,24 +120,14 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)
+    <h2>private subroutine srtdat(n, Nnz, Indrow, Indcol, Jpntr, Iwa)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>given the non-zero elements of an <code>m</code> by <code>n</code> matrix <code>a</code> in
 arbitrary order as specified by their row and column
 indices, this subroutine permutes these elements so
@@ -231,133 +140,64 @@ is set so that the row indices for column <code>j</code> are</p>
 <p><code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.</p>
 <p>note that the value of <code>m</code> is not needed by srtdat and is
 therefore not present in the subroutine statement.</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
-  <td><span class="anchor" id="variable-n~10"></span>integer</td>
-  <td></td>
-  <td></td>
-  
-  <td></td><td>::</td>
+  <td><span class="anchor" id="variable-n~16"></span>integer</td>
+<td></td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>a positive integer input variable set to the number
 of columns of <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-nnz"></span>integer</td>
-  <td></td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td></td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>Nnz</strong></td><td><p>a positive integer input variable set to the number
 of non-zero elements of <code>a</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-indrow~5"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(Nnz)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(Nnz)</td><td>::</td>
   <td><strong>Indrow</strong></td><td><p>an integer array of length <code>nnz</code>. on input <code>indrow</code>
 must contain the row indices of the non-zero elements of <code>a</code>.
 on output <code>indrow</code> is permuted so that the corresponding
 column indices of <code>indcol</code> are in non-decreasing order.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-indcol~5"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(Nnz)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(Nnz)</td><td>::</td>
   <td><strong>Indcol</strong></td><td><p>an integer array of length <code>nnz</code>. on input <code>indcol</code>
 must contain the column indices of the non-zero elements
 of <code>a</code>. on output <code>indcol</code> is permuted so that these indices
 are in non-decreasing order.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-jpntr~5"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(n+1)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(n+1)</td><td>::</td>
   <td><strong>Jpntr</strong></td><td><p>an integer output array of length <code>n + 1</code> which
 specifies the locations of the row indices in the output
 <code>indrow</code>. the row indices for column <code>j</code> are
 <code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
 <strong>note</strong> that <code>jpntr(1)</code> is set to 1 and that <code>jpntr(n+1)-1</code>
 is then <code>nnz</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-iwa~3"></span>integer,</td>
-  <td></td>
-  <td></td>
-  
-  <td>dimension(n)</td><td>::</td>
+<td></td>
+  <td></td>  <td>dimension(n)</td><td>::</td>
   <td><strong>Iwa</strong></td><td><p>an integer work array of length <code>n</code>.</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -473,34 +313,11 @@ is then <code>nnz</code>.</p></td>
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -508,124 +325,109 @@ is then <code>nnz</code>.</p></td>
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">srtdat</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Nnz</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">srtdat</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">Nnz</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Iwa</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    </span><span class="kt">integer</span>                <span class="kd">::</span> <span class="n">n</span>       <span class="c">!! a positive integer input variable set to the number</span>
-                                      <span class="c">!! of columns of `a`.</span>
-    <span class="kt">integer</span>                <span class="kd">::</span> <span class="n">Nnz</span>     <span class="c">!! a positive integer input variable set to the number</span>
-                                      <span class="c">!! of non-zero elements of `a`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">Nnz</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Indrow</span>  <span class="c">!! an integer array of length `nnz`. on input `indrow`</span>
-                                      <span class="c">!! must contain the row indices of the non-zero elements of `a`.</span>
-                                      <span class="c">!! on output `indrow` is permuted so that the corresponding</span>
-                                      <span class="c">!! column indices of `indcol` are in non-decreasing order.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">Nnz</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Indcol</span>  <span class="c">!! an integer array of length `nnz`. on input `indcol`</span>
-                                      <span class="c">!! must contain the column indices of the non-zero elements</span>
-                                      <span class="c">!! of `a`. on output `indcol` is permuted so that these indices</span>
-                                      <span class="c">!! are in non-decreasing order.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Jpntr</span>   <span class="c">!! an integer output array of length `n + 1` which</span>
-                                      <span class="c">!! specifies the locations of the row indices in the output</span>
-                                      <span class="c">!! `indrow`. the row indices for column `j` are</span>
-                                      <span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
-                                      <span class="c">!! **note** that `jpntr(1)` is set to 1 and that `jpntr(n+1)-1`</span>
-                                      <span class="c">!! is then `nnz`.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">Iwa</span>     <span class="c">!! an integer work array of length `n`.</span>
+<span class="k">    </span><span class="kt">integer</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">       </span><span class="c">!! a positive integer input variable set to the number</span>
+<span class="w">                                      </span><span class="c">!! of columns of `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">Nnz</span><span class="w">     </span><span class="c">!! a positive integer input variable set to the number</span>
+<span class="w">                                      </span><span class="c">!! of non-zero elements of `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">Nnz</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Indrow</span><span class="w">  </span><span class="c">!! an integer array of length `nnz`. on input `indrow`</span>
+<span class="w">                                      </span><span class="c">!! must contain the row indices of the non-zero elements of `a`.</span>
+<span class="w">                                      </span><span class="c">!! on output `indrow` is permuted so that the corresponding</span>
+<span class="w">                                      </span><span class="c">!! column indices of `indcol` are in non-decreasing order.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">Nnz</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Indcol</span><span class="w">  </span><span class="c">!! an integer array of length `nnz`. on input `indcol`</span>
+<span class="w">                                      </span><span class="c">!! must contain the column indices of the non-zero elements</span>
+<span class="w">                                      </span><span class="c">!! of `a`. on output `indcol` is permuted so that these indices</span>
+<span class="w">                                      </span><span class="c">!! are in non-decreasing order.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Jpntr</span><span class="w">   </span><span class="c">!! an integer output array of length `n + 1` which</span>
+<span class="w">                                      </span><span class="c">!! specifies the locations of the row indices in the output</span>
+<span class="w">                                      </span><span class="c">!! `indrow`. the row indices for column `j` are</span>
+<span class="w">                                      </span><span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
+<span class="w">                                      </span><span class="c">!! **note** that `jpntr(1)` is set to 1 and that `jpntr(n+1)-1`</span>
+<span class="w">                                      </span><span class="c">!! is then `nnz`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">Iwa</span><span class="w">     </span><span class="c">!! an integer work array of length `n`.</span>
 
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span> <span class="p">,</span> <span class="n">j</span> <span class="p">,</span> <span class="n">k</span> <span class="p">,</span> <span class="n">l</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="w"></span>
 
-    <span class="c">! store in array iwa the counts of non-zeroes in the columns.</span>
+<span class="w">    </span><span class="c">! store in array iwa the counts of non-zeroes in the columns.</span>
 
-    <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">enddo</span>
-<span class="k">    do </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">Nnz</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">enddo</span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Nnz</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span><span class="w"></span>
 
-    <span class="c">! set pointers to the start of the columns in indrow.</span>
+<span class="w">    </span><span class="c">! set pointers to the start of the columns in indrow.</span>
 
-    <span class="n">Jpntr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">n</span>
-        <span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-        <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-    <span class="k">enddo</span>
-<span class="k">    </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="w">    </span><span class="n">Jpntr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">        </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
 
-    <span class="c">! begin in-place sort.</span>
+<span class="w">    </span><span class="c">! begin in-place sort.</span>
 
-    <span class="k">do</span>
-<span class="k">        </span><span class="n">j</span> <span class="o">=</span> <span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="n">k</span><span class="o">&gt;=</span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span> <span class="k">then</span>
-            <span class="c">! current element is in position. now examine the</span>
-            <span class="c">! next element or the first un-sorted element in</span>
-            <span class="c">! the j-th group.</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
-        <span class="k">else</span>
-            <span class="c">! current element is not in position. place element</span>
-            <span class="c">! in position and make the displaced element the</span>
-            <span class="c">! current element.</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-            <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-            <span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">Indrow</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
-            <span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">Indcol</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
-            <span class="n">Indrow</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="n">Indcol</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span>
-        <span class="k">endif</span>
-<span class="k">        if</span> <span class="p">(</span> <span class="n">k</span><span class="o">&gt;</span><span class="n">Nnz</span> <span class="p">)</span> <span class="k">exit</span>
+<span class="w">    </span><span class="k">do</span>
+<span class="k">        </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">k</span><span class="o">&gt;=</span><span class="n">Jpntr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! current element is in position. now examine the</span>
+<span class="w">            </span><span class="c">! next element or the first un-sorted element in</span>
+<span class="w">            </span><span class="c">! the j-th group.</span>
+<span class="w">            </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="k">else</span><span class="w"></span>
+<span class="w">            </span><span class="c">! current element is not in position. place element</span>
+<span class="w">            </span><span class="c">! in position and make the displaced element the</span>
+<span class="w">            </span><span class="c">! current element.</span>
+<span class="w">            </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">Indrow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">Indcol</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indcol</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">Indrow</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">            </span><span class="n">Indcol</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
+<span class="w">        </span><span class="k">endif</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">k</span><span class="o">&gt;</span><span class="n">Nnz</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
 <span class="k">    end do</span>
 
-<span class="k">    end subroutine </span><span class="n">srtdat</span>
+<span class="k">    end subroutine </span><span class="n">srtdat</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -653,14 +455,11 @@ is then <code>nnz</code>.</p></td>
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

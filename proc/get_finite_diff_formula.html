@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>get_finite_diff_formula
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 0.4% of total for procedures.">13 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/numerical_differentiation_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
-    
      <li><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
-    
-  
      <li class="active">get_finite_diff_formula</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,83 +120,41 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-public subroutine get_finite_diff_formula(id, formula)
+    <h2>public subroutine get_finite_diff_formula(id, formula)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Return a string with the finite difference formula.
   Input is the method <code>id</code> code.</p>
 <h3>See also:</h3>
 <ul>
 <li><a href="../proc/get_formula.html">get_formula</a></li>
 </ul>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-id~3"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>id</strong></td><td><p>the id code for the method</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-formula~2"></span>character(len=:),</td>
-  <td>intent(out),</td>
-  <td></td>
-  
-  <td>allocatable</td><td>::</td>
+<td>intent(out),</td>
+  <td></td>  <td>allocatable</td><td>::</td>
   <td><strong>formula</strong></td><td><p>the formula string</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -300,80 +177,80 @@ public subroutine get_finite_diff_formula(id, formula)
 <polygon fill="none" stroke="black" points="132,-45 0,-45 0,-21 132,-21 132,-45"/>
 <text text-anchor="middle" x="66" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">get_finite_diff_formula</text>
 </g>
-<!-- proc~get_formula -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_node2" class="node">
-<title>proc~get_formula</title>
-<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node2"><a xlink:href=".././proc/get_formula.html" xlink:title="get_formula">
-<polygon fill="#d9534f" stroke="#d9534f" points="290.5,-66 213.5,-66 213.5,-42 290.5,-42 290.5,-66"/>
-<text text-anchor="middle" x="252" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_formula</text>
-</a>
-</g>
-</g>
-<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_formula -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_edge1" class="edge">
-<title>proc~get_finite_diff_formula&#45;&gt;proc~get_formula</title>
-<path fill="none" stroke="#000000" d="M132.13,-40.43C155.6,-43.11 181.63,-46.08 203.34,-48.56"/>
-<polygon fill="#000000" stroke="#000000" points="202.96,-52.04 213.29,-49.7 203.76,-45.09 202.96,-52.04"/>
-</g>
 <!-- proc~get_finite_difference_method -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_node3" class="node">
+<g id="proc~~get_finite_diff_formula~~CallsGraph_node2" class="node">
 <title>proc~get_finite_difference_method</title>
-<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node3"><a xlink:href=".././proc/get_finite_difference_method.html" xlink:title="get_finite_difference_method">
-<polygon fill="#d9534f" stroke="#d9534f" points="336,-24 168,-24 168,0 336,0 336,-24"/>
-<text text-anchor="middle" x="252" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_difference_method</text>
+<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node2"><a xlink:href=".././proc/get_finite_difference_method.html" xlink:title="get_finite_difference_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="336,-66 168,-66 168,-42 336,-42 336,-66"/>
+<text text-anchor="middle" x="252" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_difference_method</text>
 </a>
 </g>
 </g>
 <!-- proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_edge2" class="edge">
+<g id="proc~~get_finite_diff_formula~~CallsGraph_edge1" class="edge">
 <title>proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method</title>
-<path fill="none" stroke="#000000" d="M132.13,-25.57C140.45,-24.62 149.1,-23.63 157.75,-22.64"/>
-<polygon fill="#000000" stroke="#000000" points="158.37,-26.09 167.91,-21.48 157.57,-19.14 158.37,-26.09"/>
+<path fill="none" stroke="#000000" d="M132.13,-40.43C140.45,-41.38 149.1,-42.37 157.75,-43.36"/>
+<polygon fill="#000000" stroke="#000000" points="157.57,-46.86 167.91,-44.52 158.37,-39.91 157.57,-46.86"/>
 </g>
-<!-- proc~integer_to_string -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_node5" class="node">
-<title>proc~integer_to_string</title>
-<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node5"><a xlink:href=".././proc/integer_to_string.html" xlink:title="integer_to_string">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="477.5,-66 375.5,-66 375.5,-42 477.5,-42 477.5,-66"/>
-<text text-anchor="middle" x="426.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">integer_to_string</text>
+<!-- proc~get_formula -->
+<g id="proc~~get_finite_diff_formula~~CallsGraph_node3" class="node">
+<title>proc~get_formula</title>
+<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node3"><a xlink:href=".././proc/get_formula.html" xlink:title="get_formula">
+<polygon fill="#d9534f" stroke="#d9534f" points="290.5,-24 213.5,-24 213.5,0 290.5,0 290.5,-24"/>
+<text text-anchor="middle" x="252" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_formula</text>
 </a>
 </g>
 </g>
-<!-- proc~get_formula&#45;&gt;proc~integer_to_string -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_edge3" class="edge">
-<title>proc~get_formula&#45;&gt;proc~integer_to_string</title>
-<path fill="none" stroke="#000000" d="M290.86,-54C312.65,-54 340.53,-54 365.27,-54"/>
-<polygon fill="#000000" stroke="#000000" points="365.29,-57.5 375.29,-54 365.29,-50.5 365.29,-57.5"/>
+<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_formula -->
+<g id="proc~~get_finite_diff_formula~~CallsGraph_edge2" class="edge">
+<title>proc~get_finite_diff_formula&#45;&gt;proc~get_formula</title>
+<path fill="none" stroke="#000000" d="M132.13,-25.57C155.6,-22.89 181.63,-19.92 203.34,-17.44"/>
+<polygon fill="#000000" stroke="#000000" points="203.76,-20.91 213.29,-16.3 202.96,-13.96 203.76,-20.91"/>
 </g>
 <!-- interface~finite_diff_method -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_node4" class="node">
+<g id="proc~~get_finite_diff_formula~~CallsGraph_node5" class="node">
 <title>interface~finite_diff_method</title>
-<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node4"><a xlink:href=".././interface/finite_diff_method.html" xlink:title="finite_diff_method">
-<polygon fill="#a7506f" stroke="#a7506f" points="481,-24 372,-24 372,0 481,0 481,-24"/>
-<text text-anchor="middle" x="426.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_method</text>
+<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node5"><a xlink:href=".././interface/finite_diff_method.html" xlink:title="finite_diff_method">
+<polygon fill="#a7506f" stroke="#a7506f" points="481,-66 372,-66 372,-42 481,-42 481,-66"/>
+<text text-anchor="middle" x="426.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_method</text>
 </a>
 </g>
 </g>
 <!-- proc~get_finite_difference_method&#45;&gt;interface~finite_diff_method -->
-<g id="proc~~get_finite_diff_formula~~CallsGraph_edge4" class="edge">
+<g id="proc~~get_finite_diff_formula~~CallsGraph_edge3" class="edge">
 <title>proc~get_finite_difference_method&#45;&gt;interface~finite_diff_method</title>
-<path fill="none" stroke="#000000" d="M336.22,-12C344.7,-12 353.22,-12 361.45,-12"/>
-<polygon fill="#000000" stroke="#000000" points="361.7,-15.5 371.7,-12 361.7,-8.5 361.7,-15.5"/>
+<path fill="none" stroke="#000000" d="M336.22,-54C344.7,-54 353.22,-54 361.45,-54"/>
+<polygon fill="#000000" stroke="#000000" points="361.7,-57.5 371.7,-54 361.7,-50.5 361.7,-57.5"/>
+</g>
+<!-- proc~integer_to_string -->
+<g id="proc~~get_finite_diff_formula~~CallsGraph_node4" class="node">
+<title>proc~integer_to_string</title>
+<g id="a_proc~~get_finite_diff_formula~~CallsGraph_node4"><a xlink:href=".././proc/integer_to_string.html" xlink:title="integer_to_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="477.5,-24 375.5,-24 375.5,0 477.5,0 477.5,-24"/>
+<text text-anchor="middle" x="426.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">integer_to_string</text>
+</a>
+</g>
+</g>
+<!-- proc~get_formula&#45;&gt;proc~integer_to_string -->
+<g id="proc~~get_finite_diff_formula~~CallsGraph_edge4" class="edge">
+<title>proc~get_formula&#45;&gt;proc~integer_to_string</title>
+<path fill="none" stroke="#000000" d="M290.86,-12C312.65,-12 340.53,-12 365.27,-12"/>
+<polygon fill="#000000" stroke="#000000" points="365.29,-15.5 375.29,-12 365.29,-8.5 365.29,-15.5"/>
 </g>
 <!-- proc~initialize_finite_difference_method -->
 <g id="proc~~get_finite_diff_formula~~CallsGraph_node6" class="node">
 <title>proc~initialize_finite_difference_method</title>
 <g id="a_proc~~get_finite_diff_formula~~CallsGraph_node6"><a xlink:href=".././proc/initialize_finite_difference_method.html" xlink:title="initialize_finite_difference_method">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="712,-24 517,-24 517,0 712,0 712,-24"/>
-<text text-anchor="middle" x="614.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_finite_difference_method</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="712,-66 517,-66 517,-42 712,-42 712,-66"/>
+<text text-anchor="middle" x="614.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize_finite_difference_method</text>
 </a>
 </g>
 </g>
 <!-- interface~finite_diff_method&#45;&gt;proc~initialize_finite_difference_method -->
 <g id="proc~~get_finite_diff_formula~~CallsGraph_edge5" class="edge">
 <title>interface~finite_diff_method&#45;&gt;proc~initialize_finite_difference_method</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M481.3,-12C489.32,-12 497.81,-12 506.48,-12"/>
-<polygon fill="#000000" stroke="#000000" points="506.7,-15.5 516.7,-12 506.7,-8.5 506.7,-15.5"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M481.3,-54C489.32,-54 497.81,-54 506.48,-54"/>
+<polygon fill="#000000" stroke="#000000" points="506.7,-57.5 516.7,-54 506.7,-50.5 506.7,-57.5"/>
 </g>
 </g>
 </svg>
@@ -438,35 +315,11 @@ public subroutine get_finite_diff_formula(id, formula)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -474,73 +327,58 @@ public subroutine get_finite_diff_formula(id, formula)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">get_finite_diff_formula</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">formula</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">get_finite_diff_formula</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">formula</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">id</span>  <span class="c">!! the id code for the method</span>
-    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">formula</span> <span class="c">!! the formula string</span>
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">id</span><span class="w">  </span><span class="c">!! the id code for the method</span>
+<span class="w">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="c">!! the formula string</span>
 
-    <span class="k">type</span><span class="p">(</span><span class="n">finite_diff_method</span><span class="p">)</span> <span class="kd">::</span> <span class="n">fd</span>
-    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">found</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">finite_diff_method</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fd</span><span class="w"></span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">found</span><span class="w"></span>
 
-    <span class="k">call </span><span class="n">get_finite_difference_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">fd</span><span class="p">,</span><span class="n">found</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">found</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">fd</span><span class="p">%</span><span class="n">id</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        call </span><span class="n">get_formula</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="n">formula</span><span class="p">)</span>
-    <span class="k">else</span>
-<span class="k">        </span><span class="n">formula</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">end if</span>
+<span class="w">    </span><span class="k">call </span><span class="n">get_finite_difference_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">fd</span><span class="p">,</span><span class="n">found</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">found</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">fd</span><span class="p">%</span><span class="n">id</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        call </span><span class="n">get_formula</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="n">formula</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    end subroutine </span><span class="n">get_finite_diff_formula</span>
+<span class="k">    end subroutine </span><span class="n">get_finite_diff_formula</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -568,14 +406,11 @@ public subroutine get_finite_diff_formula(id, formula)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

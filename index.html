@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="./favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="./css/pygments.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/local.css" rel="stylesheet">
-    
     <link  href="./tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="./lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="./lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="./lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="./lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="./lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="./lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="./search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,41 +72,30 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <p>NumDiff -- Numerical Differentiation Library</p>
-        	 
 	<p> Find us on&hellip;</p>
         <p>
-			 
           <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/NumDiff" role="button">GitHub</a>
-			 
-			 
-			 
-			 
-			 
-	         
-			 
         </p>
       </div>
 
       <div class="row" id='text'>
-		  
         <div class="col-md-8">
-		  
           <h1>NumDiff</h1>
           <h1><img alt="NumDiff" src="media/logo.png"></h1>
 <h2>Brief description</h2>
 <p><strong>NumDiff</strong> provides a modern Fortran interface for computing the Jacobian (derivative) matrix of <code>m</code> nonlinear functions which depend on <code>n</code> variables. The Jacobian matrix is required for various applications, including numerical optimization. It can also be used to test the accuracy of gradients computed by other means. The library also provides for computing the sparsity of this matrix, and returning the Jacobian in sparse or dense form.</p>
 <h2>Status</h2>
-<p><img alt="CI Status" src="https://github.com/jacobwilliams/NumDiff/actions/workflows/CI.yml/badge.svg"></p>
+<p><a href="https://github.com/jacobwilliams/NumDiff/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/release/jacobwilliams/NumDiff.svg?style=plastic"></a>
+<img alt="CI Status" src="https://github.com/jacobwilliams/NumDiff/actions/workflows/CI.yml/badge.svg">
+<a href="https://codecov.io/gh/jacobwilliams/NumDiff"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/NumDiff/branch/master/graph/badge.svg?token=43HK33CSMY"></a></p>
 <p>This is currently a work in progress. The goal is a comprehensive library that contains a full suite of computationally efficient implementations of algorithms for sparsity determination and numerical differentiation. This code is hosted on GitHub at: https://github.com/jacobwilliams/NumDiff</p>
 <h3>To Do</h3>
 <ul>
@@ -177,169 +130,131 @@
 </ul>
 <h2>Building NumDiff</h2>
 <h3>FPM</h3>
-<p>A <code>fmp.toml</code> file is provided for compiling roots-fortran with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
-<div class="codehilite"><pre><span></span><code>  fpm build --profile release
+<p>A <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> manifest file is included, so that the library and tests cases can be compiled with FPM. For example:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release
+fpm test --profile release
 </code></pre></div>
 
-<p>And to run the unit tests:</p>
-<div class="codehilite"><pre><span></span><code>  fpm test
+<p>To use <code>NumDiff</code> within your FPM project, add the following to your <code>fpm.toml</code> file:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span><span class="w"></span>
+<span class="n">NumDiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/NumDiff.git&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<h3>FoBiS</h3>
-<p>A <a href="https://github.com/szaghi/FoBiS">FoBiS</a> configuration file (<code>numdiff.fobis</code>) is also provided that can also build the library and examples. Use the <code>mode</code> flag to indicate what to build. For example:</p>
-<ul>
-<li>To build all the examples using gfortran: <code>FoBiS.py build -f numdiff.fobis -mode tests-gnu</code></li>
-<li>To build all the examples using ifort: <code>FoBiS.py build -f numdiff.fobis -mode tests-intel</code></li>
-<li>To build a static library using gfortran: <code>FoBiS.py build -f numdiff.fobis -mode static-gnu</code></li>
-<li>To build a static library using ifort: <code>FoBiS.py build -f numdiff.fobis -mode static-intel</code></li>
-</ul>
-<p>The full set of modes are: <code>static-gnu</code>, <code>static-gnu-debug</code>, <code>static-intel</code>, <code>static-intel-debug</code>, <code>shared-gnu</code>, <code>shared-gnu-debug</code>, <code>shared-intel</code>, <code>shared-intel-debug</code>, <code>tests-gnu</code>, <code>tests-gnu-debug</code>, <code>tests-intel</code>, <code>tests-intel-debug</code></p>
-<p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">ford</a>, run: <code>FoBis.py rule --execute makedoc -f numdiff.fobis</code></p>
-<p>To run the test programs, run: <code>FoBis.py rule --execute tests -f numdiff.fobis</code></p>
+<p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>, run:</p>
+<div class="codehilite"><pre><span></span><code>  ford numdiff.md
+</code></pre></div>
+
+<p>By default, the library is built with double precision (<code>real64</code>) real values. Explicitly specifying the real kind can be done using the following processor flags:</p>
+<table>
+<thead>
+<tr>
+<th>Preprocessor flag</th>
+<th>Kind</th>
+<th>Number of bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REAL32</code></td>
+<td><code>real(kind=real32)</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>REAL64</code></td>
+<td><code>real(kind=real64)</code></td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>REAL128</code></td>
+<td><code>real(kind=real128)</code></td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to build a single precision version of the library, use:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release --flag &quot;-DREAL32&quot;
+</code></pre></div>
+
 <h2>Documentation</h2>
-<p>The latest API documentation can be found <a href="http://jacobwilliams.github.io/NumDiff/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a> (note that the included <code>build.sh</code> script will also generate these files).</p>
+<p>The latest API documentation can be found <a href="https://jacobwilliams.github.io/NumDiff/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a> (note that the included <code>build.sh</code> script will also generate these files).</p>
 <h2>License</h2>
 <p>The NumDiff source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/NumDiff/blob/master/LICENSE">license</a> (BSD-style).</p>
 <h2>References</h2>
 <ul>
-<li>J. Oliver, "An algorithm for numerical differentiation of a function of one real variable", Journal of Computational and Applied Mathematics 6 (2) (1980) 145–160.  Fortran 77 code from <a href="ftp://math.nist.gov/pub/repository/diff/src/DIFF">NIST</a></li>
+<li>J. Oliver, "An algorithm for numerical differentiation of a function of one real variable", Journal of Computational and Applied Mathematics 6 (2) (1980) 145-160.  Fortran 77 code from <a href="ftp://math.nist.gov/pub/repository/diff/src/DIFF">NIST</a></li>
 <li>Thomas F. Coleman, Burton S. Garbow, Jorge J. More, "Algorithm 618: FORTRAN subroutines for estimating sparse Jacobian Matrices", ACM Transactions on Mathematical Software (TOMS), Volume 10 Issue 3, Sept. 1984, Pages 346-347</li>
 </ul>
         </div>
-		  
         <div class="col-md-4">
 	  <div class="well">
           <h2>Developer Info</h2>
           <h4>Jacob Williams</h4>
           
-          
-			   
             <div class="text-center"><div class="btn-group" role="group">
-              
-              
-              
               <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
-              
-              
-				  
-              
-              
-              
-              
             </div></div>
-            
        </div>
        </div>
-       
       </div>
-      
-      
-      
-      
-      
-      
-		
-        
       <div class="row">
-        
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
-              <ul>
-                    <li><a href='./sourcefile/cache_module.f90.html'>cache_module.f90</a></li>
-                  
+              <ul>                    <li><a href='./sourcefile/cache_module.f90.html'>cache_module.f90</a></li>
                     <li><a href='./sourcefile/diff_module.f90.html'>diff_module.f90</a></li>
-                  
                     <li><a href='./sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
-                  
-                    <li><a href='./sourcefile/kinds_module.f90.html'>kinds_module.f90</a></li>
-                  
+                    <li><a href='./sourcefile/kinds_module.f90.html'>kinds_module.F90</a></li>
                     <li><a href='./sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
-                  
                     <li><a href='./sourcefile/utilities_module.f90.html'>utilities_module.f90</a></li>
-                  </ul>
+</ul>
           </div>
-        
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Modules</h3>
-              <ul>
-                    <li><a href='./module/diff_module.html'>diff_module</a></li>
-                  
+              <ul>                    <li><a href='./module/diff_module.html'>diff_module</a></li>
                     <li><a href='./module/dsm_module.html'>dsm_module</a></li>
-                  
                     <li><a href='./module/numdiff_cache_module.html'>numdiff_cache_module</a></li>
-                  
                     <li><a href='./module/numdiff_kinds_module.html'>numdiff_kinds_module</a></li>
-                  
                     <li><a href='./module/numdiff_utilities_module.html'>numdiff_utilities_module</a></li>
-                  
                     <li><a href='./module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
-                  </ul>
+</ul>
           </div>
-          
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Procedures</h3>
-              <ul>
-                    <li><a href='./proc/clear_exceptions.html'>clear_exceptions</a></li>
-                  
+              <ul>                    <li><a href='./proc/clear_exceptions.html'>clear_exceptions</a></li>
                     <li><a href='./proc/columns_in_partition_group.html'>columns_in_partition_group</a></li>
-                  
                     <li><a href='./proc/compute_function_with_cache.html'>compute_function_with_cache</a></li>
-                  
                     <li><a href='./proc/compute_indices.html'>compute_indices</a></li>
-                  
                     <li><a href='./proc/compute_jacobian.html'>compute_jacobian</a></li>
-                  
                     <li><a href='./proc/compute_jacobian_dense.html'>compute_jacobian_dense</a></li>
-                  
                     <li><a href='./proc/compute_jacobian_for_sparsity.html'>compute_jacobian_for_sparsity</a></li>
-                  
                     <li><a href='./proc/compute_jacobian_partitioned.html'>compute_jacobian_partitioned</a></li>
-                  
                     <li><a href='./proc/compute_jacobian_standard.html'>compute_jacobian_standard</a></li>
-                  
                     <li><a href='./proc/compute_jacobian_times_vector.html'>compute_jacobian_times_vector</a></li>
-                  </ul>
+</ul>
           </div>
-          
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Derived Types</h3>
-              <ul>
-                    <li><a href='./type/diff_func.html'>diff_func</a></li>
-                  
+              <ul>                    <li><a href='./type/diff_func.html'>diff_func</a></li>
                     <li><a href='./type/finite_diff_method.html'>finite_diff_method</a></li>
-                  
                     <li><a href='./type/function_cache.html'>function_cache</a></li>
-                  
                     <li><a href='./type/fx.html'>fx</a></li>
-                  
                     <li><a href='./type/meth_array.html'>meth_array</a></li>
-                  
                     <li><a href='./type/numdiff_type.html'>numdiff_type</a></li>
-                  
                     <li><a href='./type/sparsity_pattern.html'>sparsity_pattern</a></li>
-                  </ul>
+</ul>
           </div>
-          
       </div>
-      
-
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -367,14 +282,11 @@
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="./tipuesearch/tipuesearch_content.js"></script>
     <script src="./tipuesearch/tipuesearch_set.js"></script>
     <script src="./tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

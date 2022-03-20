@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>unique_int
       <small>Function</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 0.7% of total for procedures.">21 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/utilities_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/utilities_module.f90.html'>utilities_module.f90</a></li>
-    
      <li><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></li>
-    
-  
      <li class="active">unique_int</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,87 +120,38 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private function unique_int(vec, chunk_size) result(ivec_unique)
+    <h2>private function unique_int(vec, chunk_size) result(ivec_unique)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Returns only the unique elements of the vector (sorted in ascending order).</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-vec"></span>integer,</td>
-  <td>intent(in),</td>
-  <td></td>
-  
-  <td>dimension(:)</td><td>::</td>
+<td>intent(in),</td>
+  <td></td>  <td>dimension(:)</td><td>::</td>
   <td><strong>vec</strong></td><td><p>a vector of integers</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-chunk_size~5"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>chunk_size</strong></td><td><p>chunk size for adding to arrays</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
-    
-    
-    
-    
-   <h3>Return Value <small><span class="anchor" id="variable-ivec_unique"></span>integer,
-  dimension(:),allocatable</small></h3>
+   <h3>Return Value <small><span class="anchor" id="variable-ivec_unique"></span>integer,dimension(:),allocatable</small></h3>
     <p>unique elements of <code>ivec</code></p>
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -314,7 +184,7 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
 </g>
 </g>
 <!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
-<g id="proc~~unique_int~~CallsGraph_edge2" class="edge">
+<g id="proc~~unique_int~~CallsGraph_edge1" class="edge">
 <title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
 <path fill="none" stroke="#000000" d="M68.12,-81.07C76.18,-82.55 85.02,-84.17 93.82,-85.79"/>
 <polygon fill="#000000" stroke="#000000" points="93.21,-89.24 103.68,-87.6 94.48,-82.35 93.21,-89.24"/>
@@ -329,15 +199,15 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
 </g>
 </g>
 <!-- proc~unique_int&#45;&gt;interface~expand_vector -->
-<g id="proc~~unique_int~~CallsGraph_edge1" class="edge">
+<g id="proc~~unique_int~~CallsGraph_edge2" class="edge">
 <title>proc~unique_int&#45;&gt;interface~expand_vector</title>
 <path fill="none" stroke="#000000" d="M68.12,-68.93C76.56,-67.38 85.85,-65.67 95.05,-63.99"/>
 <polygon fill="#000000" stroke="#000000" points="95.75,-67.42 104.95,-62.17 94.48,-60.53 95.75,-67.42"/>
 </g>
 <!-- proc~sort_ascending_real -->
-<g id="proc~~unique_int~~CallsGraph_node4" class="node">
+<g id="proc~~unique_int~~CallsGraph_node5" class="node">
 <title>proc~sort_ascending_real</title>
-<g id="a_proc~~unique_int~~CallsGraph_node4"><a xlink:href=".././proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<g id="a_proc~~unique_int~~CallsGraph_node5"><a xlink:href=".././proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
 <polygon fill="#d9534f" stroke="#d9534f" points="351,-150 233,-150 233,-126 351,-126 351,-150"/>
 <text text-anchor="middle" x="292" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
 </a>
@@ -365,9 +235,9 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
 <polygon fill="#000000" stroke="#000000" points="225.98,-99.5 235.98,-96 225.98,-92.5 225.98,-99.5"/>
 </g>
 <!-- proc~expand_vector_int -->
-<g id="proc~~unique_int~~CallsGraph_node5" class="node">
+<g id="proc~~unique_int~~CallsGraph_node4" class="node">
 <title>proc~expand_vector_int</title>
-<g id="a_proc~~unique_int~~CallsGraph_node5"><a xlink:href=".././proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<g id="a_proc~~unique_int~~CallsGraph_node4"><a xlink:href=".././proc/expand_vector_int.html" xlink:title="expand_vector_int">
 <polygon fill="#d9534f" stroke="#d9534f" points="346.5,-66 237.5,-66 237.5,-42 346.5,-42 346.5,-66"/>
 <text text-anchor="middle" x="292" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
 </a>
@@ -457,8 +327,6 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -604,34 +472,11 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -639,86 +484,71 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">function </span><span class="n">unique_int</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ivec_unique</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">function </span><span class="n">unique_int</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">ivec_unique</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">vec</span>         <span class="c">!! a vector of integers</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">chunk_size</span>  <span class="c">!! chunk size for adding to arrays</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span>   <span class="kd">::</span> <span class="n">ivec_unique</span> <span class="c">!! unique elements of `ivec`</span>
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">vec</span><span class="w">         </span><span class="c">!! a vector of integers</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">chunk_size</span><span class="w">  </span><span class="c">!! chunk size for adding to arrays</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">ivec_unique</span><span class="w"> </span><span class="c">!! unique elements of `ivec`</span>
 
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span> <span class="kd">::</span> <span class="n">ivec</span> <span class="c">!! temp copy of vec</span>
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span> <span class="c">!! counter</span>
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">n</span> <span class="c">!! number of unique elements</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ivec</span><span class="w"> </span><span class="c">!! temp copy of vec</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="c">!! counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="c">!! number of unique elements</span>
 
-    <span class="c">! first we sort it:</span>
-    <span class="n">ivec</span> <span class="o">=</span> <span class="n">vec</span> <span class="c">! make a copy</span>
-    <span class="k">call </span><span class="n">sort_ascending</span><span class="p">(</span><span class="n">ivec</span><span class="p">)</span>
+<span class="w">    </span><span class="c">! first we sort it:</span>
+<span class="w">    </span><span class="n">ivec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="c">! make a copy</span>
+<span class="w">    </span><span class="k">call </span><span class="n">sort_ascending</span><span class="p">(</span><span class="n">ivec</span><span class="p">)</span><span class="w"></span>
 
-    <span class="c">! add the first element:</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">ivec_unique</span> <span class="o">=</span> <span class="p">[</span><span class="n">ivec</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="w">    </span><span class="c">! add the first element:</span>
+<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="n">ivec_unique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">ivec</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span><span class="w"></span>
 
-    <span class="c">! walk through array and get the unique ones:</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">ivec</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">ivec</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">ivec</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">/=</span><span class="n">ivec</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">                call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">ivec_unique</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">ivec</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-            <span class="k">end if</span>
+<span class="w">    </span><span class="c">! walk through array and get the unique ones:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">ivec</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">ivec</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ivec</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">/=</span><span class="n">ivec</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">ivec_unique</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">ivec</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="k">end if</span>
 <span class="k">        end do</span>
-<span class="k">        call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">ivec_unique</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">finished</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
-    <span class="k">end if</span>
+<span class="k">        call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">ivec_unique</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">finished</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    end function </span><span class="n">unique_int</span>
+<span class="k">    end function </span><span class="n">unique_int</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -746,14 +576,11 @@ private function unique_int(vec, chunk_size) result(ivec_unique)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

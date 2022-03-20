@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,49 +72,28 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>numdiff_kinds_module 
     <small>Module</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 0.2% of total for modules and submodules.">5 statements</a>
      </li> 
-     
-     
-     
-    <li><i class="fa fa-code"></i><a href="../src/kinds_module.f90"> Source File</a></li>
-     
-     
+    <li><i class="fa fa-code"></i><a href="../src/kinds_module.F90"> Source File</a></li>
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
-     <li><a href='../sourcefile/kinds_module.f90.html'>kinds_module.f90</a></li>
-    
-  
+     <li><a href='../sourcefile/kinds_module.f90.html'>kinds_module.F90</a></li>
      <li class="active">numdiff_kinds_module</li>
   </ol>
 </div>
@@ -166,44 +109,17 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
   <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
-      
       <a class="list-group-item" href="../module/numdiff_kinds_module.html#variable-wp">wp</a>
-      
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </div>
 
@@ -211,25 +127,20 @@
     
     <div class="col-md-9" id='text'>
     <p>Numeric kinds for NumDiff.</p>
-      <br>
-    
-  
-    <div class="panel panel-default">
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4><p>The default real kind (<code>wp</code>) can be
+      changed using optional preprocessor flags.
+      This library was built with real kind:
+      <code>real(kind=real64)</code> [8 bytes]</p></div>
+<br>        <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Uses</h3>
       </div>
       <ul class="list-group">
-      
       <li class="list-group-item">
   <ul class="list-inline">
-    
     <li><a href="http://fortranwiki.org/fortran/show/iso_fortran_env">iso_fortran_env</a></li>
-    
   </ul>
       </li>
-      
-      
-      
       <li class="list-group-item">
   <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -324,20 +235,14 @@
     </p>
     </div></div></div></div>
       </li>
-      
       </ul>
     </div>
-    
 
-    
-    
-    <div class="panel panel-default">
+        <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Used by</h3>
       </div>
       <ul class="list-group">
-  
-  
   <li class="list-group-item">
     <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -345,122 +250,122 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: module~~numdiff_kinds_module~~UsedByGraph Pages: 1 -->
-<svg id="modulenumdiff_kinds_moduleUsedByGraph" width="641pt" height="132pt"
- viewBox="0.00 0.00 641.00 132.25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="module~~numdiff_kinds_module~~UsedByGraph" class="graph" transform="scale(1.13 1.13) rotate(0) translate(4 144.96)">
+<svg id="modulenumdiff_kinds_moduleUsedByGraph" width="641pt" height="131pt"
+ viewBox="0.00 0.00 641.00 131.01" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~numdiff_kinds_module~~UsedByGraph" class="graph" transform="scale(1.13 1.13) rotate(0) translate(4 143.56)">
 <title>module~~numdiff_kinds_module~~UsedByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-144.96 718,-144.96 718,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-143.56 718,-143.56 718,4 -4,4"/>
 <!-- module~numdiff_kinds_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_node1" class="node">
 <title>module~numdiff_kinds_module</title>
-<polygon fill="none" stroke="black" points="133,-87 0,-87 0,-63 133,-63 133,-87"/>
-<text text-anchor="middle" x="66.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_kinds_module</text>
+<polygon fill="none" stroke="black" points="133,-84 0,-84 0,-60 133,-60 133,-84"/>
+<text text-anchor="middle" x="66.5" y="-69.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_kinds_module</text>
 </g>
-<!-- module~numerical_differentiation_module -->
+<!-- module~dsm_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_node2" class="node">
-<title>module~numerical_differentiation_module</title>
-<g id="a_module~~numdiff_kinds_module~~UsedByGraph_node2"><a xlink:href=".././module/numerical_differentiation_module.html" xlink:title="numerical_differentiation_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="714,-66 521,-66 521,-42 714,-42 714,-66"/>
-<text text-anchor="middle" x="617.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numerical_differentiation_module</text>
+<title>module~dsm_module</title>
+<g id="a_module~~numdiff_kinds_module~~UsedByGraph_node2"><a xlink:href=".././module/dsm_module.html" xlink:title="dsm_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="281,-104 200,-104 200,-80 281,-80 281,-104"/>
+<text text-anchor="middle" x="240.5" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm_module</text>
 </a>
 </g>
 </g>
-<!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_kinds_module -->
+<!-- module~dsm_module&#45;&gt;module~numdiff_kinds_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_edge1" class="edge">
-<title>module~numerical_differentiation_module&#45;&gt;module~numdiff_kinds_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M415.5,-136C305.97,-144.8 275.87,-142.55 169,-117 144.93,-111.25 119.18,-100.53 99.64,-91.37"/>
-<polygon fill="#000000" stroke="#000000" points="101.11,-88.19 90.58,-87.02 98.09,-94.5 101.11,-88.19"/>
+<title>module~dsm_module&#45;&gt;module~numdiff_kinds_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M199.61,-87.36C182.79,-85.41 162.63,-83.06 143.19,-80.8"/>
+<polygon fill="#000000" stroke="#000000" points="143.45,-77.31 133.11,-79.63 142.64,-84.26 143.45,-77.31"/>
 </g>
 <!-- module~diff_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_node3" class="node">
 <title>module~diff_module</title>
 <g id="a_module~~numdiff_kinds_module~~UsedByGraph_node3"><a xlink:href=".././module/diff_module.html" xlink:title="diff_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="278.5,-108 202.5,-108 202.5,-84 278.5,-84 278.5,-108"/>
-<text text-anchor="middle" x="240.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">diff_module</text>
+<polygon fill="#337ab7" stroke="#337ab7" points="454.5,-85 378.5,-85 378.5,-61 454.5,-61 454.5,-85"/>
+<text text-anchor="middle" x="416.5" y="-70.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">diff_module</text>
 </a>
 </g>
+</g>
+<!-- module~diff_module&#45;&gt;module~numdiff_kinds_module -->
+<g id="module~~numdiff_kinds_module~~UsedByGraph_edge2" class="edge">
+<title>module~diff_module&#45;&gt;module~numdiff_kinds_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M378.28,-64.65C343.14,-57.68 288.89,-49.29 241.5,-52"/>
+</g>
+<!-- module~numerical_differentiation_module -->
+<g id="module~~numdiff_kinds_module~~UsedByGraph_node4" class="node">
+<title>module~numerical_differentiation_module</title>
+<g id="a_module~~numdiff_kinds_module~~UsedByGraph_node4"><a xlink:href=".././module/numerical_differentiation_module.html" xlink:title="numerical_differentiation_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="714,-64 521,-64 521,-40 714,-40 714,-64"/>
+<text text-anchor="middle" x="617.5" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numerical_differentiation_module</text>
+</a>
+</g>
+</g>
+<!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_kinds_module -->
+<g id="module~~numdiff_kinds_module~~UsedByGraph_edge3" class="edge">
+<title>module~numerical_differentiation_module&#45;&gt;module~numdiff_kinds_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M415.5,-132C306.59,-146.55 275.98,-138.09 169,-113 145.42,-107.47 120.15,-97.28 100.73,-88.44"/>
+<polygon fill="#000000" stroke="#000000" points="101.97,-85.16 91.42,-84.11 99.01,-91.5 101.97,-85.16"/>
+</g>
+<!-- module~numerical_differentiation_module&#45;&gt;module~dsm_module -->
+<g id="module~~numdiff_kinds_module~~UsedByGraph_edge6" class="edge">
+<title>module~numerical_differentiation_module&#45;&gt;module~dsm_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M596.25,-64.13C561.29,-84.14 486.7,-122.75 417.5,-132"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M415.5,-132C391.49,-135.21 331.92,-119.58 289.17,-106.93"/>
+<polygon fill="#000000" stroke="#000000" points="290.1,-103.55 279.52,-104.04 288.09,-110.26 290.1,-103.55"/>
 </g>
 <!-- module~numerical_differentiation_module&#45;&gt;module~diff_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_edge6" class="edge">
-<title>module~numerical_differentiation_module&#45;&gt;module~diff_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M415.5,-136C391.21,-137.95 331.11,-122.41 288.35,-110.13"/>
-<polygon fill="#000000" stroke="#000000" points="289.28,-106.76 278.7,-107.33 287.33,-113.48 289.28,-106.76"/>
-</g>
-<!-- module~numdiff_utilities_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_node4" class="node">
-<title>module~numdiff_utilities_module</title>
-<g id="a_module~~numdiff_kinds_module~~UsedByGraph_node4"><a xlink:href=".././module/numdiff_utilities_module.html" xlink:title="numdiff_utilities_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="312,-66 169,-66 169,-42 312,-42 312,-66"/>
-<text text-anchor="middle" x="240.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_utilities_module</text>
-</a>
-</g>
-</g>
-<!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_utilities_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_edge7" class="edge">
-<title>module~numerical_differentiation_module&#45;&gt;module~numdiff_utilities_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M598.29,-66.07C564.4,-87.45 488.64,-130.29 417.5,-136"/>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M415.5,-136C362.28,-140.27 360.95,-96.33 312,-75 307.36,-72.98 302.47,-71.08 297.52,-69.32"/>
-<polygon fill="#000000" stroke="#000000" points="298.56,-65.97 287.96,-66.09 296.32,-72.6 298.56,-65.97"/>
+<title>module~numerical_differentiation_module&#45;&gt;module~diff_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M520.79,-62.1C501.33,-64.15 481.68,-66.23 464.81,-68.01"/>
+<polygon fill="#000000" stroke="#000000" points="464.28,-64.54 454.7,-69.07 465.01,-71.51 464.28,-64.54"/>
 </g>
 <!-- module~numdiff_cache_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_node5" class="node">
 <title>module~numdiff_cache_module</title>
 <g id="a_module~~numdiff_kinds_module~~UsedByGraph_node5"><a xlink:href=".././module/numdiff_cache_module.html" xlink:title="numdiff_cache_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="485,-66 348,-66 348,-42 485,-42 485,-66"/>
-<text text-anchor="middle" x="416.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_cache_module</text>
+<polygon fill="#337ab7" stroke="#337ab7" points="485,-43 348,-43 348,-19 485,-19 485,-43"/>
+<text text-anchor="middle" x="416.5" y="-28.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_cache_module</text>
 </a>
 </g>
 </g>
 <!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_cache_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_edge9" class="edge">
+<g id="module~~numdiff_kinds_module~~UsedByGraph_edge8" class="edge">
 <title>module~numerical_differentiation_module&#45;&gt;module~numdiff_cache_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M520.79,-54C512.22,-54 503.62,-54 495.23,-54"/>
-<polygon fill="#000000" stroke="#000000" points="495.13,-50.5 485.13,-54 495.13,-57.5 495.13,-50.5"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M520.79,-41.9C512.22,-41 503.62,-40.09 495.23,-39.2"/>
+<polygon fill="#000000" stroke="#000000" points="495.44,-35.71 485.13,-38.14 494.71,-42.67 495.44,-35.71"/>
 </g>
-<!-- module~dsm_module -->
+<!-- module~numdiff_utilities_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_node6" class="node">
-<title>module~dsm_module</title>
-<g id="a_module~~numdiff_kinds_module~~UsedByGraph_node6"><a xlink:href=".././module/dsm_module.html" xlink:title="dsm_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="457,-24 376,-24 376,0 457,0 457,-24"/>
-<text text-anchor="middle" x="416.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm_module</text>
+<title>module~numdiff_utilities_module</title>
+<g id="a_module~~numdiff_kinds_module~~UsedByGraph_node6"><a xlink:href=".././module/numdiff_utilities_module.html" xlink:title="numdiff_utilities_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="312,-24 169,-24 169,0 312,0 312,-24"/>
+<text text-anchor="middle" x="240.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_utilities_module</text>
 </a>
 </g>
 </g>
-<!-- module~numerical_differentiation_module&#45;&gt;module~dsm_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_edge10" class="edge">
-<title>module~numerical_differentiation_module&#45;&gt;module~dsm_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M559.47,-41.96C530.32,-35.81 495.18,-28.39 467.15,-22.48"/>
-<polygon fill="#000000" stroke="#000000" points="467.68,-19.01 457.17,-20.37 466.24,-25.86 467.68,-19.01"/>
-</g>
-<!-- module~diff_module&#45;&gt;module~numdiff_kinds_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_edge2" class="edge">
-<title>module~diff_module&#45;&gt;module~numdiff_kinds_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M202.18,-91.44C184.86,-89.33 163.61,-86.73 143.15,-84.24"/>
-<polygon fill="#000000" stroke="#000000" points="143.54,-80.76 133.19,-83.02 142.7,-87.71 143.54,-80.76"/>
-</g>
-<!-- module~numdiff_utilities_module&#45;&gt;module~numdiff_kinds_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_edge3" class="edge">
-<title>module~numdiff_utilities_module&#45;&gt;module~numdiff_kinds_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M168.55,-62.66C160.19,-63.68 151.64,-64.73 143.22,-65.75"/>
-<polygon fill="#000000" stroke="#000000" points="142.55,-62.31 133.05,-67 143.4,-69.26 142.55,-62.31"/>
+<!-- module~numerical_differentiation_module&#45;&gt;module~numdiff_utilities_module -->
+<g id="module~~numdiff_kinds_module~~UsedByGraph_edge9" class="edge">
+<title>module~numerical_differentiation_module&#45;&gt;module~numdiff_utilities_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M587.62,-39.92C561.39,-29.64 521.35,-15.66 485,-10 424.84,-0.63 408.89,-9.43 348,-10 339.69,-10.08 331.02,-10.19 322.37,-10.32"/>
+<polygon fill="#000000" stroke="#000000" points="322.19,-6.82 312.25,-10.49 322.3,-13.82 322.19,-6.82"/>
 </g>
 <!-- module~numdiff_cache_module&#45;&gt;module~numdiff_kinds_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_edge4" class="edge">
 <title>module~numdiff_cache_module&#45;&gt;module~numdiff_kinds_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M376.74,-41.9C333.82,-29.07 267.29,-11.03 241.5,-14"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M347.92,-41.16C315.77,-45.48 276.74,-49.98 241.5,-52"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M239.5,-52C207.82,-53.81 173.02,-57.53 143.06,-61.28"/>
+<polygon fill="#000000" stroke="#000000" points="142.57,-57.81 133.09,-62.55 143.45,-64.76 142.57,-57.81"/>
 </g>
 <!-- module~numdiff_cache_module&#45;&gt;module~numdiff_utilities_module -->
-<g id="module~~numdiff_kinds_module~~UsedByGraph_edge8" class="edge">
+<g id="module~~numdiff_kinds_module~~UsedByGraph_edge10" class="edge">
 <title>module~numdiff_cache_module&#45;&gt;module~numdiff_utilities_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M347.73,-54C339.45,-54 330.93,-54 322.49,-54"/>
-<polygon fill="#000000" stroke="#000000" points="322.25,-50.5 312.25,-54 322.24,-57.5 322.25,-50.5"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M347.73,-23.6C339.36,-22.69 330.74,-21.75 322.21,-20.81"/>
+<polygon fill="#000000" stroke="#000000" points="322.57,-17.33 312.25,-19.73 321.81,-24.29 322.57,-17.33"/>
 </g>
-<!-- module~dsm_module&#45;&gt;module~numdiff_kinds_module -->
+<!-- module~numdiff_utilities_module&#45;&gt;module~numdiff_kinds_module -->
 <g id="module~~numdiff_kinds_module~~UsedByGraph_edge5" class="edge">
-<title>module~dsm_module&#45;&gt;module~numdiff_kinds_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M375.96,-10.14C340.6,-9.02 287.42,-8.7 241.5,-14"/>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M239.5,-14C188.79,-19.85 133.79,-42.49 99.98,-58.48"/>
-<polygon fill="#000000" stroke="#000000" points="98.1,-55.5 90.61,-62.99 101.14,-61.8 98.1,-55.5"/>
+<title>module~numdiff_utilities_module&#45;&gt;module~numdiff_kinds_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M204.69,-24.14C177.79,-33.53 140.39,-46.57 111.43,-56.68"/>
+<polygon fill="#000000" stroke="#000000" points="110.25,-53.38 101.96,-59.98 112.56,-59.99 110.25,-53.38"/>
 </g>
 </g>
 </svg>
@@ -523,83 +428,37 @@
     </p>
     </div></div></div></div>
   </li>
-  
       </ul>
     </div>
-    
 
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
   <div id="vars-1" class="panel-collapse collapse">
     <div class="list-group">
-      
       <a class="list-group-item" href="../module/numdiff_kinds_module.html#variable-wp">wp</a>
-      
     </div>
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
     <section>
     <h2>Variables</h2>
-    
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th>
-
-<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-
-
-
+    <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-wp"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>wp</strong></td><td> =</td><td>real64</td><td><p>default real kind</p></td>
-  
+<td>public,</td>  <td>parameter</td><td>::</td>
+  <td><strong>wp</strong></td><td> =</td><td>real64</td><td><p>default real kind [8 bytes]</p></td>
 </tr>
-
 </tbody>
 </table>
 
@@ -607,37 +466,26 @@
     <br>
     
     
-    
-    
-    
 
     
     
-    
-    
-    
 
-    
-    
     
     </div>
   </div>
 
-  
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -665,14 +513,11 @@
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

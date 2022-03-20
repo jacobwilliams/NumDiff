@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="NumDiff -- Numerical Differentiation Library">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,51 +72,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>put_in_cache
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 1.4% of total for procedures.">42 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/cache_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/cache_module.f90.html'>cache_module.f90</a></li>
-    
      <li><a href='../module/numdiff_cache_module.html'>numdiff_cache_module</a></li>
-    
-  
      <li class="active">put_in_cache</li>
   </ol>
 </div>
@@ -168,32 +110,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -201,123 +120,54 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine put_in_cache(me, i, x, f, ifs)
+    <h2>private subroutine put_in_cache(me, i, x, f, ifs)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Put a value into the cache.</p>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-me~58"></span>class(<a href='../type/function_cache.html'>function_cache</a>),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-i~5"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>i</strong></td><td><p>index in the hash table</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-x~27"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td></td>
-  
-  <td>dimension(:)</td><td>::</td>
+<td>intent(in),</td>
+  <td></td>  <td>dimension(:)</td><td>::</td>
   <td><strong>x</strong></td><td><p>independant variable vector (dimension <code>n</code>)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-f~7"></span>real(kind=wp),</td>
-  <td>intent(in),</td>
-  <td></td>
-  
-  <td>dimension(:)</td><td>::</td>
+<td>intent(in),</td>
+  <td></td>  <td>dimension(:)</td><td>::</td>
   <td><strong>f</strong></td><td><p>function vector <code>f(x)</code> (dimension <code>m</code>)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ifs~3"></span>integer,</td>
-  <td>intent(in),</td>
-  <td></td>
-  
-  <td>dimension(:)</td><td>::</td>
+<td>intent(in),</td>
+  <td></td>  <td>dimension(:)</td><td>::</td>
   <td><strong>ifs</strong></td><td><p>elements of <code>f</code> to add (should all be <code>&gt;0, &lt;=m</code>)</p></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -395,7 +245,7 @@ private subroutine put_in_cache(me, i, x, f, ifs)
 </g>
 </g>
 <!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
-<g id="proc~~put_in_cache~~CallsGraph_edge5" class="edge">
+<g id="proc~~put_in_cache~~CallsGraph_edge4" class="edge">
 <title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
 <path fill="none" stroke="#000000" d="M283.19,-96C291.26,-96 299.99,-96 308.62,-96"/>
 <polygon fill="#000000" stroke="#000000" points="308.67,-99.5 318.67,-96 308.67,-92.5 308.67,-99.5"/>
@@ -410,27 +260,27 @@ private subroutine put_in_cache(me, i, x, f, ifs)
 </g>
 </g>
 <!-- proc~unique_real&#45;&gt;interface~expand_vector -->
-<g id="proc~~put_in_cache~~CallsGraph_edge4" class="edge">
+<g id="proc~~put_in_cache~~CallsGraph_edge5" class="edge">
 <title>proc~unique_real&#45;&gt;interface~expand_vector</title>
 <path fill="none" stroke="#000000" d="M280.31,-83.96C293.03,-79.44 307.66,-74.23 321.13,-69.44"/>
 <polygon fill="#000000" stroke="#000000" points="322.43,-72.69 330.68,-66.04 320.09,-66.09 322.43,-72.69"/>
 </g>
 <!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
-<g id="proc~~put_in_cache~~CallsGraph_edge7" class="edge">
+<g id="proc~~put_in_cache~~CallsGraph_edge6" class="edge">
 <title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
 <path fill="none" stroke="#000000" d="M279.68,-65.81C292.52,-70.38 307.39,-75.67 321.05,-80.54"/>
 <polygon fill="#000000" stroke="#000000" points="320.15,-83.93 330.75,-83.99 322.5,-77.34 320.15,-83.93"/>
 </g>
 <!-- proc~unique_int&#45;&gt;interface~expand_vector -->
-<g id="proc~~put_in_cache~~CallsGraph_edge6" class="edge">
+<g id="proc~~put_in_cache~~CallsGraph_edge7" class="edge">
 <title>proc~unique_int&#45;&gt;interface~expand_vector</title>
 <path fill="none" stroke="#000000" d="M279.68,-54C288.99,-54 299.36,-54 309.57,-54"/>
 <polygon fill="#000000" stroke="#000000" points="309.68,-57.5 319.68,-54 309.68,-50.5 309.68,-57.5"/>
 </g>
 <!-- proc~sort_ascending_real -->
-<g id="proc~~put_in_cache~~CallsGraph_node7" class="node">
+<g id="proc~~put_in_cache~~CallsGraph_node8" class="node">
 <title>proc~sort_ascending_real</title>
-<g id="a_proc~~put_in_cache~~CallsGraph_node7"><a xlink:href=".././proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<g id="a_proc~~put_in_cache~~CallsGraph_node8"><a xlink:href=".././proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
 <polygon fill="#d9534f" stroke="#d9534f" points="566,-150 448,-150 448,-126 566,-126 566,-150"/>
 <text text-anchor="middle" x="507" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
 </a>
@@ -458,9 +308,9 @@ private subroutine put_in_cache(me, i, x, f, ifs)
 <polygon fill="#000000" stroke="#000000" points="440.98,-99.5 450.98,-96 440.98,-92.5 440.98,-99.5"/>
 </g>
 <!-- proc~expand_vector_int -->
-<g id="proc~~put_in_cache~~CallsGraph_node8" class="node">
+<g id="proc~~put_in_cache~~CallsGraph_node7" class="node">
 <title>proc~expand_vector_int</title>
-<g id="a_proc~~put_in_cache~~CallsGraph_node8"><a xlink:href=".././proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<g id="a_proc~~put_in_cache~~CallsGraph_node7"><a xlink:href=".././proc/expand_vector_int.html" xlink:title="expand_vector_int">
 <polygon fill="#d9534f" stroke="#d9534f" points="561.5,-66 452.5,-66 452.5,-42 561.5,-42 561.5,-66"/>
 <text text-anchor="middle" x="507" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
 </a>
@@ -550,35 +400,11 @@ private subroutine put_in_cache(me, i, x, f, ifs)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -586,113 +412,98 @@ private subroutine put_in_cache(me, i, x, f, ifs)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">put_in_cache</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">ifs</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">put_in_cache</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">ifs</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">implicit none</span>
+<span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    class</span><span class="p">(</span><span class="n">function_cache</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">me</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>                  <span class="kd">::</span> <span class="n">i</span>    <span class="c">!! index in the hash table</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">x</span>    <span class="c">!! independant variable vector (dimension `n`)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">f</span>    <span class="c">!! function vector `f(x)` (dimension `m`)</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">ifs</span>  <span class="c">!! elements of `f` to add (should all be `&gt;0, &lt;=m`)</span>
+<span class="k">    class</span><span class="p">(</span><span class="n">function_cache</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w">    </span><span class="c">!! index in the hash table</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w">    </span><span class="c">!! independant variable vector (dimension `n`)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w">    </span><span class="c">!! function vector `f(x)` (dimension `m`)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">ifs</span><span class="w">  </span><span class="c">!! elements of `f` to add (should all be `&gt;0, &lt;=m`)</span>
 
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="nb">null</span> <span class="o">=</span> <span class="nb">huge</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span> <span class="c">!! an unusual value to initialize arrays</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="nb">null</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">huge</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span><span class="w"> </span><span class="c">!! an unusual value to initialize arrays</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">        if</span> <span class="p">(</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">size</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">))</span> <span class="k">then</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">size</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 
-<span class="k">            if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span><span class="p">))</span> <span class="k">then</span>
-                <span class="c">! we need to check if there is an x already there,</span>
-                <span class="c">! which may already have some function indices present.</span>
-                <span class="c">! if same x, then add the new indices to them.</span>
-                <span class="c">! if a different x, then replace indices.</span>
-                <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span><span class="o">==</span><span class="n">x</span><span class="p">))</span> <span class="k">then</span>
-                    <span class="c">! this x is already present in this location.</span>
-                    <span class="c">! so merge the new f,ifs into what is already there.</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">                        </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span> <span class="o">=</span> <span class="n">unique</span><span class="p">([</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span><span class="p">,</span><span class="n">ifs</span><span class="p">],&amp;</span>
-                                                <span class="n">chunk_size</span><span class="o">=</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">)</span>
-                    <span class="k">else</span>
-<span class="k">                        allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span>
-                        <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span>   <span class="o">=</span> <span class="nb">null</span> <span class="c">! initialize to an unusual value</span>
-                        <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span> <span class="o">=</span> <span class="n">ifs</span>
-                    <span class="k">end if</span>
-<span class="k">                    </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span>
-                <span class="k">else</span>
-                    <span class="c">! replace existing x and f.</span>
-                    <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span>   <span class="o">=</span> <span class="n">x</span>
-                    <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span> <span class="o">=</span> <span class="n">ifs</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">))</span> <span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">)</span>
-                    <span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span>
-                    <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span>      <span class="o">=</span> <span class="nb">null</span> <span class="c">! initialize to an unusual value</span>
-                    <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span>
-                <span class="k">end if</span>
-<span class="k">            else</span>
-                <span class="c">! new entry in the cache:</span>
-                <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-                <span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span>
-                <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span>      <span class="o">=</span> <span class="nb">null</span> <span class="c">! initialize to an unusual value</span>
-                <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span>    <span class="o">=</span> <span class="n">ifs</span>
-                <span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span>
-            <span class="k">end if</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! we need to check if there is an x already there,</span>
+<span class="w">                </span><span class="c">! which may already have some function indices present.</span>
+<span class="w">                </span><span class="c">! if same x, then add the new indices to them.</span>
+<span class="w">                </span><span class="c">! if a different x, then replace indices.</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span><span class="o">==</span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                    </span><span class="c">! this x is already present in this location.</span>
+<span class="w">                    </span><span class="c">! so merge the new f,ifs into what is already there.</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique</span><span class="p">([</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span><span class="p">,</span><span class="n">ifs</span><span class="p">],&amp;</span><span class="w"></span>
+<span class="w">                                                </span><span class="n">chunk_size</span><span class="o">=</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="k">else</span>
+<span class="k">                        allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span><span class="w"></span>
+<span class="w">                        </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nb">null</span><span class="w"> </span><span class="c">! initialize to an unusual value</span>
+<span class="w">                        </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifs</span><span class="w"></span>
+<span class="w">                    </span><span class="k">end if</span>
+<span class="k">                    </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">else</span><span class="w"></span>
+<span class="w">                    </span><span class="c">! replace existing x and f.</span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifs</span><span class="w"></span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span><span class="w"></span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nb">null</span><span class="w"> </span><span class="c">! initialize to an unusual value</span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">end if</span>
+<span class="k">            else</span><span class="w"></span>
+<span class="w">                </span><span class="c">! new entry in the cache:</span>
+<span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
+<span class="w">                </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span><span class="w"></span>
+<span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nb">null</span><span class="w"> </span><span class="c">! initialize to an unusual value</span>
+<span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ifs</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">ifs</span><span class="w"></span>
+<span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">c</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">ifs</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">end if</span>
 
 <span class="k">        else</span>
-<span class="k">            error stop</span> <span class="s1">&#39;Error: invalid index in hash table.&#39;</span>
-        <span class="k">end if</span>
+<span class="k">            error stop</span><span class="w"> </span><span class="s1">&#39;Error: invalid index in hash table.&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="k">end if</span>
 <span class="k">    else</span>
-<span class="k">        error stop</span> <span class="s1">&#39;Error: the cache has not been initialized.&#39;</span>
-    <span class="k">end if</span>
+<span class="k">        error stop</span><span class="w"> </span><span class="s1">&#39;Error: the cache has not been initialized.&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span>
 
-<span class="k">    end subroutine </span><span class="n">put_in_cache</span>
+<span class="k">    end subroutine </span><span class="n">put_in_cache</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>NumDiff was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -720,14 +531,11 @@ private subroutine put_in_cache(me, i, x, f, ifs)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>
