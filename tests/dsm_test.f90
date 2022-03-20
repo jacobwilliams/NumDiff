@@ -12,7 +12,8 @@
     !!    Volume 10 Issue 3, Sept. 1984, Pages 346-347
 
     use dsm_module
-    use iso_fortran_env, only: output_unit,wp => real64
+    use iso_fortran_env, only: output_unit
+    use numdiff_kinds_module, only: wp
 
     implicit none
 
