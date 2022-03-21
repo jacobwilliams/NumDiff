@@ -20,8 +20,6 @@
     real(wp),dimension(n),parameter :: dpert = 1.0e-5_wp
     integer,parameter :: perturb_mode = 1
     integer,parameter :: cache_size = 0 !! `0` indicates not to use cache
-    !integer,parameter :: cache_size = 1000 ! use cache
-   ! integer,parameter :: sparsity_mode = 2
     integer,parameter :: sparsity_mode = 4
 
     type(numdiff_type)                :: my_prob
@@ -106,7 +104,7 @@
                                 sparsity_mode=sparsity_mode,&
                                 jacobian_method=i,&
                                 partition_sparsity_pattern=.true.,&
-                                cache_size=cache_size)
+                                cache_size=1000) ! use the cache for these cases
         if (my_prob%failed()) then
             call my_prob%get_error_status(error_msg=error_msg)
             write(error_unit,'(A)') error_msg
