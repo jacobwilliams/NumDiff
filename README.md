@@ -94,3 +94,4 @@ The NumDiff source code and related files and documentation are distributed unde
 
  * J. Oliver, "An algorithm for numerical differentiation of a function of one real variable", Journal of Computational and Applied Mathematics 6 (2) (1980) 145-160.  Fortran 77 code from [NIST](ftp://math.nist.gov/pub/repository/diff/src/DIFF)
  * Thomas F. Coleman, Burton S. Garbow, Jorge J. More, "Algorithm 618: FORTRAN subroutines for estimating sparse Jacobian Matrices", ACM Transactions on Mathematical Software (TOMS), Volume 10 Issue 3, Sept. 1984, Pages 346-347
+ * G. E. Mullges, F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.
