@@ -975,7 +975,7 @@
 
     implicit none
 
-    class(numdiff_type),intent(out)  :: me
+    class(numdiff_type),intent(inout):: me
     integer,intent(in)               :: n             !! number of `x` variables
     integer,intent(in)               :: m             !! number of `f` functions
     real(wp),dimension(n),intent(in) :: xlow          !! lower bounds on `x`
@@ -1274,7 +1274,7 @@
 
     implicit none
 
-    class(numdiff_type),intent(out)     :: me
+    class(numdiff_type),intent(inout)   :: me
     integer,intent(in)                  :: n               !! number of `x` variables
     integer,intent(in)                  :: m               !! number of `f` functions
     real(wp),dimension(n),intent(in)    :: xlow            !! lower bounds on `x`
