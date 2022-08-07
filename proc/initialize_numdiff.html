@@ -137,19 +137,19 @@
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-me~22"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
-<td>intent(out)</td>
+  <td><span class="anchor" id="variable-me~26"></span>class(<a href='../type/numdiff_type.html'>numdiff_type</a>),</td>
+<td>intent(inout)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>me</strong></td><td></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-n~5"></span>integer,</td>
+  <td><span class="anchor" id="variable-n~14"></span>integer,</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>number of <code>x</code> variables</p></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-m~5"></span>integer,</td>
+  <td><span class="anchor" id="variable-m~9"></span>integer,</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>m</strong></td><td><p>number of <code>f</code> functions</p></td>
@@ -182,7 +182,7 @@
   <td><strong>dpert</strong></td><td><p>perturbation vector for <code>x</code></p></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-problem_func~3"></span>procedure(<a href='../interface/func.html'>func</a>)</td>
+  <td><span class="anchor" id="variable-problem_func~3"></span>procedure(<a href='../interface/func~2.html'>func</a>)</td>
 <td></td>
   <td></td>  <td></td><td>::</td>
   <td><strong>problem_func</strong></td><td><p>the user function that defines the problem
@@ -233,7 +233,7 @@ to use for each variable.
 see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p></td>
 </tr>
 <tr>
-  <td><span class="anchor" id="variable-info~2"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
+  <td><span class="anchor" id="variable-info~3"></span>procedure(<a href='../interface/info_f.html'>info_f</a>),</td>
 <td></td>
   <td>optional</td>  <td></td><td>::</td>
   <td><strong>info</strong></td><td><p>a function the user can define
@@ -513,7 +513,7 @@ evaluations used to estimate the sparsity pattern.</p></td>
 
 <span class="w">    </span><span class="k">implicit none</span>
 
-<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
 <span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">               </span><span class="c">!! number of `x` variables</span>
 <span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w">               </span><span class="c">!! number of `f` functions</span>
 <span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">xlow</span><span class="w">            </span><span class="c">!! lower bounds on `x`</span>
