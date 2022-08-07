@@ -62,6 +62,13 @@ To use `NumDiff` within your FPM project, add the following to your `fpm.toml` f
 NumDiff = { git="https://github.com/jacobwilliams/NumDiff.git" }
 ```
 
+or, to use a specific version:
+
+```toml
+[dependencies]
+NumDiff = { git="https://github.com/jacobwilliams/NumDiff.git", tag = "1.7.0" }
+```
+
 To generate the documentation using [FORD](https://github.com/Fortran-FOSS-Programmers/ford), run:
 
 ```
