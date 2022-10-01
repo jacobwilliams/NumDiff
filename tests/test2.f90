@@ -26,7 +26,7 @@
                                                 !! array of method IDs:
                                                 !! [1,3,10,21,36,500,600,700,800]
                                                 !! forward + all the central diff ones
-    integer,parameter :: exp_star = 25 !! exponent to start with
+    integer,parameter :: exp_star = -ceiling(log10(epsilon(1.0_wp))) !! exponent to start with
     integer,parameter :: exp_stop = -2 !! exponent to end with
     integer,parameter :: exp_step = -1 !! ecponent step
     integer,parameter :: exp_scale = 5 !! number of substeps from one to the next
