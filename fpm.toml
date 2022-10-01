@@ -18,6 +18,9 @@ auto-executables = false
 auto-examples = false
 auto-tests = false
 
+[dev-dependencies]
+pyplot-fortran = { git="https://github.com/jacobwilliams/pyplot-fortran.git", tag = "3.2.1" }
+
 [[test]]
 name = "dsm_test"
 source-dir = "tests"
@@ -27,3 +30,8 @@ main = "dsm_test.f90"
 name = "test1"
 source-dir = "tests"
 main = "test1.f90"
+
+[[test]]
+name = "test2"
+source-dir = "tests"
+main = "test2.f90"

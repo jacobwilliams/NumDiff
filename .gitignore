@@ -42,3 +42,7 @@ x64
 
 # mac
 .DS_Store
+
+# test artifacts:
+/*.pdf
+/*.py
