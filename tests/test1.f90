@@ -47,6 +47,7 @@
             cycle
         end if
         func_evals = 0
+        call my_prob%destroy()
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_mode=sparsity_mode,&
@@ -99,6 +100,7 @@
         end if
 
         func_evals = 0
+        call my_prob%destroy()
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_mode=sparsity_mode,&
@@ -166,6 +168,7 @@
         write(output_unit,'(A)') ''
 
         func_evals = 0
+        call my_prob%destroy()
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_mode=sparsity_mode,&
@@ -198,6 +201,7 @@
         write(output_unit,'(A)') ''
 
         func_evals = 0
+        call my_prob%destroy()
         call my_prob%initialize(n,m,xlow,xhigh,perturb_mode,dpert,&
                                 problem_func=my_func,&
                                 sparsity_mode=sparsity_mode,&
