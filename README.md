@@ -89,6 +89,8 @@ For example, to build a single precision version of the library, use:
 fpm build --profile release --flag "-DREAL32"
 ```
 
+Note that the [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran) library is a dependency for one of the test cases. FPM will automatically download the right version.
+
 ## Documentation
 
 The latest API documentation can be found [here](https://jacobwilliams.github.io/NumDiff/). This was generated from the source code using [FORD](https://github.com/Fortran-FOSS-Programmers/ford) (note that the included `build.sh` script will also generate these files).
