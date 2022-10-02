@@ -482,12 +482,13 @@
 !###See also:
 !  * [[get_formula]]
 
-    subroutine get_finite_diff_formula(id,formula)
+    subroutine get_finite_diff_formula(id,formula,name)
 
     implicit none
 
     integer,intent(in) :: id  !! the id code for the method
     character(len=:),allocatable,intent(out) :: formula !! the formula string
+    character(len=:),allocatable,intent(out),optional :: name
 
     type(finite_diff_method) :: fd
     logical :: found
@@ -495,8 +496,10 @@
     call get_finite_difference_method(id,fd,found)
     if (found .and. fd%id/=0) then
         call get_formula(fd,formula)
+        if (present(name)) name = fd%name
     else
         formula = ''
+        if (present(name)) name = ''
     end if
 
     end subroutine get_finite_diff_formula
