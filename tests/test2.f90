@@ -45,7 +45,8 @@
     real(wp),dimension(:),allocatable   :: results_dpert    !! results array - dpert
     real(wp),dimension(:),allocatable   :: results_errors   !! results array - errors
     type(pyplot)                        :: plt              !! for plotting the results
-    character(len=:),allocatable        :: formula          !! finite diff forumla for the plot legend
+    character(len=:),allocatable        :: formula          !! finite diff formula for the plot legend
+    character(len=:),allocatable        :: name             !! finite diff name for the plot legend
     integer                             :: idx              !! index in results arrays
     character(len=:),allocatable        :: real_kind_str    !! real kind for the plot title
     real(wp),dimension(3)               :: color            !! line color array
@@ -83,7 +84,7 @@
 
         idx = 0
         i = methods(j)  ! method id
-        call get_finite_diff_formula(i,formula)
+        call get_finite_diff_formula(i,formula,name)
 
         ! cycle through perturbation step sizes:
         do ipert = exp_star*exp_scale, exp_stop*exp_scale, exp_step
@@ -135,7 +136,7 @@
         ! plot for this method:
         call plt%add_plot(results_dpert,results_errors,&
                           xscale='log', yscale='log',&
-                          label=formula,linestyle='.-',markersize=5,linewidth=2, &
+                          label = formula,linestyle='.-',markersize=5,linewidth=2, &
                           color = color,&
                           xlim = ylim,&
                           ylim = ylim)
