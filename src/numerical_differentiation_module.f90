@@ -1606,7 +1606,17 @@
                                                 num_nonzero_elements_in_col
                 if (allocated(col_indices)) deallocate(col_indices)
                 allocate(col_indices(num_nonzero_elements_in_col))
-                col_indices = pack(me%indices,mask=me%icol==cols(i))
+                !col_indices = pack(me%indices,mask=me%icol==cols(i))
+                block
+                    integer :: j,n
+                    n = 0
+                    do j = 1, size(me%icol)
+                        if (me%icol(j)==cols(i)) then
+                            n = n + 1
+                            col_indices(n) = j
+                        end if
+                    end do
+                end block
                 if (allocated(nonzero_rows)) then
                     nonzero_rows = [nonzero_rows,me%irow(col_indices)]
                     indices = [indices,col_indices]
@@ -1652,7 +1662,10 @@
     integer :: i !! counter
 
     allocate(me%indices(me%num_nonzero_elements))
-    me%indices = [(i,i=1,me%num_nonzero_elements)]
+    !me%indices = [(i,i=1,me%num_nonzero_elements)]
+    do i = 1, me%num_nonzero_elements
+        me%indices(i) = i
+    end do
 
     end subroutine compute_indices
 !*******************************************************************************
@@ -2780,7 +2793,18 @@
                         num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
                         if (allocated(col_indices)) deallocate(col_indices)
                         allocate(col_indices(num_nonzero_elements_in_col))
-                        col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
+                        ! col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
+                        block
+                            integer :: j,n
+                            n = 0
+                            do j = 1, size(me%sparsity%icol)
+                                if (me%sparsity%icol(j)==cols(i)) then
+                                    n = n + 1
+                                    col_indices(n) = j
+                                end if
+                            end do
+                        end block
+
                         df(me%sparsity%irow(col_indices)) = df(me%sparsity%irow(col_indices)) / &
                                                             (me%meth(1)%df_den_factor*dx(cols(i)))
                     end do
