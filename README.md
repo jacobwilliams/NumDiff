@@ -72,7 +72,7 @@ NumDiff = { git="https://github.com/jacobwilliams/NumDiff.git", tag = "1.7.0" }
 To generate the documentation using [FORD](https://github.com/Fortran-FOSS-Programmers/ford), run:
 
 ```
-  ford numdiff.md
+  ford ford.md
 ```
 
 By default, the library is built with double precision (`real64`) real values. Explicitly specifying the real kind can be done using the following processor flags:
