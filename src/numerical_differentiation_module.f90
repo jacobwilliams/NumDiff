@@ -222,6 +222,7 @@
 
         procedure,public :: failed !! to check if an exception was raised.
         procedure,public :: get_error_status !! the status of error condition
+        procedure,public :: set_dpert !! change the `dpert` values
 
         ! internal routines:
         procedure :: destroy_sparsity_pattern      !! destroy the sparsity pattern
@@ -1258,6 +1259,26 @@
     end if
 
     end subroutine set_numdiff_sparsity_bounds
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Change the `dpert` vector. Can be used after the class has been initialized
+!  to change the perturbation step sizes (e.g., after an iteration).
+
+    subroutine set_dpert(me,dpert)
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in) :: dpert !! perturbation vector for `x`
+
+    if (size(dpert)/=me%n) then
+        call me%raise_exception(29,'set_dpert',&
+            'incorrect size of dpert array')
+    else
+        me%dpert = abs(dpert) ! update
+    end if
+
+    end subroutine set_dpert
 !*******************************************************************************
 
 !*******************************************************************************
