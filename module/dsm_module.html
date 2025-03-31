@@ -1,0 +1,2125 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>dsm_module &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>dsm_module
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="13.7% of total for modules and submodules.">453 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/dsm_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">dsm_module</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/dsm_module.html#proc-dsm">dsm</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-degr">degr</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-ido">ido</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-numsrt">numsrt</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-seq">seq</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-setr">setr</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-slo">slo</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-srtdat">srtdat</a>
+            <a class="list-group-item" href="../module/dsm_module.html#proc-fdjs">fdjs</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Jacobian partitioning using the DSM algorithm.</p>
+<h3>Reference</h3>
+<ul>
+<li>Argonne National Laboratory. MINPACK Project. July 1983.
+    Thomas F. Coleman, Burton S. Garbow, Jorge J. More</li>
+<li>Thomas F. Coleman, Burton S. Garbow, Jorge J. More, "Algorithm 618:
+    FORTRAN subroutines for estimating sparse Jacobian Matrices",
+    ACM Transactions on Mathematical Software (TOMS),
+    Volume 10 Issue 3, Sept. 1984, Pages 346-347</li>
+</ul>
+<h3>History</h3>
+<ul>
+<li>Jacob Williams, Nov. 2016, extensive refactoring into modern Fortran.</li>
+</ul>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='numdiff_kinds_module.html'>numdiff_kinds_module</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~dsm_module~~UsesGraph Pages: 1 -->
+<svg id="moduledsm_moduleUsesGraph" width="388pt" height="32pt"
+ viewBox="0.00 0.00 388.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~dsm_module~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>module~~dsm_module~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 384,-28 384,4 -4,4"/>
+<!-- module~dsm_module -->
+<g id="module~~dsm_module~~UsesGraph_node1" class="node">
+<title>module~dsm_module</title>
+<polygon fill="none" stroke="black" points="380,-24 299,-24 299,0 380,0 380,-24"/>
+<text text-anchor="middle" x="339.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">dsm_module</text>
+</g>
+<!-- module~numdiff_kinds_module -->
+<g id="module~~dsm_module~~UsesGraph_node2" class="node">
+<title>module~numdiff_kinds_module</title>
+<g id="a_module~~dsm_module~~UsesGraph_node2"><a xlink:href="../module/numdiff_kinds_module.html" xlink:title="numdiff_kinds_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="263,-24 130,-24 130,0 263,0 263,-24"/>
+<text text-anchor="middle" x="196.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_kinds_module</text>
+</a>
+</g>
+</g>
+<!-- module~dsm_module&#45;&gt;module~numdiff_kinds_module -->
+<g id="module~~dsm_module~~UsesGraph_edge1" class="edge">
+<title>module~dsm_module&#45;&gt;module~numdiff_kinds_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M298.85,-12C290.74,-12 281.95,-12 273.06,-12"/>
+<polygon fill="#000000" stroke="#000000" points="273,-8.5 263,-12 273,-15.5 273,-8.5"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~dsm_module~~UsesGraph_node3" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~dsm_module~~UsesGraph_node3"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="94,-24 0,-24 0,0 94,0 94,-24"/>
+<text text-anchor="middle" x="47" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~numdiff_kinds_module&#45;&gt;iso_fortran_env -->
+<g id="module~~dsm_module~~UsesGraph_edge2" class="edge">
+<title>module~numdiff_kinds_module&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M129.95,-12C121.41,-12 112.73,-12 104.37,-12"/>
+<polygon fill="#000000" stroke="#000000" points="104.35,-8.5 94.35,-12 104.35,-15.5 104.35,-8.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~dsm_module~~UsedByGraph Pages: 1 -->
+<svg id="moduledsm_moduleUsedByGraph" width="318pt" height="32pt"
+ viewBox="0.00 0.00 318.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~dsm_module~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>module~~dsm_module~~UsedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 314,-28 314,4 -4,4"/>
+<!-- module~dsm_module -->
+<g id="module~~dsm_module~~UsedByGraph_node1" class="node">
+<title>module~dsm_module</title>
+<polygon fill="none" stroke="black" points="81,-24 0,-24 0,0 81,0 81,-24"/>
+<text text-anchor="middle" x="40.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">dsm_module</text>
+</g>
+<!-- module~numerical_differentiation_module -->
+<g id="module~~dsm_module~~UsedByGraph_node2" class="node">
+<title>module~numerical_differentiation_module</title>
+<g id="a_module~~dsm_module~~UsedByGraph_node2"><a xlink:href="../module/numerical_differentiation_module.html" xlink:title="numerical_differentiation_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="310,-24 117,-24 117,0 310,0 310,-24"/>
+<text text-anchor="middle" x="213.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numerical_differentiation_module</text>
+</a>
+</g>
+</g>
+<!-- module~numerical_differentiation_module&#45;&gt;module~dsm_module -->
+<g id="module~~dsm_module~~UsedByGraph_edge1" class="edge">
+<title>module~numerical_differentiation_module&#45;&gt;module~dsm_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M116.5,-12C107.82,-12 99.29,-12 91.26,-12"/>
+<polygon fill="#000000" stroke="#000000" points="91.04,-8.5 81.04,-12 91.04,-15.5 91.04,-8.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dsm"></span> <h3>public  subroutine <a href='../proc/dsm.html'>dsm</a>(m, n, npairs, indrow, indcol, ngrp, maxgrp, mingrp, info, ipntr, jpntr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The purpose of <code>dsm</code> is to determine an optimal or near-
+optimal consistent partition of the columns of a sparse
+<code>m</code> by <code>n</code> matrix <code>a</code>.</p><a href="../proc/dsm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~8"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+<p>number of rows of <code>a</code> (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~14"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of columns of <code>a</code> (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-npairs"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>npairs</strong></td>
+            <td>
+<p>number of (<code>indrow</code>,<code>indcol</code>) pairs used
+to describe the sparsity pattern of <code>a</code> (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow"></span>
+              integer,
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(npairs)
+            </td>
+            <td>::</td>
+            <td><strong>indrow</strong></td>
+            <td>
+<p>an integer array of length <code>npairs</code>. on input <code>indrow</code>
+must contain the row indices of the non-zero elements of <code>a</code>.
+on output <code>indrow</code> is permuted so that the corresponding
+column indices are in non-decreasing order. the column
+indices can be recovered from the array <code>jpntr</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol"></span>
+              integer,
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(npairs)
+            </td>
+            <td>::</td>
+            <td><strong>indcol</strong></td>
+            <td>
+<p>an integer array of length <code>npairs</code>. on input <code>indcol</code>
+must contain the column indices of the non-zero elements of
+<code>a</code>. on output <code>indcol</code> is permuted so that the corresponding
+row indices are in non-decreasing order. the row indices
+can be recovered from the array <code>ipntr</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ngrp~4"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>ngrp</strong></td>
+            <td>
+<p>specifies the partition of the columns of <code>a</code>.
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxgrp~4"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>maxgrp</strong></td>
+            <td>
+<p>the number of groups in the partition
+of the columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mingrp~2"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mingrp</strong></td>
+            <td>
+<p>a lower bound for the number of groups
+in any consistent partition of the
+columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-info~7"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>info</strong></td>
+            <td>
+<p>for normal termination <code>info = 1</code>.
+if <code>m</code>, <code>n</code>, or <code>npairs</code> is not positive,
+then <code>info = 0</code>. if the k-th element of
+<code>indrow</code> is not an integer between
+1 and m or the k-th element of <code>indcol</code>
+is not an integer between 1 and n,
+then <code>info = -k</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr~2"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(m+1)
+            </td>
+            <td>::</td>
+            <td><strong>ipntr</strong></td>
+            <td>
+<p>an integer output array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+note that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr~2"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>jpntr</strong></td>
+            <td>
+<p>jpntr is an integer output array of length n + 1 which
+specifies the locations of the row indices in indrow.
+the row indices for column j are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+note that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-degr"></span> <h3>private  subroutine <a href='../proc/degr.html'>degr</a>(n, indrow, jpntr, indcol, ipntr, ndeg, iwa)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>,
+  this subroutine determines the degree sequence for
+  the intersection graph of the columns of <code>a</code>.</p><a href="../proc/degr.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~15"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>indrow</strong></td>
+            <td>
+<p>an integer input array which contains the row
+indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr~3"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>jpntr</strong></td>
+            <td>
+<p>an integer input array of length <code>n + 1</code> which
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>indcol</strong></td>
+            <td>
+<p>an integer input array which contains the
+column indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr~3"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>ipntr</strong></td>
+            <td>
+<p>an integer input array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ndeg"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>ndeg</strong></td>
+            <td>
+<p>an integer output array of length <code>n</code> which
+specifies the degree sequence. the degree of the
+<code>j</code>-th column of <code>a</code> is <code>ndeg(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>iwa</strong></td>
+            <td>
+<p>an integer work array of length <code>n</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ido"></span> <h3>private  subroutine <a href='../proc/ido.html'>ido</a>(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, Iwa1, Iwa2, Iwa3, Iwa4)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
+subroutine determines an incidence-degree ordering of the
+columns of <code>a</code>.</p><a href="../proc/ido.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~9"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of rows of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~16"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indrow</strong></td>
+            <td>
+<p>an integer input array which contains the row
+indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>Jpntr</strong></td>
+            <td>
+<p>an integer input array of length <code>n + 1</code> which
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indcol</strong></td>
+            <td>
+<p>an integer input array which contains the
+column indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(m+1)
+            </td>
+            <td>::</td>
+            <td><strong>Ipntr</strong></td>
+            <td>
+<p>an integer input array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ndeg"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Ndeg</strong></td>
+            <td>
+<p>an integer input array of length <code>n</code> which specifies
+the degree sequence. the degree of the <code>j</code>-th column
+of <code>a</code> is <code>ndeg(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-list"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>List</strong></td>
+            <td>
+<p>an integer output array of length <code>n</code> which specifies
+the incidence-degree ordering of the columns of <code>a</code>. the <code>j</code>-th
+column in this order is <code>list(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxclq"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Maxclq</strong></td>
+            <td>
+<p>an integer output variable set to the size
+of the largest clique found during the ordering.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa1"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(0:n-1)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa1</strong></td>
+            <td>
+<p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa2</strong></td>
+            <td>
+<p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa3</strong></td>
+            <td>
+<p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa4"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa4</strong></td>
+            <td>
+<p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-numsrt"></span> <h3>private  subroutine <a href='../proc/numsrt.html'>numsrt</a>(n, Nmax, Num, Mode, Index, Last, Next)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Given a sequence of integers, this subroutine groups
+  together those indices with the same sequence value
+  and, optionally, sorts the sequence into either
+  ascending or descending order.</p><a href="../proc/numsrt.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~17"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nmax"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Nmax</strong></td>
+            <td>
+<p>a positive integer input variable.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-num"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Num</strong></td>
+            <td>
+<p>an input array of length <code>n</code> which contains the
+sequence of integers to be grouped and sorted. it
+is assumed that the integers are each from the set
+<code>0,1,...,nmax</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mode"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Mode</strong></td>
+            <td>
+<p>an integer input variable. the sequence <code>num</code> is
+sorted in ascending order if <code>mode</code> is positive and in
+descending order if <code>mode</code> is negative. if <code>mode</code> is 0,
+no sorting is done.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-index"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Index</strong></td>
+            <td>
+<p>an integer output array of length <code>n</code> set so
+that the sequence
+<code>num(index(i)), i = 1,2,...,n</code>
+is sorted according to the setting of mode.
+if <code>mode</code> is 0, <code>index</code> is not referenced.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(0:Nmax)
+            </td>
+            <td>::</td>
+            <td><strong>Last</strong></td>
+            <td>
+<p>an integer output array of length <code>nmax + 1</code>. the
+index of <code>num</code> for the last occurrence of <code>l</code> is <code>last(l)</code>
+for any <code>l = 0,1,...,nmax</code> unless <code>last(l) = 0</code>. in
+this case <code>l</code> does not appear in <code>num</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-next"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Next</strong></td>
+            <td>
+<p>an integer output array of length <code>n</code>. if
+<code>num(k) = l</code>, then the index of <code>num</code> for the previous
+occurrence of <code>l</code> is <code>next(k)</code> for any <code>l = 0,1,...,nmax</code>
+unless <code>next(k) = 0</code>. in this case there is no previous
+occurrence of <code>l</code> in <code>num</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-seq"></span> <h3>private  subroutine <a href='../proc/seq.html'>seq</a>(n, Indrow, Jpntr, Indcol, Ipntr, List, Ngrp, Maxgrp, Iwa)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
+subroutine determines a consistent partition of the
+columns of <code>a</code> by a sequential algorithm.</p><a href="../proc/seq.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~18"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indrow</strong></td>
+            <td>
+<p>an integer input array which contains the row
+indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>Jpntr</strong></td>
+            <td>
+<p>an integer input array of length <code>n + 1</code> which
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indcol</strong></td>
+            <td>
+<p>an integer input array which contains the
+column indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Ipntr</strong></td>
+            <td>
+<p>an integer input array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-list~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>List</strong></td>
+            <td>
+<p>an integer input array of length <code>n</code> which specifies
+the order to be used by the sequential algorithm.
+the <code>j</code>-th column in this order is <code>list(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ngrp"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Ngrp</strong></td>
+            <td>
+<p>an integer output array of length <code>n</code> which specifies
+the partition of the columns of <code>a</code>. column <code>jcol</code> belongs
+to group <code>ngrp(jcol)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxgrp"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Maxgrp</strong></td>
+            <td>
+<p>an integer output variable which specifies the
+number of groups in the partition of the columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa</strong></td>
+            <td>
+<p>an integer work array of length <code>n</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-setr"></span> <h3>private  subroutine <a href='../proc/setr.html'>setr</a>(m, n, Indrow, Jpntr, Indcol, Ipntr, Iwa)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>given a column-oriented definition of the sparsity pattern
+of an <code>m</code> by <code>n</code> matrix <code>a</code>, this subroutine determines a
+row-oriented definition of the sparsity pattern of <code>a</code>.</p><a href="../proc/setr.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~10"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of rows of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~19"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow~3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indrow</strong></td>
+            <td>
+<p>an integer input array which contains the row
+indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr~3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>Jpntr</strong></td>
+            <td>
+<p>an integer input array of length <code>n + 1</code> which
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol~3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indcol</strong></td>
+            <td>
+<p>an integer output array which contains the
+column indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr~3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(m+1)
+            </td>
+            <td>::</td>
+            <td><strong>Ipntr</strong></td>
+            <td>
+<p>an integer output array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(1)</code> is set to 1 and that <code>ipntr(m+1)-1</code> is
+then the number of non-zero elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(m)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa</strong></td>
+            <td>
+<p>an integer work array of length <code>m</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-slo"></span> <h3>private  subroutine <a href='../proc/slo.html'>slo</a>(n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, Iwa1, Iwa2, Iwa3, Iwa4)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
+subroutine determines the smallest-last ordering of the
+columns of <code>a</code>.</p><a href="../proc/slo.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~20"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow~4"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indrow</strong></td>
+            <td>
+<p>an integer input array which contains the row
+indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr~4"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>Jpntr</strong></td>
+            <td>
+<p>an integer input array of length <code>n + 1</code> which
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol~4"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indcol</strong></td>
+            <td>
+<p>an integer input array which contains the
+column indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr~4"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Ipntr</strong></td>
+            <td>
+<p>an integer input array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ndeg~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Ndeg</strong></td>
+            <td>
+<p>an integer input array of length <code>n</code> which specifies
+the degree sequence. the degree of the <code>j</code>-th column
+of <code>a</code> is <code>ndeg(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-list~3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>List</strong></td>
+            <td>
+<p>an integer output array of length <code>n</code> which specifies
+the smallest-last ordering of the columns of <code>a</code>. the <code>j</code>-th
+column in this order is <code>list(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxclq~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Maxclq</strong></td>
+            <td>
+<p>an integer output variable set to the size
+of the largest clique found during the ordering.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa1~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(0:n-1)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa1</strong></td>
+            <td>
+<p>integer work array of length <code>n</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa2~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa2</strong></td>
+            <td>
+<p>integer work array of length <code>n</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa3~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa3</strong></td>
+            <td>
+<p>integer work array of length <code>n</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa4~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa4</strong></td>
+            <td>
+<p>integer work array of length <code>n</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-srtdat"></span> <h3>private  subroutine <a href='../proc/srtdat.html'>srtdat</a>(n, Nnz, Indrow, Indcol, Jpntr, Iwa)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>given the non-zero elements of an <code>m</code> by <code>n</code> matrix <code>a</code> in
+arbitrary order as specified by their row and column
+indices, this subroutine permutes these elements so
+that their column indices are in non-decreasing order.</p><a href="../proc/srtdat.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~21"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nnz"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Nnz</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of non-zero elements of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow~5"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(Nnz)
+            </td>
+            <td>::</td>
+            <td><strong>Indrow</strong></td>
+            <td>
+<p>an integer array of length <code>nnz</code>. on input <code>indrow</code>
+must contain the row indices of the non-zero elements of <code>a</code>.
+on output <code>indrow</code> is permuted so that the corresponding
+column indices of <code>indcol</code> are in non-decreasing order.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol~5"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(Nnz)
+            </td>
+            <td>::</td>
+            <td><strong>Indcol</strong></td>
+            <td>
+<p>an integer array of length <code>nnz</code>. on input <code>indcol</code>
+must contain the column indices of the non-zero elements
+of <code>a</code>. on output <code>indcol</code> is permuted so that these indices
+are in non-decreasing order.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr~5"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>Jpntr</strong></td>
+            <td>
+<p>an integer output array of length <code>n + 1</code> which
+specifies the locations of the row indices in the output
+<code>indrow</code>. the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(1)</code> is set to 1 and that <code>jpntr(n+1)-1</code>
+is then <code>nnz</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa~3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa</strong></td>
+            <td>
+<p>an integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-fdjs"></span> <h3>public  subroutine <a href='../proc/fdjs.html'>fdjs</a>(m, n, Col, Ind, Npntr, Ngrp, Numgrp, d, Fjacd, Fjac)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Given a consistent partition of the columns of an <code>m</code> by <code>n</code>
+  jacobian matrix into groups, this subroutine computes
+  approximations to those columns in a given group.  the
+  approximations are stored into either a column-oriented
+  or a row-oriented pattern.</p><a href="../proc/fdjs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~11"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of rows of the jacobian matrix.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~22"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>a positive integer input variable set to the number
+of columns of the jacobian matrix.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-col"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Col</strong></td>
+            <td>
+<p>a logical input variable. if <code>col</code> is set true, then the
+jacobian approximations are stored into a column-oriented
+pattern. if <code>col</code> is set false, then the jacobian
+approximations are stored into a row-oriented pattern.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Ind</strong></td>
+            <td>
+<p>an integer input array which contains the row
+indices for the non-zeroes in the jacobian matrix
+if <code>col</code> is true, and contains the column indices for
+the non-zeroes in the jacobian matrix if <code>col</code> is false.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-npntr"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Npntr</strong></td>
+            <td>
+<p>an integer input array which specifies the
+locations of the row indices in <code>ind</code> if <code>col</code> is true, and
+specifies the locations of the column indices in <code>ind</code> if
+<code>col</code> is false. if <code>col</code> is true, the indices for column <code>j</code> are
+      <code>ind(k), k = npntr(j),...,npntr(j+1)-1</code>.
+if <code>col</code> is false, the indices for row <code>i</code> are
+      <code>ind(k), k = npntr(i),...,npntr(i+1)-1</code>.
+<strong><em>Note</em></strong> that <code>npntr(n+1)-1</code> if <code>col</code> is true, or <code>npntr(m+1)-1</code>
+if <code>col</code> is false, is then the number of non-zero elements
+of the jacobian matrix.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ngrp~2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Ngrp</strong></td>
+            <td>
+<p>an integer input array of length <code>n</code> which specifies
+the partition of the columns of the jacobian matrix.
+column <code>jcol</code> belongs to group <code>ngrp(jcol)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-numgrp"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Numgrp</strong></td>
+            <td>
+<p>a positive integer input variable set to a group
+number in the partition. the columns of the jacobian
+matrix in this group are to be estimated on this call.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~3"></span>
+              real(kind=wp),
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>d</strong></td>
+            <td>
+<p>an input array of length <code>n</code> which contains the
+difference parameter vector for the estimate of
+the jacobian matrix columns in group <code>numgrp</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fjacd"></span>
+              real(kind=wp),
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(m)
+            </td>
+            <td>::</td>
+            <td><strong>Fjacd</strong></td>
+            <td>
+<p>an input array of length <code>m</code> which contains
+an approximation to the difference vector <code>jac*d</code>,
+where <code>jac</code> denotes the jacobian matrix.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fjac"></span>
+              real(kind=wp),
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Fjac</strong></td>
+            <td>
+<p>an output array of length <code>nnz</code>, where <code>nnz</code> is the
+number of its non-zero elements. at each call of <code>fdjs</code>,
+<code>fjac</code> is updated to include the non-zero elements of the
+jacobian matrix for those columns in group <code>numgrp</code>. <code>fjac</code>
+should not be altered between successive calls to <code>fdjs</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

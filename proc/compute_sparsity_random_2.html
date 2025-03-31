@@ -1,0 +1,1091 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>compute_sparsity_random_2 &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>compute_sparsity_random_2
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 2.9% of total for procedures.">89 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">compute_sparsity_random_2</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/compute_sparsity_random_2.html#src">compute_sparsity_random_2</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine compute_sparsity_random_2(me, x)  
+</h2>
+    
+
+    <p>Compute the sparsity pattern by computing a 2-point jacobian at a specified
+number of "random" points (<code>num_sparsity_points</code>) in the
+[<code>xlow_for_sparsity</code>, <code>xhigh_for_sparsity</code>] interval and checking if
+they are the same.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~38"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~15"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>vector of variables (size <code>n</code>)
+(not used here)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_sparsity_random_2~~CallsGraph Pages: 1 -->
+<svg id="proccompute_sparsity_random_2CallsGraph" width="641pt" height="215pt"
+ viewBox="0.00 0.00 641.00 214.92" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_sparsity_random_2~~CallsGraph" class="graph" transform="scale(0.39 0.39) rotate(0) translate(4 543.52)">
+<title>proc~~compute_sparsity_random_2~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-543.52 1629,-543.52 1629,4 -4,4"/>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node1" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<polygon fill="none" stroke="black" points="166,-322.51 0,-322.51 0,-298.51 166,-298.51 166,-322.51"/>
+<text text-anchor="middle" x="83" y="-308.11" font-family="Helvetica,sans-Serif" font-size="10.50">compute_sparsity_random_2</text>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node2" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node2"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="1238,-469.51 1147,-469.51 1147,-445.51 1238,-445.51 1238,-469.51"/>
+<text text-anchor="middle" x="1192.5" y="-455.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge1" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M89.49,-322.76C103.35,-352 142.95,-425.53 202,-453.51 286.41,-493.5 941.55,-468.43 1136.78,-459.98"/>
+<polygon fill="#000000" stroke="#000000" points="1136.97,-463.47 1146.81,-459.54 1136.66,-456.48 1136.97,-463.47"/>
+</g>
+<!-- proc~compute_indices -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node3" class="node">
+<title>proc~compute_indices</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node3"><a xlink:href="../proc/compute_indices.html" xlink:title="sparsity_pattern%compute_indices">
+<polygon fill="#d9534f" stroke="#d9534f" points="438.5,-402.51 240.5,-402.51 240.5,-378.51 438.5,-378.51 438.5,-402.51"/>
+<text text-anchor="middle" x="339.5" y="-388.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%compute_indices</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~compute_indices -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge2" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~compute_indices</title>
+<path fill="none" stroke="#000000" d="M105.98,-322.52C129.21,-334.74 167.23,-353.42 202,-364.51 216.61,-369.17 232.38,-373.12 247.84,-376.42"/>
+<polygon fill="#000000" stroke="#000000" points="247.44,-379.91 257.94,-378.5 248.85,-373.05 247.44,-379.91"/>
+</g>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node4" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node4"><a xlink:href="../proc/compute_jacobian_for_sparsity.html" xlink:title="numdiff_type%compute_jacobian_for_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="468,-322.51 211,-322.51 211,-298.51 468,-298.51 468,-322.51"/>
+<text text-anchor="middle" x="339.5" y="-308.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_jacobian_for_sparsity</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge3" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity</title>
+<path fill="none" stroke="#000000" d="M166.28,-310.51C177.29,-310.51 188.81,-310.51 200.45,-310.51"/>
+<polygon fill="#000000" stroke="#000000" points="200.71,-314.01 210.71,-310.51 200.71,-307.01 200.71,-314.01"/>
+</g>
+<!-- proc~destroy_sparsity_pattern -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node5" class="node">
+<title>proc~destroy_sparsity_pattern</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node5"><a xlink:href="../proc/destroy_sparsity_pattern.html" xlink:title="numdiff_type%destroy_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="450.5,-280.51 228.5,-280.51 228.5,-256.51 450.5,-256.51 450.5,-280.51"/>
+<text text-anchor="middle" x="339.5" y="-266.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%destroy_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~destroy_sparsity_pattern -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge4" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~destroy_sparsity_pattern</title>
+<path fill="none" stroke="#000000" d="M150.11,-298.46C167.01,-295.46 185.17,-292.3 202,-289.51 216.94,-287.03 232.82,-284.5 248.26,-282.08"/>
+<polygon fill="#000000" stroke="#000000" points="248.99,-285.51 258.33,-280.52 247.91,-278.6 248.99,-285.51"/>
+</g>
+<!-- proc~divide_interval -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node6" class="node">
+<title>proc~divide_interval</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node6"><a xlink:href="../proc/divide_interval.html" xlink:title="divide_interval">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="385,-444.51 294,-444.51 294,-420.51 385,-420.51 385,-444.51"/>
+<text text-anchor="middle" x="339.5" y="-430.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">divide_interval</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge5" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval</title>
+<path fill="none" stroke="#000000" d="M93.91,-322.58C112.54,-344.38 155.19,-390.02 202,-411.51 227.39,-423.16 257.95,-428.56 283.71,-430.98"/>
+<polygon fill="#000000" stroke="#000000" points="283.44,-434.47 293.69,-431.79 284.01,-427.49 283.44,-434.47"/>
+</g>
+<!-- proc~dsm_wrapper -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node7" class="node">
+<title>proc~dsm_wrapper</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node7"><a xlink:href="../proc/dsm_wrapper.html" xlink:title="sparsity_pattern%dsm_wrapper">
+<polygon fill="#d9534f" stroke="#d9534f" points="429.5,-238.51 249.5,-238.51 249.5,-214.51 429.5,-214.51 429.5,-238.51"/>
+<text text-anchor="middle" x="339.5" y="-224.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%dsm_wrapper</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge6" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M101.93,-298.43C124.33,-283.95 164.32,-260.06 202,-247.51 213.85,-243.56 226.52,-240.35 239.2,-237.74"/>
+<polygon fill="#000000" stroke="#000000" points="240.2,-241.11 249.35,-235.78 238.87,-234.24 240.2,-241.11"/>
+</g>
+<!-- proc~equal_within_tol -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node8" class="node">
+<title>proc~equal_within_tol</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node8"><a xlink:href="../proc/equal_within_tol.html" xlink:title="equal_within_tol">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="388.5,-196.51 290.5,-196.51 290.5,-172.51 388.5,-172.51 388.5,-196.51"/>
+<text text-anchor="middle" x="339.5" y="-182.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">equal_within_tol</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~equal_within_tol -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge7" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~equal_within_tol</title>
+<path fill="none" stroke="#000000" d="M93.51,-298.31C111.81,-275.78 154.36,-227.93 202,-205.51 226.21,-194.11 255.26,-188.66 280.33,-186.14"/>
+<polygon fill="#000000" stroke="#000000" points="280.78,-189.61 290.44,-185.25 280.17,-182.64 280.78,-189.61"/>
+</g>
+<!-- proc~generate_dense_sparsity_partition -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node9" class="node">
+<title>proc~generate_dense_sparsity_partition</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node9"><a xlink:href="../proc/generate_dense_sparsity_partition.html" xlink:title="numdiff_type%generate_dense_sparsity_partition">
+<polygon fill="#d9534f" stroke="#d9534f" points="477,-154.51 202,-154.51 202,-130.51 477,-130.51 477,-154.51"/>
+<text text-anchor="middle" x="339.5" y="-140.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%generate_dense_sparsity_partition</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~generate_dense_sparsity_partition -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge8" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~generate_dense_sparsity_partition</title>
+<path fill="none" stroke="#000000" d="M89.68,-298.48C103.98,-269.69 144.46,-196.72 202,-163.51 205.11,-161.71 208.31,-160.06 211.6,-158.53"/>
+<polygon fill="#000000" stroke="#000000" points="213.2,-161.66 221.06,-154.56 210.49,-155.21 213.2,-161.66"/>
+</g>
+<!-- proc~get_all_methods_in_class -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node10" class="node">
+<title>proc~get_all_methods_in_class</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node10"><a xlink:href="../proc/get_all_methods_in_class.html" xlink:title="get_all_methods_in_class">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="412.5,-112.51 266.5,-112.51 266.5,-88.51 412.5,-88.51 412.5,-112.51"/>
+<text text-anchor="middle" x="339.5" y="-98.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_all_methods_in_class</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge9" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M87.65,-298.23C98.56,-263.81 134.49,-165.99 202,-121.51 218.03,-110.95 237.38,-104.94 256.4,-101.67"/>
+<polygon fill="#000000" stroke="#000000" points="256.93,-105.13 266.3,-100.19 255.9,-98.2 256.93,-105.13"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node11" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node11"><a xlink:href="../proc/raise_exception.html" xlink:title="numdiff_type%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="1280,-351.51 1105,-351.51 1105,-327.51 1280,-327.51 1280,-351.51"/>
+<text text-anchor="middle" x="1192.5" y="-337.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~raise_exception -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge10" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M140.46,-322.54C159.87,-326.15 181.8,-329.64 202,-331.51 528.18,-361.63 917.4,-351.32 1094.8,-344.1"/>
+<polygon fill="#000000" stroke="#000000" points="1095.05,-347.59 1104.89,-343.68 1094.76,-340.59 1095.05,-347.59"/>
+</g>
+<!-- proc~resize_sparsity_vectors -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node12" class="node">
+<title>proc~resize_sparsity_vectors</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node12"><a xlink:href="../proc/resize_sparsity_vectors.html" xlink:title="numdiff_type%resize_sparsity_vectors">
+<polygon fill="#d9534f" stroke="#d9534f" points="768.5,-524.51 554.5,-524.51 554.5,-500.51 768.5,-500.51 768.5,-524.51"/>
+<text text-anchor="middle" x="661.5" y="-510.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%resize_sparsity_vectors</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~resize_sparsity_vectors -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge11" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~resize_sparsity_vectors</title>
+<path fill="none" stroke="#000000" d="M87.88,-322.75C99.18,-356.1 135.54,-448.59 202,-486.51 325.45,-556.93 499.28,-541.89 593.48,-526.25"/>
+<polygon fill="#000000" stroke="#000000" points="594.19,-529.68 603.45,-524.55 593.01,-522.78 594.19,-529.68"/>
+</g>
+<!-- proc~expand_vector_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node17" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node17"><a xlink:href="../proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1429.5,-507.51 1320.5,-507.51 1320.5,-483.51 1429.5,-483.51 1429.5,-507.51"/>
+<text text-anchor="middle" x="1375" y="-493.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge12" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1238.12,-466.9C1259.86,-471.48 1286.39,-477.06 1310.23,-482.08"/>
+<polygon fill="#000000" stroke="#000000" points="1309.75,-485.56 1320.25,-484.19 1311.19,-478.71 1309.75,-485.56"/>
+</g>
+<!-- proc~expand_vector_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node18" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node18"><a xlink:href="../proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1433,-465.51 1317,-465.51 1317,-441.51 1433,-441.51 1433,-465.51"/>
+<text text-anchor="middle" x="1375" y="-451.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge13" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1238.12,-456.52C1258.85,-456.06 1283.95,-455.5 1306.9,-454.99"/>
+<polygon fill="#000000" stroke="#000000" points="1307.01,-458.49 1316.93,-454.77 1306.85,-451.49 1307.01,-458.49"/>
+</g>
+<!-- proc~compute_sparsity_perturbation_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node14" class="node">
+<title>proc~compute_sparsity_perturbation_vector</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node14"><a xlink:href="../proc/compute_sparsity_perturbation_vector.html" xlink:title="numdiff_type%compute_sparsity_perturbation_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="810,-322.51 513,-322.51 513,-298.51 810,-298.51 810,-322.51"/>
+<text text-anchor="middle" x="661.5" y="-308.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_sparsity_perturbation_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~compute_sparsity_perturbation_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge14" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~compute_sparsity_perturbation_vector</title>
+<path fill="none" stroke="#000000" d="M468.35,-310.51C479.66,-310.51 491.2,-310.51 502.71,-310.51"/>
+<polygon fill="#000000" stroke="#000000" points="502.83,-314.01 512.83,-310.51 502.83,-307.01 502.83,-314.01"/>
+</g>
+<!-- proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node20" class="node">
+<title>proc~perturb_x_and_compute_f</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node20"><a xlink:href="../proc/perturb_x_and_compute_f.html" xlink:title="numdiff_type%perturb_x_and_compute_f">
+<polygon fill="#d9534f" stroke="#d9534f" points="776.5,-280.51 546.5,-280.51 546.5,-256.51 776.5,-256.51 776.5,-280.51"/>
+<text text-anchor="middle" x="661.5" y="-266.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge15" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M432.2,-298.47C471.87,-293.27 518.43,-287.15 559.13,-281.81"/>
+<polygon fill="#000000" stroke="#000000" points="559.6,-285.28 569.06,-280.51 558.69,-278.34 559.6,-285.28"/>
+</g>
+<!-- proc~select_finite_diff_method -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node21" class="node">
+<title>proc~select_finite_diff_method</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node21"><a xlink:href="../proc/select_finite_diff_method.html" xlink:title="numdiff_type%select_finite_diff_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="774,-238.51 549,-238.51 549,-214.51 774,-214.51 774,-238.51"/>
+<text text-anchor="middle" x="661.5" y="-224.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%select_finite_diff_method</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~select_finite_diff_method -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge16" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~select_finite_diff_method</title>
+<path fill="none" stroke="#000000" d="M457.12,-298.48C464.03,-295.97 470.71,-293 477,-289.51 498.49,-277.56 491.45,-259.33 513,-247.51 521.25,-242.98 530.13,-239.32 539.3,-236.37"/>
+<polygon fill="#000000" stroke="#000000" points="540.33,-239.71 548.94,-233.54 538.36,-232.99 540.33,-239.71"/>
+</g>
+<!-- proc~destroy_sparsity -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node15" class="node">
+<title>proc~destroy_sparsity</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node15"><a xlink:href="../proc/destroy_sparsity.html" xlink:title="sparsity_pattern%destroy_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="758,-196.51 565,-196.51 565,-172.51 758,-172.51 758,-196.51"/>
+<text text-anchor="middle" x="661.5" y="-182.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%destroy_sparsity</text>
+</a>
+</g>
+</g>
+<!-- proc~destroy_sparsity_pattern&#45;&gt;proc~destroy_sparsity -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge17" class="edge">
+<title>proc~destroy_sparsity_pattern&#45;&gt;proc~destroy_sparsity</title>
+<path fill="none" stroke="#000000" d="M450.84,-258.62C459.98,-255.7 468.83,-252.05 477,-247.51 498.49,-235.56 491.45,-217.33 513,-205.51 525.81,-198.48 540.14,-193.53 554.7,-190.09"/>
+<polygon fill="#000000" stroke="#000000" points="555.75,-193.44 564.81,-187.94 554.3,-186.6 555.75,-193.44"/>
+</g>
+<!-- interface~unique -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node13" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node13"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="688.5,-444.51 634.5,-444.51 634.5,-420.51 688.5,-420.51 688.5,-444.51"/>
+<text text-anchor="middle" x="661.5" y="-430.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~divide_interval&#45;&gt;interface~unique -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge18" class="edge">
+<title>proc~divide_interval&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M385.33,-432.51C449.13,-432.51 564.91,-432.51 623.87,-432.51"/>
+<polygon fill="#000000" stroke="#000000" points="624.19,-436.01 634.19,-432.51 624.19,-429.01 624.19,-436.01"/>
+</g>
+<!-- proc~dsm -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node16" class="node">
+<title>proc~dsm</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node16"><a xlink:href="../proc/dsm.html" xlink:title="dsm">
+<polygon fill="#d9534f" stroke="#d9534f" points="688.5,-154.51 634.5,-154.51 634.5,-130.51 688.5,-130.51 688.5,-154.51"/>
+<text text-anchor="middle" x="661.5" y="-140.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge19" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
+<path fill="none" stroke="#000000" d="M429.81,-222.06C446.2,-218.7 462.65,-213.49 477,-205.51 498.49,-193.56 491.45,-175.33 513,-163.51 547.43,-144.62 592.91,-140.75 624.21,-140.73"/>
+<polygon fill="#000000" stroke="#000000" points="624.21,-144.23 634.25,-140.85 624.3,-137.23 624.21,-144.23"/>
+</g>
+<!-- proc~get_finite_difference_method -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node19" class="node">
+<title>proc~get_finite_difference_method</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node19"><a xlink:href="../proc/get_finite_difference_method.html" xlink:title="get_finite_difference_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="745.5,-112.51 577.5,-112.51 577.5,-88.51 745.5,-88.51 745.5,-112.51"/>
+<text text-anchor="middle" x="661.5" y="-98.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_difference_method</text>
+</a>
+</g>
+</g>
+<!-- proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge20" class="edge">
+<title>proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M412.71,-100.51C458.41,-100.51 517.95,-100.51 567.22,-100.51"/>
+<polygon fill="#000000" stroke="#000000" points="567.24,-104.01 577.24,-100.51 567.24,-97.01 567.24,-104.01"/>
+</g>
+<!-- proc~resize_sparsity_vectors&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge21" class="edge">
+<title>proc~resize_sparsity_vectors&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M768.72,-510.61C851.04,-507.95 967.76,-501.62 1069,-486.51 1092.05,-483.07 1117.14,-477.46 1138.59,-472.09"/>
+<polygon fill="#000000" stroke="#000000" points="1139.65,-475.43 1148.48,-469.57 1137.92,-468.65 1139.65,-475.43"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node30" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node30"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="991.5,-444.51 923.5,-444.51 923.5,-420.51 991.5,-420.51 991.5,-444.51"/>
+<text text-anchor="middle" x="957.5" y="-430.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge22" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M688.59,-432.51C739.21,-432.51 851.18,-432.51 913.14,-432.51"/>
+<polygon fill="#000000" stroke="#000000" points="913.37,-436.01 923.37,-432.51 913.37,-429.01 913.37,-436.01"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node31" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node31"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="995,-402.51 920,-402.51 920,-378.51 995,-378.51 995,-402.51"/>
+<text text-anchor="middle" x="957.5" y="-388.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge23" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M688.59,-428.78C738.25,-421.69 846.95,-406.16 909.56,-397.21"/>
+<polygon fill="#000000" stroke="#000000" points="910.17,-400.66 919.57,-395.78 909.18,-393.73 910.17,-400.66"/>
+</g>
+<!-- proc~compute_perturb_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node22" class="node">
+<title>proc~compute_perturb_vector</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node22"><a xlink:href="../proc/compute_perturb_vector.html" xlink:title="numdiff_type%compute_perturb_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="1069,-322.51 846,-322.51 846,-298.51 1069,-298.51 1069,-322.51"/>
+<text text-anchor="middle" x="957.5" y="-308.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_perturb_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_perturbation_vector&#45;&gt;proc~compute_perturb_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge24" class="edge">
+<title>proc~compute_sparsity_perturbation_vector&#45;&gt;proc~compute_perturb_vector</title>
+<path fill="none" stroke="#000000" d="M810.36,-310.51C818.8,-310.51 827.23,-310.51 835.55,-310.51"/>
+<polygon fill="#000000" stroke="#000000" points="835.63,-314.01 845.63,-310.51 835.63,-307.01 835.63,-314.01"/>
+</g>
+<!-- proc~degr -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node23" class="node">
+<title>proc~degr</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node23"><a xlink:href="../proc/degr.html" xlink:title="degr">
+<polygon fill="#d9534f" stroke="#d9534f" points="984.5,-112.51 930.5,-112.51 930.5,-88.51 984.5,-88.51 984.5,-112.51"/>
+<text text-anchor="middle" x="957.5" y="-98.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~degr -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge25" class="edge">
+<title>proc~dsm&#45;&gt;proc~degr</title>
+<path fill="none" stroke="#000000" d="M688.61,-138.8C718.09,-134.61 767.49,-127.58 810,-121.51 847.49,-116.15 890.38,-110 920.02,-105.75"/>
+<polygon fill="#000000" stroke="#000000" points="920.9,-109.16 930.3,-104.27 919.91,-102.23 920.9,-109.16"/>
+</g>
+<!-- proc~ido -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node24" class="node">
+<title>proc~ido</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node24"><a xlink:href="../proc/ido.html" xlink:title="ido">
+<polygon fill="#d9534f" stroke="#d9534f" points="984.5,-70.51 930.5,-70.51 930.5,-46.51 984.5,-46.51 984.5,-70.51"/>
+<text text-anchor="middle" x="957.5" y="-56.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~ido -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge26" class="edge">
+<title>proc~dsm&#45;&gt;proc~ido</title>
+<path fill="none" stroke="#000000" d="M688.75,-144.16C719.67,-144.95 771.68,-142.53 810,-121.51 831.55,-109.68 824.73,-91.83 846,-79.51 868.46,-66.5 897.4,-61.33 920.02,-59.38"/>
+<polygon fill="#000000" stroke="#000000" points="920.51,-62.85 930.25,-58.67 920.03,-55.87 920.51,-62.85"/>
+</g>
+<!-- proc~numsrt -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node25" class="node">
+<title>proc~numsrt</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node25"><a xlink:href="../proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="1219.5,-50.51 1165.5,-50.51 1165.5,-26.51 1219.5,-26.51 1219.5,-50.51"/>
+<text text-anchor="middle" x="1192.5" y="-36.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~numsrt -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge27" class="edge">
+<title>proc~dsm&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M688.59,-145.97C720.55,-148.74 774.78,-148.48 810,-121.51 842.24,-96.81 812.09,-59.87 846,-37.51 942.21,25.94 1088.63,-6.42 1155.69,-26.51"/>
+<polygon fill="#000000" stroke="#000000" points="1154.78,-29.89 1165.37,-29.49 1156.84,-23.2 1154.78,-29.89"/>
+</g>
+<!-- proc~seq -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node26" class="node">
+<title>proc~seq</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node26"><a xlink:href="../proc/seq.html" xlink:title="seq">
+<polygon fill="#d9534f" stroke="#d9534f" points="984.5,-280.51 930.5,-280.51 930.5,-256.51 984.5,-256.51 984.5,-280.51"/>
+<text text-anchor="middle" x="957.5" y="-266.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~seq -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge28" class="edge">
+<title>proc~dsm&#45;&gt;proc~seq</title>
+<path fill="none" stroke="#000000" d="M688.59,-139.04C720.55,-136.27 774.78,-136.53 810,-163.51 842.24,-188.21 814.34,-222.07 846,-247.51 866.73,-264.16 896.66,-269.04 920.15,-269.96"/>
+<polygon fill="#000000" stroke="#000000" points="920.37,-273.46 930.43,-270.13 920.49,-266.46 920.37,-273.46"/>
+</g>
+<!-- proc~setr -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node27" class="node">
+<title>proc~setr</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node27"><a xlink:href="../proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="984.5,-238.51 930.5,-238.51 930.5,-214.51 984.5,-214.51 984.5,-238.51"/>
+<text text-anchor="middle" x="957.5" y="-224.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~setr -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge29" class="edge">
+<title>proc~dsm&#45;&gt;proc~setr</title>
+<path fill="none" stroke="#000000" d="M688.75,-140.85C719.67,-140.06 771.68,-142.48 810,-163.51 831.55,-175.33 824.73,-193.19 846,-205.51 868.46,-218.52 897.4,-223.68 920.02,-225.63"/>
+<polygon fill="#000000" stroke="#000000" points="920.03,-229.14 930.25,-226.34 920.51,-222.16 920.03,-229.14"/>
+</g>
+<!-- proc~slo -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node28" class="node">
+<title>proc~slo</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node28"><a xlink:href="../proc/slo.html" xlink:title="slo">
+<polygon fill="#d9534f" stroke="#d9534f" points="984.5,-196.51 930.5,-196.51 930.5,-172.51 984.5,-172.51 984.5,-196.51"/>
+<text text-anchor="middle" x="957.5" y="-182.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~slo -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge30" class="edge">
+<title>proc~dsm&#45;&gt;proc~slo</title>
+<path fill="none" stroke="#000000" d="M688.61,-146.22C718.09,-150.41 767.49,-157.44 810,-163.51 847.49,-168.86 890.38,-175.01 920.02,-179.27"/>
+<polygon fill="#000000" stroke="#000000" points="919.91,-182.79 930.3,-180.74 920.9,-175.86 919.91,-182.79"/>
+</g>
+<!-- proc~srtdat -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node29" class="node">
+<title>proc~srtdat</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node29"><a xlink:href="../proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="984.5,-154.51 930.5,-154.51 930.5,-130.51 984.5,-130.51 984.5,-154.51"/>
+<text text-anchor="middle" x="957.5" y="-140.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge31" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
+<path fill="none" stroke="#000000" d="M688.59,-142.51C741.22,-142.51 860.2,-142.51 920.31,-142.51"/>
+<polygon fill="#000000" stroke="#000000" points="920.47,-146.01 930.47,-142.51 920.47,-139.01 920.47,-146.01"/>
+</g>
+<!-- proc~compute_perturb_vector&#45;&gt;proc~raise_exception -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge32" class="edge">
+<title>proc~compute_perturb_vector&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1054.95,-322.51C1068.12,-324.15 1081.64,-325.83 1094.82,-327.47"/>
+<polygon fill="#000000" stroke="#000000" points="1094.45,-330.96 1104.81,-328.72 1095.32,-324.01 1094.45,-330.96"/>
+</g>
+<!-- proc~ido&#45;&gt;proc~numsrt -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge33" class="edge">
+<title>proc~ido&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M984.78,-56.25C1026.49,-52.67 1107.97,-45.68 1155.22,-41.62"/>
+<polygon fill="#000000" stroke="#000000" points="1155.66,-45.1 1165.32,-40.75 1155.06,-38.12 1155.66,-45.1"/>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge34" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M991.88,-436.09C1029.59,-440.14 1091.54,-446.78 1136.43,-451.6"/>
+<polygon fill="#000000" stroke="#000000" points="1136.28,-455.1 1146.59,-452.69 1137.03,-448.14 1136.28,-455.1"/>
+</g>
+<!-- interface~sort_ascending -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node32" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node32"><a xlink:href="../interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="1239,-412.51 1146,-412.51 1146,-388.51 1239,-388.51 1239,-412.51"/>
+<text text-anchor="middle" x="1192.5" y="-398.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge35" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M991.88,-427.92C1029.36,-422.78 1090.77,-414.34 1135.6,-408.19"/>
+<polygon fill="#000000" stroke="#000000" points="1136.32,-411.62 1145.75,-406.79 1135.37,-404.68 1136.32,-411.62"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge36" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M995.2,-395.86C1016.88,-399.42 1044.75,-404.7 1069,-411.51 1098.03,-419.65 1129.88,-431.71 1153.83,-441.44"/>
+<polygon fill="#000000" stroke="#000000" points="1152.67,-444.75 1163.25,-445.32 1155.33,-438.28 1152.67,-444.75"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge37" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M995.16,-392.08C1032.89,-393.7 1092.15,-396.24 1135.7,-398.11"/>
+<polygon fill="#000000" stroke="#000000" points="1135.71,-401.62 1145.85,-398.55 1136.01,-394.62 1135.71,-401.62"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node33" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node33"><a xlink:href="../proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1431,-416.51 1319,-416.51 1319,-392.51 1431,-392.51 1431,-416.51"/>
+<text text-anchor="middle" x="1375" y="-402.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge38" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1239.05,-401.52C1260.15,-401.98 1285.62,-402.55 1308.72,-403.06"/>
+<polygon fill="#000000" stroke="#000000" points="1308.73,-406.56 1318.8,-403.28 1308.88,-399.56 1308.73,-406.56"/>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node34" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node34"><a xlink:href="../proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1434,-374.51 1316,-374.51 1316,-350.51 1434,-350.51 1434,-374.51"/>
+<text text-anchor="middle" x="1375" y="-360.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge39" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1239.05,-390.92C1259.61,-386.59 1284.31,-381.39 1306.93,-376.63"/>
+<polygon fill="#000000" stroke="#000000" points="1307.75,-380.03 1316.81,-374.55 1306.3,-373.18 1307.75,-380.03"/>
+</g>
+<!-- interface~swap -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node35" class="node">
+<title>interface~swap</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node35"><a xlink:href="../interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="1524,-395.51 1470,-395.51 1470,-371.51 1524,-371.51 1524,-395.51"/>
+<text text-anchor="middle" x="1497" y="-381.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_int&#45;&gt;interface~swap -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge40" class="edge">
+<title>proc~sort_ascending_int&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1431.08,-394.87C1440.93,-393.14 1450.96,-391.39 1460.09,-389.79"/>
+<polygon fill="#000000" stroke="#000000" points="1460.72,-393.23 1469.97,-388.06 1459.51,-386.34 1460.72,-393.23"/>
+</g>
+<!-- proc~sort_ascending_real&#45;&gt;interface~swap -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge41" class="edge">
+<title>proc~sort_ascending_real&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1434.24,-372.7C1443.06,-374.24 1451.93,-375.79 1460.08,-377.22"/>
+<polygon fill="#000000" stroke="#000000" points="1459.52,-380.68 1469.98,-378.95 1460.73,-373.78 1459.52,-380.68"/>
+</g>
+<!-- proc~swap_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node36" class="node">
+<title>proc~swap_int</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node36"><a xlink:href="../proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1621.5,-416.51 1563.5,-416.51 1563.5,-392.51 1621.5,-392.51 1621.5,-416.51"/>
+<text text-anchor="middle" x="1592.5" y="-402.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge42" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1524.04,-389.36C1533.11,-391.39 1543.47,-393.72 1553.31,-395.93"/>
+<polygon fill="#000000" stroke="#000000" points="1552.78,-399.4 1563.3,-398.17 1554.31,-392.57 1552.78,-399.4"/>
+</g>
+<!-- proc~swap_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_node37" class="node">
+<title>proc~swap_real</title>
+<g id="a_proc~~compute_sparsity_random_2~~CallsGraph_node37"><a xlink:href="../proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1625,-374.51 1560,-374.51 1560,-350.51 1625,-350.51 1625,-374.51"/>
+<text text-anchor="middle" x="1592.5" y="-360.11" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="proc~~compute_sparsity_random_2~~CallsGraph_edge43" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1524.04,-377.66C1532.13,-375.84 1541.26,-373.79 1550.12,-371.8"/>
+<polygon fill="#000000" stroke="#000000" points="1550.96,-375.2 1559.94,-369.59 1549.42,-368.37 1550.96,-375.2"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_sparsity_random_2CallsGraph = svgPanZoom('#proccompute_sparsity_random_2CallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">compute_sparsity_random_2</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="c">!! vector of variables (size `n`)</span>
+<span class="w">                                           </span><span class="c">!! (not used here)</span>
+
+<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jac_type</span>
+<span class="w">        </span><span class="c">!! so we can define an array of jacobian columns</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jac</span><span class="w"> </span><span class="c">!! a column of the jacobian</span>
+<span class="w">    </span><span class="k">end type </span><span class="n">jac_type</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">coeffs</span><span class="w">           </span><span class="c">!! coefficients for computing `xp`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:,:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xp</span><span class="w">             </span><span class="c">!! perturbed `x` array (size `n,num_sparsity_points`)</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">jac_type</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jac_array</span><span class="w">  </span><span class="c">!! array of jacobian columns</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tmp_sparsity_pattern</span><span class="w">        </span><span class="c">!! will accumulate the pattern here</span>
+<span class="w">                                                          </span><span class="c">!! and copy it into the class when</span>
+<span class="w">                                                          </span><span class="c">!! finished.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w">              </span><span class="c">!! counter for the number of points</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">j</span><span class="w">              </span><span class="c">!! counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">icol</span><span class="w">           </span><span class="c">!! column counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">irow</span><span class="w">           </span><span class="c">!! row counter</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dfdx</span><span class="w">          </span><span class="c">!! value of a jacobian element</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_icol</span><span class="w">         </span><span class="c">!! `icol` size counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_irow</span><span class="w">         </span><span class="c">!! `irow` size counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_linear_icol</span><span class="w">  </span><span class="c">!! `linear_icol` size counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_linear_irow</span><span class="w">  </span><span class="c">!! `linear_irow` size counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_linear_vals</span><span class="w">  </span><span class="c">!! `linear_vals` size counter</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">meth_array</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">class_meths</span><span class="w">  </span><span class="c">!! set of finite diff methods to use</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jac</span><span class="w"> </span><span class="c">!! array of jacobian element values</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="c">!! status output form [[dsm]]</span>
+
+<span class="w">    </span><span class="c">! initialize:</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">destroy_sparsity_pattern</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+
+<span class="w">    </span><span class="c">! error check:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">xlow_for_sparsity</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">xhigh_for_sparsity</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="s1">&#39;compute_sparsity_random_2&#39;</span><span class="p">,&amp;</span>
+<span class="w">                                   </span><span class="s1">&#39;the x bounds have not been set.&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span>
+
+<span class="w">    </span><span class="c">! compute the coefficients:</span>
+<span class="w">    </span><span class="n">coeffs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">divide_interval</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! save the initial settings:</span>
+<span class="w">    </span><span class="n">tmp_sparsity_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span>
+
+<span class="w">    </span><span class="c">! we create a provisional sparsity pattern here,</span>
+<span class="w">    </span><span class="c">! to compute one row at a time:</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">irow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[(</span><span class="n">irow</span><span class="p">,</span><span class="n">irow</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)]</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">sparsity_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">num_nonzero_elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">m</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">compute_indices</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">generate_dense_sparsity_partition</span><span class="p">()</span>
+<span class="w">    </span><span class="n">n_icol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">n_irow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">n_linear_icol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">n_linear_irow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">n_linear_vals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">jac</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span><span class="p">))</span>
+
+<span class="w">    </span><span class="c">! the idea here is to compute the (dense) jacobian</span>
+<span class="w">    </span><span class="c">! one column at at time, and keep a running track of</span>
+<span class="w">    </span><span class="c">! the ones that have changed.</span>
+
+<span class="w">    </span><span class="c">! first precompute the perturbation arrays for each point:</span>
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">xp</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span><span class="p">))</span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span>
+<span class="w">        </span><span class="n">xp</span><span class="p">(:,</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">xlow_for_sparsity</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">xhigh_for_sparsity</span><span class="o">-</span><span class="n">me</span><span class="p">%</span><span class="n">xlow_for_sparsity</span><span class="p">)</span><span class="o">*</span><span class="n">coeffs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end do</span>
+
+<span class="w">    </span><span class="c">! we will use 2-point methods (simple differences):</span>
+<span class="w">    </span><span class="n">class_meths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_all_methods_in_class</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">do </span><span class="n">icol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="w">  </span><span class="c">! column loop</span>
+
+<span class="w">        </span><span class="c">! size the array:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">jac_array</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">jac_array</span><span class="p">)</span>
+<span class="w">        </span><span class="k">allocate</span><span class="p">(</span><span class="n">jac_array</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span><span class="p">))</span>
+
+<span class="w">        </span><span class="c">! compute the ith column of the jacobian:</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">icol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[(</span><span class="n">icol</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)]</span>
+<span class="w">        </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span>
+<span class="w">            </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_jacobian_for_sparsity</span><span class="p">(</span><span class="w"> </span><span class="n">icol</span><span class="p">,</span><span class="w"> </span><span class="n">class_meths</span><span class="p">,</span><span class="w"> </span><span class="n">xp</span><span class="p">(:,</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">jac_array</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">jac</span><span class="w"> </span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">        </span><span class="k">end do</span>
+
+<span class="w">        </span><span class="c">! check each row:</span>
+<span class="w">        </span><span class="k">do </span><span class="n">irow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">m</span>
+
+<span class="w">            </span><span class="c">! get the jacobian values for this row,col for all the points:</span>
+<span class="w">            </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span>
+<span class="w">                </span><span class="n">jac</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jac_array</span><span class="p">(</span><span class="n">j</span><span class="p">)%</span><span class="n">jac</span><span class="p">(</span><span class="n">irow</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end do</span>
+
+<span class="w">            </span><span class="c">! put the results into the tmp_sparsity_pattern</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">equal_within_tol</span><span class="p">([</span><span class="mf">0.0_wp</span><span class="p">,</span><span class="n">jac</span><span class="p">],</span><span class="n">me</span><span class="p">%</span><span class="n">linear_sparsity_tol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                </span><span class="c">! they are all zero</span>
+<span class="w">                </span><span class="k">cycle</span>
+<span class="k">            else</span>
+<span class="k">                if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">compute_linear_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                    if</span><span class="w"> </span><span class="p">(</span><span class="n">equal_within_tol</span><span class="p">(</span><span class="n">jac</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">linear_sparsity_tol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                        </span><span class="c">! this is a linear element (constant value)</span>
+<span class="w">                        </span><span class="n">dfdx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_sparsity_points</span><span class="w"> </span><span class="c">! just take the average and use that</span>
+<span class="w">                        </span><span class="k">call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">tmp_sparsity_pattern</span><span class="p">%</span><span class="n">linear_icol</span><span class="p">,</span><span class="n">n_linear_icol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">icol</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">tmp_sparsity_pattern</span><span class="p">%</span><span class="n">linear_irow</span><span class="p">,</span><span class="n">n_linear_irow</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">irow</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">tmp_sparsity_pattern</span><span class="p">%</span><span class="n">linear_vals</span><span class="p">,</span><span class="n">n_linear_vals</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">dfdx</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">cycle</span><span class="w"> </span><span class="c">! this element will not be added to the nonlinear pattern</span>
+<span class="w">                    </span><span class="k">end if</span>
+<span class="k">                end if</span>
+<span class="w">                </span><span class="c">! otherwise, add it to the nonlinear pattern:</span>
+<span class="w">                </span><span class="k">call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">tmp_sparsity_pattern</span><span class="p">%</span><span class="n">icol</span><span class="p">,</span><span class="n">n_icol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">icol</span><span class="p">)</span>
+<span class="w">                </span><span class="k">call </span><span class="n">expand_vector</span><span class="p">(</span><span class="n">tmp_sparsity_pattern</span><span class="p">%</span><span class="n">irow</span><span class="p">,</span><span class="n">n_irow</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">irow</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end if</span>
+<span class="k">        end do</span>
+
+<span class="k">    end do</span>
+
+<span class="w">    </span><span class="c">! copy over the computed pattern:</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp_sparsity_pattern</span>
+
+<span class="w">    </span><span class="c">! resize to correct size:</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">resize_sparsity_vectors</span><span class="p">(</span><span class="n">n_icol</span><span class="p">,</span><span class="n">n_irow</span><span class="p">,</span><span class="n">n_linear_icol</span><span class="p">,&amp;</span>
+<span class="w">                                        </span><span class="n">n_linear_irow</span><span class="p">,</span><span class="n">n_linear_vals</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">compute_indices</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">dsm_wrapper</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">,</span><span class="n">info</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">info</span><span class="o">/=</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="s1">&#39;compute_sparsity_random_2&#39;</span><span class="p">,&amp;</span>
+<span class="w">                                       </span><span class="s1">&#39;error partitioning sparsity pattern.&#39;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+<span class="k">    end if</span>
+<span class="k">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">sparsity_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">compute_sparsity_random_2</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

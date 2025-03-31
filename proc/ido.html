@@ -1,0 +1,948 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>ido &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>ido
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 3.1% of total for procedures.">95 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/dsm_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/dsm_module.f90.html'>dsm_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/dsm_module.html'>dsm_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ido</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/ido.html#src">ido</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine ido(m, n, Indrow, Jpntr, Indcol, Ipntr, Ndeg, List, Maxclq, Iwa1, Iwa2, Iwa3, Iwa4)  
+</h2>
+    
+
+    <p>given the sparsity pattern of an <code>m</code> by <code>n</code> matrix <code>a</code>, this
+subroutine determines an incidence-degree ordering of the
+columns of <code>a</code>.</p>
+<p>the incidence-degree ordering is defined for the loopless
+graph <code>g</code> with vertices <code>a(j), j = 1,2,...,n</code> where <code>a(j)</code> is the
+<code>j</code>-th column of <code>a</code> and with edge <code>(a(i),a(j))</code> if and only if
+columns <code>i</code> and <code>j</code> have a non-zero in the same row position.</p>
+<p>the incidence-degree ordering is determined recursively by
+letting <code>list(k), k = 1,...,n</code> be a column with maximal
+incidence to the subgraph spanned by the ordered columns.
+among all the columns of maximal incidence, <code>ido</code> chooses a
+column of maximal degree.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~9"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+                <p>a positive integer input variable set to the number
+of rows of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~16"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+                <p>a positive integer input variable set to the number
+of columns of <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indrow"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indrow</strong></td>
+            <td>
+                <p>an integer input array which contains the row
+indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jpntr"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n+1)
+            </td>
+            <td>::</td>
+            <td><strong>Jpntr</strong></td>
+            <td>
+                <p>an integer input array of length <code>n + 1</code> which
+specifies the locations of the row indices in <code>indrow</code>.
+the row indices for column <code>j</code> are
+<code>indrow(k), k = jpntr(j),...,jpntr(j+1)-1</code>.
+<strong>note</strong> that <code>jpntr(n+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-indcol"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>Indcol</strong></td>
+            <td>
+                <p>an integer input array which contains the
+column indices for the non-zeroes in the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ipntr"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(m+1)
+            </td>
+            <td>::</td>
+            <td><strong>Ipntr</strong></td>
+            <td>
+                <p>an integer input array of length <code>m + 1</code> which
+specifies the locations of the column indices in <code>indcol</code>.
+the column indices for row <code>i</code> are
+<code>indcol(k), k = ipntr(i),...,ipntr(i+1)-1</code>.
+<strong>note</strong> that <code>ipntr(m+1)-1</code> is then the number of non-zero
+elements of the matrix <code>a</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ndeg"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Ndeg</strong></td>
+            <td>
+                <p>an integer input array of length <code>n</code> which specifies
+the degree sequence. the degree of the <code>j</code>-th column
+of <code>a</code> is <code>ndeg(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-list"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>List</strong></td>
+            <td>
+                <p>an integer output array of length <code>n</code> which specifies
+the incidence-degree ordering of the columns of <code>a</code>. the <code>j</code>-th
+column in this order is <code>list(j)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxclq"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Maxclq</strong></td>
+            <td>
+                <p>an integer output variable set to the size
+of the largest clique found during the ordering.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa1"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(0:n-1)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa1</strong></td>
+            <td>
+                <p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa2"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa2</strong></td>
+            <td>
+                <p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa3"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa3</strong></td>
+            <td>
+                <p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwa4"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>Iwa4</strong></td>
+            <td>
+                <p>integer work array of length <code>n</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~ido~~CallsGraph Pages: 1 -->
+<svg id="procidoCallsGraph" width="152pt" height="32pt"
+ viewBox="0.00 0.00 152.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~ido~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~ido~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 148,-28 148,4 -4,4"/>
+<!-- proc~ido -->
+<g id="proc~~ido~~CallsGraph_node1" class="node">
+<title>proc~ido</title>
+<polygon fill="none" stroke="black" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">ido</text>
+</g>
+<!-- proc~numsrt -->
+<g id="proc~~ido~~CallsGraph_node2" class="node">
+<title>proc~numsrt</title>
+<g id="a_proc~~ido~~CallsGraph_node2"><a xlink:href="../proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-24 90,-24 90,0 144,0 144,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
+</a>
+</g>
+</g>
+<!-- proc~ido&#45;&gt;proc~numsrt -->
+<g id="proc~~ido~~CallsGraph_edge1" class="edge">
+<title>proc~ido&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M54.4,-12C62.39,-12 71.31,-12 79.82,-12"/>
+<polygon fill="#000000" stroke="#000000" points="79.92,-15.5 89.92,-12 79.92,-8.5 79.92,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~ido~~CalledByGraph Pages: 1 -->
+<svg id="procidoCalledByGraph" width="603pt" height="116pt"
+ viewBox="0.00 0.00 603.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~ido~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>proc~~ido~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 599,-112 599,4 -4,4"/>
+<!-- proc~ido -->
+<g id="proc~~ido~~CalledByGraph_node1" class="node">
+<title>proc~ido</title>
+<polygon fill="none" stroke="black" points="595,-66 541,-66 541,-42 595,-42 595,-66"/>
+<text text-anchor="middle" x="568" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">ido</text>
+</g>
+<!-- proc~dsm -->
+<g id="proc~~ido~~CalledByGraph_node2" class="node">
+<title>proc~dsm</title>
+<g id="a_proc~~ido~~CalledByGraph_node2"><a xlink:href="../proc/dsm.html" xlink:title="dsm">
+<polygon fill="#d9534f" stroke="#d9534f" points="505,-66 451,-66 451,-42 505,-42 505,-66"/>
+<text text-anchor="middle" x="478" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~ido -->
+<g id="proc~~ido~~CalledByGraph_edge1" class="edge">
+<title>proc~dsm&#45;&gt;proc~ido</title>
+<path fill="none" stroke="#000000" d="M505.4,-54C513.39,-54 522.31,-54 530.82,-54"/>
+<polygon fill="#000000" stroke="#000000" points="530.92,-57.5 540.92,-54 530.92,-50.5 530.92,-57.5"/>
+</g>
+<!-- proc~dsm_wrapper -->
+<g id="proc~~ido~~CalledByGraph_node3" class="node">
+<title>proc~dsm_wrapper</title>
+<g id="a_proc~~ido~~CalledByGraph_node3"><a xlink:href="../proc/dsm_wrapper.html" xlink:title="sparsity_pattern%dsm_wrapper">
+<polygon fill="#d9534f" stroke="#d9534f" points="415,-66 235,-66 235,-42 415,-42 415,-66"/>
+<text text-anchor="middle" x="325" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%dsm_wrapper</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
+<g id="proc~~ido~~CalledByGraph_edge2" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
+<path fill="none" stroke="#000000" d="M415.15,-54C424.1,-54 432.79,-54 440.69,-54"/>
+<polygon fill="#000000" stroke="#000000" points="440.92,-57.5 450.92,-54 440.92,-50.5 440.92,-57.5"/>
+</g>
+<!-- proc~compute_sparsity_random -->
+<g id="proc~~ido~~CalledByGraph_node4" class="node">
+<title>proc~compute_sparsity_random</title>
+<g id="a_proc~~ido~~CalledByGraph_node4"><a xlink:href="../proc/compute_sparsity_random.html" xlink:title="compute_sparsity_random">
+<polygon fill="#d9534f" stroke="#d9534f" points="176.5,-108 22.5,-108 22.5,-84 176.5,-84 176.5,-108"/>
+<text text-anchor="middle" x="99.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~ido~~CalledByGraph_edge3" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M164.55,-83.96C191.2,-78.96 222.31,-73.11 249.94,-67.92"/>
+<polygon fill="#000000" stroke="#000000" points="250.76,-71.32 259.94,-66.04 249.47,-64.44 250.76,-71.32"/>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~ido~~CalledByGraph_node5" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~ido~~CalledByGraph_node5"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="182.5,-66 16.5,-66 16.5,-42 182.5,-42 182.5,-66"/>
+<text text-anchor="middle" x="99.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~ido~~CalledByGraph_edge4" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M182.77,-54C196.39,-54 210.64,-54 224.63,-54"/>
+<polygon fill="#000000" stroke="#000000" points="224.76,-57.5 234.76,-54 224.76,-50.5 224.76,-57.5"/>
+</g>
+<!-- proc~set_sparsity_pattern -->
+<g id="proc~~ido~~CalledByGraph_node6" class="node">
+<title>proc~set_sparsity_pattern</title>
+<g id="a_proc~~ido~~CalledByGraph_node6"><a xlink:href="../proc/set_sparsity_pattern.html" xlink:title="numdiff_type%set_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="199,-24 0,-24 0,0 199,0 199,-24"/>
+<text text-anchor="middle" x="99.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%set_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~ido~~CalledByGraph_edge5" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M164.55,-24.04C191.2,-29.04 222.31,-34.89 249.94,-40.08"/>
+<polygon fill="#000000" stroke="#000000" points="249.47,-43.56 259.94,-41.96 250.76,-36.68 249.47,-43.56"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">ido</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">Indrow</span><span class="p">,</span><span class="n">Jpntr</span><span class="p">,</span><span class="n">Indcol</span><span class="p">,</span><span class="n">Ipntr</span><span class="p">,</span><span class="n">Ndeg</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Maxclq</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                   </span><span class="n">Iwa1</span><span class="p">,</span><span class="n">Iwa2</span><span class="p">,</span><span class="n">Iwa3</span><span class="p">,</span><span class="n">Iwa4</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w">         </span><span class="c">!! a positive integer input variable set to the number</span>
+<span class="w">                                          </span><span class="c">!! of rows of `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">         </span><span class="c">!! a positive integer input variable set to the number</span>
+<span class="w">                                          </span><span class="c">!! of columns of `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">Maxclq</span><span class="w">    </span><span class="c">!! an integer output variable set to the size</span>
+<span class="w">                                          </span><span class="c">!! of the largest clique found during the ordering.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Indrow</span><span class="w">    </span><span class="c">!! an integer input array which contains the row</span>
+<span class="w">                                                 </span><span class="c">!! indices for the non-zeroes in the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Jpntr</span><span class="w">   </span><span class="c">!! an integer input array of length `n + 1` which</span>
+<span class="w">                                                 </span><span class="c">!! specifies the locations of the row indices in `indrow`.</span>
+<span class="w">                                                 </span><span class="c">!! the row indices for column `j` are</span>
+<span class="w">                                                 </span><span class="c">!! `indrow(k), k = jpntr(j),...,jpntr(j+1)-1`.</span>
+<span class="w">                                                 </span><span class="c">!! **note** that `jpntr(n+1)-1` is then the number of non-zero</span>
+<span class="w">                                                 </span><span class="c">!! elements of the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">Indcol</span><span class="w">   </span><span class="c">!! an integer input array which contains the</span>
+<span class="w">                                                    </span><span class="c">!! column indices for the non-zeroes in the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">Ipntr</span><span class="w">    </span><span class="c">!! an integer input array of length `m + 1` which</span>
+<span class="w">                                                    </span><span class="c">!! specifies the locations of the column indices in `indcol`.</span>
+<span class="w">                                                    </span><span class="c">!! the column indices for row `i` are</span>
+<span class="w">                                                    </span><span class="c">!! `indcol(k), k = ipntr(i),...,ipntr(i+1)-1`.</span>
+<span class="w">                                                    </span><span class="c">!! **note** that `ipntr(m+1)-1` is then the number of non-zero</span>
+<span class="w">                                                    </span><span class="c">!! elements of the matrix `a`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">Ndeg</span><span class="w">     </span><span class="c">!! an integer input array of length `n` which specifies</span>
+<span class="w">                                                    </span><span class="c">!! the degree sequence. the degree of the `j`-th column</span>
+<span class="w">                                                    </span><span class="c">!! of `a` is `ndeg(j)`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">List</span><span class="w">     </span><span class="c">!! an integer output array of length `n` which specifies</span>
+<span class="w">                                                    </span><span class="c">!! the incidence-degree ordering of the columns of `a`. the `j`-th</span>
+<span class="w">                                                    </span><span class="c">!! column in this order is `list(j)`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Iwa1</span><span class="w">      </span><span class="c">!! integer work array of length `n`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">Iwa2</span><span class="w">      </span><span class="c">!! integer work array of length `n`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">Iwa3</span><span class="w">      </span><span class="c">!! integer work array of length `n`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">Iwa4</span><span class="w">      </span><span class="c">!! integer work array of length `n`.</span>
+
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ic</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">ir</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">jcol</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">jp</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">maxinc</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">maxlst</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">ncomp</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">               </span><span class="n">numinc</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">numlst</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">numord</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">numwgt</span>
+
+<span class="w">    </span><span class="c">! sort the degree sequence.</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">numsrt</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">Ndeg</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">Iwa4</span><span class="p">,</span><span class="n">Iwa2</span><span class="p">,</span><span class="n">Iwa3</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! initialization block.</span>
+<span class="w">    </span><span class="c">!</span>
+<span class="w">    </span><span class="c">! create a doubly-linked list to access the incidences of the</span>
+<span class="w">    </span><span class="c">! columns. the pointers for the linked list are as follows.</span>
+<span class="w">    </span><span class="c">!</span>
+<span class="w">    </span><span class="c">! each un-ordered column ic is in a list (the incidence list)</span>
+<span class="w">    </span><span class="c">! of columns with the same incidence.</span>
+<span class="w">    </span><span class="c">!</span>
+<span class="w">    </span><span class="c">! iwa1(numinc) is the first column in the numinc list</span>
+<span class="w">    </span><span class="c">! unless iwa1(numinc) = 0. in this case there are</span>
+<span class="w">    </span><span class="c">! no columns in the numinc list.</span>
+<span class="w">    </span><span class="c">!</span>
+<span class="w">    </span><span class="c">! iwa2(ic) is the column before ic in the incidence list</span>
+<span class="w">    </span><span class="c">! unless iwa2(ic) = 0. in this case ic is the first</span>
+<span class="w">    </span><span class="c">! column in this incidence list.</span>
+<span class="w">    </span><span class="c">!</span>
+<span class="w">    </span><span class="c">! iwa3(ic) is the column after ic in the incidence list</span>
+<span class="w">    </span><span class="c">! unless iwa3(ic) = 0. in this case ic is the last</span>
+<span class="w">    </span><span class="c">! column in this incidence list.</span>
+<span class="w">    </span><span class="c">!</span>
+<span class="w">    </span><span class="c">! if ic is an un-ordered column, then list(ic) is the</span>
+<span class="w">    </span><span class="c">! incidence of ic to the graph induced by the ordered</span>
+<span class="w">    </span><span class="c">! columns. if jcol is an ordered column, then list(jcol)</span>
+<span class="w">    </span><span class="c">! is the incidence-degree order of column jcol.</span>
+
+<span class="w">    </span><span class="n">maxinc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="k">do </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">        </span><span class="n">ic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa4</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">jp</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">Iwa1</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span>
+<span class="w">        </span><span class="n">Iwa1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span>
+<span class="w">        </span><span class="n">Iwa4</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="n">List</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="k">enddo</span>
+
+<span class="w">    </span><span class="c">! DETERMINE THE MAXIMAL SEARCH LENGTH FOR THE LIST</span>
+<span class="w">    </span><span class="c">! OF COLUMNS OF MAXIMAL INCIDENCE.</span>
+
+<span class="w">    </span><span class="n">maxlst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="k">do </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">m</span>
+<span class="w">        </span><span class="n">maxlst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxlst</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    </span><span class="n">maxlst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxlst</span><span class="o">/</span><span class="n">n</span>
+<span class="w">    </span><span class="n">Maxclq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">numord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="w">    </span><span class="c">! BEGINNING OF ITERATION LOOP.</span>
+
+<span class="w">    </span><span class="c">! UPDATE THE SIZE OF THE LARGEST CLIQUE</span>
+<span class="w">    </span><span class="c">! FOUND DURING THE ORDERING.</span>
+
+<span class="mi">100</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">maxinc</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">ncomp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">ncomp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ncomp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">maxinc</span><span class="o">+</span><span class="mi">1</span><span class="o">==</span><span class="n">ncomp</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">Maxclq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">Maxclq</span><span class="p">,</span><span class="n">ncomp</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! CHOOSE A COLUMN JCOL OF MAXIMAL DEGREE AMONG THE</span>
+<span class="w">    </span><span class="c">! COLUMNS OF MAXIMAL INCIDENCE MAXINC.</span>
+
+<span class="mi">200</span><span class="w"> </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">maxinc</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">jp</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">numwgt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">        </span><span class="k">do </span><span class="n">numlst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">maxlst</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Ndeg</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="o">&gt;</span><span class="n">numwgt</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">numwgt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ndeg</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
+<span class="w">                </span><span class="n">jcol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jp</span>
+<span class="w">            </span><span class="k">endif</span>
+<span class="k">            </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">jp</span><span class="o">&lt;=</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
+<span class="k">        enddo</span>
+<span class="k">        </span><span class="n">List</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numord</span>
+<span class="w">        </span><span class="n">numord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numord</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="w">        </span><span class="c">! TERMINATION TEST.</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">numord</span><span class="o">&gt;</span><span class="n">n</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+
+<span class="w">            </span><span class="c">! INVERT THE ARRAY LIST.</span>
+
+<span class="w">            </span><span class="k">do </span><span class="n">jcol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span>
+<span class="w">                </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">List</span><span class="p">(</span><span class="n">jcol</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jcol</span>
+<span class="w">            </span><span class="k">enddo</span>
+<span class="k">            do </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">n</span>
+<span class="w">                </span><span class="n">List</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
+<span class="w">            </span><span class="k">enddo</span>
+
+<span class="k">        else</span>
+
+<span class="w">            </span><span class="c">! DELETE COLUMN JCOL FROM THE MAXINC LIST.</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">maxinc</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="k">                </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">Iwa2</span><span class="p">(</span><span class="n">jcol</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span>
+<span class="w">            </span><span class="k">endif</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">Iwa3</span><span class="p">(</span><span class="n">jcol</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span>
+
+<span class="w">            </span><span class="c">! FIND ALL COLUMNS ADJACENT TO COLUMN JCOL.</span>
+
+<span class="w">            </span><span class="n">Iwa4</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span>
+
+<span class="w">            </span><span class="c">! DETERMINE ALL POSITIONS (IR,JCOL) WHICH CORRESPOND</span>
+<span class="w">            </span><span class="c">! TO NON-ZEROES IN THE MATRIX.</span>
+
+<span class="w">            </span><span class="k">do </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Jpntr</span><span class="p">(</span><span class="n">jcol</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indrow</span><span class="p">(</span><span class="n">jp</span><span class="p">)</span>
+
+<span class="w">                </span><span class="c">! FOR EACH ROW IR, DETERMINE ALL POSITIONS (IR,IC)</span>
+<span class="w">                </span><span class="c">! WHICH CORRESPOND TO NON-ZEROES IN THE MATRIX.</span>
+
+<span class="w">                </span><span class="k">do </span><span class="n">ip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Ipntr</span><span class="p">(</span><span class="n">ir</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                    </span><span class="n">ic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Indcol</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+
+<span class="w">                    </span><span class="c">! ARRAY IWA4 MARKS COLUMNS WHICH ARE ADJACENT TO</span>
+<span class="w">                    </span><span class="c">! COLUMN JCOL.</span>
+
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa4</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="o">&lt;</span><span class="n">numord</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        </span><span class="n">Iwa4</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numord</span>
+
+<span class="w">                        </span><span class="c">! UPDATE THE POINTERS TO THE CURRENT INCIDENCE LISTS.</span>
+
+<span class="w">                        </span><span class="n">numinc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">List</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">List</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">List</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                        </span><span class="n">maxinc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">maxinc</span><span class="p">,</span><span class="n">List</span><span class="p">(</span><span class="n">ic</span><span class="p">))</span>
+
+<span class="w">                        </span><span class="c">! DELETE COLUMN IC FROM THE NUMINC LIST.</span>
+
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                            </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">numinc</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">else</span>
+<span class="k">                            </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">Iwa2</span><span class="p">(</span><span class="n">ic</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">endif</span>
+<span class="k">                        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">Iwa3</span><span class="p">(</span><span class="n">ic</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+
+<span class="w">                        </span><span class="c">! ADD COLUMN IC TO THE NUMINC+1 LIST.</span>
+
+<span class="w">                        </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">                        </span><span class="n">Iwa3</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">numinc</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">numinc</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">Iwa2</span><span class="p">(</span><span class="n">Iwa1</span><span class="p">(</span><span class="n">numinc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span>
+<span class="w">                        </span><span class="n">Iwa1</span><span class="p">(</span><span class="n">numinc</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span>
+<span class="w">                    </span><span class="k">endif</span>
+<span class="k">                enddo</span>
+<span class="k">            enddo</span>
+
+<span class="w">            </span><span class="c">! END OF ITERATION LOOP.</span>
+
+<span class="w">            </span><span class="k">goto</span><span class="w"> </span><span class="mi">100</span>
+<span class="w">        </span><span class="k">endif</span>
+<span class="k">    else</span>
+<span class="k">        </span><span class="n">maxinc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxinc</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">goto</span><span class="w"> </span><span class="mi">200</span>
+<span class="w">    </span><span class="k">endif</span>
+
+<span class="k">    end subroutine </span><span class="n">ido</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

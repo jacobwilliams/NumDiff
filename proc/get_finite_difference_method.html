@@ -1,0 +1,813 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>get_finite_difference_method &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>get_finite_difference_method
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 3.5% of total for procedures.">107 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">get_finite_difference_method</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/get_finite_difference_method.html#src">get_finite_difference_method</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine get_finite_difference_method(id, fd, found)  
+</h2>
+    
+
+    <p>Return a <a href="../type/finite_diff_method.html">finite_diff_method</a> given the <code>id</code> code.
+  (the <code>id</code> codes begin at 1, are sequential, and uniquely define the method).</p>
+<h3>Available methods</h3>
+<ul>
+<li>
+<script type="math/tex"> (f(x+h)-f(x)) / h </script>
+</li>
+<li>
+<script type="math/tex"> (f(x)-f(x-h)) / h </script>
+</li>
+<li>
+<script type="math/tex"> (f(x+h)-f(x-h)) / (2h) </script>
+</li>
+<li>
+<script type="math/tex"> (-3f(x)+4f(x+h)-f(x+2h)) / (2h) </script>
+</li>
+<li>
+<script type="math/tex"> (f(x-2h)-4f(x-h)+3f(x)) / (2h) </script>
+</li>
+<li>
+<script type="math/tex"> (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h) </script>
+</li>
+<li>
+<script type="math/tex"> (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h) </script>
+</li>
+<li>
+<script type="math/tex"> (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h) </script>
+</li>
+<li>
+<script type="math/tex"> (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h) </script>
+</li>
+<li>
+<script type="math/tex"> (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h) </script>
+</li>
+<li>
+<script type="math/tex"> (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h) </script>
+</li>
+<li>
+<script type="math/tex"> (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h) </script>
+</li>
+<li>
+<script type="math/tex"> (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h) </script>
+</li>
+<li>
+<script type="math/tex"> (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h) </script>
+</li>
+<li>
+<script type="math/tex"> (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-2f(x-3h)+15f(x-2h)-60f(x-h)+20f(x)+30f(x+h)-3f(x+2h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-f(x-3h)+9f(x-2h)-45f(x-h)+45f(x+h)-9f(x+2h)+f(x+3h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (2f(x-2h)-24f(x-h)-35f(x)+80f(x+h)-30f(x+2h)+8f(x+3h)-f(x+4h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (f(x-4h)-8f(x-3h)+30f(x-2h)-80f(x-h)+35f(x)+24f(x+h)-2f(x+2h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-10f(x-h)-77f(x)+150f(x+h)-100f(x+2h)+50f(x+3h)-15f(x+4h)+2f(x+5h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-2f(x-5h)+15f(x-4h)-50f(x-3h)+100f(x-2h)-150f(x-h)+77f(x)+10f(x+h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-147f(x)+360f(x+h)-450f(x+2h)+400f(x+3h)-225f(x+4h)+72f(x+5h)-10f(x+6h)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (10f(x-6h)-72f(x-5h)+225f(x-4h)-400f(x-3h)+450f(x-2h)-360f(x-h)+147f(x)) / (60h) </script>
+</li>
+<li>
+<script type="math/tex"> (-4f(x-3h)+42f(x-2h)-252f(x-h)-105f(x)+420f(x+h)-126f(x+2h)+28f(x+3h)-3f(x+4h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (3f(x-4h)-28f(x-3h)+126f(x-2h)-420f(x-h)+105f(x)+252f(x+h)-42f(x+2h)+4f(x+3h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (10f(x-2h)-140f(x-h)-329f(x)+700f(x+h)-350f(x+2h)+140f(x+3h)-35f(x+4h)+4f(x+5h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (-4f(x-5h)+35f(x-4h)-140f(x-3h)+350f(x-2h)-700f(x-h)+329f(x)+140f(x+h)-10f(x+2h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (-60f(x-h)-609f(x)+1260f(x+h)-1050f(x+2h)+700f(x+3h)-315f(x+4h)+84f(x+5h)-10f(x+6h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (10f(x-6h)-84f(x-5h)+315f(x-4h)-700f(x-3h)+1050f(x-2h)-1260f(x-h)+609f(x)+60f(x+h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (-1089f(x)+2940f(x+h)-4410f(x+2h)+4900f(x+3h)-3675f(x+4h)+1764f(x+5h)-490f(x+6h)+60f(x+7h)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (-60f(x-7h)+490f(x-6h)-1764f(x-5h)+3675f(x-4h)-4900f(x-3h)+4410f(x-2h)-2940f(x-h)+1089f(x)) / (420h) </script>
+</li>
+<li>
+<script type="math/tex"> (3f(x-4h)-32f(x-3h)+168f(x-2h)-672f(x-h)+672f(x+h)-168f(x+2h)+32f(x+3h)-3f(x+4h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (-5f(x-3h)+60f(x-2h)-420f(x-h)-378f(x)+1050f(x+h)-420f(x+2h)+140f(x+3h)-30f(x+4h)+3f(x+5h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (-3f(x-5h)+30f(x-4h)-140f(x-3h)+420f(x-2h)-1050f(x-h)+378f(x)+420f(x+h)-60f(x+2h)+5f(x+3h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (15f(x-2h)-240f(x-h)-798f(x)+1680f(x+h)-1050f(x+2h)+560f(x+3h)-210f(x+4h)+48f(x+5h)-5f(x+6h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (5f(x-6h)-48f(x-5h)+210f(x-4h)-560f(x-3h)+1050f(x-2h)-1680f(x-h)+798f(x)+240f(x+h)-15f(x+2h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (-105f(x-h)-1338f(x)+2940f(x+h)-2940f(x+2h)+2450f(x+3h)-1470f(x+4h)+588f(x+5h)-140f(x+6h)+15f(x+7h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (-15f(x-7h)+140f(x-6h)-588f(x-5h)+1470f(x-4h)-2450f(x-3h)+2940f(x-2h)-2940f(x-h)+1338f(x)+105f(x+h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (-2283f(x)+6720f(x+h)-11760f(x+2h)+15680f(x+3h)-14700f(x+4h)+9408f(x+5h)-3920f(x+6h)+960f(x+7h)-105f(x+8h)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (105f(x-8h)-960f(x-7h)+3920f(x-6h)-9408f(x-5h)+14700f(x-4h)-15680f(x-3h)+11760f(x-2h)-6720f(x-h)+2283f(x)) / (840h) </script>
+</li>
+<li>
+<script type="math/tex"> (-2f(x-5h)+25f(x-4h)-150f(x-3h)+600f(x-2h)-2100f(x-h)+2100f(x+h)-600f(x+2h)+150f(x+3h)-25f(x+4h)+2f(x+5h)) / (2520h) </script>
+</li>
+<li>
+<script type="math/tex"> (5f(x-6h)-72f(x-5h)+495f(x-4h)-2200f(x-3h)+7425f(x-2h)-23760f(x-h)+23760f(x+h)-7425f(x+2h)+2200f(x+3h)-495f(x+4h)+
+        72f(x+5h)-5f(x+6h)) / (27720h) </script>
+</li>
+<li>
+<script type="math/tex"> (-15f(x-7h)+245f(x-6h)-1911f(x-5h)+9555f(x-4h)-35035f(x-3h)+105105f(x-2h)-315315f(x-h)+315315f(x+h)-105105f(x+2h)+
+        35035f(x+3h)-9555f(x+4h)+1911f(x+5h)-245f(x+6h)+15f(x+7h)) / (360360h) </script>
+</li>
+<li>
+<script type="math/tex"> (7f(x-8h)-128f(x-7h)+1120f(x-6h)-6272f(x-5h)+25480f(x-4h)-81536f(x-3h)+224224f(x-2h)-640640f(x-h)+640640f(x+h)-
+        224224f(x+2h)+81536f(x+3h)-25480f(x+4h)+6272f(x+5h)-1120f(x+6h)+128f(x+7h)-7f(x+8h)) / (720720h) </script>
+</li>
+</ul>
+<p>Where <script type="math/tex">f(x)</script> is the user-defined function of <script type="math/tex">x</script>
+  and <script type="math/tex">h</script> is a "small" perturbation.</p>
+<h3>References</h3>
+<ul>
+<li>G. E. Mullges, F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.</li>
+<li>G. W. Griffiths, "Numerical Analysis Using R", Cambridge University Press, 2016.</li>
+</ul>
+<div class="alert alert-info">
+<p class="alert-title h4">Note</p>
+<p>This is the only routine that has to be changed if a new
+      finite difference method is added.</p>
+</div>
+<div class="alert alert-info">
+<p class="alert-title h4">Note</p>
+<p>The order within a class is assumed to be the order that we would prefer
+      to use them (e.g., central diffs are first, etc.) This is used in
+      the <a href="../proc/select_finite_diff_method.html">select_finite_diff_method</a> routine.</p>
+</div>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-id~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>id</strong></td>
+            <td>
+                <p>the id code for the method</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fd~2"></span>
+              type(<a href='../type/finite_diff_method.html'>finite_diff_method</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fd</strong></td>
+            <td>
+                <p>this method (can be used
+in <a href="../proc/compute_jacobian.html">compute_jacobian</a>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-found~2"></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>found</strong></td>
+            <td>
+                <p>true if it was found</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~get_finite_difference_method~~CalledByGraph Pages: 1 -->
+<svg id="procget_finite_difference_methodCalledByGraph" width="577pt" height="114pt"
+ viewBox="0.00 0.00 577.00 114.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~get_finite_difference_method~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 110)">
+<title>proc~~get_finite_difference_method~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-110 573,-110 573,4 -4,4"/>
+<!-- proc~get_finite_difference_method -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_node1" class="node">
+<title>proc~get_finite_difference_method</title>
+<polygon fill="none" stroke="black" points="569,-66 401,-66 401,-42 569,-42 569,-66"/>
+<text text-anchor="middle" x="485" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">get_finite_difference_method</text>
+</g>
+<!-- proc~get_all_methods_in_class -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_node2" class="node">
+<title>proc~get_all_methods_in_class</title>
+<g id="a_proc~~get_finite_difference_method~~CalledByGraph_node2"><a xlink:href="../proc/get_all_methods_in_class.html" xlink:title="get_all_methods_in_class">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="365,-66 219,-66 219,-42 365,-42 365,-66"/>
+<text text-anchor="middle" x="292" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_all_methods_in_class</text>
+</a>
+</g>
+</g>
+<!-- proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_edge1" class="edge">
+<title>proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M365.21,-54C373.56,-54 382.17,-54 390.75,-54"/>
+<polygon fill="#000000" stroke="#000000" points="390.79,-57.5 400.79,-54 390.79,-50.5 390.79,-57.5"/>
+</g>
+<!-- proc~get_finite_diff_formula -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_node3" class="node">
+<title>proc~get_finite_diff_formula</title>
+<g id="a_proc~~get_finite_difference_method~~CalledByGraph_node3"><a xlink:href="../proc/get_finite_diff_formula.html" xlink:title="get_finite_diff_formula">
+<polygon fill="#d9534f" stroke="#d9534f" points="358,-24 226,-24 226,0 358,0 358,-24"/>
+<text text-anchor="middle" x="292" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_diff_formula</text>
+</a>
+</g>
+</g>
+<!-- proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_edge2" class="edge">
+<title>proc~get_finite_diff_formula&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M347.73,-24.04C370.11,-28.96 396.16,-34.69 419.46,-39.81"/>
+<polygon fill="#000000" stroke="#000000" points="418.74,-43.23 429.26,-41.96 420.24,-36.4 418.74,-43.23"/>
+</g>
+<!-- proc~initialize_numdiff -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_node4" class="node">
+<title>proc~initialize_numdiff</title>
+<g id="a_proc~~get_finite_difference_method~~CalledByGraph_node4"><a xlink:href="../proc/initialize_numdiff.html" xlink:title="numdiff_type%initialize_numdiff">
+<polygon fill="#d9534f" stroke="#d9534f" points="183,-106 0,-106 0,-82 183,-82 183,-106"/>
+<text text-anchor="middle" x="91.5" y="-91.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%initialize_numdiff</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_edge3" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M183.25,-90.06C236.36,-87.16 304.63,-82.41 365,-75 380.54,-73.09 397.14,-70.51 412.86,-67.81"/>
+<polygon fill="#000000" stroke="#000000" points="413.79,-71.2 423.03,-66.03 412.58,-64.31 413.79,-71.2"/>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_edge5" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M152.06,-82C173.84,-77.61 198.68,-72.6 221.28,-68.05"/>
+<polygon fill="#000000" stroke="#000000" points="222.03,-71.47 231.14,-66.06 220.65,-64.61 222.03,-71.47"/>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_node5" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~get_finite_difference_method~~CalledByGraph_node5"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="174.5,-64 8.5,-64 8.5,-40 174.5,-40 174.5,-64"/>
+<text text-anchor="middle" x="91.5" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class -->
+<g id="proc~~get_finite_difference_method~~CalledByGraph_edge4" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M174.67,-52.83C185.86,-52.94 197.34,-53.06 208.54,-53.17"/>
+<polygon fill="#000000" stroke="#000000" points="208.68,-56.67 218.72,-53.27 208.75,-49.67 208.68,-56.67"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">get_finite_difference_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">fd</span><span class="p">,</span><span class="n">found</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">id</span><span class="w">     </span><span class="c">!! the id code for the method</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">finite_diff_method</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fd</span><span class="w">     </span><span class="c">!! this method (can be used</span>
+<span class="w">                                                   </span><span class="c">!! in [[compute_jacobian]])</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">found</span><span class="w">  </span><span class="c">!! true if it was found</span>
+
+<span class="w">    </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+
+<span class="w">    </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 2 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x+h)-f(x)) / h</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;2-point forward 1&#39;</span><span class="p">,</span><span class="w">    </span><span class="mi">2</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x)-f(x-h)) / h</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;2-point backward 1&#39;</span><span class="p">,</span><span class="w">   </span><span class="mi">2</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 3 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x+h)-f(x-h)) / (2h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;3-point central&#39;</span><span class="p">,</span><span class="w">    </span><span class="mi">3</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-3f(x)+4f(x+h)-f(x+2h)) / (2h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;3-point forward 2&#39;</span><span class="p">,</span><span class="w">    </span><span class="mi">3</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x-2h)-4f(x-h)+3f(x)) / (2h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;3-point backward 2&#39;</span><span class="p">,</span><span class="w">   </span><span class="mi">3</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 4 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-2f(x-h)-3f(x)+6f(x+h)-f(x+2h)) / (6h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;4-point forward 2&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">4</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">6</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x-2h)-6f(x-h)+3f(x)+2f(x+h)) / (6h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;4-point backward 2&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="mi">6</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-11f(x)+18f(x+h)-9f(x+2h)+2f(x+3h)) / (6h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;4-point forward 3&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">4</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="o">-</span><span class="mi">11</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="mi">6</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-2f(x-3h)+9f(x-2h)-18f(x-h)+11f(x)) / (6h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;4-point backward 3&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">18</span><span class="p">,</span><span class="mi">11</span><span class="p">],</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 5 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x-2h)-8f(x-h)+8f(x+h)-f(x+2h)) / (12h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;5-point central&#39;</span><span class="p">,</span><span class="w">    </span><span class="mi">5</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">12</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)) / (12h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;5-point forward 3&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">5</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="mi">12</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-f(x-3h)+6f(x-2h)-18f(x-h)+10f(x)+3f(x+h)) / (12h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;5-point backward 3&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">18</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="mi">12</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-25f(x)+48f(x+h)-36f(x+2h)+16f(x+3h)-3f(x+4h)) / (12h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;5-point forward 4&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">5</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="o">-</span><span class="mi">36</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span><span class="mi">12</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (3f(x-4h)-16f(x-3h)+36f(x-2h)-48f(x-h)+25f(x)) / (12h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;5-point backward 4&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">16</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="o">-</span><span class="mi">48</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 6 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (3f(x-2h)-30f(x-h)-20f(x)+60f(x+h)-15f(x+2h)+2f(x+3h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;6-point forward 3&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">6</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-2f(x-3h)+15f(x-2h)-60f(x-h)+20f(x)+30f(x+h)-3f(x+2h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;6-point backward 3&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-12f(x-h)-65f(x)+120f(x+h)-60f(x+2h)+20f(x+3h)-3f(x+4h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;6-point forward 4&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">6</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span><span class="o">-</span><span class="mi">65</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (3f(x-4h)-20f(x-3h)+60f(x-2h)-120f(x-h)+65f(x)+12f(x+h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;6-point backward 4&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span><span class="mi">65</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-137f(x)+300f(x+h)-300f(x+2h)+200f(x+3h)-75f(x+4h)+12f(x+5h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;6-point forward 5&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">6</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="o">-</span><span class="mi">137</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="o">-</span><span class="mi">75</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-12f(x-5h)+75f(x-4h)-200f(x-3h)+300f(x-2h)-300f(x-h)+137f(x)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;6-point backward 5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">137</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 7 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-f(x-3h)+9f(x-2h)-45f(x-h)+45f(x+h)-9f(x+2h)+f(x+3h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point central&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (2f(x-2h)-24f(x-h)-35f(x)+80f(x+h)-30f(x+2h)+8f(x+3h)-f(x+4h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point forward 4&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">24</span><span class="p">,</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (f(x-4h)-8f(x-3h)+30f(x-2h)-80f(x-h)+35f(x)+24f(x+h)-2f(x+2h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point backward 4&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-10f(x-h)-77f(x)+150f(x+h)-100f(x+2h)+50f(x+3h)-15f(x+4h)+2f(x+5h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point forward 5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">77</span><span class="p">,</span><span class="mi">150</span><span class="p">,</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-2f(x-5h)+15f(x-4h)-50f(x-3h)+100f(x-2h)-150f(x-h)+77f(x)+10f(x+h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point backward 5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span><span class="mi">77</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-147f(x)+360f(x+h)-450f(x+2h)+400f(x+3h)-225f(x+4h)+72f(x+5h)-10f(x+6h)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point forward 6&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="o">-</span><span class="mi">147</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="o">-</span><span class="mi">450</span><span class="p">,</span><span class="mi">400</span><span class="p">,</span><span class="o">-</span><span class="mi">225</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">27</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (10f(x-6h)-72f(x-5h)+225f(x-4h)-400f(x-3h)+450f(x-2h)-360f(x-h)+147f(x)) / (60h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;7-point backward 6&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">72</span><span class="p">,</span><span class="mi">225</span><span class="p">,</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span><span class="mi">450</span><span class="p">,</span><span class="o">-</span><span class="mi">360</span><span class="p">,</span><span class="mi">147</span><span class="p">],</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 8 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">28</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-4f(x-3h)+42f(x-2h)-252f(x-h)-105f(x)+420f(x+h)-126f(x+2h)+28f(x+3h)-3f(x+4h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point forward 4&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="o">-</span><span class="mi">252</span><span class="p">,</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span><span class="mi">420</span><span class="p">,</span><span class="o">-</span><span class="mi">126</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">29</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (3f(x-4h)-28f(x-3h)+126f(x-2h)-420f(x-h)+105f(x)+252f(x+h)-42f(x+2h)+4f(x+3h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point backward 4&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span><span class="mi">126</span><span class="p">,</span><span class="o">-</span><span class="mi">420</span><span class="p">,</span><span class="mi">105</span><span class="p">,</span><span class="mi">252</span><span class="p">,</span><span class="o">-</span><span class="mi">42</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (10f(x-2h)-140f(x-h)-329f(x)+700f(x+h)-350f(x+2h)+140f(x+3h)-35f(x+4h)+4f(x+5h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point forward 5&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span><span class="o">-</span><span class="mi">329</span><span class="p">,</span><span class="mi">700</span><span class="p">,</span><span class="o">-</span><span class="mi">350</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">31</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-4f(x-5h)+35f(x-4h)-140f(x-3h)+350f(x-2h)-700f(x-h)+329f(x)+140f(x+h)-10f(x+2h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point backward 5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span><span class="mi">350</span><span class="p">,</span><span class="o">-</span><span class="mi">700</span><span class="p">,</span><span class="mi">329</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-60f(x-h)-609f(x)+1260f(x+h)-1050f(x+2h)+700f(x+3h)-315f(x+4h)+84f(x+5h)-10f(x+6h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point forward 6&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="o">-</span><span class="mi">609</span><span class="p">,</span><span class="mi">1260</span><span class="p">,</span><span class="o">-</span><span class="mi">1050</span><span class="p">,</span><span class="mi">700</span><span class="p">,</span><span class="o">-</span><span class="mi">315</span><span class="p">,</span><span class="mi">84</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">33</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (10f(x-6h)-84f(x-5h)+315f(x-4h)-700f(x-3h)+1050f(x-2h)-1260f(x-h)+609f(x)+60f(x+h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point backward 6&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">84</span><span class="p">,</span><span class="mi">315</span><span class="p">,</span><span class="o">-</span><span class="mi">700</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="o">-</span><span class="mi">1260</span><span class="p">,</span><span class="mi">609</span><span class="p">,</span><span class="mi">60</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">34</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-1089f(x)+2940f(x+h)-4410f(x+2h)+4900f(x+3h)-3675f(x+4h)+1764f(x+5h)-490f(x+6h)+60f(x+7h)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point forward 7&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">8</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],[</span><span class="o">-</span><span class="mi">1089</span><span class="p">,</span><span class="mi">2940</span><span class="p">,</span><span class="o">-</span><span class="mi">4410</span><span class="p">,</span><span class="mi">4900</span><span class="p">,</span><span class="o">-</span><span class="mi">3675</span><span class="p">,</span><span class="mi">1764</span><span class="p">,</span><span class="o">-</span><span class="mi">490</span><span class="p">,</span><span class="mi">60</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-60f(x-7h)+490f(x-6h)-1764f(x-5h)+3675f(x-4h)-4900f(x-3h)+4410f(x-2h)-2940f(x-h)+1089f(x)) / (420h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;8-point backward 7&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">490</span><span class="p">,</span><span class="o">-</span><span class="mi">1764</span><span class="p">,</span><span class="mi">3675</span><span class="p">,</span><span class="o">-</span><span class="mi">4900</span><span class="p">,</span><span class="mi">4410</span><span class="p">,</span><span class="o">-</span><span class="mi">2940</span><span class="p">,</span><span class="mi">1089</span><span class="p">],</span><span class="mi">420</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 9 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">36</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (3f(x-4h)-32f(x-3h)+168f(x-2h)-672f(x-h)+672f(x+h)-168f(x+2h)+32f(x+3h)-3f(x+4h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point central&#39;</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">32</span><span class="p">,</span><span class="mi">168</span><span class="p">,</span><span class="o">-</span><span class="mi">672</span><span class="p">,</span><span class="mi">672</span><span class="p">,</span><span class="o">-</span><span class="mi">168</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-5f(x-3h)+60f(x-2h)-420f(x-h)-378f(x)+1050f(x+h)-420f(x+2h)+140f(x+3h)-30f(x+4h)+3f(x+5h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point forward 5&#39;</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="o">-</span><span class="mi">420</span><span class="p">,</span><span class="o">-</span><span class="mi">378</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="o">-</span><span class="mi">420</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">38</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-3f(x-5h)+30f(x-4h)-140f(x-3h)+420f(x-2h)-1050f(x-h)+378f(x)+420f(x+h)-60f(x+2h)+5f(x+3h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point backward 5&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span><span class="mi">420</span><span class="p">,</span><span class="o">-</span><span class="mi">1050</span><span class="p">,</span><span class="mi">378</span><span class="p">,</span><span class="mi">420</span><span class="p">,</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">39</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (15f(x-2h)-240f(x-h)-798f(x)+1680f(x+h)-1050f(x+2h)+560f(x+3h)-210f(x+4h)+48f(x+5h)-5f(x+6h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point forward 6&#39;</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">15</span><span class="p">,</span><span class="o">-</span><span class="mi">240</span><span class="p">,</span><span class="o">-</span><span class="mi">798</span><span class="p">,</span><span class="mi">1680</span><span class="p">,</span><span class="o">-</span><span class="mi">1050</span><span class="p">,</span><span class="mi">560</span><span class="p">,</span><span class="o">-</span><span class="mi">210</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (5f(x-6h)-48f(x-5h)+210f(x-4h)-560f(x-3h)+1050f(x-2h)-1680f(x-h)+798f(x)+240f(x+h)-15f(x+2h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point backward 6&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">48</span><span class="p">,</span><span class="mi">210</span><span class="p">,</span><span class="o">-</span><span class="mi">560</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="o">-</span><span class="mi">1680</span><span class="p">,</span><span class="mi">798</span><span class="p">,</span><span class="mi">240</span><span class="p">,</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">41</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-105f(x-h)-1338f(x)+2940f(x+h)-2940f(x+2h)+2450f(x+3h)-1470f(x+4h)+588f(x+5h)-140f(x+6h)+15f(x+7h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point forward 7&#39;</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],[</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span><span class="o">-</span><span class="mi">1338</span><span class="p">,</span><span class="mi">2940</span><span class="p">,</span><span class="o">-</span><span class="mi">2940</span><span class="p">,</span><span class="mi">2450</span><span class="p">,</span><span class="o">-</span><span class="mi">1470</span><span class="p">,</span><span class="mi">588</span><span class="p">,</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span><span class="mi">15</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-15f(x-7h)+140f(x-6h)-588f(x-5h)+1470f(x-4h)-2450f(x-3h)+2940f(x-2h)-2940f(x-h)+1338f(x)+105f(x+h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point backward 7&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="o">-</span><span class="mi">588</span><span class="p">,</span><span class="mi">1470</span><span class="p">,</span><span class="o">-</span><span class="mi">2450</span><span class="p">,</span><span class="mi">2940</span><span class="p">,</span><span class="o">-</span><span class="mi">2940</span><span class="p">,</span><span class="mi">1338</span><span class="p">,</span><span class="mi">105</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-2283f(x)+6720f(x+h)-11760f(x+2h)+15680f(x+3h)-14700f(x+4h)+9408f(x+5h)-3920f(x+6h)+960f(x+7h)-105f(x+8h)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point forward 8&#39;</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],[</span><span class="o">-</span><span class="mi">2283</span><span class="p">,</span><span class="mi">6720</span><span class="p">,</span><span class="o">-</span><span class="mi">11760</span><span class="p">,</span><span class="mi">15680</span><span class="p">,</span><span class="o">-</span><span class="mi">14700</span><span class="p">,</span><span class="mi">9408</span><span class="p">,</span><span class="o">-</span><span class="mi">3920</span><span class="p">,</span><span class="mi">960</span><span class="p">,</span><span class="o">-</span><span class="mi">105</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">44</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (105f(x-8h)-960f(x-7h)+3920f(x-6h)-9408f(x-5h)+14700f(x-4h)-15680f(x-3h)+11760f(x-2h)-6720f(x-h)+2283f(x)) / (840h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;9-point backward 8&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">9</span><span class="p">,[</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">105</span><span class="p">,</span><span class="o">-</span><span class="mi">960</span><span class="p">,</span><span class="mi">3920</span><span class="p">,</span><span class="o">-</span><span class="mi">9408</span><span class="p">,</span><span class="mi">14700</span><span class="p">,</span><span class="o">-</span><span class="mi">15680</span><span class="p">,</span><span class="mi">11760</span><span class="p">,</span><span class="o">-</span><span class="mi">6720</span><span class="p">,</span><span class="mi">2283</span><span class="p">],</span><span class="mi">840</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 11 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-2f(x-5h)+25f(x-4h)-150f(x-3h)+600f(x-2h)-2100f(x-h)+2100f(x+h)-600f(x+2h)+150f(x+3h)-25f(x+4h)+2f(x+5h)) / (2520h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;11-point central&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">11</span><span class="p">,[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span><span class="mi">600</span><span class="p">,</span><span class="o">-</span><span class="mi">2100</span><span class="p">,</span><span class="mi">2100</span><span class="p">,</span><span class="o">-</span><span class="mi">600</span><span class="p">,</span><span class="mi">150</span><span class="p">,</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="mi">2520</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 13 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">600</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (5f(x-6h)-72f(x-5h)+495f(x-4h)-2200f(x-3h)+7425f(x-2h)-23760f(x-h)+23760f(x+h)-7425f(x+2h)+2200f(x+3h)-495f(x+4h)+72f(x+5h)-5f(x+6h)) / (27720h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;13-point central&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">13</span><span class="p">,[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],&amp;</span>
+<span class="w">                   </span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">72</span><span class="p">,</span><span class="mi">495</span><span class="p">,</span><span class="o">-</span><span class="mi">2200</span><span class="p">,</span><span class="mi">7425</span><span class="p">,</span><span class="o">-</span><span class="mi">23760</span><span class="p">,</span><span class="mi">23760</span><span class="p">,</span><span class="o">-</span><span class="mi">7425</span><span class="p">,</span><span class="mi">2200</span><span class="p">,</span><span class="o">-</span><span class="mi">495</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">],</span><span class="mi">27720</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 15 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">700</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (-15f(x-7h)+245f(x-6h)-1911f(x-5h)+9555f(x-4h)-35035f(x-3h)+105105f(x-2h)-315315f(x-h)+315315f(x+h)-105105f(x+2h)+35035f(x+3h)-9555f(x+4h)+1911f(x+5h)-245f(x+6h)+15f(x+7h)) / (360360h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;15-point central&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">15</span><span class="p">,[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],&amp;</span>
+<span class="w">                   </span><span class="p">[</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="o">-</span><span class="mi">1911</span><span class="p">,</span><span class="mi">9555</span><span class="p">,</span><span class="o">-</span><span class="mi">35035</span><span class="p">,</span><span class="mi">105105</span><span class="p">,</span><span class="o">-</span><span class="mi">315315</span><span class="p">,</span><span class="mi">315315</span><span class="p">,</span><span class="o">-</span><span class="mi">105105</span><span class="p">,</span><span class="mi">35035</span><span class="p">,</span><span class="o">-</span><span class="mi">9555</span><span class="p">,</span><span class="mi">1911</span><span class="p">,</span><span class="o">-</span><span class="mi">245</span><span class="p">,</span><span class="mi">15</span><span class="p">],</span><span class="mi">360360</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! 17 point methods</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">800</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! (7f(x-8h)-128f(x-7h)+1120f(x-6h)-6272f(x-5h)+25480f(x-4h)-81536f(x-3h)+224224f(x-2h)-640640f(x-h)+640640f(x+h)-224224f(x+2h)+81536f(x+3h)-25480f(x+4h)+6272f(x+5h)-1120f(x+6h)+128f(x+7h)-7f(x+8h)) / (720720h)</span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finite_diff_method</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;17-point central&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="mi">17</span><span class="p">,[</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],&amp;</span>
+<span class="w">                   </span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">128</span><span class="p">,</span><span class="mi">1120</span><span class="p">,</span><span class="o">-</span><span class="mi">6272</span><span class="p">,</span><span class="mi">25480</span><span class="p">,</span><span class="o">-</span><span class="mi">81536</span><span class="p">,</span><span class="mi">224224</span><span class="p">,</span><span class="o">-</span><span class="mi">640640</span><span class="p">,</span><span class="mi">640640</span><span class="p">,</span><span class="o">-</span><span class="mi">224224</span><span class="p">,</span><span class="mi">81536</span><span class="p">,</span><span class="o">-</span><span class="mi">25480</span><span class="p">,</span><span class="mi">6272</span><span class="p">,</span><span class="o">-</span><span class="mi">1120</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">],</span><span class="mi">720720</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">case </span><span class="n">default</span>
+<span class="w">        </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">    </span><span class="k">end select</span>
+
+<span class="k">    end subroutine </span><span class="n">get_finite_difference_method</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

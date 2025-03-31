@@ -1,0 +1,5048 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>numdiff_type &ndash; NumDiff </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>numdiff_type
+      <small>Derived Type</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="<p>49.0% of total for derived types.</p>Including implementation: 813 statements, 42.9% of total for derived types.">70 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">numdiff_type</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-exception_raised">exception_raised</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-istat">istat</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-error_msg">error_msg</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-n~4">n</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-m~3">m</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-xlow">xlow</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-xhigh">xhigh</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-print_messages">print_messages</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-chunk_size~3">chunk_size</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-perturb_mode">perturb_mode</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-dpert">dpert</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-partition_sparsity_pattern">partition_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-sparsity">sparsity</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-xlow_for_sparsity">xlow_for_sparsity</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-xhigh_for_sparsity">xhigh_for_sparsity</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-dpert_for_sparsity">dpert_for_sparsity</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-num_sparsity_points">num_sparsity_points</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-sparsity_perturb_mode">sparsity_perturb_mode</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-compute_linear_sparsity_pattern">compute_linear_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-linear_sparsity_tol">linear_sparsity_tol</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-function_precision_tol">function_precision_tol</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-mode">mode</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-meth~2">meth</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-class~2">class</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-class_meths">class_meths</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-eps~2">eps</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-acc~2">acc</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-cache">cache</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-use_diff">use_diff</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-problem_func">problem_func</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-compute_function">compute_function</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-compute_sparsity">compute_sparsity</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-info_function">info_function</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#variable-jacobian_function">jacobian_function</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#boundprocs-0"
+         aria-expanded="false" aria-controls="boundprocs-0">
+         <h4 class="card-header bg-primary text-white">Type-Bound Procedures</h4>
+      </a>
+      <div id="boundprocs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-initialize~2">initialize</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-diff_initialize">diff_initialize</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_jacobian">compute_jacobian</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_jacobian_dense">compute_jacobian_dense</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_jacobian_times_vector">compute_jacobian_times_vector</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-destroy~3">destroy</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-print_sparsity_pattern">print_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-print_sparsity_matrix">print_sparsity_matrix</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-set_sparsity_pattern">set_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-select_finite_diff_method">select_finite_diff_method</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-select_finite_diff_method_for_partition_group">select_finite_diff_method_for_partition_group</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-set_numdiff_bounds">set_numdiff_bounds</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_sparsity_pattern">compute_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-get_sparsity_pattern">get_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-terminate~2">terminate</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-failed">failed</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-get_error_status">get_error_status</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-set_dpert">set_dpert</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-destroy_sparsity_pattern">destroy_sparsity_pattern</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_perturb_vector">compute_perturb_vector</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_perturbation_vector">compute_perturbation_vector</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_sparsity_perturbation_vector">compute_sparsity_perturbation_vector</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-perturb_x_and_compute_f">perturb_x_and_compute_f</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-perturb_x_and_compute_f_partitioned">perturb_x_and_compute_f_partitioned</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-set_numdiff_sparsity_bounds">set_numdiff_sparsity_bounds</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-set_sparsity_mode">set_sparsity_mode</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-generate_dense_sparsity_partition">generate_dense_sparsity_partition</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-compute_jacobian_for_sparsity">compute_jacobian_for_sparsity</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-resize_sparsity_vectors">resize_sparsity_vectors</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-raise_exception">raise_exception</a>
+            <a class="list-group-item" href="../type/numdiff_type.html#boundprocedure-clear_exceptions">clear_exceptions</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../type/numdiff_type.html#src">numdiff_type</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+      <h2 id="type-def-statement">
+        type, public :: numdiff_type</h2>
+    <p>base type for sparsity and Jacobian computations.</p>
+<br>      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherits</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~numdiff_type~~InheritsGraph Pages: 1 -->
+<svg id="typenumdiff_typeInheritsGraph" width="454pt" height="162pt"
+ viewBox="0.00 0.00 454.00 162.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~numdiff_type~~InheritsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 158)">
+<title>type~~numdiff_type~~InheritsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-158 450,-158 450,4 -4,4"/>
+<!-- type~numdiff_type -->
+<g id="type~~numdiff_type~~InheritsGraph_node1" class="node">
+<title>type~numdiff_type</title>
+<polygon fill="none" stroke="black" points="446,-101 364,-101 364,-77 446,-77 446,-101"/>
+<text text-anchor="middle" x="405" y="-86.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type</text>
+</g>
+<!-- type~finite_diff_method -->
+<g id="type~~numdiff_type~~InheritsGraph_node2" class="node">
+<title>type~finite_diff_method</title>
+<g id="a_type~~numdiff_type~~InheritsGraph_node2"><a xlink:href="../type/finite_diff_method.html" xlink:title="finite_diff_method">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="109,-130 0,-130 0,-106 109,-106 109,-130"/>
+<text text-anchor="middle" x="54.5" y="-115.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_method</text>
+</a>
+</g>
+</g>
+<!-- type~numdiff_type&#45;&gt;type~finite_diff_method -->
+<g id="type~~numdiff_type~~InheritsGraph_edge2" class="edge">
+<title>type~numdiff_type&#45;&gt;type~finite_diff_method</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M363.68,-92.35C303.74,-97.34 190.55,-106.76 119.3,-112.69"/>
+<polygon fill="#000000" stroke="#000000" points="118.77,-109.22 109.1,-113.54 119.36,-116.2 118.77,-109.22"/>
+<text text-anchor="middle" x="219" y="-110.4" font-family="Helvetica,sans-Serif" font-size="9.50">meth</text>
+</g>
+<!-- type~function_cache -->
+<g id="type~~numdiff_type~~InheritsGraph_node3" class="node">
+<title>type~function_cache</title>
+<g id="a_type~~numdiff_type~~InheritsGraph_node3"><a xlink:href="../type/function_cache.html" xlink:title="function_cache">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="266,-66 172,-66 172,-42 266,-42 266,-66"/>
+<text text-anchor="middle" x="219" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">function_cache</text>
+</a>
+</g>
+</g>
+<!-- type~numdiff_type&#45;&gt;type~function_cache -->
+<g id="type~~numdiff_type~~InheritsGraph_edge4" class="edge">
+<title>type~numdiff_type&#45;&gt;type~function_cache</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M363.62,-81.32C337.99,-76.44 304.47,-70.07 276.25,-64.7"/>
+<polygon fill="#000000" stroke="#000000" points="276.6,-61.2 266.12,-62.77 275.29,-68.08 276.6,-61.2"/>
+<text text-anchor="middle" x="316" y="-79.4" font-family="Helvetica,sans-Serif" font-size="9.50">cache</text>
+</g>
+<!-- type~meth_array -->
+<g id="type~~numdiff_type~~InheritsGraph_node4" class="node">
+<title>type~meth_array</title>
+<g id="a_type~~numdiff_type~~InheritsGraph_node4"><a xlink:href="../type/meth_array.html" xlink:title="meth_array">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="256,-154 182,-154 182,-130 256,-130 256,-154"/>
+<text text-anchor="middle" x="219" y="-139.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">meth_array</text>
+</a>
+</g>
+</g>
+<!-- type~numdiff_type&#45;&gt;type~meth_array -->
+<g id="type~~numdiff_type~~InheritsGraph_edge3" class="edge">
+<title>type~numdiff_type&#45;&gt;type~meth_array</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M381.36,-101.03C370.84,-106.23 358.02,-112.02 346,-116 320.12,-124.57 290.27,-130.87 266.13,-135.13"/>
+<polygon fill="#000000" stroke="#000000" points="265.42,-131.7 256.15,-136.83 266.6,-138.6 265.42,-131.7"/>
+<text text-anchor="middle" x="316" y="-132.4" font-family="Helvetica,sans-Serif" font-size="9.50">class_meths</text>
+</g>
+<!-- type~sparsity_pattern -->
+<g id="type~~numdiff_type~~InheritsGraph_node5" class="node">
+<title>type~sparsity_pattern</title>
+<g id="a_type~~numdiff_type~~InheritsGraph_node5"><a xlink:href="../type/sparsity_pattern.html" xlink:title="sparsity_pattern">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="268,-24 170,-24 170,0 268,0 268,-24"/>
+<text text-anchor="middle" x="219" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- type~numdiff_type&#45;&gt;type~sparsity_pattern -->
+<g id="type~~numdiff_type~~InheritsGraph_edge1" class="edge">
+<title>type~numdiff_type&#45;&gt;type~sparsity_pattern</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M387.1,-76.99C375.84,-69.39 360.51,-59.74 346,-53 323.65,-42.61 297.94,-33.74 275.59,-26.93"/>
+<polygon fill="#000000" stroke="#000000" points="276.5,-23.55 265.91,-24.04 274.5,-30.26 276.5,-23.55"/>
+<text text-anchor="middle" x="316" y="-55.4" font-family="Helvetica,sans-Serif" font-size="9.50">sparsity</text>
+</g>
+<!-- type~fx -->
+<g id="type~~numdiff_type~~InheritsGraph_node6" class="node">
+<title>type~fx</title>
+<g id="a_type~~numdiff_type~~InheritsGraph_node6"><a xlink:href="../type/fx.html" xlink:title="fx">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="81.5,-66 27.5,-66 27.5,-42 81.5,-42 81.5,-66"/>
+<text text-anchor="middle" x="54.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fx</text>
+</a>
+</g>
+</g>
+<!-- type~function_cache&#45;&gt;type~fx -->
+<g id="type~~numdiff_type~~InheritsGraph_edge5" class="edge">
+<title>type~function_cache&#45;&gt;type~fx</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M171.87,-54C146.64,-54 115.83,-54 92.24,-54"/>
+<polygon fill="#000000" stroke="#000000" points="91.96,-50.5 81.96,-54 91.96,-57.5 91.96,-50.5"/>
+<text text-anchor="middle" x="139.5" y="-56.4" font-family="Helvetica,sans-Serif" font-size="9.50">c</text>
+</g>
+<!-- type~meth_array&#45;&gt;type~finite_diff_method -->
+<g id="type~~numdiff_type~~InheritsGraph_edge6" class="edge">
+<title>type~meth_array&#45;&gt;type~finite_diff_method</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M181.94,-136.67C163.45,-133.94 140.39,-130.54 119.04,-127.39"/>
+<polygon fill="#000000" stroke="#000000" points="119.46,-123.91 109.06,-125.91 118.44,-130.83 119.46,-123.91"/>
+<text text-anchor="middle" x="139.5" y="-134.4" font-family="Helvetica,sans-Serif" font-size="9.50">meth</text>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    <br>
+
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-exception_raised"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>exception_raised</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>if true, an exception has been raised</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-istat"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istat</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>a non-zero value will cause all routine to exit.
+this can be set to <code>-1</code> by calling <a href="../type/numdiff_type.html#boundprocedure-terminate~2">terminate</a>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error_msg"></span>
+              character(len=:),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error_msg</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>error message (if <code>istat/=0</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~4"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>number of <code>x</code> variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~3"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>number of <code>f</code> functions</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xlow"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>lower bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xhigh"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>upper bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-print_messages"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>print_messages</strong></td>
+<td> =</td>
+                <td>.true.</td>
+            <td>
+                <p>if true, warning messages are printed
+to the <code>error_unit</code> for any errors.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-chunk_size~3"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>chunk_size</strong></td>
+<td> =</td>
+                <td>100</td>
+            <td>
+                <p>chuck size for allocating the arrays (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-perturb_mode"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>perturb_mode</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                <p>perturbation mode:</p>
+<p><strong>1</strong> - perturbation is <code>dx=dpert</code>,
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dpert"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dpert</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>perturbation vector for <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-partition_sparsity_pattern"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>partition_sparsity_pattern</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>to partition the sparsity pattern using <a href="../proc/dsm.html">dsm</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sparsity"></span>
+              type(<a href='sparsity_pattern.html'>sparsity_pattern</a>),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>the sparsity pattern</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xlow_for_sparsity"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>xlow_for_sparsity</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>lower bounds on <code>x</code> for computing sparsity (optional)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xhigh_for_sparsity"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>xhigh_for_sparsity</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>upper bounds on <code>x</code> for computing sparsity (optional)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dpert_for_sparsity"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dpert_for_sparsity</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>perturbation vector for <code>x</code> when computing
+sparsity for <code>sparsity_mode=4</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-num_sparsity_points"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_sparsity_points</strong></td>
+<td> =</td>
+                <td>3</td>
+            <td>
+                <p>for <code>sparsity_mode=4</code>, the number of jacobian
+evaluations used to estimate the sparsity pattern.
+See <a href="../proc/compute_sparsity_random_2.html">compute_sparsity_random_2</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sparsity_perturb_mode"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_perturb_mode</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                <p>perturbation mode (if <code>sparsity_mode=4</code>):</p>
+<p><strong>1</strong> - perturbation is <code>dx=dpert</code>,
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-compute_linear_sparsity_pattern"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>compute_linear_sparsity_pattern</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>to also compute the linear sparsity pattern</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_sparsity_tol"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>linear_sparsity_tol</strong></td>
+<td> =</td>
+                <td>epsilon(1.0_wp)</td>
+            <td>
+                <p>the equality tolerance for derivatives to
+indicate a constant jacobian element (linear sparsity)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-function_precision_tol"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>function_precision_tol</strong></td>
+<td> =</td>
+                <td>epsilon(1.0_wp)</td>
+            <td>
+                <p>the function precision. two functions values
+that are the within this tolerance are
+considered the same value. This is used
+when estimating the sparsity pattern when
+<code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mode"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mode</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                <p><strong>1</strong> = use <code>meth</code> (specified methods),
+<strong>2</strong> = use <code>class</code> (specified class, method is selected on-the-fly).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-meth~2"></span>
+              type(<a href='finite_diff_method.html'>finite_diff_method</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>meth</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>the finite difference method to use
+compute the <code>n</code>th column of the Jacobian
+<code>size(n)</code>.  Either this or <code>class</code> is used</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-class~2"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>class</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>the class of method to use to
+compute the <code>n</code>th column of the Jacobian
+<code>size(n)</code>. Either this or <code>meth</code> is used</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-class_meths"></span>
+              type(<a href='meth_array.html'>meth_array</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>class_meths</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>array of methods for the specified classes.
+used with <code>class</code> when <code>mode=2</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps~2"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eps</strong></td>
+<td> =</td>
+                <td>1.0e-9_wp</td>
+            <td>
+                <p>tolerance parameter for <a href="../proc/diff.html">diff</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-acc~2"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>acc</strong></td>
+<td> =</td>
+                <td>0.0_wp</td>
+            <td>
+                <p>tolerance parameter for <a href="../proc/diff.html">diff</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cache"></span>
+              type(<a href='function_cache.html'>function_cache</a>),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cache</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>if using the function cache</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-use_diff"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>use_diff</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>if we are using the Neville's process method,
+rather than finite differences</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-problem_func"></span>
+              procedure(<a href='../interface/func~2.html'>func</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>problem_func</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>the user-defined function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-compute_function"></span>
+              procedure(<a href='../interface/func~2.html'>func</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>compute_function</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>compute the user-defined function
+this can point to the <code>problem_func</code> or, if using
+the cache, it points to <a href="../proc/compute_function_with_cache.html">compute_function_with_cache</a>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-compute_sparsity"></span>
+              procedure(<a href='../interface/spars_f.html'>spars_f</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>compute_sparsity</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>for computing the sparsity pattern</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-info_function"></span>
+              procedure(<a href='../interface/info_f.html'>info_f</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>info_function</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>an optional function the user can define
+which is called when each column of the jacobian is computed.
+It can be used to perform any setup operations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jacobian_function"></span>
+              procedure(<a href='../interface/jacobian_f.html'>jacobian_f</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>jacobian_function</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>the low-level function called by <a href="../type/numdiff_type.html#boundprocedure-compute_jacobian">compute_jacobian</a>
+that actually computes the jacobian.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+
+
+      <section>
+        <h2>Type-Bound Procedures</h2>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-initialize~2"></span>
+      <h3>
+          procedure, public ::
+  <strong>initialize</strong> => <a href='/home/runner/work/NumDiff/NumDiff/doc/proc/initialize_numdiff.html'>initialize_numdiff</a>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>initialize the class</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/initialize_numdiff.html'>initialize_numdiff</a>(me, n, m, xlow, xhigh, perturb_mode, dpert, problem_func, sparsity_mode, jacobian_method, jacobian_methods, class, classes, info, chunk_size, partition_sparsity_pattern, cache_size, xlow_for_sparsity, xhigh_for_sparsity, dpert_for_sparsity, sparsity_perturb_mode, linear_sparsity_tol, function_precision_tol, num_sparsity_points)  
+</h3>
+    
+
+  <p>Initialize a <a href="../type/numdiff_type.html">numdiff_type</a> class. This must be called first.</p><a href="../proc/initialize_numdiff.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of <code>x</code> variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+<p>number of <code>f</code> functions</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+<p>lower bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+<p>upper bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>perturb_mode</strong></td>
+            <td>
+<p>perturbation mode:
+<strong>1</strong> - perturbation is <code>dx=dpert</code>,
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>dpert</strong></td>
+            <td>
+<p>perturbation vector for <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/func~2.html'>func</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>problem_func</strong></td>
+            <td>
+<p>the user function that defines the problem
+(returns <code>m</code> functions)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_mode</strong></td>
+            <td>
+<p>the sparsity computation method:
+<strong>1</strong> - assume dense,
+<strong>2</strong> - three-point simple method,
+<strong>3</strong> - will be specified by the user in
+a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
+<strong>4</strong> - computes a two-point jacobian
+at <code>num_sparsity_points</code> points.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>jacobian_method</strong></td>
+            <td>
+<p><code>id</code> code for the finite difference method
+to use for all <code>n</code> variables.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>jacobian_methods</strong></td>
+            <td>
+<p><code>id</code> codes for the finite difference method
+to use for each variable.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>class</strong></td>
+            <td>
+<p>method class for the finite difference method
+to use for all <code>n</code> variables.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>classes</strong></td>
+            <td>
+<p>method class for the finite difference methods
+to use for each variable.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/info_f.html'>info_f</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>info</strong></td>
+            <td>
+<p>a function the user can define
+which is called when each column
+of the jacobian is computed.
+It can be used to perform any
+setup operations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>chunk_size</strong></td>
+            <td>
+<p>chunk size for allocating the arrays
+(must be &gt;0) [default is 100]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>partition_sparsity_pattern</strong></td>
+            <td>
+<p>if the sparisty pattern is to
+be partitioned using <a href="../proc/dsm.html">dsm</a>
+[default is False]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cache_size</strong></td>
+            <td>
+<p>if present, this is the cache size
+for the function cache
+(default is not to enable cache)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xlow_for_sparsity</strong></td>
+            <td>
+<p>lower bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xlow</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh_for_sparsity</strong></td>
+            <td>
+<p>upper bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xhigh</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>dpert_for_sparsity</strong></td>
+            <td>
+<p>for <code>sparsity_mode=4</code>, the perturbation</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_perturb_mode</strong></td>
+            <td>
+<p>perturbation mode (required if <code>sparsity_mode=4</code>):
+<strong>1</strong> - perturbation is <code>dx=dpert</code>,
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>linear_sparsity_tol</strong></td>
+            <td>
+<p>the equality tolerance for derivatives to
+indicate a constant jacobian element (linear sparsity)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>function_precision_tol</strong></td>
+            <td>
+<p>the function precision. two functions values
+that are the within this tolerance are
+considered the same value. This is used
+when estimating the sparsity pattern when
+<code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_sparsity_points</strong></td>
+            <td>
+<p>for <code>sparsity_mode=4</code>, the number of jacobian
+evaluations used to estimate the sparsity pattern.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-diff_initialize"></span>
+      <h3>
+          procedure, public ::
+  <strong>diff_initialize</strong> => <a href='/home/runner/work/NumDiff/NumDiff/doc/proc/initialize_numdiff_for_diff.html'>initialize_numdiff_for_diff</a>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>initialize the class</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/initialize_numdiff_for_diff.html'>initialize_numdiff_for_diff</a>(me, n, m, xlow, xhigh, problem_func, sparsity_mode, info, chunk_size, eps, acc, cache_size, xlow_for_sparsity, xhigh_for_sparsity, dpert_for_sparsity, sparsity_perturb_mode, linear_sparsity_tol, function_precision_tol, num_sparsity_points, print_messages)  
+</h3>
+    
+
+  <p>Alternate version of <a href="../proc/initialize_numdiff.html">initialize_numdiff</a> routine when
+using <a href="../proc/diff.html">diff</a> to compute the Jacobian.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of <code>x</code> variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+<p>number of <code>f</code> functions</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+<p>lower bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+<p>upper bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/func~2.html'>func</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>problem_func</strong></td>
+            <td>
+<p>the user function that defines the problem
+(returns <code>m</code> functions)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_mode</strong></td>
+            <td>
+<p>the sparsity computation method:</p><a href="../proc/initialize_numdiff_for_diff.html#variable-sparsity_mode" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/info_f.html'>info_f</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>info</strong></td>
+            <td>
+<p>a function the user can define
+which is called when each column
+of the jacobian is computed.
+It can be used to perform any
+setup operations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>chunk_size</strong></td>
+            <td>
+<p>chunk size for allocating the arrays
+(must be &gt;0) [default is 100]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eps</strong></td>
+            <td>
+<p>tolerance parameter for <a href="../proc/diff.html">diff</a>
+if not present, default is <code>1.0e-9_wp</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>acc</strong></td>
+            <td>
+<p>tolerance parameter for <a href="../proc/diff.html">diff</a>
+if not present, default is <code>0.0_wp</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cache_size</strong></td>
+            <td>
+<p>if present, this is the cache size
+for the function cache
+(default is not to enable cache)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xlow_for_sparsity</strong></td>
+            <td>
+<p>lower bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xlow</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh_for_sparsity</strong></td>
+            <td>
+<p>upper bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xhigh</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>dpert_for_sparsity</strong></td>
+            <td>
+<p>required if <code>sparsity_mode=4</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_perturb_mode</strong></td>
+            <td>
+<p>perturbation mode (required if <code>sparsity_mode=4</code>):</p><a href="../proc/initialize_numdiff_for_diff.html#variable-sparsity_perturb_mode~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>linear_sparsity_tol</strong></td>
+            <td>
+<p>the equality tolerance for derivatives to
+indicate a constant jacobian element (linear sparsity)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>function_precision_tol</strong></td>
+            <td>
+<p>the function precision. two functions values
+that are the within this tolerance are
+considered the same value. This is used
+when estimating the sparsity pattern when
+<code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_sparsity_points</strong></td>
+            <td>
+<p>for <code>sparsity_mode=4</code>, the number of jacobian
+evaluations used to estimate the sparsity pattern.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>print_messages</strong></td>
+            <td>
+<p>if true, print error messages to <code>error_unit</code>.
+default is True.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_jacobian"></span>
+      <h3>
+          procedure, public ::
+  <strong>compute_jacobian</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>main routine to compute the Jacobian
+using the selected options. It
+returns the sparse (vector) form.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_jacobian.html'>compute_jacobian</a>(me, x, jac)  
+</h3>
+    
+
+  <p>Compute the Jacobian.</p><a href="../proc/compute_jacobian.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>jac</strong></td>
+            <td>
+<p>sparse jacobian vector</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_jacobian_dense"></span>
+      <h3>
+          procedure, public ::
+  <strong>compute_jacobian_dense</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>return the dense <code>size(m,n)</code>
+matrix form of the Jacobian.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_jacobian_dense.html'>compute_jacobian_dense</a>(me, x, jac)  
+</h3>
+    
+
+  <p>just a wrapper for <a href="../proc/compute_jacobian.html">compute_jacobian</a>, that returns a dense (<code>m x n</code>) matrix.</p><a href="../proc/compute_jacobian_dense.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:,:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>jac</strong></td>
+            <td>
+<p>the jacobian matrix</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_jacobian_times_vector"></span>
+      <h3>
+          procedure, public ::
+  <strong>compute_jacobian_times_vector</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>returns the product of the Jacobian
+matrix and an input vector</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_jacobian_times_vector.html'>compute_jacobian_times_vector</a>(me, x, v, z)  
+</h3>
+    
+
+  <p>Returns the product <code>J*v</code>, where <code>J</code> is the <code>m x n</code> Jacobian matrix
+  and <code>v</code> is an <code>n x 1</code> vector.</p><a href="../proc/compute_jacobian_times_vector.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>v</strong></td>
+            <td>
+<p>vector (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>z</strong></td>
+            <td>
+<p>The product <code>J*v</code> (size <code>m</code>)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-destroy~3"></span>
+      <h3>
+          procedure, public ::
+  <strong>destroy</strong> => <a href='/home/runner/work/NumDiff/NumDiff/doc/proc/destroy_numdiff_type.html'>destroy_numdiff_type</a>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>destroy the class</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/destroy_numdiff_type.html'>destroy_numdiff_type</a>(me)  
+</h3>
+    
+
+  <p>destroy the <a href="../type/numdiff_type.html">numdiff_type</a> class.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-print_sparsity_pattern"></span>
+      <h3>
+          procedure, public ::
+  <strong>print_sparsity_pattern</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>print the sparsity pattern in vector form to a file</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/print_sparsity_pattern.html'>print_sparsity_pattern</a>(me, iunit)  
+</h3>
+    
+
+  <p>Print the sparsity pattern in vector form (<code>irow</code>, <code>icol</code>).</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iunit</strong></td>
+            <td>
+<p>file unit to write to.
+(assumed to be already opened)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-print_sparsity_matrix"></span>
+      <h3>
+          procedure, public ::
+  <strong>print_sparsity_matrix</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>print the sparsity pattern in matrix form to a file</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/print_sparsity_matrix.html'>print_sparsity_matrix</a>(me, iunit)  
+</h3>
+    
+
+  <p>Print the sparsity pattern in matrix form.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iunit</strong></td>
+            <td>
+<p>file unit to write to.
+(assumed to be already opened)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-set_sparsity_pattern"></span>
+      <h3>
+          procedure, public ::
+  <strong>set_sparsity_pattern</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>manually set the sparsity pattern</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/set_sparsity_pattern.html'>set_sparsity_pattern</a>(me, irow, icol, linear_irow, linear_icol, linear_vals, maxgrp, ngrp)  
+</h3>
+    
+
+  <p>To specify the sparsity pattern directly if it is already known.</p><a href="../proc/set_sparsity_pattern.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>irow</strong></td>
+            <td>
+<p>sparsity pattern nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>icol</strong></td>
+            <td>
+<p>sparsity pattern nonzero elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>linear_irow</strong></td>
+            <td>
+<p>linear sparsity pattern nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>linear_icol</strong></td>
+            <td>
+<p>linear sparsity pattern nonzero elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>linear_vals</strong></td>
+            <td>
+<p>linear sparsity values (constant elements of the Jacobian)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>maxgrp</strong></td>
+            <td>
+<p>DSM sparsity partition
+[only used if <code>me%partition_sparsity_pattern=True</code>]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>ngrp</strong></td>
+            <td>
+<p>DSM sparsity partition (size <code>n</code>)
+[only used if <code>me%partition_sparsity_pattern=True</code>]</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-select_finite_diff_method"></span>
+      <h3>
+          procedure, public ::
+  <strong>select_finite_diff_method</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>select a method in a specified class so
+that the variable bounds are not violated
+when by the perturbations.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/select_finite_diff_method.html'>select_finite_diff_method</a>(me, x, xlow, xhigh, dx, list_of_methods, fd, status_ok)  
+</h3>
+    
+
+  <p>Select a finite diff method of a given <code>class</code> so that the perturbations
+of <code>x</code> will not violate the variable bounds.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>the variable value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+<p>the variable lower bound</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+<p>the variable upper bound</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>the perturbation value (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              type(<a href='meth_array.html'>meth_array</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>list_of_methods</strong></td>
+            <td>
+<p>list of available methods to choose from</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              type(<a href='finite_diff_method.html'>finite_diff_method</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fd</strong></td>
+            <td>
+<p>this method can be used</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>status_ok</strong></td>
+            <td>
+<p>true if it really doesn't violate the bounds
+(say, the bounds are very close to each other)
+if <code>status_ok=False</code>, then the first method in
+the given class is returned in <code>fd</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-select_finite_diff_method_for_partition_group"></span>
+      <h3>
+          procedure, public ::
+  <strong>select_finite_diff_method_for_partition_group</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>version of <a href="../type/numdiff_type.html#boundprocedure-select_finite_diff_method">select_finite_diff_method</a>
+for partitioned sparsity pattern.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/select_finite_diff_method_for_partition_group.html'>select_finite_diff_method_for_partition_group</a>(me, x, xlow, xhigh, dx, list_of_methods, fd, status_ok)  
+</h3>
+    
+
+  <p>Select a finite diff method of a given <code>class</code> so that the perturbations
+of <code>x</code> will not violate the variable bounds for any variable in the group.</p><a href="../proc/select_finite_diff_method_for_partition_group.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>the variable values</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+<p>the variable lower bounds</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+<p>the variable upper bounds</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>the perturbation values (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              type(<a href='meth_array.html'>meth_array</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>list_of_methods</strong></td>
+            <td>
+<p>list of available methods to choose from</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              type(<a href='finite_diff_method.html'>finite_diff_method</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fd</strong></td>
+            <td>
+<p>this method can be used</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>status_ok</strong></td>
+            <td>
+<p>true if it really doesn't violate the bounds
+(say, the bounds are very close to each other)
+if <code>status_ok=False</code>, then the first method in
+the given class is returned in <code>fd</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-set_numdiff_bounds"></span>
+      <h3>
+          procedure, public ::
+  <strong>set_numdiff_bounds</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>can be called to change the variable bounds.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/set_numdiff_bounds.html'>set_numdiff_bounds</a>(me, xlow, xhigh)  
+</h3>
+    
+
+  <p>Change the variable bounds in a <a href="../type/numdiff_type.html">numdiff_type</a>.</p><a href="../proc/set_numdiff_bounds.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+<p>lower bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+<p>upper bounds on <code>x</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_sparsity_pattern"></span>
+      <h3>
+          procedure, public ::
+  <strong>compute_sparsity_pattern</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>if the user needs to compute the sparsity pattern manually.
+(otherwise it will be done the first time the Jacobian is computed)</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_sparsity_pattern.html'>compute_sparsity_pattern</a>(me, x, irow, icol, linear_irow, linear_icol, linear_vals)  
+</h3>
+    
+
+  <p>Computes the sparsity pattern and return it.
+Uses the settings currently in the class.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>irow</strong></td>
+            <td>
+<p>sparsity pattern nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>icol</strong></td>
+            <td>
+<p>sparsity pattern nonzero elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>linear_irow</strong></td>
+            <td>
+<p>linear sparsity pattern
+nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>linear_icol</strong></td>
+            <td>
+<p>linear sparsity pattern nonzero
+elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>linear_vals</strong></td>
+            <td>
+<p>linear sparsity values (constant
+elements of the Jacobian)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-get_sparsity_pattern"></span>
+      <h3>
+          procedure, public ::
+  <strong>get_sparsity_pattern</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>returns the sparsity pattern (if it is allocated)</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/get_sparsity_pattern.html'>get_sparsity_pattern</a>(me, irow, icol, linear_irow, linear_icol, linear_vals, maxgrp, ngrp)  
+</h3>
+    
+
+  <p>Returns the sparsity pattern from the class.
+If it hasn't been computed, the output arrays will not be allocated.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>irow</strong></td>
+            <td>
+<p>sparsity pattern nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>icol</strong></td>
+            <td>
+<p>sparsity pattern nonzero elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>linear_irow</strong></td>
+            <td>
+<p>linear sparsity pattern
+nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>linear_icol</strong></td>
+            <td>
+<p>linear sparsity pattern nonzero
+elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>linear_vals</strong></td>
+            <td>
+<p>linear sparsity values (constant
+elements of the Jacobian)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>maxgrp</strong></td>
+            <td>
+<p>DSM sparsity partition</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>ngrp</strong></td>
+            <td>
+<p>DSM sparsity partition</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-terminate~2"></span>
+      <h3>
+          procedure, public ::
+  <strong>terminate</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>can be called by user to stop the computation</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/terminate~2.html'>terminate</a>(me)  
+</h3>
+    
+
+  <p>A user-callable routine. When called, it will terminate
+all computations and return. The <code>istat</code> return code will be
+set to <code>-1</code>. This can be called in the function or the info function.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-failed"></span>
+      <h3>
+          procedure, public ::
+  <strong>failed</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>to check if an exception was raised.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private pure function <a href='../proc/failed.html'>failed</a>(me)  
+</h3>
+    
+
+  <p>Returns True if an exception has been raised.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-get_error_status"></span>
+      <h3>
+          procedure, public ::
+  <strong>get_error_status</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>the status of error condition</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/get_error_status.html'>get_error_status</a>(me, istat, error_msg)  
+</h3>
+    
+
+  <p>Returns the current error code and message.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istat</strong></td>
+            <td>
+<p>error code (<code>istat=0</code> means no errors).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error_msg</strong></td>
+            <td>
+<p>error message string.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-set_dpert"></span>
+      <h3>
+          procedure, public ::
+  <strong>set_dpert</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>change the <code>dpert</code> values</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/set_dpert.html'>set_dpert</a>(me, dpert)  
+</h3>
+    
+
+  <p>Change the <code>dpert</code> vector. Can be used after the class has been initialized
+to change the perturbation step sizes (e.g., after an iteration).</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>dpert</strong></td>
+            <td>
+<p>perturbation vector for <code>x</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-destroy_sparsity_pattern"></span>
+      <h3>
+          procedure, private ::
+  <strong>destroy_sparsity_pattern</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>destroy the sparsity pattern</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/destroy_sparsity_pattern.html'>destroy_sparsity_pattern</a>(me)  
+</h3>
+    
+
+  <p>Destroy the sparsity pattern in the class.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_perturb_vector"></span>
+      <h3>
+          procedure, private ::
+  <strong>compute_perturb_vector</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_perturb_vector.html'>compute_perturb_vector</a>(me, x, dpert, perturb_mode, dx)  
+</h3>
+    
+
+  <p>Compute <code>dx</code>, the perturbation vector for <code>x</code></p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>dpert</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>perturb_mode</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>absolute perturbation (&gt;0)
+for each variable</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_perturbation_vector"></span>
+      <h3>
+          procedure, private ::
+  <strong>compute_perturbation_vector</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>computes the variable perturbation factor</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_perturbation_vector.html'>compute_perturbation_vector</a>(me, x, dx)  
+</h3>
+    
+
+  <p>Compute <code>dx</code>, the perturbation vector for <code>x</code> used
+when computing the gradients.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>absolute perturbation (&gt;0)
+for each variable</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_sparsity_perturbation_vector"></span>
+      <h3>
+          procedure, private ::
+  <strong>compute_sparsity_perturbation_vector</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_sparsity_perturbation_vector.html'>compute_sparsity_perturbation_vector</a>(me, x, dx)  
+</h3>
+    
+
+  <p>Compute <code>dx</code>, the perturbation vector for <code>x</code> used
+when computing the sparsity pattern.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>absolute perturbation (&gt;0)
+for each variable</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-perturb_x_and_compute_f"></span>
+      <h3>
+          procedure, private ::
+  <strong>perturb_x_and_compute_f</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/perturb_x_and_compute_f.html'>perturb_x_and_compute_f</a>(me, x, dx_factor, dx, df_factor, column, idx, df)  
+</h3>
+    
+
+  <p>Perturb the specified optimization variable, and compute the function.
+This routine is designed so that <code>df</code> is accumulated as each function
+evaluation is done, to avoid having to allocate more temporary storage.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>nominal variable vector</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dx_factor</strong></td>
+            <td>
+<p>factor to multiply <code>dx</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>the perturbation value for this column</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>df_factor</strong></td>
+            <td>
+<p>factor to multiply function value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>column</strong></td>
+            <td>
+<p>the variable to perturb</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>idx</strong></td>
+            <td>
+<p>the elements in this
+column of the Jacobian
+to compute (passed to function)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>df</strong></td>
+            <td>
+<p>the accumulated function value
+note: for the first call, this
+should be set to zero</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-perturb_x_and_compute_f_partitioned"></span>
+      <h3>
+          procedure, private ::
+  <strong>perturb_x_and_compute_f_partitioned</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/perturb_x_and_compute_f_partitioned.html'>perturb_x_and_compute_f_partitioned</a>(me, x, dx_factor, dx, df_factor, columns, idx, df)  
+</h3>
+    
+
+  <p>Perturb the specified optimization variable, and compute the function.
+This routine is designed so that <code>df</code> is accumulated as each function
+evaluation is done, to avoid having to allocate more temporary storage.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>nominal variable vector</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dx_factor</strong></td>
+            <td>
+<p>factor to multiply <code>dx</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+<p>the perturbation value for this column</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>df_factor</strong></td>
+            <td>
+<p>factor to multiply function value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>columns</strong></td>
+            <td>
+<p>the variables to perturb</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>idx</strong></td>
+            <td>
+<p>the elements in this
+column of the Jacobian
+to compute (passed to function)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>df</strong></td>
+            <td>
+<p>the accumulated function value
+note: for the first call, this
+should be set to zero</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-set_numdiff_sparsity_bounds"></span>
+      <h3>
+          procedure, private ::
+  <strong>set_numdiff_sparsity_bounds</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/set_numdiff_sparsity_bounds.html'>set_numdiff_sparsity_bounds</a>(me, xlow, xhigh)  
+</h3>
+    
+
+  <p>Sets the variable bounds for sparsity in a <a href="../type/numdiff_type.html">numdiff_type</a>.
+  These are only used for <code>sparsity_mode=2</code>.</p><a href="../proc/set_numdiff_sparsity_bounds.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+<p>lower bounds on <code>x</code> to be used for
+sparsity computation. If not present,
+then then <code>xlow</code> values in the class are used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+<p>upper bounds on <code>x</code> to be used for
+sparsity computation. If not present,
+then then <code>xhigh</code> values in the class are used.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-set_sparsity_mode"></span>
+      <h3>
+          procedure, private ::
+  <strong>set_sparsity_mode</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/set_sparsity_mode.html'>set_sparsity_mode</a>(me, sparsity_mode, xlow_for_sparsity, xhigh_for_sparsity)  
+</h3>
+    
+
+  <p>Set sparsity mode.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_mode</strong></td>
+            <td>
+<p>the sparsity computation method:
+<strong>1</strong> - assume dense,
+<strong>2</strong> - three-point simple method,
+<strong>3</strong> - will be specified by the user in
+a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
+<strong>4</strong> - computes a two-point jacobian
+at <code>num_sparsity_points</code> points.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xlow_for_sparsity</strong></td>
+            <td>
+<p>lower bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xlow</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh_for_sparsity</strong></td>
+            <td>
+<p>upper bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xhigh</code> is used.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-generate_dense_sparsity_partition"></span>
+      <h3>
+          procedure, private ::
+  <strong>generate_dense_sparsity_partition</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/generate_dense_sparsity_partition.html'>generate_dense_sparsity_partition</a>(me)  
+</h3>
+    
+
+  <p>Generate a "dense" sparsity partition.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_jacobian_for_sparsity"></span>
+      <h3>
+          procedure, private ::
+  <strong>compute_jacobian_for_sparsity</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_jacobian_for_sparsity.html'>compute_jacobian_for_sparsity</a>(me, i, class_meths, x, jac)  
+</h3>
+    
+
+  <p>A separate version of <a href="../proc/compute_jacobian.html">compute_jacobian</a> to be used only when
+  computing the sparsity pattern in <a href="../proc/compute_sparsity_random_2.html">compute_sparsity_random_2</a>.
+  It uses <code>class_meths</code> and the sparsity dperts and bounds.</p><a href="../proc/compute_jacobian_for_sparsity.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+            <td>
+<p>the column being computed</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              type(<a href='meth_array.html'>meth_array</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>class_meths</strong></td>
+            <td>
+<p>set of finite diff methods to use</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>jac</strong></td>
+            <td>
+<p>sparse jacobian vector</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-resize_sparsity_vectors"></span>
+      <h3>
+          procedure, private ::
+  <strong>resize_sparsity_vectors</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/resize_sparsity_vectors.html'>resize_sparsity_vectors</a>(me, n_icol, n_irow, n_linear_icol, n_linear_irow, n_linear_vals)  
+</h3>
+    
+
+  <p>Resize the sparsity arrays after accumulating them.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_icol</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_irow</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_linear_icol</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_linear_irow</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_linear_vals</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-raise_exception"></span>
+      <h3>
+          procedure, private ::
+  <strong>raise_exception</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/raise_exception.html'>raise_exception</a>(me, istat, routine, error_msg)  
+</h3>
+    
+
+  <p>Raise an exception.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istat</strong></td>
+            <td>
+<p>error code.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>routine</strong></td>
+            <td>
+<p>the routine where the error was raised.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error_msg</strong></td>
+            <td>
+<p>error message string.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-clear_exceptions"></span>
+      <h3>
+          procedure, private ::
+  <strong>clear_exceptions</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/clear_exceptions.html'>clear_exceptions</a>(me)  
+</h3>
+    
+
+  <p>Clear all exceptions.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+      </section>
+
+    <section>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">type</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">numdiff_type</span>
+
+<span class="w">        </span><span class="c">!! base type for sparsity and Jacobian computations.</span>
+
+<span class="w">        </span><span class="k">private</span>
+
+<span class="k">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">exception_raised</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! if true, an exception has been raised</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">istat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">   </span><span class="c">!! a non-zero value will cause all routine to exit.</span>
+<span class="w">                               </span><span class="c">!! this can be set to `-1` by calling [[terminate]].</span>
+<span class="w">        </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error_msg</span><span class="w"> </span><span class="c">!! error message (if `istat/=0`)</span>
+
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">!! number of `x` variables</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">!! number of `f` functions</span>
+
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xlow</span><span class="w">  </span><span class="c">!! lower bounds on `x`</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xhigh</span><span class="w"> </span><span class="c">!! upper bounds on `x`</span>
+
+<span class="w">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"> </span><span class="c">!! if true, warning messages are printed</span>
+<span class="w">                                           </span><span class="c">!! to the `error_unit` for any errors.</span>
+
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="w">  </span><span class="c">!! chuck size for allocating the arrays (&gt;0)</span>
+
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">perturb_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="c">!! perturbation mode:</span>
+<span class="w">                                     </span><span class="c">!!</span>
+<span class="w">                                     </span><span class="c">!! **1** - perturbation is `dx=dpert`,</span>
+<span class="w">                                     </span><span class="c">!! **2** - perturbation is `dx=dpert*x`,</span>
+<span class="w">                                     </span><span class="c">!! **3** - perturbation is `dx=dpert*(1+x)`</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dpert</span><span class="w"> </span><span class="c">!! perturbation vector for `x`</span>
+
+<span class="w">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">partition_sparsity_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w">  </span><span class="c">!! to partition the sparsity pattern using [[dsm]]</span>
+<span class="w">        </span><span class="k">type</span><span class="p">(</span><span class="n">sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sparsity</span><span class="w">  </span><span class="c">!! the sparsity pattern</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xlow_for_sparsity</span><span class="w">  </span><span class="c">!! lower bounds on `x` for computing sparsity (optional)</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xhigh_for_sparsity</span><span class="w"> </span><span class="c">!! upper bounds on `x` for computing sparsity (optional)</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dpert_for_sparsity</span><span class="w"> </span><span class="c">!! perturbation vector for `x` when computing</span>
+<span class="w">                                                                </span><span class="c">!! sparsity for `sparsity_mode=4`</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">num_sparsity_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w">    </span><span class="c">!! for `sparsity_mode=4`, the number of jacobian</span>
+<span class="w">                                              </span><span class="c">!! evaluations used to estimate the sparsity pattern.</span>
+<span class="w">                                              </span><span class="c">!! See [[compute_sparsity_random_2]]</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sparsity_perturb_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="c">!! perturbation mode (if `sparsity_mode=4`):</span>
+<span class="w">                                              </span><span class="c">!!</span>
+<span class="w">                                              </span><span class="c">!! **1** - perturbation is `dx=dpert`,</span>
+<span class="w">                                              </span><span class="c">!! **2** - perturbation is `dx=dpert*x`,</span>
+<span class="w">                                              </span><span class="c">!! **3** - perturbation is `dx=dpert*(1+x)`</span>
+
+<span class="w">        </span><span class="c">! if computing the sparsity pattern, we also have an option to</span>
+<span class="w">        </span><span class="c">! compute the linear pattern, which indicates constant elements</span>
+<span class="w">        </span><span class="c">! of the jacobian. these elements don&#39;t need to be computed again.</span>
+<span class="w">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_linear_sparsity_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w">  </span><span class="c">!! to also compute the linear sparsity pattern</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">linear_sparsity_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">epsilon</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span><span class="w">    </span><span class="c">!! the equality tolerance for derivatives to</span>
+<span class="w">                                                             </span><span class="c">!! indicate a constant jacobian element (linear sparsity)</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">function_precision_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">epsilon</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span><span class="w"> </span><span class="c">!! the function precision. two functions values</span>
+<span class="w">                                                             </span><span class="c">!! that are the within this tolerance are</span>
+<span class="w">                                                             </span><span class="c">!! considered the same value. This is used</span>
+<span class="w">                                                             </span><span class="c">!! when estimating the sparsity pattern when</span>
+<span class="w">                                                             </span><span class="c">!! `sparsity_mode=2` in [[compute_sparsity_random]]</span>
+
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!! **1** = use `meth` (specified methods),</span>
+<span class="w">                            </span><span class="c">!! **2** = use `class` (specified class, method is selected on-the-fly).</span>
+<span class="w">        </span><span class="k">type</span><span class="p">(</span><span class="n">finite_diff_method</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">meth</span><span class="w">   </span><span class="c">!! the finite difference method to use</span>
+<span class="w">                                                                    </span><span class="c">!! compute the `n`th column of the Jacobian</span>
+<span class="w">                                                                    </span><span class="c">!! `size(n)`.  Either this or `class` is used</span>
+<span class="w">        </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">class</span><span class="w">  </span><span class="c">!! the class of method to use to</span>
+<span class="w">                                                   </span><span class="c">!! compute the `n`th column of the Jacobian</span>
+<span class="w">                                                   </span><span class="c">!! `size(n)`. Either this or `meth` is used</span>
+<span class="w">        </span><span class="k">type</span><span class="p">(</span><span class="n">meth_array</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">class_meths</span><span class="w"> </span><span class="c">!! array of methods for the specified classes.</span>
+<span class="w">                                                                 </span><span class="c">!! used with `class` when `mode=2`</span>
+
+<span class="w">        </span><span class="c">! parameters when using diff:</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-9_wp</span><span class="w"> </span><span class="c">!! tolerance parameter for [[diff]]</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_wp</span><span class="w">    </span><span class="c">!! tolerance parameter for [[diff]]</span>
+
+<span class="w">        </span><span class="k">type</span><span class="p">(</span><span class="n">function_cache</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cache</span><span class="w">    </span><span class="c">!! if using the function cache</span>
+
+<span class="w">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">use_diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! if we are using the Neville&#39;s process method,</span>
+<span class="w">                                      </span><span class="c">!! rather than finite differences</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">func</span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">problem_func</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
+<span class="w">            </span><span class="c">!! the user-defined function</span>
+
+<span class="w">        </span><span class="c">! these are required to be defined by the user:</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">func</span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_function</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
+<span class="w">            </span><span class="c">!! compute the user-defined function</span>
+<span class="w">            </span><span class="c">!! this can point to the `problem_func` or, if using</span>
+<span class="w">            </span><span class="c">!! the cache, it points to [[compute_function_with_cache]].</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">spars_f</span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_sparsity</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
+<span class="w">            </span><span class="c">!! for computing the sparsity pattern</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">info_f</span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">info_function</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
+<span class="w">            </span><span class="c">!! an optional function the user can define</span>
+<span class="w">            </span><span class="c">!! which is called when each column of the jacobian is computed.</span>
+<span class="w">            </span><span class="c">!! It can be used to perform any setup operations.</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">jacobian_f</span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jacobian_function</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
+<span class="w">            </span><span class="c">!! the low-level function called by [[compute_jacobian]]</span>
+<span class="w">            </span><span class="c">!! that actually computes the jacobian.</span>
+
+<span class="w">    </span><span class="k">contains</span>
+
+<span class="k">        private</span>
+
+<span class="k">        procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">initialize_numdiff</span><span class="w"> </span><span class="c">!! initialize the class</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">diff_initialize</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">initialize_numdiff_for_diff</span><span class="w"> </span><span class="c">!! initialize the class</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_jacobian</span><span class="w">              </span><span class="c">!! main routine to compute the Jacobian</span>
+<span class="w">                                                          </span><span class="c">!! using the selected options. It</span>
+<span class="w">                                                          </span><span class="c">!! returns the sparse (vector) form.</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_jacobian_dense</span><span class="w">        </span><span class="c">!! return the dense `size(m,n)`</span>
+<span class="w">                                                          </span><span class="c">!! matrix form of the Jacobian.</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_jacobian_times_vector</span><span class="w"> </span><span class="c">!! returns the product of the Jacobian</span>
+<span class="w">                                                          </span><span class="c">!! matrix and an input vector</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">destroy</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">destroy_numdiff_type</span><span class="w">  </span><span class="c">!! destroy the class</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_sparsity_pattern</span><span class="w">  </span><span class="c">!! print the sparsity pattern in vector form to a file</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_sparsity_matrix</span><span class="w">   </span><span class="c">!! print the sparsity pattern in matrix form to a file</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_sparsity_pattern</span><span class="w">    </span><span class="c">!! manually set the sparsity pattern</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">select_finite_diff_method</span><span class="w">  </span><span class="c">!! select a method in a specified class so</span>
+<span class="w">                                                       </span><span class="c">!! that the variable bounds are not violated</span>
+<span class="w">                                                       </span><span class="c">!! when by the perturbations.</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">select_finite_diff_method_for_partition_group</span><span class="w">  </span><span class="c">!! version of [[select_finite_diff_method]]</span>
+<span class="w">                                                                           </span><span class="c">!! for partitioned sparsity pattern.</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_numdiff_bounds</span><span class="w">  </span><span class="c">!! can be called to change the variable bounds.</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_sparsity_pattern</span><span class="w"> </span><span class="c">!! if the user needs to compute the sparsity pattern manually.</span>
+<span class="w">                                                     </span><span class="c">!! (otherwise it will be done the first time the Jacobian is computed)</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">get_sparsity_pattern</span><span class="w">     </span><span class="c">!! returns the sparsity pattern (if it is allocated)</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">terminate</span><span class="w"> </span><span class="c">!! can be called by user to stop the computation</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="c">!! to check if an exception was raised.</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">get_error_status</span><span class="w"> </span><span class="c">!! the status of error condition</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_dpert</span><span class="w"> </span><span class="c">!! change the `dpert` values</span>
+
+<span class="w">        </span><span class="c">! internal routines:</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">destroy_sparsity_pattern</span><span class="w">      </span><span class="c">!! destroy the sparsity pattern</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_perturb_vector</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_perturbation_vector</span><span class="w">   </span><span class="c">!! computes the variable perturbation factor</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_sparsity_perturbation_vector</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">perturb_x_and_compute_f</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">perturb_x_and_compute_f_partitioned</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_numdiff_sparsity_bounds</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_sparsity_mode</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">generate_dense_sparsity_partition</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_jacobian_for_sparsity</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">resize_sparsity_vectors</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">raise_exception</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">clear_exceptions</span>
+
+<span class="w">    </span><span class="k">end type </span><span class="n">numdiff_type</span>
+</pre></div>
+
+    </section>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
