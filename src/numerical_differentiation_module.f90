@@ -2957,7 +2957,7 @@
 
     ! make sure none are too small:
     where (dx<eps)
-        dx = eps
+        dx = dpert
     end where
 
     end subroutine compute_perturb_vector
