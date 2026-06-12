@@ -7,7 +7,7 @@
 !## Authors
 !   * J. Oliver, "An algorithm for numerical differentiation of a function
 !     of one real variable", Journal of Computational and Applied Mathematics
-!     6 (2) (1980) 145–160. [Algol 60 source in original paper]
+!     6 (2) (1980) 145-160. [Algol 60 source in original paper]
 !   * David Kahaner, Fortran 77 code from
 !     [NIST](ftp://math.nist.gov/pub/repository/diff/src/DIFF)
 !   * Jacob Williams : 2/17/2013 : Converted to modern Fortran.
@@ -834,7 +834,7 @@
         end if
       end if
       if (abs(h1) >= 32.0_wp*twoinf) h1 = h1/8.0_wp
-      if (16.0_wp*abs(h1) > abs(h0)) h1 = sign(h1,1.0_wp)*abs(h0)/16.0_wp
+      if (16.0_wp*abs(h1) > abs(h0)) h1 = sign(1.0_wp,h1)*abs(h0)/16.0_wp
       f001 = me%f(x0+h0-h1)
       if (me%stop) then
         ifail = -1
@@ -854,7 +854,7 @@
           end do
           h1 = 8.0_wp*h1
         else
-          h1 = sign(h1,1.0_wp)*abs(h0)/16.0_wp
+          h1 = sign(1.0_wp,h1)*abs(h0)/16.0_wp
         end if
       else
         if (256.0_wp*twoinf <= abs(h0)) then
@@ -868,9 +868,9 @@
               h1 = h1/2.0_wp
           end do
           h1 = 8.0_wp*h1
-          if (16.0_wp*abs(h1) > abs(h0)) h1 = sign(h1,1.0_wp)*abs(h0)/16.0_wp
+          if (16.0_wp*abs(h1) > abs(h0)) h1 = sign(1.0_wp,h1)*abs(h0)/16.0_wp
         else
-          h1 = sign(h1,1.0_wp)*abs(h0)/16.0_wp
+          h1 = sign(1.0_wp,h1)*abs(h0)/16.0_wp
         end if
       end if
     else

@@ -179,7 +179,7 @@
 
     implicit none
 
-    real(wp),dimension(:),intent(in)   :: vec         !! a vector of integers
+    real(wp),dimension(:),intent(in)   :: vec         !! a vector of reals
     integer,intent(in)                 :: chunk_size  !! chunk size for adding to arrays
     real(wp),dimension(:),allocatable  :: ivec_unique !! unique elements of `ivec`
 
