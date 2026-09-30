@@ -74,7 +74,7 @@
                         font_size       = 30, &
                         xlabel          = 'Finite Difference Perturbation Step Size $h$',&
                         ylabel          = 'Finite Difference Derivative Error',&
-                        title           = 'Derivative of $x + \sin(x)$ at $x=1$ '//real_kind_str,&
+                        title           = 'Derivative of $x + \\sin(x)$ at $x=1$ '//real_kind_str,&
                         legend          = .true., &
                         legend_fontsize = 10,&
                         usetex          = .true.)

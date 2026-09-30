@@ -56,7 +56,7 @@
 
     class(function_cache),intent(inout) :: me
     integer,intent(in) :: isize !! the size of the hash table
-    integer,intent(in) :: n     !! number of independant variables (x)
+    integer,intent(in) :: n     !! number of independent variables (x)
     integer,intent(in) :: m     !! number of functions (f)
     integer,intent(in),optional :: chunk_size  !! chunk size to speed up reallocation
                                                !! of arrays. A good value is a guess for
@@ -127,7 +127,7 @@
     implicit none
 
     class(function_cache),intent(inout)      :: me
-    real(wp),dimension(:),intent(in)         :: x      !! independant variable vector
+    real(wp),dimension(:),intent(in)         :: x      !! independent variable vector
     integer,dimension(:),intent(in)          :: ifs    !! elements of `f` needed
     integer,intent(out)                      :: i      !! index in the hash table
     real(wp),dimension(:),intent(out)        :: f      !! `f(x)` from the cache (if it was found)
@@ -178,7 +178,7 @@
 
     class(function_cache),intent(inout) :: me
     integer,intent(in)                  :: i    !! index in the hash table
-    real(wp),dimension(:),intent(in)    :: x    !! independant variable vector (dimension `n`)
+    real(wp),dimension(:),intent(in)    :: x    !! independent variable vector (dimension `n`)
     real(wp),dimension(:),intent(in)    :: f    !! function vector `f(x)` (dimension `m`)
     integer,dimension(:),intent(in)     :: ifs  !! elements of `f` to add (should all be `>0, <=m`)
 
