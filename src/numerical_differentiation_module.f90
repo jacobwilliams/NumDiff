@@ -2573,7 +2573,16 @@
 
     ! if we don't have a sparsity pattern yet then compute it:
     ! [also computes the indices vector]
-    if (.not. me%sparsity%sparsity_computed) call me%compute_sparsity(x)
+    if (.not. me%sparsity%sparsity_computed) then
+        if (.not. associated(me%compute_sparsity)) then
+            ! sparsity_mode=3, but set_sparsity_pattern was not called
+            call me%raise_exception(30,'compute_jacobian',&
+                                       'the sparsity pattern has not been set.')
+            return
+        end if
+        call me%compute_sparsity(x)
+        if (me%exception_raised) return ! check for exceptions
+    end if
     if (me%sparsity%num_nonzero_elements==0) return
 
     ! size the jacobian vector:
