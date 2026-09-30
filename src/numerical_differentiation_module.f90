@@ -168,6 +168,9 @@
         integer,dimension(:),allocatable :: class  !! the class of method to use to
                                                    !! compute the `n`th column of the Jacobian
                                                    !! `size(n)`. Either this or `meth` is used
+        type(meth_array) :: sparsity_class_meths  !! the 2-point methods used to compute the
+                                                  !! sparsity pattern when `sparsity_mode=4`
+                                                  !! (set once by [[set_sparsity_mode]])
         type(meth_array),dimension(:),allocatable :: class_meths !! array of methods for the specified classes.
                                                                  !! used with `class` when `mode=2`
 
@@ -1206,6 +1209,8 @@
         call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
     case(4)  ! compute 2-point jacobian in specified number of points
         me%compute_sparsity => compute_sparsity_random_2
+        ! 2-point methods (simple differences) are used for the sparsity jacobians:
+        me%sparsity_class_meths = get_all_methods_in_class(2)
         ! in this case, we have the option of specifying
         ! separate bounds for computing the sparsity:
         call me%set_numdiff_sparsity_bounds(xlow_for_sparsity,xhigh_for_sparsity)
@@ -1457,9 +1462,19 @@
         me%mode = 2
         me%class = classes
         allocate(me%class_meths(n))
-        do i=1,n
-            me%class_meths(i) = get_all_methods_in_class(me%class(i))
-        end do
+        ! look up each distinct class only once:
+        block
+            integer,dimension(:),allocatable :: unique_classes !! the distinct values in `classes`
+            type(meth_array) :: meths !! the methods for one class
+            integer :: k !! counter
+            unique_classes = unique(me%class,chunk_size=10)
+            do k = 1, size(unique_classes)
+                meths = get_all_methods_in_class(unique_classes(k))
+                do i=1,n
+                    if (me%class(i)==unique_classes(k)) me%class_meths(i) = meths
+                end do
+            end do
+        end block
         if (me%partition_sparsity_pattern) then
             call me%raise_exception(11,'initialize_numdiff',&
                                         'when using partitioned sparsity pattern, '//&
@@ -2144,7 +2159,6 @@
     integer :: n_linear_icol  !! `linear_icol` size counter
     integer :: n_linear_irow  !! `linear_irow` size counter
     integer :: n_linear_vals  !! `linear_vals` size counter
-    type(meth_array) :: class_meths  !! set of finite diff methods to use
     real(wp),dimension(:),allocatable :: jac !! array of jacobian element values
     integer :: info !! status output form [[dsm]]
     real(wp),dimension(:,:),allocatable :: f0 !! function value at each `xp` point
@@ -2199,9 +2213,6 @@
     allocate(f0_computed(me%num_sparsity_points))
     f0_computed = .false.
 
-    ! we will use 2-point methods (simple differences):
-    class_meths = get_all_methods_in_class(2)
-
     do icol = 1, me%n  ! column loop
 
         ! size the array:
@@ -2211,7 +2222,7 @@
         ! compute the ith column of the jacobian:
         me%sparsity%icol = [(icol, j=1,me%m)]
         do i = 1, me%num_sparsity_points
-            call me%compute_jacobian_for_sparsity( icol, class_meths, xp(:,i), jac_array(i)%jac, &
+            call me%compute_jacobian_for_sparsity( icol, xp(:,i), jac_array(i)%jac, &
                                                    f0(:,i), f0_computed(i) )
             if (me%exception_raised) return ! check for exceptions
         end do
@@ -2582,19 +2593,18 @@
 !>
 !  A separate version of [[compute_jacobian]] to be used only when
 !  computing the sparsity pattern in [[compute_sparsity_random_2]].
-!  It uses `class_meths` and the sparsity dperts and bounds.
+!  It uses `sparsity_class_meths` and the sparsity dperts and bounds.
 !
 !@note Based on [[compute_jacobian]]. The index manipulation here could be
 !      greatly simplified, since we realdy know we are computed all the
 !      elements in one column.
 
-    subroutine compute_jacobian_for_sparsity(me,i,class_meths,x,jac,f0,f0_computed)
+    subroutine compute_jacobian_for_sparsity(me,i,x,jac,f0,f0_computed)
 
     implicit none
 
     class(numdiff_type),intent(inout)             :: me
     integer,intent(in)                            :: i           !! the column being computed
-    type(meth_array),intent(in)                   :: class_meths !! set of finite diff methods to use
     real(wp),dimension(:),intent(in)              :: x           !! vector of variables (size `n`)
     real(wp),dimension(:),allocatable,intent(out) :: jac         !! sparse jacobian vector
     real(wp),dimension(me%m),intent(inout)        :: f0          !! function value at `x`
@@ -2634,7 +2644,7 @@
         nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
 
         call me%select_finite_diff_method(x(i),me%xlow_for_sparsity(i),me%xhigh_for_sparsity(i),&
-                                            dx(i),class_meths,fd,status_ok)
+                                            dx(i),me%sparsity_class_meths,fd,status_ok)
         if (.not. status_ok) then
             if (me%print_messages) then
                 write(error_unit,'(A,1X,I5)') &
