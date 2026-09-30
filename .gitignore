@@ -46,3 +46,8 @@ x64
 # test artifacts:
 /*.pdf
 /*.py
+/coverage
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml

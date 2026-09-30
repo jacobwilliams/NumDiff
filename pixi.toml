@@ -1,0 +1,17 @@
+[workspace]
+authors = ["Jacob Williams <jacobwilliams@users.noreply.github.com>"]
+channels = ["conda-forge"]
+name = "NumDiff"
+platforms = ["osx-arm64"]
+version = "1.8.2"
+
+[tasks]
+
+[dependencies]
+gfortran = "15.*"
+fpm = ">=0.13.0,<0.14"
+python = ">=3.14.7,<3.15"
+graphviz = ">=14.1.2,<15"
+ford = ">=7.0.13,<8"
+matplotlib = ">=3.11.2,<4"
+lcov = ">=2.5,<3"

@@ -1,8 +1,8 @@
 name = "NumDiff"
-version = "1.5.1"
+version = "1.8.2"
 author = "Jacob Williams"
 maintainer = "Jacob Williams"
-copyright = "Copyright (c) 2016-2022, Jacob Williams"
+copyright = "Copyright (c) 2016-2026, Jacob Williams"
 license = "BSD-3"
 description = "Modern Fortran Numerical Differentiation Library"
 homepage = "https://github.com/jacobwilliams/NumDiff"
@@ -14,24 +14,9 @@ source-dir = "src"
 library = true
 
 [build]
-auto-executables = false
-auto-examples = false
-auto-tests = false
+auto-executables = true
+auto-examples = true
+auto-tests = true
 
 [dev-dependencies]
 pyplot-fortran = { git="https://github.com/jacobwilliams/pyplot-fortran.git", tag = "3.2.1" }
-
-[[test]]
-name = "dsm_test"
-source-dir = "tests"
-main = "dsm_test.f90"
-
-[[test]]
-name = "test1"
-source-dir = "tests"
-main = "test1.f90"
-
-[[test]]
-name = "test2"
-source-dir = "tests"
-main = "test2.f90"

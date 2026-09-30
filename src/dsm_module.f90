@@ -94,8 +94,10 @@
                                                     !! note that `jpntr(n+1)-1` is then the number of non-zero
                                                     !! elements of the matrix `a`.
 
-    integer,dimension(max(m,6*n)) :: iwa     !! an integer work array
+    integer,dimension(:),allocatable :: iwa !! an integer work array
     integer :: i , ir , j , jp , k , maxclq , nnz , numgrp
+
+    allocate(iwa(max(m,6*n)))
 
     !  check the input data.
 
@@ -395,7 +397,9 @@
     do ir = 1 , m
         maxlst = maxlst + (Ipntr(ir+1)-Ipntr(ir))**2
     enddo
-    maxlst = maxlst/n
+    ! at least one column must be examined, otherwise
+    ! jcol would not be set in the selection loop below:
+    maxlst = max(1,maxlst/n)
     Maxclq = 0
     numord = 1
 

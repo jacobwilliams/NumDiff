@@ -7,6 +7,8 @@
 
     use numdiff_kinds_module
 
+    implicit none
+
     integer,parameter :: max_size_for_insertion_sort = 20 !! max size for using insertion sort.
 
     private
@@ -48,7 +50,8 @@
     integer,intent(inout)       :: n           !! counter for last element added to `vec`.
                                                !! must be initialized to `size(vec)`
                                                !! (or 0 if not allocated) before first call
-    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size (>0)
+    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size
+                                               !! (values <1 are treated as 1)
     integer,intent(in),optional :: val         !! the value to add to `vec`
     logical,intent(in),optional :: finished    !! set to true to return `vec`
                                                !! as its correct size (`n`)
@@ -59,14 +62,14 @@
         if (allocated(vec)) then
             if (n==size(vec)) then
                 ! have to add another chunk:
-                allocate(tmp(size(vec)+chunk_size))
+                allocate(tmp(size(vec)+max(1,chunk_size)))
                 tmp(1:size(vec)) = vec
                 call move_alloc(tmp,vec)
             end if
             n = n + 1
         else
             ! the first element:
-            allocate(vec(chunk_size))
+            allocate(vec(max(1,chunk_size)))
             n = 1
         end if
         vec(n) = val
@@ -97,7 +100,8 @@
     integer,intent(inout)       :: n           !! counter for last element added to `vec`.
                                                !! must be initialized to `size(vec)`
                                                !! (or 0 if not allocated) before first call
-    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size (>0)
+    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size
+                                               !! (values <1 are treated as 1)
     real(wp),intent(in),optional :: val        !! the value to add to `vec`
     logical,intent(in),optional :: finished    !! set to true to return `vec`
                                                !! as its correct size (`n`)
@@ -108,14 +112,14 @@
         if (allocated(vec)) then
             if (n==size(vec)) then
                 ! have to add another chunk:
-                allocate(tmp(size(vec)+chunk_size))
+                allocate(tmp(size(vec)+max(1,chunk_size)))
                 tmp(1:size(vec)) = vec
                 call move_alloc(tmp,vec)
             end if
             n = n + 1
         else
             ! the first element:
-            allocate(vec(chunk_size))
+            allocate(vec(max(1,chunk_size)))
             n = 1
         end if
         vec(n) = val
@@ -394,7 +398,7 @@
 
 !*******************************************************************************
 !>
-!  Swap two integer values.
+!  Swap two real values.
 
     pure elemental subroutine swap_real(i1,i2)
 
@@ -415,18 +419,31 @@
 !*******************************************************************************
 !>
 !  Returns true if the values in the array are the same
-!  (to within the specified absolute tolerance).
+!  (to within the specified absolute or relative tolerance).
+!
+!  For the relative test, the tolerance is scaled by the largest
+!  magnitude in `vals`, so a set of zeros is equal, and (for `tol<1`)
+!  any set containing both zero and a nonzero value is not.
 
-    pure function equal_within_tol(vals,tol) result (equal)
+    pure function equal_within_tol(vals,tol,relative) result (equal)
 
     implicit none
 
-    real(wp),dimension(:),intent(in) :: vals  !! a set of values
-    real(wp),intent(in)              :: tol   !! a positive tolerance value
-    logical                          :: equal !! true if they are equal
-                                              !! within the tolerance
+    real(wp),dimension(:),intent(in) :: vals     !! a set of values
+    real(wp),intent(in)              :: tol      !! a positive tolerance value
+    logical,intent(in),optional      :: relative !! if true, `tol` is relative
+                                                 !! [default is false: absolute]
+    logical                          :: equal    !! true if they are equal
+                                                 !! within the tolerance
 
-    equal = all ( abs(vals - vals(1)) <= abs(tol) )
+    real(wp) :: scale !! scale factor for the tolerance
+
+    scale = 1.0_wp
+    if (present(relative)) then
+        if (relative) scale = maxval(abs(vals))
+    end if
+
+    equal = all ( abs(vals - vals(1)) <= abs(tol)*scale )
 
     end function equal_within_tol
 !*******************************************************************************
@@ -444,6 +461,11 @@
 !         1   2   3
 !```
 !  returns: `[0.25308641972530865, 0.5061728394506173, 0.759259259175926]`.
+!
+!@note For `num_points` greater than about 80, the largest points are
+!      clamped to the upper bound, and the duplicates are removed, so
+!      fewer than `num_points` points are returned.
+!      [[numdiff_type]] limits `num_sparsity_points` to 50 for this reason.
 
     function divide_interval(num_points) result(points)
 

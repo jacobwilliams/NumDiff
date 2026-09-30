@@ -70,7 +70,7 @@
     me%m = m
 
     if (present(chunk_size)) then
-        me%chunk_size = chunk_size
+        me%chunk_size = max(1,chunk_size)
     else
         me%chunk_size = 100
     end if
@@ -95,7 +95,7 @@
     write(iunit,'(A)') ''
     write(iunit,'(A)') '------------------------'
     if (allocated(me%c)) then
-        do i = 1, size(me%c)
+        do i = lbound(me%c,1), ubound(me%c,1)  ! note: the table is 0-based
             if (allocated(me%c(i)%x)) then
                 write(iunit,'(A)') ''
                 write(iunit,'(A,1X,I10)') 'Entry ',i
