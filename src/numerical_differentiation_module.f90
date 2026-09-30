@@ -3039,9 +3039,15 @@
         real(wp)                        :: fx    !! derivative of `ir` function
                                                  !! w.r.t. `xval` variable
 
+        fx = 0.0_wp
+
         if (use_info) then
             icount = icount + 1
             call me%info_function([ic],icount,x)
+            if (me%exception_raised) then ! check for exceptions
+                call this%terminate() ! stop diff (it will return ifail=-1)
+                return
+            end if
         end if
 
         xp = x
@@ -3049,8 +3055,7 @@
         call me%compute_function(xp,fvec,funcs_to_compute=[ir])
 
         if (me%exception_raised) then ! check for exceptions
-            fx = 0.0_wp
-            call me%terminate()
+            call this%terminate() ! stop diff (it will return ifail=-1)
         else
             fx = fvec(ir)
         end if
