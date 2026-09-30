@@ -397,7 +397,9 @@
     do ir = 1 , m
         maxlst = maxlst + (Ipntr(ir+1)-Ipntr(ir))**2
     enddo
-    maxlst = maxlst/n
+    ! at least one column must be examined, otherwise
+    ! jcol would not be set in the selection loop below:
+    maxlst = max(1,maxlst/n)
     Maxclq = 0
     numord = 1
 
