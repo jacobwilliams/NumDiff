@@ -1651,6 +1651,17 @@
     allocate(me%ngrp(n))
     call me%get_partition_pattern(irow,icol)
 
+    if (size(irow)==0) then
+        ! no elements (e.g., the functions do not depend on x),
+        ! so all the columns can be in one group:
+        ! [dsm does not accept an empty pattern]
+        me%maxgrp = 1
+        me%ngrp = 1
+        info = 1
+        call me%compute_group_index()
+        return
+    end if
+
     call dsm(m,n,size(irow),&
              irow,icol,&
              me%ngrp,me%maxgrp,&
