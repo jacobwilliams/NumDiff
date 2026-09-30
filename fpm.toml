@@ -19,4 +19,4 @@ auto-examples = true
 auto-tests = true
 
 [dev-dependencies]
-pyplot-fortran = { git="https://github.com/jacobwilliams/pyplot-fortran.git", tag = "3.2.1" }
+pyplot-fortran = { git="https://github.com/jacobwilliams/pyplot-fortran.git", tag = "3.8.0" }
