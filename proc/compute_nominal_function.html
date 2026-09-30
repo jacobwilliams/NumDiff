@@ -1,0 +1,796 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>compute_nominal_function &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>compute_nominal_function
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.2% of total for procedures.">8 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">compute_nominal_function</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/compute_nominal_function.html#src">compute_nominal_function</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine compute_nominal_function(me, x, f0)  
+</h2>
+    
+
+    <p>Compute the function at the nominal (unperturbed) <code>x</code> for all the rows
+in the sparsity pattern. This is done once per Jacobian evaluation
+so it can be reused by every column (or group) whose finite difference
+formula includes <script type="math/tex"> f(x) </script>.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/numdiff_type.html'>numdiff_type</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~38"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~16"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>nominal variable vector</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f0~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>f0</strong></td>
+            <td>
+                <p>function value at <code>x</code>
+(only the rows in the
+sparsity pattern are computed)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_nominal_function~~CallsGraph Pages: 1 -->
+<svg id="proccompute_nominal_functionCallsGraph" width="641pt" height="110pt"
+ viewBox="0.00 0.00 641.00 110.08" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_nominal_function~~CallsGraph" class="graph" transform="scale(0.7 0.7) rotate(0) translate(4 154)">
+<title>proc~~compute_nominal_function~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-154 916,-154 916,4 -4,4"/>
+<!-- proc~compute_nominal_function -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node1" class="node">
+<title>proc~compute_nominal_function</title>
+<polygon fill="none" stroke="black" points="237,-87 0,-87 0,-63 237,-63 237,-87"/>
+<text text-anchor="middle" x="118.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%compute_nominal_function</text>
+</g>
+<!-- interface~unique -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node2" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node2"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="327,-87 273,-87 273,-63 327,-63 327,-87"/>
+<text text-anchor="middle" x="300" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_nominal_function&#45;&gt;interface~unique -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge1" class="edge">
+<title>proc~compute_nominal_function&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M237.23,-75C246.31,-75 254.97,-75 262.78,-75"/>
+<polygon fill="#000000" stroke="#000000" points="262.86,-78.5 272.86,-75 262.86,-71.5 262.86,-78.5"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node3" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node3"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="434.5,-108 366.5,-108 366.5,-84 434.5,-84 434.5,-108"/>
+<text text-anchor="middle" x="400.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge2" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M327.14,-80.57C336.11,-82.49 346.42,-84.68 356.38,-86.81"/>
+<polygon fill="#000000" stroke="#000000" points="355.65,-90.23 366.16,-88.89 357.11,-83.38 355.65,-90.23"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node4" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node4"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="438,-66 363,-66 363,-42 438,-42 438,-66"/>
+<text text-anchor="middle" x="400.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge3" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M327.14,-69.43C335.09,-67.73 344.08,-65.82 352.95,-63.92"/>
+<polygon fill="#000000" stroke="#000000" points="353.81,-67.32 362.86,-61.81 352.35,-60.47 353.81,-67.32"/>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node5" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node5"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="566,-108 475,-108 475,-84 566,-84 566,-108"/>
+<text text-anchor="middle" x="520.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge4" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M434.68,-96C443.99,-96 454.36,-96 464.57,-96"/>
+<polygon fill="#000000" stroke="#000000" points="464.68,-99.5 474.68,-96 464.68,-92.5 464.68,-99.5"/>
+</g>
+<!-- interface~sort_ascending -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node6" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node6"><a xlink:href="../interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="567,-66 474,-66 474,-42 567,-42 567,-66"/>
+<text text-anchor="middle" x="520.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge5" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M434.68,-84.19C447.52,-79.62 462.39,-74.33 476.05,-69.46"/>
+<polygon fill="#000000" stroke="#000000" points="477.5,-72.66 485.75,-66.01 475.15,-66.07 477.5,-72.66"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge6" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M435.31,-66.04C448.03,-70.56 462.66,-75.77 476.13,-80.56"/>
+<polygon fill="#000000" stroke="#000000" points="475.09,-83.91 485.68,-83.96 477.43,-77.31 475.09,-83.91"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge7" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M438.19,-54C446.26,-54 454.99,-54 463.62,-54"/>
+<polygon fill="#000000" stroke="#000000" points="463.67,-57.5 473.67,-54 463.67,-50.5 463.67,-57.5"/>
+</g>
+<!-- proc~expand_vector_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node7" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node7"><a xlink:href="../proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="716.5,-150 607.5,-150 607.5,-126 716.5,-126 716.5,-150"/>
+<text text-anchor="middle" x="662" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge8" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M561.48,-108.04C576.94,-112.69 594.82,-118.07 611.11,-122.98"/>
+<polygon fill="#000000" stroke="#000000" points="610.43,-126.43 621.02,-125.96 612.45,-119.73 610.43,-126.43"/>
+</g>
+<!-- proc~expand_vector_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node8" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node8"><a xlink:href="../proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="720,-108 604,-108 604,-84 720,-84 720,-108"/>
+<text text-anchor="middle" x="662" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge9" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M566.02,-96C574.86,-96 584.33,-96 593.74,-96"/>
+<polygon fill="#000000" stroke="#000000" points="593.89,-99.5 603.89,-96 593.89,-92.5 593.89,-99.5"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node9" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node9"><a xlink:href="../proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="718,-66 606,-66 606,-42 718,-42 718,-66"/>
+<text text-anchor="middle" x="662" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge10" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M567.18,-54C576.38,-54 586.21,-54 595.93,-54"/>
+<polygon fill="#000000" stroke="#000000" points="595.98,-57.5 605.98,-54 595.98,-50.5 595.98,-57.5"/>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node10" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node10"><a xlink:href="../proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="721,-24 603,-24 603,0 721,0 721,-24"/>
+<text text-anchor="middle" x="662" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge11" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M561.48,-41.96C576.94,-37.31 594.82,-31.93 611.11,-27.02"/>
+<polygon fill="#000000" stroke="#000000" points="612.45,-30.27 621.02,-24.04 610.43,-23.57 612.45,-30.27"/>
+</g>
+<!-- interface~swap -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node11" class="node">
+<title>interface~swap</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node11"><a xlink:href="../interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="811,-45 757,-45 757,-21 811,-21 811,-45"/>
+<text text-anchor="middle" x="784" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_int&#45;&gt;interface~swap -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge12" class="edge">
+<title>proc~sort_ascending_int&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M718.08,-44.36C727.93,-42.64 737.96,-40.88 747.09,-39.28"/>
+<polygon fill="#000000" stroke="#000000" points="747.72,-42.73 756.97,-37.56 746.51,-35.83 747.72,-42.73"/>
+</g>
+<!-- proc~sort_ascending_real&#45;&gt;interface~swap -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge13" class="edge">
+<title>proc~sort_ascending_real&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M721.24,-22.19C730.06,-23.74 738.93,-25.29 747.08,-26.71"/>
+<polygon fill="#000000" stroke="#000000" points="746.52,-30.17 756.98,-28.45 747.73,-23.27 746.52,-30.17"/>
+</g>
+<!-- proc~swap_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node12" class="node">
+<title>proc~swap_int</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node12"><a xlink:href="../proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="908.5,-66 850.5,-66 850.5,-42 908.5,-42 908.5,-66"/>
+<text text-anchor="middle" x="879.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge14" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M811.04,-38.85C820.11,-40.89 830.47,-43.21 840.31,-45.42"/>
+<polygon fill="#000000" stroke="#000000" points="839.78,-48.89 850.3,-47.67 841.31,-42.06 839.78,-48.89"/>
+</g>
+<!-- proc~swap_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_node13" class="node">
+<title>proc~swap_real</title>
+<g id="a_proc~~compute_nominal_function~~CallsGraph_node13"><a xlink:href="../proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="912,-24 847,-24 847,0 912,0 912,-24"/>
+<text text-anchor="middle" x="879.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="proc~~compute_nominal_function~~CallsGraph_edge15" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M811.04,-27.15C819.13,-25.33 828.26,-23.28 837.12,-21.29"/>
+<polygon fill="#000000" stroke="#000000" points="837.96,-24.69 846.94,-19.09 836.42,-17.86 837.96,-24.69"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_nominal_functionCallsGraph = svgPanZoom('#proccompute_nominal_functionCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_nominal_function~~CalledByGraph Pages: 1 -->
+<svg id="proccompute_nominal_functionCalledByGraph" width="641pt" height="69pt"
+ viewBox="0.00 0.00 641.00 69.49" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_nominal_function~~CalledByGraph" class="graph" transform="scale(0.6 0.6) rotate(0) translate(4 112)">
+<title>proc~~compute_nominal_function~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 1066,-112 1066,4 -4,4"/>
+<!-- proc~compute_nominal_function -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node1" class="node">
+<title>proc~compute_nominal_function</title>
+<polygon fill="none" stroke="black" points="1062,-45 825,-45 825,-21 1062,-21 1062,-45"/>
+<text text-anchor="middle" x="943.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%compute_nominal_function</text>
+</g>
+<!-- proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node2" class="node">
+<title>proc~perturb_x_and_compute_f</title>
+<g id="a_proc~~compute_nominal_function~~CalledByGraph_node2"><a xlink:href="../proc/perturb_x_and_compute_f.html" xlink:title="numdiff_type%perturb_x_and_compute_f">
+<polygon fill="#d9534f" stroke="#d9534f" points="757,-66 527,-66 527,-42 757,-42 757,-66"/>
+<text text-anchor="middle" x="642" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_edge1" class="edge">
+<title>proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M757.08,-46C775.86,-44.68 795.43,-43.31 814.52,-41.97"/>
+<polygon fill="#000000" stroke="#000000" points="815.03,-45.45 824.76,-41.26 814.54,-38.46 815.03,-45.45"/>
+</g>
+<!-- proc~perturb_x_and_compute_f_partitioned -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node3" class="node">
+<title>proc~perturb_x_and_compute_f_partitioned</title>
+<g id="a_proc~~compute_nominal_function~~CalledByGraph_node3"><a xlink:href="../proc/perturb_x_and_compute_f_partitioned.html" xlink:title="numdiff_type%perturb_x_and_compute_f_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="789,-24 495,-24 495,0 789,0 789,-24"/>
+<text text-anchor="middle" x="642" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f_partitioned&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_edge2" class="edge">
+<title>proc~perturb_x_and_compute_f_partitioned&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M789.24,-22.25C797.69,-22.85 806.15,-23.44 814.51,-24.03"/>
+<polygon fill="#000000" stroke="#000000" points="814.45,-27.53 824.67,-24.74 814.94,-20.55 814.45,-27.53"/>
+</g>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node4" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<g id="a_proc~~compute_nominal_function~~CalledByGraph_node4"><a xlink:href="../proc/compute_jacobian_for_sparsity.html" xlink:title="numdiff_type%compute_jacobian_for_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="459,-108 202,-108 202,-84 459,-84 459,-108"/>
+<text text-anchor="middle" x="330.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_jacobian_for_sparsity</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_edge3" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M420.19,-83.96C458.4,-78.78 503.21,-72.7 542.45,-67.37"/>
+<polygon fill="#000000" stroke="#000000" points="543.13,-70.81 552.56,-66 542.18,-63.88 543.13,-70.81"/>
+</g>
+<!-- proc~compute_jacobian_partitioned -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node5" class="node">
+<title>proc~compute_jacobian_partitioned</title>
+<g id="a_proc~~compute_nominal_function~~CalledByGraph_node5"><a xlink:href="../proc/compute_jacobian_partitioned.html" xlink:title="compute_jacobian_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="418,-24 243,-24 243,0 418,0 418,-24"/>
+<text text-anchor="middle" x="330.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~perturb_x_and_compute_f_partitioned -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_edge5" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~perturb_x_and_compute_f_partitioned</title>
+<path fill="none" stroke="#000000" d="M418.12,-12C438.92,-12 461.77,-12 484.66,-12"/>
+<polygon fill="#000000" stroke="#000000" points="484.82,-15.5 494.82,-12 484.82,-8.5 484.82,-15.5"/>
+</g>
+<!-- proc~compute_jacobian_standard -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node6" class="node">
+<title>proc~compute_jacobian_standard</title>
+<g id="a_proc~~compute_nominal_function~~CalledByGraph_node6"><a xlink:href="../proc/compute_jacobian_standard.html" xlink:title="compute_jacobian_standard">
+<polygon fill="#d9534f" stroke="#d9534f" points="412,-66 249,-66 249,-42 412,-42 412,-66"/>
+<text text-anchor="middle" x="330.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_standard</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_standard&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_edge4" class="edge">
+<title>proc~compute_jacobian_standard&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M412.01,-54C443.88,-54 481.25,-54 516.46,-54"/>
+<polygon fill="#000000" stroke="#000000" points="516.81,-57.5 526.81,-54 516.81,-50.5 516.81,-57.5"/>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_node7" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~compute_nominal_function~~CalledByGraph_node7"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="166,-108 0,-108 0,-84 166,-84 166,-108"/>
+<text text-anchor="middle" x="83" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_nominal_function~~CalledByGraph_edge6" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity</title>
+<path fill="none" stroke="#000000" d="M166.09,-96C174.4,-96 183,-96 191.7,-96"/>
+<polygon fill="#000000" stroke="#000000" points="191.95,-99.5 201.95,-96 191.95,-92.5 191.95,-99.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_nominal_functionCalledByGraph = svgPanZoom('#proccompute_nominal_functionCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">compute_nominal_function</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f0</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w">   </span><span class="c">!! nominal variable vector</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">f0</span><span class="w">  </span><span class="c">!! function value at `x`</span>
+<span class="w">                                                 </span><span class="c">!! (only the rows in the</span>
+<span class="w">                                                 </span><span class="c">!! sparsity pattern are computed)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f0</span><span class="p">,</span><span class="n">unique</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">irow</span><span class="p">,</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="p">))</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">compute_nominal_function</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

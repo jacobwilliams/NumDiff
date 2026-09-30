@@ -1,0 +1,826 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>compute_jacobian_partitioned &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>compute_jacobian_partitioned
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 2.2% of total for procedures.">72 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">compute_jacobian_partitioned</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/compute_jacobian_partitioned.html#src">compute_jacobian_partitioned</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine compute_jacobian_partitioned(me, x, dx, jac, fx)  
+</h2>
+    
+
+    <p>Compute the Jacobian using finite differences,
+(using the partitioned sparsity pattern to compute multiple columns
+at a time).</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~44"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~22"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dx~9"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+                <p>absolute perturbation (&gt;0) for each variable</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jac~9"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>jac</strong></td>
+            <td>
+                <p>sparse jacobian vector</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fx~8"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>fx</strong></td>
+            <td>
+                <p>function value at <code>x</code>, if already known</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_jacobian_partitioned~~CallsGraph Pages: 1 -->
+<svg id="proccompute_jacobian_partitionedCallsGraph" width="641pt" height="86pt"
+ viewBox="0.00 0.00 641.00 85.58" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph" class="graph" transform="scale(0.43 0.43) rotate(0) translate(4 196)">
+<title>proc~~compute_jacobian_partitioned~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-196 1494,-196 1494,4 -4,4"/>
+<!-- proc~compute_jacobian_partitioned -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node1" class="node">
+<title>proc~compute_jacobian_partitioned</title>
+<polygon fill="none" stroke="black" points="175,-108 0,-108 0,-84 175,-84 175,-108"/>
+<text text-anchor="middle" x="87.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50">compute_jacobian_partitioned</text>
+</g>
+<!-- proc~columns_in_partition_group -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node2" class="node">
+<title>proc~columns_in_partition_group</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node2"><a xlink:href="../proc/columns_in_partition_group.html" xlink:title="sparsity_pattern%columns_in_partition_group">
+<polygon fill="#d9534f" stroke="#d9534f" points="503.5,-192 249.5,-192 249.5,-168 503.5,-168 503.5,-192"/>
+<text text-anchor="middle" x="376.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%columns_in_partition_group</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~columns_in_partition_group -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge1" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~columns_in_partition_group</title>
+<path fill="none" stroke="#000000" d="M107.13,-108.21C130.41,-122.84 171.94,-146.88 211,-159 220.08,-161.82 229.56,-164.26 239.18,-166.37"/>
+<polygon fill="#000000" stroke="#000000" points="238.74,-169.86 249.24,-168.46 240.16,-163 238.74,-169.86"/>
+</g>
+<!-- proc~init_xwork -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node3" class="node">
+<title>proc~init_xwork</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node3"><a xlink:href="../proc/init_xwork.html" xlink:title="numdiff_type%init_xwork">
+<polygon fill="#d9534f" stroke="#d9534f" points="449,-150 304,-150 304,-126 449,-126 449,-150"/>
+<text text-anchor="middle" x="376.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%init_xwork</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~init_xwork -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge2" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~init_xwork</title>
+<path fill="none" stroke="#000000" d="M155.49,-108.02C173.49,-111.1 192.97,-114.3 211,-117 237.89,-121.02 267.33,-124.93 293.77,-128.27"/>
+<polygon fill="#000000" stroke="#000000" points="293.39,-131.75 303.75,-129.52 294.26,-124.8 293.39,-131.75"/>
+</g>
+<!-- proc~perturb_x_and_compute_f_partitioned -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node4" class="node">
+<title>proc~perturb_x_and_compute_f_partitioned</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node4"><a xlink:href="../proc/perturb_x_and_compute_f_partitioned.html" xlink:title="numdiff_type%perturb_x_and_compute_f_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="523.5,-108 229.5,-108 229.5,-84 523.5,-84 523.5,-108"/>
+<text text-anchor="middle" x="376.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~perturb_x_and_compute_f_partitioned -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge3" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~perturb_x_and_compute_f_partitioned</title>
+<path fill="none" stroke="#000000" d="M175.39,-96C189.33,-96 204.12,-96 219.1,-96"/>
+<polygon fill="#000000" stroke="#000000" points="219.49,-99.5 229.49,-96 219.49,-92.5 219.49,-99.5"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node5" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node5"><a xlink:href="../proc/raise_exception.html" xlink:title="numdiff_type%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="464,-66 289,-66 289,-42 464,-42 464,-66"/>
+<text text-anchor="middle" x="376.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~raise_exception -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge4" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M155.49,-83.98C173.49,-80.9 192.97,-77.7 211,-75 232.85,-71.73 256.39,-68.54 278.63,-65.66"/>
+<polygon fill="#000000" stroke="#000000" points="279.28,-69.11 288.75,-64.37 278.39,-62.17 279.28,-69.11"/>
+</g>
+<!-- proc~select_finite_diff_method_for_partition_group -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node6" class="node">
+<title>proc~select_finite_diff_method_for_partition_group</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node6"><a xlink:href="../proc/select_finite_diff_method_for_partition_group.html" xlink:title="numdiff_type%select_finite_diff_method_for_partition_group">
+<polygon fill="#d9534f" stroke="#d9534f" points="542,-24 211,-24 211,0 542,0 542,-24"/>
+<text text-anchor="middle" x="376.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%select_finite_diff_method_for_partition_group</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~select_finite_diff_method_for_partition_group -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge5" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~select_finite_diff_method_for_partition_group</title>
+<path fill="none" stroke="#000000" d="M107.13,-83.79C130.41,-69.16 171.94,-45.12 211,-33 219.29,-30.43 227.91,-28.17 236.67,-26.19"/>
+<polygon fill="#000000" stroke="#000000" points="237.55,-29.58 246.6,-24.06 236.09,-22.73 237.55,-29.58"/>
+</g>
+<!-- proc~compute_nominal_function -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node7" class="node">
+<title>proc~compute_nominal_function</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node7"><a xlink:href="../proc/compute_nominal_function.html" xlink:title="numdiff_type%compute_nominal_function">
+<polygon fill="#d9534f" stroke="#d9534f" points="815,-108 578,-108 578,-84 815,-84 815,-108"/>
+<text text-anchor="middle" x="696.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_nominal_function</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f_partitioned&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge6" class="edge">
+<title>proc~perturb_x_and_compute_f_partitioned&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M523.93,-96C538.49,-96 553.2,-96 567.55,-96"/>
+<polygon fill="#000000" stroke="#000000" points="567.93,-99.5 577.93,-96 567.93,-92.5 567.93,-99.5"/>
+</g>
+<!-- interface~unique -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node8" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node8"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="905,-108 851,-108 851,-84 905,-84 905,-108"/>
+<text text-anchor="middle" x="878" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_nominal_function&#45;&gt;interface~unique -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge7" class="edge">
+<title>proc~compute_nominal_function&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M815.23,-96C824.31,-96 832.97,-96 840.78,-96"/>
+<polygon fill="#000000" stroke="#000000" points="840.86,-99.5 850.86,-96 840.86,-92.5 840.86,-99.5"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node9" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node9"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1012.5,-129 944.5,-129 944.5,-105 1012.5,-105 1012.5,-129"/>
+<text text-anchor="middle" x="978.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge8" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M905.14,-101.57C914.11,-103.49 924.42,-105.68 934.38,-107.81"/>
+<polygon fill="#000000" stroke="#000000" points="933.65,-111.23 944.16,-109.89 935.11,-104.38 933.65,-111.23"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node10" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node10"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1016,-87 941,-87 941,-63 1016,-63 1016,-87"/>
+<text text-anchor="middle" x="978.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge9" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M905.14,-90.43C913.09,-88.73 922.08,-86.82 930.95,-84.92"/>
+<polygon fill="#000000" stroke="#000000" points="931.81,-88.32 940.86,-82.81 930.35,-81.47 931.81,-88.32"/>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node11" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node11"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="1144,-129 1053,-129 1053,-105 1144,-105 1144,-129"/>
+<text text-anchor="middle" x="1098.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge10" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1012.68,-117C1021.99,-117 1032.36,-117 1042.57,-117"/>
+<polygon fill="#000000" stroke="#000000" points="1042.68,-120.5 1052.68,-117 1042.68,-113.5 1042.68,-120.5"/>
+</g>
+<!-- interface~sort_ascending -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node12" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node12"><a xlink:href="../interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="1145,-87 1052,-87 1052,-63 1145,-63 1145,-87"/>
+<text text-anchor="middle" x="1098.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge11" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M1012.68,-105.19C1025.52,-100.62 1040.39,-95.33 1054.05,-90.46"/>
+<polygon fill="#000000" stroke="#000000" points="1055.5,-93.66 1063.75,-87.01 1053.15,-87.07 1055.5,-93.66"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge12" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1013.31,-87.04C1026.03,-91.56 1040.66,-96.77 1054.13,-101.56"/>
+<polygon fill="#000000" stroke="#000000" points="1053.09,-104.91 1063.68,-104.96 1055.43,-98.31 1053.09,-104.91"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge13" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M1016.19,-75C1024.26,-75 1032.99,-75 1041.62,-75"/>
+<polygon fill="#000000" stroke="#000000" points="1041.67,-78.5 1051.67,-75 1041.67,-71.5 1041.67,-78.5"/>
+</g>
+<!-- proc~expand_vector_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node13" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node13"><a xlink:href="../proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1294.5,-171 1185.5,-171 1185.5,-147 1294.5,-147 1294.5,-171"/>
+<text text-anchor="middle" x="1240" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge14" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1139.48,-129.04C1154.94,-133.69 1172.82,-139.07 1189.11,-143.98"/>
+<polygon fill="#000000" stroke="#000000" points="1188.43,-147.43 1199.02,-146.96 1190.45,-140.73 1188.43,-147.43"/>
+</g>
+<!-- proc~expand_vector_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node14" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node14"><a xlink:href="../proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1298,-129 1182,-129 1182,-105 1298,-105 1298,-129"/>
+<text text-anchor="middle" x="1240" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge15" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1144.02,-117C1152.86,-117 1162.33,-117 1171.74,-117"/>
+<polygon fill="#000000" stroke="#000000" points="1171.89,-120.5 1181.89,-117 1171.89,-113.5 1171.89,-120.5"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node15" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node15"><a xlink:href="../proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1296,-87 1184,-87 1184,-63 1296,-63 1296,-87"/>
+<text text-anchor="middle" x="1240" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge16" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1145.18,-75C1154.38,-75 1164.21,-75 1173.93,-75"/>
+<polygon fill="#000000" stroke="#000000" points="1173.98,-78.5 1183.98,-75 1173.98,-71.5 1173.98,-78.5"/>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node16" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node16"><a xlink:href="../proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1299,-45 1181,-45 1181,-21 1299,-21 1299,-45"/>
+<text text-anchor="middle" x="1240" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge17" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1139.48,-62.96C1154.94,-58.31 1172.82,-52.93 1189.11,-48.02"/>
+<polygon fill="#000000" stroke="#000000" points="1190.45,-51.27 1199.02,-45.04 1188.43,-44.57 1190.45,-51.27"/>
+</g>
+<!-- interface~swap -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node17" class="node">
+<title>interface~swap</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node17"><a xlink:href="../interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="1389,-66 1335,-66 1335,-42 1389,-42 1389,-66"/>
+<text text-anchor="middle" x="1362" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_int&#45;&gt;interface~swap -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge18" class="edge">
+<title>proc~sort_ascending_int&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1296.08,-65.36C1305.93,-63.64 1315.96,-61.88 1325.09,-60.28"/>
+<polygon fill="#000000" stroke="#000000" points="1325.72,-63.73 1334.97,-58.56 1324.51,-56.83 1325.72,-63.73"/>
+</g>
+<!-- proc~sort_ascending_real&#45;&gt;interface~swap -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge19" class="edge">
+<title>proc~sort_ascending_real&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1299.24,-43.19C1308.06,-44.74 1316.93,-46.29 1325.08,-47.71"/>
+<polygon fill="#000000" stroke="#000000" points="1324.52,-51.17 1334.98,-49.45 1325.73,-44.27 1324.52,-51.17"/>
+</g>
+<!-- proc~swap_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node18" class="node">
+<title>proc~swap_int</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node18"><a xlink:href="../proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1486.5,-87 1428.5,-87 1428.5,-63 1486.5,-63 1486.5,-87"/>
+<text text-anchor="middle" x="1457.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge20" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1389.04,-59.85C1398.11,-61.89 1408.47,-64.21 1418.31,-66.42"/>
+<polygon fill="#000000" stroke="#000000" points="1417.78,-69.89 1428.3,-68.67 1419.31,-63.06 1417.78,-69.89"/>
+</g>
+<!-- proc~swap_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_node19" class="node">
+<title>proc~swap_real</title>
+<g id="a_proc~~compute_jacobian_partitioned~~CallsGraph_node19"><a xlink:href="../proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1490,-45 1425,-45 1425,-21 1490,-21 1490,-45"/>
+<text text-anchor="middle" x="1457.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="proc~~compute_jacobian_partitioned~~CallsGraph_edge21" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1389.04,-48.15C1397.13,-46.33 1406.26,-44.28 1415.12,-42.29"/>
+<polygon fill="#000000" stroke="#000000" points="1415.96,-45.69 1424.94,-40.09 1414.42,-38.86 1415.96,-45.69"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_jacobian_partitionedCallsGraph = svgPanZoom('#proccompute_jacobian_partitionedCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">compute_jacobian_partitioned</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">jac</span><span class="p">,</span><span class="n">fx</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w">    </span><span class="c">!! vector of variables (size `n`)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">dx</span><span class="w">   </span><span class="c">!! absolute perturbation (&gt;0) for each variable</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">jac</span><span class="w">  </span><span class="c">!! sparse jacobian vector</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fx</span><span class="w"> </span><span class="c">!! function value at `x`, if already known</span>
+
+<span class="w">    </span><span class="kt">integer</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w">             </span><span class="c">!! column counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">j</span><span class="w">             </span><span class="c">!! function evaluation counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">igroup</span><span class="w">        </span><span class="c">!! group number counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">n_cols</span><span class="w">        </span><span class="c">!! number of columns in a group</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cols</span><span class="w">          </span><span class="c">!! array of column indices in a group</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nonzero_rows</span><span class="w">  </span><span class="c">!! the indices of the nonzero Jacobian</span>
+<span class="w">                                                      </span><span class="c">!! elementes (row numbers) in a group</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">indices</span><span class="w">       </span><span class="c">!! nonzero indices in `jac` for a group</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">df</span><span class="w">            </span><span class="c">!! accumulated function</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">finite_diff_method</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">fd</span><span class="w">            </span><span class="c">!! a finite different method (when</span>
+<span class="w">                                                      </span><span class="c">!! specifying class rather than the method)</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">status_ok</span><span class="w">     </span><span class="c">!! error flag</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">f0</span><span class="w">           </span><span class="c">!! function value at the nominal `x`</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">f0_computed</span><span class="w">   </span><span class="c">!! if `f0` has been computed</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+
+<span class="w">    </span><span class="c">! initialize:</span>
+<span class="w">    </span><span class="n">jac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span>
+<span class="w">    </span><span class="n">f0_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f0_computed</span><span class="p">)</span><span class="w"> </span><span class="n">f0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fx</span>
+
+<span class="w">    </span><span class="c">! df is only cleared once. after each group, only the rows</span>
+<span class="w">    </span><span class="c">! used by that group are reset (to avoid an O(m) reset per group)</span>
+<span class="w">    </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">init_xwork</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! compute by group:</span>
+<span class="w">    </span><span class="k">do </span><span class="n">igroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">maxgrp</span>
+
+<span class="w">        </span><span class="c">! get the columns in this group:</span>
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">columns_in_partition_group</span><span class="p">(</span><span class="n">igroup</span><span class="p">,</span><span class="n">n_cols</span><span class="p">,</span><span class="n">cols</span><span class="p">,&amp;</span>
+<span class="w">                                                    </span><span class="n">nonzero_rows</span><span class="p">,</span><span class="n">indices</span><span class="p">,</span><span class="n">status_ok</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">status_ok</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="s1">'compute_jacobian_partitioned'</span><span class="p">,&amp;</span>
+<span class="w">                                       </span><span class="s1">'the partition has not been computed.'</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">n_cols</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">nonzero_rows</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+
+<span class="k">                select case</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">mode</span><span class="p">)</span>
+<span class="w">                </span><span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c">! use the specified methods</span>
+
+<span class="w">                    </span><span class="c">! note: all the methods must be the same within a group</span>
+
+<span class="w">                    </span><span class="c">! compute the columns of the Jacobian in this group:</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">dx_factors</span><span class="p">)</span>
+<span class="w">                         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="w">                         </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">perturb_x_and_compute_f_partitioned</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">dx_factors</span><span class="p">(</span><span class="n">j</span><span class="p">),&amp;</span>
+<span class="w">                                                         </span><span class="n">dx</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">df_factors</span><span class="p">(</span><span class="n">j</span><span class="p">),&amp;</span>
+<span class="w">                                                         </span><span class="n">cols</span><span class="p">,</span><span class="n">nonzero_rows</span><span class="p">,</span><span class="n">df</span><span class="p">,&amp;</span>
+<span class="w">                                                         </span><span class="n">f0</span><span class="p">,</span><span class="n">f0_computed</span><span class="p">)</span>
+<span class="w">                         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">                    </span><span class="k">end do</span>
+<span class="w">                    </span><span class="c">! divide by the denominator, which can be different for each column:</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_cols</span>
+<span class="w">                        </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="n">rows</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">irow</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">col_idx</span><span class="p">(&amp;</span>
+<span class="w">                                            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">col_ptr</span><span class="p">(</span><span class="n">cols</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">col_ptr</span><span class="p">(</span><span class="n">cols</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+<span class="w">                            </span><span class="n">df</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">df_den_factor</span><span class="o">*</span><span class="n">dx</span><span class="p">(</span><span class="n">cols</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+<span class="w">                        </span><span class="k">end associate</span>
+<span class="k">                    end do</span>
+
+<span class="k">                case</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="c">! select the method from the class so as not to violate</span>
+<span class="w">                        </span><span class="c">! the bounds on *any* of the variables in the group</span>
+
+<span class="w">                    </span><span class="c">! note: all the classes must be the same within a group</span>
+
+<span class="w">                    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">select_finite_diff_method_for_partition_group</span><span class="p">(</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                    </span><span class="n">x</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">xlow</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">xhigh</span><span class="p">(</span><span class="n">cols</span><span class="p">),&amp;</span>
+<span class="w">                                    </span><span class="n">dx</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">fd</span><span class="p">,</span><span class="n">status_ok</span><span class="p">)</span>
+
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">status_ok</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">print_messages</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                            </span><span class="c">! will not consider this a fatal error for now:</span>
+<span class="w">                            </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">'(A,1X,I5,1X,A,1X,*(I5,1X))'</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                </span><span class="s1">'Error in compute_jacobian_partitioned: '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                </span><span class="s1">'variable bounds violated for group: '</span><span class="p">,&amp;</span>
+<span class="w">                                </span><span class="n">igroup</span><span class="p">,</span><span class="s1">'. columns: '</span><span class="p">,</span><span class="n">cols</span>
+<span class="w">                        </span><span class="k">end if</span>
+<span class="k">                    end if</span>
+
+<span class="w">                    </span><span class="c">! compute the columns of the Jacobian in this group:</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">fd</span><span class="p">%</span><span class="n">dx_factors</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">perturb_x_and_compute_f_partitioned</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">fd</span><span class="p">%</span><span class="n">dx_factors</span><span class="p">(</span><span class="n">j</span><span class="p">),&amp;</span>
+<span class="w">                                                        </span><span class="n">dx</span><span class="p">,</span><span class="n">fd</span><span class="p">%</span><span class="n">df_factors</span><span class="p">(</span><span class="n">j</span><span class="p">),&amp;</span>
+<span class="w">                                                        </span><span class="n">cols</span><span class="p">,</span><span class="n">nonzero_rows</span><span class="p">,</span><span class="n">df</span><span class="p">,&amp;</span>
+<span class="w">                                                        </span><span class="n">f0</span><span class="p">,</span><span class="n">f0_computed</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">                    </span><span class="k">end do</span>
+<span class="w">                    </span><span class="c">! divide by the denominator, which can be different for each column:</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_cols</span>
+<span class="w">                        </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="n">rows</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">irow</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">col_idx</span><span class="p">(&amp;</span>
+<span class="w">                                            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">col_ptr</span><span class="p">(</span><span class="n">cols</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">col_ptr</span><span class="p">(</span><span class="n">cols</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+<span class="w">                            </span><span class="n">df</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">fd</span><span class="p">%</span><span class="n">df_den_factor</span><span class="o">*</span><span class="n">dx</span><span class="p">(</span><span class="n">cols</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+<span class="w">                        </span><span class="k">end associate</span>
+<span class="k">                    end do</span>
+
+<span class="k">                case </span><span class="n">default</span>
+<span class="w">                    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="s1">'compute_jacobian_partitioned'</span><span class="p">,</span><span class="s1">'invalid mode'</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">return</span>
+<span class="k">                end select</span>
+
+<span class="w">                </span><span class="c">! put result into the output vector:</span>
+<span class="w">                </span><span class="n">jac</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">(</span><span class="n">nonzero_rows</span><span class="p">)</span>
+<span class="w">                </span><span class="n">df</span><span class="p">(</span><span class="n">nonzero_rows</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span><span class="w"> </span><span class="c">! reset for the next group</span>
+
+<span class="w">            </span><span class="k">end if</span>
+
+<span class="k">        end if</span>
+
+<span class="k">    end do</span>
+
+<span class="k">    end subroutine </span><span class="n">compute_jacobian_partitioned</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,948 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>compute_jacobian_for_sparsity &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>compute_jacobian_for_sparsity
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.3% of total for procedures.">42 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">compute_jacobian_for_sparsity</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/compute_jacobian_for_sparsity.html#src">compute_jacobian_for_sparsity</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine compute_jacobian_for_sparsity(me, i, x, jac, f0, f0_computed, dx_col)  
+</h2>
+    
+
+    <p>A separate version of <a href="../proc/compute_jacobian.html">compute_jacobian</a> to be used only when
+  computing the sparsity pattern in <a href="../proc/compute_sparsity_random_2.html">compute_sparsity_random_2</a>.
+  It uses <code>sparsity_class_meths</code> and the sparsity dperts and bounds.</p>
+<div class="alert alert-info">
+<p class="alert-title h4">Note</p>
+<p>Based on <a href="../proc/compute_jacobian.html">compute_jacobian</a>. The index manipulation here could be
+      greatly simplified, since we realdy know we are computed all the
+      elements in one column.</p>
+</div>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/numdiff_type.html'>numdiff_type</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~41"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~23"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+            <td>
+                <p>the column being computed</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~19"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>vector of variables (size <code>n</code>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jac~6"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>jac</strong></td>
+            <td>
+                <p>sparse jacobian vector</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f0~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>f0</strong></td>
+            <td>
+                <p>function value at <code>x</code>
+(computed on first use and
+reused for subsequent columns)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f0_computed~3"></span>
+              logical,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f0_computed</strong></td>
+            <td>
+                <p>if <code>f0</code> has been computed</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dx_col~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dx_col</strong></td>
+            <td>
+                <p>the perturbation used for column <code>i</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_jacobian_for_sparsity~~CallsGraph Pages: 1 -->
+<svg id="proccompute_jacobian_for_sparsityCallsGraph" width="641pt" height="69pt"
+ viewBox="0.00 0.00 641.00 68.83" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph" class="graph" transform="scale(0.38 0.38) rotate(0) translate(4 175)">
+<title>proc~~compute_jacobian_for_sparsity~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-175 1663,-175 1663,4 -4,4"/>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node1" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<polygon fill="none" stroke="black" points="257,-108 0,-108 0,-84 257,-84 257,-108"/>
+<text text-anchor="middle" x="128.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%compute_jacobian_for_sparsity</text>
+</g>
+<!-- proc~compute_sparsity_perturbation_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node2" class="node">
+<title>proc~compute_sparsity_perturbation_vector</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node2"><a xlink:href="../proc/compute_sparsity_perturbation_vector.html" xlink:title="numdiff_type%compute_sparsity_perturbation_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="590,-171 293,-171 293,-147 590,-147 590,-171"/>
+<text text-anchor="middle" x="441.5" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_sparsity_perturbation_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~compute_sparsity_perturbation_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge1" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~compute_sparsity_perturbation_vector</title>
+<path fill="none" stroke="#000000" d="M171.21,-108.07C204.08,-117.25 251.18,-129.68 293,-138 306.47,-140.68 320.7,-143.15 334.8,-145.39"/>
+<polygon fill="#000000" stroke="#000000" points="334.61,-148.9 345.03,-146.97 335.68,-141.98 334.61,-148.9"/>
+</g>
+<!-- proc~init_xwork -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node3" class="node">
+<title>proc~init_xwork</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node3"><a xlink:href="../proc/init_xwork.html" xlink:title="numdiff_type%init_xwork">
+<polygon fill="#d9534f" stroke="#d9534f" points="514,-129 369,-129 369,-105 514,-105 514,-129"/>
+<text text-anchor="middle" x="441.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%init_xwork</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~init_xwork -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge2" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~init_xwork</title>
+<path fill="none" stroke="#000000" d="M257.34,-104.63C291.51,-106.94 327.52,-109.37 358.48,-111.46"/>
+<polygon fill="#000000" stroke="#000000" points="358.56,-114.98 368.78,-112.16 359.04,-107.99 358.56,-114.98"/>
+</g>
+<!-- proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node4" class="node">
+<title>proc~perturb_x_and_compute_f</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node4"><a xlink:href="../proc/perturb_x_and_compute_f.html" xlink:title="numdiff_type%perturb_x_and_compute_f">
+<polygon fill="#d9534f" stroke="#d9534f" points="556.5,-87 326.5,-87 326.5,-63 556.5,-63 556.5,-87"/>
+<text text-anchor="middle" x="441.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge3" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M257.34,-87.37C276.74,-86.06 296.74,-84.71 316.07,-83.4"/>
+<polygon fill="#000000" stroke="#000000" points="316.37,-86.89 326.11,-82.72 315.9,-79.91 316.37,-86.89"/>
+</g>
+<!-- proc~select_finite_diff_method -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node5" class="node">
+<title>proc~select_finite_diff_method</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node5"><a xlink:href="../proc/select_finite_diff_method.html" xlink:title="numdiff_type%select_finite_diff_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="554,-45 329,-45 329,-21 554,-21 554,-45"/>
+<text text-anchor="middle" x="441.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%select_finite_diff_method</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~select_finite_diff_method -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge4" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~select_finite_diff_method</title>
+<path fill="none" stroke="#000000" d="M171.21,-83.93C204.08,-74.75 251.18,-62.32 293,-54 306.47,-51.32 320.7,-48.85 334.8,-46.61"/>
+<polygon fill="#000000" stroke="#000000" points="335.68,-50.02 345.03,-45.03 334.61,-43.1 335.68,-50.02"/>
+</g>
+<!-- proc~compute_perturb_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node7" class="node">
+<title>proc~compute_perturb_vector</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node7"><a xlink:href="../proc/compute_perturb_vector.html" xlink:title="numdiff_type%compute_perturb_vector">
+<polygon fill="#d9534f" stroke="#d9534f" points="856,-171 633,-171 633,-147 856,-147 856,-171"/>
+<text text-anchor="middle" x="744.5" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_perturb_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_perturbation_vector&#45;&gt;proc~compute_perturb_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge5" class="edge">
+<title>proc~compute_sparsity_perturbation_vector&#45;&gt;proc~compute_perturb_vector</title>
+<path fill="none" stroke="#000000" d="M590.35,-159C601.17,-159 612,-159 622.63,-159"/>
+<polygon fill="#000000" stroke="#000000" points="622.75,-162.5 632.75,-159 622.75,-155.5 622.75,-162.5"/>
+</g>
+<!-- proc~compute_nominal_function -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node6" class="node">
+<title>proc~compute_nominal_function</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node6"><a xlink:href="../proc/compute_nominal_function.html" xlink:title="numdiff_type%compute_nominal_function">
+<polygon fill="#d9534f" stroke="#d9534f" points="863,-87 626,-87 626,-63 863,-63 863,-87"/>
+<text text-anchor="middle" x="744.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_nominal_function</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge6" class="edge">
+<title>proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M556.72,-75C575.99,-75 596.09,-75 615.67,-75"/>
+<polygon fill="#000000" stroke="#000000" points="615.85,-78.5 625.85,-75 615.85,-71.5 615.85,-78.5"/>
+</g>
+<!-- interface~unique -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node8" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node8"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="1013.5,-87 959.5,-87 959.5,-63 1013.5,-63 1013.5,-87"/>
+<text text-anchor="middle" x="986.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_nominal_function&#45;&gt;interface~unique -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge7" class="edge">
+<title>proc~compute_nominal_function&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M863.04,-75C894.35,-75 925.88,-75 949.11,-75"/>
+<polygon fill="#000000" stroke="#000000" points="949.17,-78.5 959.17,-75 949.17,-71.5 949.17,-78.5"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node9" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node9"><a xlink:href="../proc/raise_exception.html" xlink:title="numdiff_type%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="1074,-171 899,-171 899,-147 1074,-147 1074,-171"/>
+<text text-anchor="middle" x="986.5" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_perturb_vector&#45;&gt;proc~raise_exception -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge8" class="edge">
+<title>proc~compute_perturb_vector&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M856.02,-159C866.92,-159 877.94,-159 888.69,-159"/>
+<polygon fill="#000000" stroke="#000000" points="888.91,-162.5 898.91,-159 888.91,-155.5 888.91,-162.5"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node10" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node10"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1181.5,-108 1113.5,-108 1113.5,-84 1181.5,-84 1181.5,-108"/>
+<text text-anchor="middle" x="1147.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge9" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1013.76,-78.47C1038.03,-81.67 1074.56,-86.5 1103.16,-90.28"/>
+<polygon fill="#000000" stroke="#000000" points="1102.93,-93.78 1113.3,-91.61 1103.84,-86.84 1102.93,-93.78"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node11" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node11"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1185,-66 1110,-66 1110,-42 1185,-42 1185,-66"/>
+<text text-anchor="middle" x="1147.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge10" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1013.76,-71.53C1037.09,-68.45 1071.74,-63.87 1099.79,-60.17"/>
+<polygon fill="#000000" stroke="#000000" points="1100.34,-63.63 1109.79,-58.85 1099.42,-56.69 1100.34,-63.63"/>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node12" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node12"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="1313,-108 1222,-108 1222,-84 1313,-84 1313,-108"/>
+<text text-anchor="middle" x="1267.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge11" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1181.68,-96C1190.99,-96 1201.36,-96 1211.57,-96"/>
+<polygon fill="#000000" stroke="#000000" points="1211.68,-99.5 1221.68,-96 1211.68,-92.5 1211.68,-99.5"/>
+</g>
+<!-- interface~sort_ascending -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node13" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node13"><a xlink:href="../interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="1314,-66 1221,-66 1221,-42 1314,-42 1314,-66"/>
+<text text-anchor="middle" x="1267.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge12" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M1181.68,-84.19C1194.52,-79.62 1209.39,-74.33 1223.05,-69.46"/>
+<polygon fill="#000000" stroke="#000000" points="1224.5,-72.66 1232.75,-66.01 1222.15,-66.07 1224.5,-72.66"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge13" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1182.31,-66.04C1195.03,-70.56 1209.66,-75.77 1223.13,-80.56"/>
+<polygon fill="#000000" stroke="#000000" points="1222.09,-83.91 1232.68,-83.96 1224.43,-77.31 1222.09,-83.91"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge14" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M1185.19,-54C1193.26,-54 1201.99,-54 1210.62,-54"/>
+<polygon fill="#000000" stroke="#000000" points="1210.67,-57.5 1220.67,-54 1210.67,-50.5 1210.67,-57.5"/>
+</g>
+<!-- proc~expand_vector_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node14" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node14"><a xlink:href="../proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1463.5,-150 1354.5,-150 1354.5,-126 1463.5,-126 1463.5,-150"/>
+<text text-anchor="middle" x="1409" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge15" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1308.48,-108.04C1323.94,-112.69 1341.82,-118.07 1358.11,-122.98"/>
+<polygon fill="#000000" stroke="#000000" points="1357.43,-126.43 1368.02,-125.96 1359.45,-119.73 1357.43,-126.43"/>
+</g>
+<!-- proc~expand_vector_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node15" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node15"><a xlink:href="../proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1467,-108 1351,-108 1351,-84 1467,-84 1467,-108"/>
+<text text-anchor="middle" x="1409" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge16" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1313.02,-96C1321.86,-96 1331.33,-96 1340.74,-96"/>
+<polygon fill="#000000" stroke="#000000" points="1340.89,-99.5 1350.89,-96 1340.89,-92.5 1340.89,-99.5"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node16" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node16"><a xlink:href="../proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1465,-66 1353,-66 1353,-42 1465,-42 1465,-66"/>
+<text text-anchor="middle" x="1409" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge17" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1314.18,-54C1323.38,-54 1333.21,-54 1342.93,-54"/>
+<polygon fill="#000000" stroke="#000000" points="1342.98,-57.5 1352.98,-54 1342.98,-50.5 1342.98,-57.5"/>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node17" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node17"><a xlink:href="../proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1468,-24 1350,-24 1350,0 1468,0 1468,-24"/>
+<text text-anchor="middle" x="1409" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge18" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1308.48,-41.96C1323.94,-37.31 1341.82,-31.93 1358.11,-27.02"/>
+<polygon fill="#000000" stroke="#000000" points="1359.45,-30.27 1368.02,-24.04 1357.43,-23.57 1359.45,-30.27"/>
+</g>
+<!-- interface~swap -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node18" class="node">
+<title>interface~swap</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node18"><a xlink:href="../interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="1558,-45 1504,-45 1504,-21 1558,-21 1558,-45"/>
+<text text-anchor="middle" x="1531" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_int&#45;&gt;interface~swap -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge19" class="edge">
+<title>proc~sort_ascending_int&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1465.08,-44.36C1474.93,-42.64 1484.96,-40.88 1494.09,-39.28"/>
+<polygon fill="#000000" stroke="#000000" points="1494.72,-42.73 1503.97,-37.56 1493.51,-35.83 1494.72,-42.73"/>
+</g>
+<!-- proc~sort_ascending_real&#45;&gt;interface~swap -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge20" class="edge">
+<title>proc~sort_ascending_real&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1468.24,-22.19C1477.06,-23.74 1485.93,-25.29 1494.08,-26.71"/>
+<polygon fill="#000000" stroke="#000000" points="1493.52,-30.17 1503.98,-28.45 1494.73,-23.27 1493.52,-30.17"/>
+</g>
+<!-- proc~swap_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node19" class="node">
+<title>proc~swap_int</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node19"><a xlink:href="../proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1655.5,-66 1597.5,-66 1597.5,-42 1655.5,-42 1655.5,-66"/>
+<text text-anchor="middle" x="1626.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge21" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1558.04,-38.85C1567.11,-40.89 1577.47,-43.21 1587.31,-45.42"/>
+<polygon fill="#000000" stroke="#000000" points="1586.78,-48.89 1597.3,-47.67 1588.31,-42.06 1586.78,-48.89"/>
+</g>
+<!-- proc~swap_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_node20" class="node">
+<title>proc~swap_real</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CallsGraph_node20"><a xlink:href="../proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1659,-24 1594,-24 1594,0 1659,0 1659,-24"/>
+<text text-anchor="middle" x="1626.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="proc~~compute_jacobian_for_sparsity~~CallsGraph_edge22" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1558.04,-27.15C1566.13,-25.33 1575.26,-23.28 1584.12,-21.29"/>
+<polygon fill="#000000" stroke="#000000" points="1584.96,-24.69 1593.94,-19.09 1583.42,-17.86 1584.96,-24.69"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_jacobian_for_sparsityCallsGraph = svgPanZoom('#proccompute_jacobian_for_sparsityCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_jacobian_for_sparsity~~CalledByGraph Pages: 1 -->
+<svg id="proccompute_jacobian_for_sparsityCalledByGraph" width="467pt" height="32pt"
+ viewBox="0.00 0.00 467.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_jacobian_for_sparsity~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~compute_jacobian_for_sparsity~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 463,-28 463,4 -4,4"/>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_jacobian_for_sparsity~~CalledByGraph_node1" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<polygon fill="none" stroke="black" points="459,-24 202,-24 202,0 459,0 459,-24"/>
+<text text-anchor="middle" x="330.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%compute_jacobian_for_sparsity</text>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~compute_jacobian_for_sparsity~~CalledByGraph_node2" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~compute_jacobian_for_sparsity~~CalledByGraph_node2"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="166,-24 0,-24 0,0 166,0 166,-24"/>
+<text text-anchor="middle" x="83" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity -->
+<g id="proc~~compute_jacobian_for_sparsity~~CalledByGraph_edge1" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity</title>
+<path fill="none" stroke="#000000" d="M166.09,-12C174.4,-12 183,-12 191.7,-12"/>
+<polygon fill="#000000" stroke="#000000" points="191.95,-15.5 201.95,-12 191.95,-8.5 191.95,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">compute_jacobian_for_sparsity</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">jac</span><span class="p">,</span><span class="n">f0</span><span class="p">,</span><span class="n">f0_computed</span><span class="p">,</span><span class="n">dx_col</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                            </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w">           </span><span class="c">!! the column being computed</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w">           </span><span class="c">!! vector of variables (size `n`)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jac</span><span class="w">         </span><span class="c">!! sparse jacobian vector</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">f0</span><span class="w">          </span><span class="c">!! function value at `x`</span>
+<span class="w">                                                                 </span><span class="c">!! (computed on first use and</span>
+<span class="w">                                                                 </span><span class="c">!! reused for subsequent columns)</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">                         </span><span class="kd">::</span><span class="w"> </span><span class="n">f0_computed</span><span class="w"> </span><span class="c">!! if `f0` has been computed</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">dx_col</span><span class="w">      </span><span class="c">!! the perturbation used for column `i`</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dx</span><span class="w">  </span><span class="c">!! absolute perturbation (&gt;0) for each variable</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nonzero_elements_in_col</span><span class="w">  </span><span class="c">!! the indices of the</span>
+<span class="w">                                                                 </span><span class="c">!! nonzero Jacobian</span>
+<span class="w">                                                                 </span><span class="c">!! elements in a column</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">j</span><span class="w">   </span><span class="c">!! function evaluation counter</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">df</span><span class="w">  </span><span class="c">!! accumulated function</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">finite_diff_method</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fd</span><span class="w">  </span><span class="c">!! a finite different method (when</span>
+<span class="w">                                    </span><span class="c">!! specifying class rather than the method)</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">status_ok</span><span class="w">                    </span><span class="c">!! error flag</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">num_nonzero_elements_in_col</span><span class="w">  </span><span class="c">!! number of nonzero elements in a column</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+
+<span class="w">    </span><span class="c">! Note that a sparsity pattern has already been set</span>
+
+<span class="w">    </span><span class="c">! size the jacobian vector:</span>
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">jac</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">num_nonzero_elements</span><span class="p">))</span>
+
+<span class="w">    </span><span class="c">! compute the perturbation vector (really we only need dx(i)):</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_sparsity_perturbation_vector</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">dx</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">    </span><span class="n">dx_col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dx</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! initialize:</span>
+<span class="w">    </span><span class="n">jac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span>
+
+<span class="w">    </span><span class="c">! determine functions to compute for this column:</span>
+<span class="w">    </span><span class="n">num_nonzero_elements_in_col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">icol</span><span class="o">==</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">num_nonzero_elements_in_col</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">! there are functions to compute</span>
+
+<span class="w">        </span><span class="n">nonzero_elements_in_col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pack</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">irow</span><span class="p">,</span><span class="n">mask</span><span class="o">=</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">icol</span><span class="o">==</span><span class="n">i</span><span class="p">)</span>
+
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">select_finite_diff_method</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">xlow_for_sparsity</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">xhigh_for_sparsity</span><span class="p">(</span><span class="n">i</span><span class="p">),&amp;</span>
+<span class="w">                                            </span><span class="n">dx</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity_class_meths</span><span class="p">,</span><span class="n">fd</span><span class="p">,</span><span class="n">status_ok</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">status_ok</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">print_messages</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">'(A,1X,I5)'</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                </span><span class="s1">'Error in compute_jacobian_for_sparsity: variable bounds violated for column: '</span><span class="p">,</span><span class="n">i</span>
+<span class="w">            </span><span class="k">end if</span>
+<span class="k">        end if</span>
+
+<span class="w">        </span><span class="c">! compute this column of the Jacobian:</span>
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">init_xwork</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="w">        </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span>
+<span class="w">        </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">fd</span><span class="p">%</span><span class="n">dx_factors</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="p">([</span><span class="n">i</span><span class="p">],</span><span class="n">j</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">perturb_x_and_compute_f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">fd</span><span class="p">%</span><span class="n">dx_factors</span><span class="p">(</span><span class="n">j</span><span class="p">),&amp;</span>
+<span class="w">                                            </span><span class="n">dx</span><span class="p">,</span><span class="n">fd</span><span class="p">%</span><span class="n">df_factors</span><span class="p">(</span><span class="n">j</span><span class="p">),&amp;</span>
+<span class="w">                                            </span><span class="n">i</span><span class="p">,</span><span class="n">nonzero_elements_in_col</span><span class="p">,</span><span class="n">df</span><span class="p">,&amp;</span>
+<span class="w">                                            </span><span class="n">f0</span><span class="p">,</span><span class="n">f0_computed</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">        </span><span class="k">end do</span>
+<span class="k">        </span><span class="n">df</span><span class="p">(</span><span class="n">nonzero_elements_in_col</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">(</span><span class="n">nonzero_elements_in_col</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                        </span><span class="p">(</span><span class="n">fd</span><span class="p">%</span><span class="n">df_den_factor</span><span class="o">*</span><span class="n">dx</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+<span class="w">        </span><span class="c">! put result into the output vector:</span>
+<span class="w">        </span><span class="n">jac</span><span class="p">(</span><span class="nb">pack</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">indices</span><span class="p">,</span><span class="n">mask</span><span class="o">=</span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">icol</span><span class="o">==</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">df</span><span class="p">(</span><span class="n">nonzero_elements_in_col</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="k">    end subroutine </span><span class="n">compute_jacobian_for_sparsity</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

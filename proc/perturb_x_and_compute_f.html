@@ -1,0 +1,907 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>perturb_x_and_compute_f &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>perturb_x_and_compute_f
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.9% of total for procedures.">29 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">perturb_x_and_compute_f</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/perturb_x_and_compute_f.html#src">perturb_x_and_compute_f</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine perturb_x_and_compute_f(me, x, dx_factor, dx, df_factor, column, idx, df, f0, f0_computed)  
+</h2>
+    
+
+    <p>Perturb the specified optimization variable, and compute the function.
+This routine is designed so that <code>df</code> is accumulated as each function
+evaluation is done, to avoid having to allocate more temporary storage.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/numdiff_type.html'>numdiff_type</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~36"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~14"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>nominal variable vector</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dx_factor"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dx_factor</strong></td>
+            <td>
+                <p>factor to multiply <code>dx</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dx~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>dx</strong></td>
+            <td>
+                <p>the perturbation value for this column</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-df_factor"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>df_factor</strong></td>
+            <td>
+                <p>factor to multiply function value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-column~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>column</strong></td>
+            <td>
+                <p>the variable to perturb</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-idx~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>idx</strong></td>
+            <td>
+                <p>the elements in this
+column of the Jacobian
+to compute (passed to function)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-df"></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>df</strong></td>
+            <td>
+                <p>the accumulated function value
+note: for the first call, this
+should be set to zero</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f0~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout),</td>
+              <td>optional,</td>            <td>
+              dimension(me%m)
+            </td>
+            <td>::</td>
+            <td><strong>f0</strong></td>
+            <td>
+                <p>function value at the nominal <code>x</code>,
+reused when <code>dx_factor=0</code>
+(see <a href="../proc/compute_nominal_function.html">compute_nominal_function</a>)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f0_computed~2"></span>
+              logical,
+            </td>
+<td>intent(inout),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f0_computed</strong></td>
+            <td>
+                <p>if <code>f0</code> has already been computed.
+must be set to false before the first call.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~perturb_x_and_compute_f~~CallsGraph Pages: 1 -->
+<svg id="procperturb_x_and_compute_fCallsGraph" width="641pt" height="85pt"
+ viewBox="0.00 0.00 641.00 85.39" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph" class="graph" transform="scale(0.54 0.54) rotate(0) translate(4 154)">
+<title>proc~~perturb_x_and_compute_f~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-154 1182,-154 1182,4 -4,4"/>
+<!-- proc~perturb_x_and_compute_f -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node1" class="node">
+<title>proc~perturb_x_and_compute_f</title>
+<polygon fill="none" stroke="black" points="230,-87 0,-87 0,-63 230,-63 230,-87"/>
+<text text-anchor="middle" x="115" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%perturb_x_and_compute_f</text>
+</g>
+<!-- proc~compute_nominal_function -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node2" class="node">
+<title>proc~compute_nominal_function</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node2"><a xlink:href="../proc/compute_nominal_function.html" xlink:title="numdiff_type%compute_nominal_function">
+<polygon fill="#d9534f" stroke="#d9534f" points="503,-87 266,-87 266,-63 503,-63 503,-87"/>
+<text text-anchor="middle" x="384.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_nominal_function</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge1" class="edge">
+<title>proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M230.22,-75C238.69,-75 247.27,-75 255.81,-75"/>
+<polygon fill="#000000" stroke="#000000" points="255.82,-78.5 265.82,-75 255.82,-71.5 255.82,-78.5"/>
+</g>
+<!-- interface~unique -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node3" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node3"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="593,-87 539,-87 539,-63 593,-63 593,-87"/>
+<text text-anchor="middle" x="566" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_nominal_function&#45;&gt;interface~unique -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge2" class="edge">
+<title>proc~compute_nominal_function&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M503.23,-75C512.31,-75 520.97,-75 528.78,-75"/>
+<polygon fill="#000000" stroke="#000000" points="528.86,-78.5 538.86,-75 528.86,-71.5 528.86,-78.5"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node4" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node4"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="700.5,-108 632.5,-108 632.5,-84 700.5,-84 700.5,-108"/>
+<text text-anchor="middle" x="666.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge3" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M593.14,-80.57C602.11,-82.49 612.42,-84.68 622.38,-86.81"/>
+<polygon fill="#000000" stroke="#000000" points="621.65,-90.23 632.16,-88.89 623.11,-83.38 621.65,-90.23"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node5" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node5"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="704,-66 629,-66 629,-42 704,-42 704,-66"/>
+<text text-anchor="middle" x="666.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge4" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M593.14,-69.43C601.09,-67.73 610.08,-65.82 618.95,-63.92"/>
+<polygon fill="#000000" stroke="#000000" points="619.81,-67.32 628.86,-61.81 618.35,-60.47 619.81,-67.32"/>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node6" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node6"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="832,-108 741,-108 741,-84 832,-84 832,-108"/>
+<text text-anchor="middle" x="786.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge5" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M700.68,-96C709.99,-96 720.36,-96 730.57,-96"/>
+<polygon fill="#000000" stroke="#000000" points="730.68,-99.5 740.68,-96 730.68,-92.5 730.68,-99.5"/>
+</g>
+<!-- interface~sort_ascending -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node7" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node7"><a xlink:href="../interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="833,-66 740,-66 740,-42 833,-42 833,-66"/>
+<text text-anchor="middle" x="786.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge6" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M700.68,-84.19C713.52,-79.62 728.39,-74.33 742.05,-69.46"/>
+<polygon fill="#000000" stroke="#000000" points="743.5,-72.66 751.75,-66.01 741.15,-66.07 743.5,-72.66"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge7" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M701.31,-66.04C714.03,-70.56 728.66,-75.77 742.13,-80.56"/>
+<polygon fill="#000000" stroke="#000000" points="741.09,-83.91 751.68,-83.96 743.43,-77.31 741.09,-83.91"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge8" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M704.19,-54C712.26,-54 720.99,-54 729.62,-54"/>
+<polygon fill="#000000" stroke="#000000" points="729.67,-57.5 739.67,-54 729.67,-50.5 729.67,-57.5"/>
+</g>
+<!-- proc~expand_vector_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node8" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node8"><a xlink:href="../proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="982.5,-150 873.5,-150 873.5,-126 982.5,-126 982.5,-150"/>
+<text text-anchor="middle" x="928" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge9" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M827.48,-108.04C842.94,-112.69 860.82,-118.07 877.11,-122.98"/>
+<polygon fill="#000000" stroke="#000000" points="876.43,-126.43 887.02,-125.96 878.45,-119.73 876.43,-126.43"/>
+</g>
+<!-- proc~expand_vector_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node9" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node9"><a xlink:href="../proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="986,-108 870,-108 870,-84 986,-84 986,-108"/>
+<text text-anchor="middle" x="928" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge10" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M832.02,-96C840.86,-96 850.33,-96 859.74,-96"/>
+<polygon fill="#000000" stroke="#000000" points="859.89,-99.5 869.89,-96 859.89,-92.5 859.89,-99.5"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node10" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node10"><a xlink:href="../proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="984,-66 872,-66 872,-42 984,-42 984,-66"/>
+<text text-anchor="middle" x="928" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge11" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M833.18,-54C842.38,-54 852.21,-54 861.93,-54"/>
+<polygon fill="#000000" stroke="#000000" points="861.98,-57.5 871.98,-54 861.98,-50.5 861.98,-57.5"/>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node11" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node11"><a xlink:href="../proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="987,-24 869,-24 869,0 987,0 987,-24"/>
+<text text-anchor="middle" x="928" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge12" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M827.48,-41.96C842.94,-37.31 860.82,-31.93 877.11,-27.02"/>
+<polygon fill="#000000" stroke="#000000" points="878.45,-30.27 887.02,-24.04 876.43,-23.57 878.45,-30.27"/>
+</g>
+<!-- interface~swap -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node12" class="node">
+<title>interface~swap</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node12"><a xlink:href="../interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="1077,-45 1023,-45 1023,-21 1077,-21 1077,-45"/>
+<text text-anchor="middle" x="1050" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_int&#45;&gt;interface~swap -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge13" class="edge">
+<title>proc~sort_ascending_int&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M984.08,-44.36C993.93,-42.64 1003.96,-40.88 1013.09,-39.28"/>
+<polygon fill="#000000" stroke="#000000" points="1013.72,-42.73 1022.97,-37.56 1012.51,-35.83 1013.72,-42.73"/>
+</g>
+<!-- proc~sort_ascending_real&#45;&gt;interface~swap -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge14" class="edge">
+<title>proc~sort_ascending_real&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M987.24,-22.19C996.06,-23.74 1004.93,-25.29 1013.08,-26.71"/>
+<polygon fill="#000000" stroke="#000000" points="1012.52,-30.17 1022.98,-28.45 1013.73,-23.27 1012.52,-30.17"/>
+</g>
+<!-- proc~swap_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node13" class="node">
+<title>proc~swap_int</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node13"><a xlink:href="../proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1174.5,-66 1116.5,-66 1116.5,-42 1174.5,-42 1174.5,-66"/>
+<text text-anchor="middle" x="1145.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge15" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1077.04,-38.85C1086.11,-40.89 1096.47,-43.21 1106.31,-45.42"/>
+<polygon fill="#000000" stroke="#000000" points="1105.78,-48.89 1116.3,-47.67 1107.31,-42.06 1105.78,-48.89"/>
+</g>
+<!-- proc~swap_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_node14" class="node">
+<title>proc~swap_real</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CallsGraph_node14"><a xlink:href="../proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1178,-24 1113,-24 1113,0 1178,0 1178,-24"/>
+<text text-anchor="middle" x="1145.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="proc~~perturb_x_and_compute_f~~CallsGraph_edge16" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1077.04,-27.15C1085.13,-25.33 1094.26,-23.28 1103.12,-21.29"/>
+<polygon fill="#000000" stroke="#000000" points="1103.96,-24.69 1112.94,-19.09 1102.42,-17.86 1103.96,-24.69"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocperturb_x_and_compute_fCallsGraph = svgPanZoom('#procperturb_x_and_compute_fCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~perturb_x_and_compute_f~~CalledByGraph Pages: 1 -->
+<svg id="procperturb_x_and_compute_fCalledByGraph" width="641pt" height="65pt"
+ viewBox="0.00 0.00 641.00 64.71" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph" class="graph" transform="scale(0.87 0.87) rotate(0) translate(4 70)">
+<title>proc~~perturb_x_and_compute_f~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 729,-70 729,4 -4,4"/>
+<!-- proc~perturb_x_and_compute_f -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_node1" class="node">
+<title>proc~perturb_x_and_compute_f</title>
+<polygon fill="none" stroke="black" points="725,-45 495,-45 495,-21 725,-21 725,-45"/>
+<text text-anchor="middle" x="610" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%perturb_x_and_compute_f</text>
+</g>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_node2" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CalledByGraph_node2"><a xlink:href="../proc/compute_jacobian_for_sparsity.html" xlink:title="numdiff_type%compute_jacobian_for_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="459,-66 202,-66 202,-42 459,-42 459,-66"/>
+<text text-anchor="middle" x="330.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_jacobian_for_sparsity</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_edge1" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M459.28,-44.33C467.68,-43.69 476.13,-43.06 484.5,-42.42"/>
+<polygon fill="#000000" stroke="#000000" points="484.97,-45.9 494.68,-41.65 484.44,-38.92 484.97,-45.9"/>
+</g>
+<!-- proc~compute_jacobian_standard -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_node3" class="node">
+<title>proc~compute_jacobian_standard</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CalledByGraph_node3"><a xlink:href="../proc/compute_jacobian_standard.html" xlink:title="compute_jacobian_standard">
+<polygon fill="#d9534f" stroke="#d9534f" points="412,-24 249,-24 249,0 412,0 412,-24"/>
+<text text-anchor="middle" x="330.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_standard</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_standard&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_edge2" class="edge">
+<title>proc~compute_jacobian_standard&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M412.14,-18.1C434.85,-19.82 460.1,-21.73 484.74,-23.6"/>
+<polygon fill="#000000" stroke="#000000" points="484.64,-27.1 494.88,-24.36 485.17,-20.12 484.64,-27.1"/>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_node4" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~perturb_x_and_compute_f~~CalledByGraph_node4"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="166,-66 0,-66 0,-42 166,-42 166,-66"/>
+<text text-anchor="middle" x="83" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity -->
+<g id="proc~~perturb_x_and_compute_f~~CalledByGraph_edge3" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity</title>
+<path fill="none" stroke="#000000" d="M166.09,-54C174.4,-54 183,-54 191.7,-54"/>
+<polygon fill="#000000" stroke="#000000" points="191.95,-57.5 201.95,-54 191.95,-50.5 191.95,-57.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocperturb_x_and_compute_fCalledByGraph = svgPanZoom('#procperturb_x_and_compute_fCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">perturb_x_and_compute_f</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">dx_factor</span><span class="p">,</span><span class="n">dx</span><span class="p">,&amp;</span>
+<span class="w">                                       </span><span class="n">df_factor</span><span class="p">,</span><span class="n">column</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">df</span><span class="p">,</span><span class="n">f0</span><span class="p">,</span><span class="n">f0_computed</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w">         </span><span class="c">!! nominal variable vector</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">dx_factor</span><span class="w"> </span><span class="c">!! factor to multiply `dx`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">dx</span><span class="w">        </span><span class="c">!! the perturbation value for this column</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">df_factor</span><span class="w"> </span><span class="c">!! factor to multiply function value</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">column</span><span class="w">    </span><span class="c">!! the variable to perturb</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">idx</span><span class="w">       </span><span class="c">!! the elements in this</span>
+<span class="w">                                                   </span><span class="c">!! column of the Jacobian</span>
+<span class="w">                                                   </span><span class="c">!! to compute (passed to function)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">df</span><span class="w">   </span><span class="c">!! the accumulated function value</span>
+<span class="w">                                                   </span><span class="c">!! note: for the first call, this</span>
+<span class="w">                                                   </span><span class="c">!! should be set to zero</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f0</span><span class="w"> </span><span class="c">!! function value at the nominal `x`,</span>
+<span class="w">                                                          </span><span class="c">!! reused when `dx_factor=0`</span>
+<span class="w">                                                          </span><span class="c">!! (see [[compute_nominal_function]])</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f0_computed</span><span class="w">  </span><span class="c">!! if `f0` has already been computed.</span>
+<span class="w">                                                   </span><span class="c">!! must be set to false before the first call.</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w">   </span><span class="c">!! function evaluation</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dx_factor</span><span class="o">==</span><span class="n">zero</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">f0</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">f0_computed</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! reuse the nominal function value:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">f0_computed</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_nominal_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f0</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">            </span><span class="n">f0_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">        </span><span class="n">df</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">df_factor</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">f0</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span>
+
+<span class="w">    </span><span class="c">! note: me%xwork must equal x on entry (see [[init_xwork]]).</span>
+<span class="w">    </span><span class="c">! only the perturbed element is changed, and it is restored after the call.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dx_factor</span><span class="o">/=</span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">xwork</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dx_factor</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_function</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">xwork</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">idx</span><span class="p">)</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">xwork</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+<span class="w">    </span><span class="n">df</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">df_factor</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">perturb_x_and_compute_f</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,804 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>set_sparsity_pattern &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>set_sparsity_pattern
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.7% of total for procedures.">57 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">set_sparsity_pattern</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/set_sparsity_pattern.html#src">set_sparsity_pattern</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine set_sparsity_pattern(me, irow, icol, linear_irow, linear_icol, linear_vals, maxgrp, ngrp)  
+</h2>
+    
+
+    <p>To specify the sparsity pattern directly if it is already known.</p>
+<div class="alert alert-info">
+<p class="alert-title h4">Note</p>
+<p>If specifying the linear pattern, all three optional arguments
+      must be present.</p>
+</div>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/numdiff_type.html'>numdiff_type</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~27"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-irow~5"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>irow</strong></td>
+            <td>
+                <p>sparsity pattern nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-icol~5"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>icol</strong></td>
+            <td>
+                <p>sparsity pattern nonzero elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_irow~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>linear_irow</strong></td>
+            <td>
+                <p>linear sparsity pattern nonzero elements row indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_icol~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>linear_icol</strong></td>
+            <td>
+                <p>linear sparsity pattern nonzero elements column indices</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_vals~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>linear_vals</strong></td>
+            <td>
+                <p>linear sparsity values (constant elements of the Jacobian)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxgrp~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>maxgrp</strong></td>
+            <td>
+                <p>DSM sparsity partition
+[only used if <code>me%partition_sparsity_pattern=True</code>]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ngrp~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>ngrp</strong></td>
+            <td>
+                <p>DSM sparsity partition (size <code>n</code>)
+[only used if <code>me%partition_sparsity_pattern=True</code>]</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~set_sparsity_pattern~~CallsGraph Pages: 1 -->
+<svg id="procset_sparsity_patternCallsGraph" width="641pt" height="197pt"
+ viewBox="0.00 0.00 641.00 197.23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~set_sparsity_pattern~~CallsGraph" class="graph" transform="scale(0.7 0.7) rotate(0) translate(4 276)">
+<title>proc~~set_sparsity_pattern~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-276 906,-276 906,4 -4,4"/>
+<!-- proc~set_sparsity_pattern -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node1" class="node">
+<title>proc~set_sparsity_pattern</title>
+<polygon fill="none" stroke="black" points="199,-170 0,-170 0,-146 199,-146 199,-170"/>
+<text text-anchor="middle" x="99.5" y="-155.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%set_sparsity_pattern</text>
+</g>
+<!-- proc~compute_group_index -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node2" class="node">
+<title>proc~compute_group_index</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node2"><a xlink:href="../proc/compute_group_index.html" xlink:title="sparsity_pattern%compute_group_index">
+<polygon fill="#d9534f" stroke="#d9534f" points="722,-192 497,-192 497,-168 722,-168 722,-192"/>
+<text text-anchor="middle" x="609.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%compute_group_index</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~compute_group_index -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge1" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~compute_group_index</title>
+<path fill="none" stroke="#000000" d="M199.05,-162.27C281.29,-165.83 398.85,-170.92 486.92,-174.73"/>
+<polygon fill="#000000" stroke="#000000" points="486.83,-178.23 496.97,-175.17 487.13,-171.24 486.83,-178.23"/>
+</g>
+<!-- proc~compute_indices -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node3" class="node">
+<title>proc~compute_indices</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node3"><a xlink:href="../proc/compute_indices.html" xlink:title="sparsity_pattern%compute_indices">
+<polygon fill="#d9534f" stroke="#d9534f" points="447,-230 249,-230 249,-206 447,-206 447,-230"/>
+<text text-anchor="middle" x="348" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%compute_indices</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~compute_indices -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge2" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~compute_indices</title>
+<path fill="none" stroke="#000000" d="M147.13,-170.03C172.99,-176.63 205.74,-184.91 235,-192 250.98,-195.88 268.28,-199.95 284.39,-203.69"/>
+<polygon fill="#000000" stroke="#000000" points="283.72,-207.13 294.25,-205.98 285.3,-200.31 283.72,-207.13"/>
+</g>
+<!-- proc~destroy_sparsity_pattern -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node4" class="node">
+<title>proc~destroy_sparsity_pattern</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node4"><a xlink:href="../proc/destroy_sparsity_pattern.html" xlink:title="numdiff_type%destroy_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="459,-272 237,-272 237,-248 459,-248 459,-272"/>
+<text text-anchor="middle" x="348" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%destroy_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~destroy_sparsity_pattern -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge3" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~destroy_sparsity_pattern</title>
+<path fill="none" stroke="#000000" d="M116.5,-170.26C140.75,-188.22 188.89,-221.45 235,-239 241.27,-241.39 247.85,-243.51 254.54,-245.4"/>
+<polygon fill="#000000" stroke="#000000" points="253.84,-248.83 264.41,-248 255.63,-242.07 253.84,-248.83"/>
+</g>
+<!-- proc~dsm_wrapper -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node5" class="node">
+<title>proc~dsm_wrapper</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node5"><a xlink:href="../proc/dsm_wrapper.html" xlink:title="sparsity_pattern%dsm_wrapper">
+<polygon fill="#d9534f" stroke="#d9534f" points="438,-150 258,-150 258,-126 438,-126 438,-150"/>
+<text text-anchor="middle" x="348" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%dsm_wrapper</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge4" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M199.34,-149.98C215.16,-148.7 231.54,-147.37 247.38,-146.08"/>
+<polygon fill="#000000" stroke="#000000" points="248.02,-149.54 257.7,-145.25 247.45,-142.57 248.02,-149.54"/>
+</g>
+<!-- proc~partition_is_consistent -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node6" class="node">
+<title>proc~partition_is_consistent</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node6"><a xlink:href="../proc/partition_is_consistent.html" xlink:title="sparsity_pattern%partition_is_consistent">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="461,-108 235,-108 235,-84 461,-84 461,-108"/>
+<text text-anchor="middle" x="348" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%partition_is_consistent</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~partition_is_consistent -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge5" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~partition_is_consistent</title>
+<path fill="none" stroke="#000000" d="M136.17,-145.95C163.1,-137.14 201.1,-125.32 235,-117 245.05,-114.53 255.66,-112.2 266.19,-110.05"/>
+<polygon fill="#000000" stroke="#000000" points="267.12,-113.43 276.24,-108.04 265.75,-106.57 267.12,-113.43"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node7" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node7"><a xlink:href="../proc/raise_exception.html" xlink:title="numdiff_type%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="435.5,-66 260.5,-66 260.5,-42 435.5,-42 435.5,-66"/>
+<text text-anchor="middle" x="348" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~raise_exception -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge6" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M116.04,-145.72C140.09,-127.37 188.42,-93.02 235,-75 240.99,-72.68 247.27,-70.61 253.66,-68.77"/>
+<polygon fill="#000000" stroke="#000000" points="255.02,-72.03 263.77,-66.05 253.21,-65.27 255.02,-72.03"/>
+</g>
+<!-- proc~destroy_sparsity -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node8" class="node">
+<title>proc~destroy_sparsity</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node8"><a xlink:href="../proc/destroy_sparsity.html" xlink:title="sparsity_pattern%destroy_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="706,-272 513,-272 513,-248 706,-248 706,-272"/>
+<text text-anchor="middle" x="609.5" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%destroy_sparsity</text>
+</a>
+</g>
+</g>
+<!-- proc~destroy_sparsity_pattern&#45;&gt;proc~destroy_sparsity -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge7" class="edge">
+<title>proc~destroy_sparsity_pattern&#45;&gt;proc~destroy_sparsity</title>
+<path fill="none" stroke="#000000" d="M459.05,-260C473.39,-260 488.06,-260 502.33,-260"/>
+<polygon fill="#000000" stroke="#000000" points="502.65,-263.5 512.65,-260 502.65,-256.5 502.65,-263.5"/>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~compute_group_index -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge8" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~compute_group_index</title>
+<path fill="none" stroke="#000000" d="M423.36,-150.04C454.85,-155.13 491.7,-161.1 524.19,-166.35"/>
+<polygon fill="#000000" stroke="#000000" points="523.7,-169.82 534.13,-167.96 524.81,-162.91 523.7,-169.82"/>
+</g>
+<!-- proc~dsm -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node9" class="node">
+<title>proc~dsm</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node9"><a xlink:href="../proc/dsm.html" xlink:title="dsm">
+<polygon fill="#d9534f" stroke="#d9534f" points="636.5,-150 582.5,-150 582.5,-126 636.5,-126 636.5,-150"/>
+<text text-anchor="middle" x="609.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge9" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
+<path fill="none" stroke="#000000" d="M438.31,-138C484.28,-138 537.77,-138 572.34,-138"/>
+<polygon fill="#000000" stroke="#000000" points="572.43,-141.5 582.43,-138 572.43,-134.5 572.43,-141.5"/>
+</g>
+<!-- proc~get_partition_pattern -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node10" class="node">
+<title>proc~get_partition_pattern</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node10"><a xlink:href="../proc/get_partition_pattern.html" xlink:title="sparsity_pattern%get_partition_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="719.5,-108 499.5,-108 499.5,-84 719.5,-84 719.5,-108"/>
+<text text-anchor="middle" x="609.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%get_partition_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~get_partition_pattern -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge10" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~get_partition_pattern</title>
+<path fill="none" stroke="#000000" d="M423.36,-125.96C454.85,-120.87 491.7,-114.9 524.19,-109.65"/>
+<polygon fill="#000000" stroke="#000000" points="524.81,-113.09 534.13,-108.04 523.7,-106.18 524.81,-113.09"/>
+</g>
+<!-- proc~partition_is_consistent&#45;&gt;proc~get_partition_pattern -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge11" class="edge">
+<title>proc~partition_is_consistent&#45;&gt;proc~get_partition_pattern</title>
+<path fill="none" stroke="#000000" d="M461.31,-96C470.57,-96 479.94,-96 489.24,-96"/>
+<polygon fill="#000000" stroke="#000000" points="489.3,-99.5 499.3,-96 489.3,-92.5 489.3,-99.5"/>
+</g>
+<!-- proc~degr -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node11" class="node">
+<title>proc~degr</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node11"><a xlink:href="../proc/degr.html" xlink:title="degr">
+<polygon fill="#d9534f" stroke="#d9534f" points="812,-272 758,-272 758,-248 812,-248 812,-272"/>
+<text text-anchor="middle" x="785" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~degr -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge12" class="edge">
+<title>proc~dsm&#45;&gt;proc~degr</title>
+<path fill="none" stroke="#000000" d="M636.62,-136.54C661.09,-136.54 697.47,-140.17 722,-159 751.33,-181.52 736.62,-203.83 758,-234 759.52,-236.14 761.22,-238.27 763.01,-240.32"/>
+<polygon fill="#000000" stroke="#000000" points="760.69,-242.97 770.11,-247.82 765.77,-238.16 760.69,-242.97"/>
+</g>
+<!-- proc~ido -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node12" class="node">
+<title>proc~ido</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node12"><a xlink:href="../proc/ido.html" xlink:title="ido">
+<polygon fill="#d9534f" stroke="#d9534f" points="812,-192 758,-192 758,-168 812,-168 812,-192"/>
+<text text-anchor="middle" x="785" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~ido -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge13" class="edge">
+<title>proc~dsm&#45;&gt;proc~ido</title>
+<path fill="none" stroke="#000000" d="M636.86,-141.89C659.61,-145.51 693.23,-151.46 722,-159 730.53,-161.24 739.59,-164.05 748.07,-166.88"/>
+<polygon fill="#000000" stroke="#000000" points="747.1,-170.25 757.7,-170.18 749.37,-163.63 747.1,-170.25"/>
+</g>
+<!-- proc~numsrt -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node13" class="node">
+<title>proc~numsrt</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node13"><a xlink:href="../proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="902,-212 848,-212 848,-188 902,-188 902,-212"/>
+<text text-anchor="middle" x="875" y="-197.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~numsrt -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge14" class="edge">
+<title>proc~dsm&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M636.53,-138.09C660.27,-139.24 695.57,-143.72 722,-159 743.28,-171.3 735.66,-190.73 758,-201 779.8,-211.03 788,-201.19 812,-201 820.25,-200.93 829.12,-200.82 837.49,-200.69"/>
+<polygon fill="#000000" stroke="#000000" points="837.81,-204.18 847.76,-200.52 837.7,-197.18 837.81,-204.18"/>
+</g>
+<!-- proc~seq -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node14" class="node">
+<title>proc~seq</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node14"><a xlink:href="../proc/seq.html" xlink:title="seq">
+<polygon fill="#d9534f" stroke="#d9534f" points="812,-150 758,-150 758,-126 812,-126 812,-150"/>
+<text text-anchor="middle" x="785" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~seq -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge15" class="edge">
+<title>proc~dsm&#45;&gt;proc~seq</title>
+<path fill="none" stroke="#000000" d="M636.85,-138C666.45,-138 714.66,-138 747.79,-138"/>
+<polygon fill="#000000" stroke="#000000" points="747.97,-141.5 757.97,-138 747.97,-134.5 747.97,-141.5"/>
+</g>
+<!-- proc~setr -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node15" class="node">
+<title>proc~setr</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node15"><a xlink:href="../proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="812,-108 758,-108 758,-84 812,-84 812,-108"/>
+<text text-anchor="middle" x="785" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~setr -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge16" class="edge">
+<title>proc~dsm&#45;&gt;proc~setr</title>
+<path fill="none" stroke="#000000" d="M636.86,-134.11C659.61,-130.49 693.23,-124.54 722,-117 730.53,-114.76 739.59,-111.95 748.07,-109.12"/>
+<polygon fill="#000000" stroke="#000000" points="749.37,-112.37 757.7,-105.82 747.1,-105.75 749.37,-112.37"/>
+</g>
+<!-- proc~slo -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node16" class="node">
+<title>proc~slo</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node16"><a xlink:href="../proc/slo.html" xlink:title="slo">
+<polygon fill="#d9534f" stroke="#d9534f" points="812,-66 758,-66 758,-42 812,-42 812,-66"/>
+<text text-anchor="middle" x="785" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~slo -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge17" class="edge">
+<title>proc~dsm&#45;&gt;proc~slo</title>
+<path fill="none" stroke="#000000" d="M636.53,-137.91C660.27,-136.76 695.57,-132.28 722,-117 743.28,-104.7 740.36,-92.13 758,-75 758.67,-74.35 759.37,-73.69 760.07,-73.04"/>
+<polygon fill="#000000" stroke="#000000" points="762.67,-75.41 767.93,-66.21 758.09,-70.13 762.67,-75.41"/>
+</g>
+<!-- proc~srtdat -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_node17" class="node">
+<title>proc~srtdat</title>
+<g id="a_proc~~set_sparsity_pattern~~CallsGraph_node17"><a xlink:href="../proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="812,-24 758,-24 758,0 812,0 812,-24"/>
+<text text-anchor="middle" x="785" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge18" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
+<path fill="none" stroke="#000000" d="M636.8,-139.69C661.4,-139.86 697.88,-136.35 722,-117 753.68,-91.59 733.48,-65.38 758,-33 758.46,-32.39 758.94,-31.79 759.44,-31.2"/>
+<polygon fill="#000000" stroke="#000000" points="762.03,-33.56 766.65,-24.02 757.1,-28.6 762.03,-33.56"/>
+</g>
+<!-- proc~ido&#45;&gt;proc~numsrt -->
+<g id="proc~~set_sparsity_pattern~~CallsGraph_edge19" class="edge">
+<title>proc~ido&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M812.4,-186C820.48,-187.84 829.51,-189.89 838.1,-191.84"/>
+<polygon fill="#000000" stroke="#000000" points="837.39,-195.27 847.92,-194.07 838.94,-188.44 837.39,-195.27"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocset_sparsity_patternCallsGraph = svgPanZoom('#procset_sparsity_patternCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">set_sparsity_pattern</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">irow</span><span class="p">,</span><span class="n">icol</span><span class="p">,</span><span class="n">linear_irow</span><span class="p">,</span><span class="n">linear_icol</span><span class="p">,</span><span class="n">linear_vals</span><span class="p">,</span><span class="n">maxgrp</span><span class="p">,</span><span class="n">ngrp</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">irow</span><span class="w">        </span><span class="c">!! sparsity pattern nonzero elements row indices</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">icol</span><span class="w">        </span><span class="c">!! sparsity pattern nonzero elements column indices</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">linear_irow</span><span class="w"> </span><span class="c">!! linear sparsity pattern nonzero elements row indices</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">linear_icol</span><span class="w"> </span><span class="c">!! linear sparsity pattern nonzero elements column indices</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">linear_vals</span><span class="w"> </span><span class="c">!! linear sparsity values (constant elements of the Jacobian)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">maxgrp</span><span class="w">      </span><span class="c">!! DSM sparsity partition</span>
+<span class="w">                                                             </span><span class="c">!! [only used if `me%partition_sparsity_pattern=True`]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">ngrp</span><span class="w">        </span><span class="c">!! DSM sparsity partition (size `n`)</span>
+<span class="w">                                                             </span><span class="c">!! [only used if `me%partition_sparsity_pattern=True`]</span>
+
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="c">!! status output form [[dsm]]</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">destroy_sparsity_pattern</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">exception_raised</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="c">! check for exceptions</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">irow</span><span class="p">)</span><span class="o">/=</span><span class="n">size</span><span class="p">(</span><span class="n">icol</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">irow</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">irow</span><span class="o">&gt;</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">        </span><span class="nb">any</span><span class="p">(</span><span class="n">icol</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">icol</span><span class="o">&gt;</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="s1">'set_sparsity_pattern'</span><span class="p">,&amp;</span>
+<span class="w">                                   </span><span class="s1">'invalid inputs'</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span>
+
+<span class="k">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">sparsity_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">num_nonzero_elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">irow</span><span class="p">)</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">irow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">irow</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">icol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icol</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">compute_indices</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! linear pattern (this must be set before the partition is computed,</span>
+<span class="w">    </span><span class="c">! since the partition must also account for the linear elements):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">linear_irow</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">linear_icol</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">linear_vals</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">linear_irow</span><span class="p">)</span><span class="o">/=</span><span class="n">size</span><span class="p">(</span><span class="n">linear_icol</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">size</span><span class="p">(</span><span class="n">linear_vals</span><span class="p">)</span><span class="o">/=</span><span class="n">size</span><span class="p">(</span><span class="n">linear_icol</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="nb">any</span><span class="p">(</span><span class="n">linear_irow</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">linear_irow</span><span class="o">&gt;</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="nb">any</span><span class="p">(</span><span class="n">linear_icol</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">linear_icol</span><span class="o">&gt;</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="s1">'set_sparsity_pattern'</span><span class="p">,&amp;</span>
+<span class="w">                                       </span><span class="s1">'invalid linear sparsity pattern'</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        else</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">linear_irow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">linear_irow</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">linear_icol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">linear_icol</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">linear_vals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">linear_vals</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">linear_sparsity_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">num_nonzero_linear_elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">linear_irow</span><span class="p">)</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    end if</span>
+
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">maxgrp</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">ngrp</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="c">! use the user-input partition:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">maxgrp</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">ngrp</span><span class="p">)</span><span class="o">==</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">ngrp</span><span class="o">&gt;=</span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">ngrp</span><span class="o">&lt;=</span><span class="n">maxgrp</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">maxgrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxgrp</span>
+<span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">ngrp</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">ngrp</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">partition_is_consistent</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                    call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span><span class="s1">'set_sparsity_pattern'</span><span class="p">,&amp;</span>
+<span class="w">                                            </span><span class="s1">'the sparsity partition is not consistent with the '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                            </span><span class="s1">'sparsity pattern (two columns in the same group '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                            </span><span class="s1">'have an element in the same row).'</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">return</span>
+<span class="k">                end if</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">compute_group_index</span><span class="p">()</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span><span class="s1">'set_sparsity_pattern'</span><span class="p">,&amp;</span>
+<span class="w">                                        </span><span class="s1">'invalid sparsity partition inputs.'</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="k">            end if</span>
+<span class="k">        else</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity</span><span class="p">%</span><span class="n">dsm_wrapper</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="p">,</span><span class="n">info</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">info</span><span class="o">/=</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="s1">'set_sparsity_pattern'</span><span class="p">,&amp;</span>
+<span class="w">                                        </span><span class="s1">'error partitioning sparsity pattern.'</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="k">            end if</span>
+<span class="k">        end if</span>
+<span class="k">    end if</span>
+
+<span class="k">    end subroutine </span><span class="n">set_sparsity_pattern</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

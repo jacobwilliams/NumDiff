@@ -1,0 +1,742 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>expand_vector_real &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>expand_vector_real
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.9% of total for procedures.">31 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/utilities_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/utilities_module.f90.html'>utilities_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numdiff_utilities_module.html'>numdiff_utilities_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">expand_vector_real</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/expand_vector_real.html#src">expand_vector_real</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private pure subroutine expand_vector_real(vec, n, chunk_size, val, finished)  
+</h2>
+    
+
+    <p>Add elements to the real vector in chunks.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vec~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>vec</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~2"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+                <p>counter for last element added to <code>vec</code>.
+must be initialized to <code>size(vec)</code>
+(or 0 if not allocated) before first call</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-chunk_size~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>chunk_size</strong></td>
+            <td>
+                <p>allocate <code>vec</code> in blocks of this size
+(values &lt;1 are treated as 1)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong></td>
+            <td>
+                <p>the value to add to <code>vec</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-finished~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>finished</strong></td>
+            <td>
+                <p>set to true to return <code>vec</code>
+as its correct size (<code>n</code>)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~expand_vector_real~~CalledByGraph Pages: 1 -->
+<svg id="procexpand_vector_realCalledByGraph" width="641pt" height="103pt"
+ viewBox="0.00 0.00 641.00 102.63" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~expand_vector_real~~CalledByGraph" class="graph" transform="scale(0.36 0.36) rotate(0) translate(4 282.44)">
+<title>proc~~expand_vector_real~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-282.44 1785,-282.44 1785,4 -4,4"/>
+<!-- proc~expand_vector_real -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node1" class="node">
+<title>proc~expand_vector_real</title>
+<polygon fill="none" stroke="black" points="1781,-211 1665,-211 1665,-187 1781,-187 1781,-211"/>
+<text text-anchor="middle" x="1723" y="-196.6" font-family="Helvetica,sans-Serif" font-size="10.50">expand_vector_real</text>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node2" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node2"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="1629,-211 1538,-211 1538,-187 1629,-187 1629,-211"/>
+<text text-anchor="middle" x="1583.5" y="-196.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge1" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1629.14,-199C1637.26,-199 1645.89,-199 1654.49,-199"/>
+<polygon fill="#000000" stroke="#000000" points="1654.55,-202.5 1664.55,-199 1654.55,-195.5 1654.55,-202.5"/>
+</g>
+<!-- proc~compute_sparsity_random -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node3" class="node">
+<title>proc~compute_sparsity_random</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node3"><a xlink:href="../proc/compute_sparsity_random.html" xlink:title="compute_sparsity_random">
+<polygon fill="#d9534f" stroke="#d9534f" points="1252,-250 1098,-250 1098,-226 1252,-226 1252,-250"/>
+<text text-anchor="middle" x="1175" y="-235.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;interface~expand_vector -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge2" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1252.2,-238.09C1318.56,-237.14 1417.16,-233.27 1502,-220 1512.06,-218.43 1522.68,-216.13 1532.8,-213.62"/>
+<polygon fill="#000000" stroke="#000000" points="1533.9,-216.95 1542.7,-211.06 1532.15,-210.17 1533.9,-216.95"/>
+</g>
+<!-- proc~resize_sparsity_vectors -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node5" class="node">
+<title>proc~resize_sparsity_vectors</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node5"><a xlink:href="../proc/resize_sparsity_vectors.html" xlink:title="numdiff_type%resize_sparsity_vectors">
+<polygon fill="#d9534f" stroke="#d9534f" points="1502,-211 1288,-211 1288,-187 1502,-187 1502,-211"/>
+<text text-anchor="middle" x="1395" y="-196.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%resize_sparsity_vectors</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;proc~resize_sparsity_vectors -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge7" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;proc~resize_sparsity_vectors</title>
+<path fill="none" stroke="#000000" d="M1243.19,-225.98C1266.39,-221.83 1292.58,-217.14 1316.54,-212.86"/>
+<polygon fill="#000000" stroke="#000000" points="1317.43,-216.25 1326.66,-211.05 1316.2,-209.36 1317.43,-216.25"/>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node4" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node4"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="166,-190 0,-190 0,-166 166,-166 166,-190"/>
+<text text-anchor="middle" x="83" y="-175.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge3" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M123.41,-190.06C213.92,-216.66 444.01,-278 641,-278 641,-278 641,-278 1176,-278 1321.77,-278 1362.75,-285.12 1502,-242 1520.93,-236.14 1540.57,-225.74 1555.71,-216.64"/>
+<polygon fill="#000000" stroke="#000000" points="1557.86,-219.43 1564.52,-211.2 1554.17,-213.48 1557.86,-219.43"/>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~resize_sparsity_vectors -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge8" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~resize_sparsity_vectors</title>
+<path fill="none" stroke="#000000" d="M166.07,-182.79C274.69,-188.71 472.15,-198 641,-198 641,-198 641,-198 944.5,-198 1057.7,-198 1186.94,-198.32 1277.7,-198.6"/>
+<polygon fill="#000000" stroke="#000000" points="1277.73,-202.1 1287.74,-198.63 1277.75,-195.1 1277.73,-202.1"/>
+</g>
+<!-- proc~divide_interval -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node10" class="node">
+<title>proc~divide_interval</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node10"><a xlink:href="../proc/divide_interval.html" xlink:title="divide_interval">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="687.5,-170 596.5,-170 596.5,-146 687.5,-146 687.5,-170"/>
+<text text-anchor="middle" x="642" y="-155.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">divide_interval</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge17" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~divide_interval</title>
+<path fill="none" stroke="#000000" d="M166.19,-175.05C281.49,-170.91 488.13,-163.49 586.31,-159.96"/>
+<polygon fill="#000000" stroke="#000000" points="586.45,-163.46 596.32,-159.6 586.2,-156.47 586.45,-163.46"/>
+</g>
+<!-- proc~compute_jacobian_for_sparsity -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node16" class="node">
+<title>proc~compute_jacobian_for_sparsity</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node16"><a xlink:href="../proc/compute_jacobian_for_sparsity.html" xlink:title="numdiff_type%compute_jacobian_for_sparsity">
+<polygon fill="#d9534f" stroke="#d9534f" points="459,-66 202,-66 202,-42 459,-42 459,-66"/>
+<text text-anchor="middle" x="330.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_jacobian_for_sparsity</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge22" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~compute_jacobian_for_sparsity</title>
+<path fill="none" stroke="#000000" d="M93.87,-165.73C112.46,-143.58 155.02,-97.14 202,-75 206.46,-72.9 211.09,-71 215.83,-69.29"/>
+<polygon fill="#000000" stroke="#000000" points="217.3,-72.5 225.7,-66.04 215.11,-65.85 217.3,-72.5"/>
+</g>
+<!-- proc~resize_sparsity_vectors&#45;&gt;interface~expand_vector -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge4" class="edge">
+<title>proc~resize_sparsity_vectors&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1502.05,-199C1510.82,-199 1519.43,-199 1527.57,-199"/>
+<polygon fill="#000000" stroke="#000000" points="1527.6,-202.5 1537.6,-199 1527.6,-195.5 1527.6,-202.5"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node6" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node6"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1429,-127 1361,-127 1361,-103 1429,-103 1429,-127"/>
+<text text-anchor="middle" x="1395" y="-112.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge5" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1429.23,-117.57C1450.76,-120.18 1478.98,-125.45 1502,-136 1525.49,-146.77 1548.3,-165.67 1563.61,-179.97"/>
+<polygon fill="#000000" stroke="#000000" points="1561.25,-182.56 1570.89,-186.96 1566.1,-177.51 1561.25,-182.56"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node7" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node7"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1432.5,-169 1357.5,-169 1357.5,-145 1432.5,-145 1432.5,-169"/>
+<text text-anchor="middle" x="1395" y="-154.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge6" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M1432.91,-163.75C1453.33,-167.63 1479.14,-172.76 1502,-178 1510.59,-179.97 1519.66,-182.19 1528.5,-184.44"/>
+<polygon fill="#000000" stroke="#000000" points="1527.77,-187.87 1538.33,-186.97 1529.52,-181.09 1527.77,-187.87"/>
+</g>
+<!-- interface~unique -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node8" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node8"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="1202,-129 1148,-129 1148,-105 1202,-105 1202,-129"/>
+<text text-anchor="middle" x="1175" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge9" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1202.3,-116.76C1239.09,-116.42 1306.4,-115.8 1350.67,-115.4"/>
+<polygon fill="#000000" stroke="#000000" points="1350.88,-118.9 1360.85,-115.3 1350.81,-111.9 1350.88,-118.9"/>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge10" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1202.3,-121.82C1238.23,-128.42 1303.24,-140.35 1347.5,-148.47"/>
+<polygon fill="#000000" stroke="#000000" points="1346.97,-151.93 1357.44,-150.29 1348.24,-145.04 1346.97,-151.93"/>
+</g>
+<!-- proc~compute_nominal_function -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node9" class="node">
+<title>proc~compute_nominal_function</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node9"><a xlink:href="../proc/compute_nominal_function.html" xlink:title="numdiff_type%compute_nominal_function">
+<polygon fill="#d9534f" stroke="#d9534f" points="1062,-47 825,-47 825,-23 1062,-23 1062,-47"/>
+<text text-anchor="middle" x="943.5" y="-32.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%compute_nominal_function</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_nominal_function&#45;&gt;interface~unique -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge11" class="edge">
+<title>proc~compute_nominal_function&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M1030.37,-47.02C1041.16,-49.5 1051.93,-52.46 1062,-56 1093.03,-66.9 1125.76,-85.69 1147.76,-99.54"/>
+<polygon fill="#000000" stroke="#000000" points="1145.91,-102.51 1156.22,-104.95 1149.68,-96.61 1145.91,-102.51"/>
+</g>
+<!-- proc~divide_interval&#45;&gt;interface~unique -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge12" class="edge">
+<title>proc~divide_interval&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M687.53,-158.41C764.29,-158.61 926.33,-156.74 1062,-140 1087.68,-136.83 1116.25,-130.93 1138.1,-125.89"/>
+<polygon fill="#000000" stroke="#000000" points="1139.01,-129.28 1147.94,-123.58 1137.41,-122.46 1139.01,-129.28"/>
+</g>
+<!-- proc~initialize_numdiff -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node11" class="node">
+<title>proc~initialize_numdiff</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node11"><a xlink:href="../proc/initialize_numdiff.html" xlink:title="numdiff_type%initialize_numdiff">
+<polygon fill="#d9534f" stroke="#d9534f" points="1035,-131 852,-131 852,-107 1035,-107 1035,-131"/>
+<text text-anchor="middle" x="943.5" y="-116.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%initialize_numdiff</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;interface~unique -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge13" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M1035.2,-118.21C1070.93,-117.9 1109.91,-117.56 1137.44,-117.32"/>
+<polygon fill="#000000" stroke="#000000" points="1137.8,-120.82 1147.77,-117.23 1137.74,-113.82 1137.8,-120.82"/>
+</g>
+<!-- proc~put_in_cache -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node12" class="node">
+<title>proc~put_in_cache</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node12"><a xlink:href="../proc/put_in_cache.html" xlink:title="function_cache%put_in_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="1030,-89 857,-89 857,-65 1030,-65 1030,-89"/>
+<text text-anchor="middle" x="943.5" y="-74.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">function_cache%put_in_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~put_in_cache&#45;&gt;interface~unique -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge14" class="edge">
+<title>proc~put_in_cache&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M1013.36,-89C1054.22,-96.12 1104.38,-104.87 1137.67,-110.67"/>
+<polygon fill="#000000" stroke="#000000" points="1137.4,-114.17 1147.85,-112.44 1138.6,-107.28 1137.4,-114.17"/>
+</g>
+<!-- proc~compute_function_with_cache -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node13" class="node">
+<title>proc~compute_function_with_cache</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node13"><a xlink:href="../proc/compute_function_with_cache.html" xlink:title="compute_function_with_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="728.5,-108 555.5,-108 555.5,-84 728.5,-84 728.5,-108"/>
+<text text-anchor="middle" x="642" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_function_with_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_function_with_cache&#45;&gt;proc~put_in_cache -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge18" class="edge">
+<title>proc~compute_function_with_cache&#45;&gt;proc~put_in_cache</title>
+<path fill="none" stroke="#000000" d="M728.82,-90.56C765.72,-88.21 808.98,-85.47 846.89,-83.07"/>
+<polygon fill="#000000" stroke="#000000" points="847.16,-86.56 856.92,-82.43 846.72,-79.57 847.16,-86.56"/>
+</g>
+<!-- proc~perturb_x_and_compute_f -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node14" class="node">
+<title>proc~perturb_x_and_compute_f</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node14"><a xlink:href="../proc/perturb_x_and_compute_f.html" xlink:title="numdiff_type%perturb_x_and_compute_f">
+<polygon fill="#d9534f" stroke="#d9534f" points="757,-66 527,-66 527,-42 757,-42 757,-66"/>
+<text text-anchor="middle" x="642" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge15" class="edge">
+<title>proc~perturb_x_and_compute_f&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M757.08,-46.76C775.86,-45.57 795.43,-44.33 814.52,-43.12"/>
+<polygon fill="#000000" stroke="#000000" points="815,-46.6 824.76,-42.47 814.56,-39.61 815,-46.6"/>
+</g>
+<!-- proc~perturb_x_and_compute_f_partitioned -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node15" class="node">
+<title>proc~perturb_x_and_compute_f_partitioned</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node15"><a xlink:href="../proc/perturb_x_and_compute_f_partitioned.html" xlink:title="numdiff_type%perturb_x_and_compute_f_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="789,-24 495,-24 495,0 789,0 789,-24"/>
+<text text-anchor="middle" x="642" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%perturb_x_and_compute_f_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~perturb_x_and_compute_f_partitioned&#45;&gt;proc~compute_nominal_function -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge16" class="edge">
+<title>proc~perturb_x_and_compute_f_partitioned&#45;&gt;proc~compute_nominal_function</title>
+<path fill="none" stroke="#000000" d="M789.24,-23.23C797.69,-23.88 806.15,-24.53 814.51,-25.17"/>
+<polygon fill="#000000" stroke="#000000" points="814.43,-28.68 824.67,-25.95 814.96,-21.7 814.43,-28.68"/>
+</g>
+<!-- proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge19" class="edge">
+<title>proc~compute_jacobian_for_sparsity&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M459.17,-54C478.23,-54 497.85,-54 516.83,-54"/>
+<polygon fill="#000000" stroke="#000000" points="516.99,-57.5 526.99,-54 516.99,-50.5 516.99,-57.5"/>
+</g>
+<!-- proc~compute_jacobian_partitioned -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node17" class="node">
+<title>proc~compute_jacobian_partitioned</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node17"><a xlink:href="../proc/compute_jacobian_partitioned.html" xlink:title="compute_jacobian_partitioned">
+<polygon fill="#d9534f" stroke="#d9534f" points="418,-24 243,-24 243,0 418,0 418,-24"/>
+<text text-anchor="middle" x="330.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_partitioned</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_partitioned&#45;&gt;proc~perturb_x_and_compute_f_partitioned -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge21" class="edge">
+<title>proc~compute_jacobian_partitioned&#45;&gt;proc~perturb_x_and_compute_f_partitioned</title>
+<path fill="none" stroke="#000000" d="M418.12,-12C438.92,-12 461.77,-12 484.66,-12"/>
+<polygon fill="#000000" stroke="#000000" points="484.82,-15.5 494.82,-12 484.82,-8.5 484.82,-15.5"/>
+</g>
+<!-- proc~compute_jacobian_standard -->
+<g id="proc~~expand_vector_real~~CalledByGraph_node18" class="node">
+<title>proc~compute_jacobian_standard</title>
+<g id="a_proc~~expand_vector_real~~CalledByGraph_node18"><a xlink:href="../proc/compute_jacobian_standard.html" xlink:title="compute_jacobian_standard">
+<polygon fill="#d9534f" stroke="#d9534f" points="412,-108 249,-108 249,-84 412,-84 412,-108"/>
+<text text-anchor="middle" x="330.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_jacobian_standard</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_jacobian_standard&#45;&gt;proc~perturb_x_and_compute_f -->
+<g id="proc~~expand_vector_real~~CalledByGraph_edge20" class="edge">
+<title>proc~compute_jacobian_standard&#45;&gt;proc~perturb_x_and_compute_f</title>
+<path fill="none" stroke="#000000" d="M412.01,-85.07C451.89,-79.66 500.39,-73.08 542.47,-67.37"/>
+<polygon fill="#000000" stroke="#000000" points="543.02,-70.83 552.46,-66.02 542.08,-63.89 543.02,-70.83"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocexpand_vector_realCalledByGraph = svgPanZoom('#procexpand_vector_realCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">pure subroutine </span><span class="n">expand_vector_real</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">finished</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">vec</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">           </span><span class="c">!! counter for last element added to `vec`.</span>
+<span class="w">                                               </span><span class="c">!! must be initialized to `size(vec)`</span>
+<span class="w">                                               </span><span class="c">!! (or 0 if not allocated) before first call</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">chunk_size</span><span class="w">  </span><span class="c">!! allocate `vec` in blocks of this size</span>
+<span class="w">                                               </span><span class="c">!! (values &lt;1 are treated as 1)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">val</span><span class="w">        </span><span class="c">!! the value to add to `vec`</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">finished</span><span class="w">    </span><span class="c">!! set to true to return `vec`</span>
+<span class="w">                                               </span><span class="c">!! as its correct size (`n`)</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tmp</span><span class="w">  </span><span class="c">!! temporary array</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">val</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="n">size</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                </span><span class="c">! have to add another chunk:</span>
+<span class="w">                </span><span class="k">allocate</span><span class="p">(</span><span class="n">tmp</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span><span class="o">+</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">)))</span>
+<span class="w">                </span><span class="n">tmp</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span>
+<span class="w">                </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="n">vec</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end if</span>
+<span class="k">            </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="c">! the first element:</span>
+<span class="w">            </span><span class="k">allocate</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">)))</span>
+<span class="w">            </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">        </span><span class="n">vec</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">finished</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">finished</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="c">! set vec to actual size (n):</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<span class="w">            </span><span class="k">allocate</span><span class="p">(</span><span class="n">tmp</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">            </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="n">vec</span><span class="p">)</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    end if</span>
+
+<span class="k">    end subroutine </span><span class="n">expand_vector_real</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

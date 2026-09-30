@@ -1,0 +1,740 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>dsm_wrapper &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>dsm_wrapper
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.8% of total for procedures.">26 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">dsm_wrapper</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/dsm_wrapper.html#src">dsm_wrapper</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine dsm_wrapper(me, n, m, info)  
+</h2>
+    
+
+    <p>Wrapper for <a href="../proc/dsm.html">dsm</a> to compute the sparsity pattern partition.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/sparsity_pattern.html'>sparsity_pattern</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~20"></span>
+              class(<a href='../type/sparsity_pattern.html'>sparsity_pattern</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~9"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+                <p>number of columns of jacobian matrix</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+                <p>number of rows of jacobian matrix</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-info~3"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>info</strong></td>
+            <td>
+                <p>status output from <a href="../proc/dsm.html">dsm</a></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~dsm_wrapper~~CallsGraph Pages: 1 -->
+<svg id="procdsm_wrapperCallsGraph" width="629pt" height="280pt"
+ viewBox="0.00 0.00 629.00 280.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~dsm_wrapper~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 276)">
+<title>proc~~dsm_wrapper~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-276 625,-276 625,4 -4,4"/>
+<!-- proc~dsm_wrapper -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node1" class="node">
+<title>proc~dsm_wrapper</title>
+<polygon fill="none" stroke="black" points="180,-150 0,-150 0,-126 180,-126 180,-150"/>
+<text text-anchor="middle" x="90" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50">sparsity_pattern%dsm_wrapper</text>
+</g>
+<!-- proc~compute_group_index -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node2" class="node">
+<title>proc~compute_group_index</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node2"><a xlink:href="../proc/compute_group_index.html" xlink:title="sparsity_pattern%compute_group_index">
+<polygon fill="#d9534f" stroke="#d9534f" points="441,-192 216,-192 216,-168 441,-168 441,-192"/>
+<text text-anchor="middle" x="328.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%compute_group_index</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~compute_group_index -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge1" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~compute_group_index</title>
+<path fill="none" stroke="#000000" d="M158.77,-150.04C187.1,-155.07 220.18,-160.94 249.51,-166.15"/>
+<polygon fill="#000000" stroke="#000000" points="249.26,-169.66 259.72,-167.96 250.48,-162.77 249.26,-169.66"/>
+</g>
+<!-- proc~dsm -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node3" class="node">
+<title>proc~dsm</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node3"><a xlink:href="../proc/dsm.html" xlink:title="dsm">
+<polygon fill="#d9534f" stroke="#d9534f" points="355.5,-150 301.5,-150 301.5,-126 355.5,-126 355.5,-150"/>
+<text text-anchor="middle" x="328.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsm</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~dsm -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge2" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~dsm</title>
+<path fill="none" stroke="#000000" d="M180.07,-138C218.56,-138 261.44,-138 290.99,-138"/>
+<polygon fill="#000000" stroke="#000000" points="291.24,-141.5 301.24,-138 291.24,-134.5 291.24,-141.5"/>
+</g>
+<!-- proc~get_partition_pattern -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node4" class="node">
+<title>proc~get_partition_pattern</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node4"><a xlink:href="../proc/get_partition_pattern.html" xlink:title="sparsity_pattern%get_partition_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="438.5,-108 218.5,-108 218.5,-84 438.5,-84 438.5,-108"/>
+<text text-anchor="middle" x="328.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sparsity_pattern%get_partition_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm_wrapper&#45;&gt;proc~get_partition_pattern -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge3" class="edge">
+<title>proc~dsm_wrapper&#45;&gt;proc~get_partition_pattern</title>
+<path fill="none" stroke="#000000" d="M158.77,-125.96C187.1,-120.93 220.18,-115.06 249.51,-109.85"/>
+<polygon fill="#000000" stroke="#000000" points="250.48,-113.23 259.72,-108.04 249.26,-106.34 250.48,-113.23"/>
+</g>
+<!-- proc~degr -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node5" class="node">
+<title>proc~degr</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node5"><a xlink:href="../proc/degr.html" xlink:title="degr">
+<polygon fill="#d9534f" stroke="#d9534f" points="531,-272 477,-272 477,-248 531,-248 531,-272"/>
+<text text-anchor="middle" x="504" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">degr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~degr -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge4" class="edge">
+<title>proc~dsm&#45;&gt;proc~degr</title>
+<path fill="none" stroke="#000000" d="M355.73,-136.41C380.27,-136.3 416.7,-139.87 441,-159 471.63,-183.12 453.18,-208.13 477,-239 477.47,-239.6 477.95,-240.2 478.45,-240.79"/>
+<polygon fill="#000000" stroke="#000000" points="476.12,-243.41 485.7,-247.94 481.04,-238.43 476.12,-243.41"/>
+</g>
+<!-- proc~ido -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node6" class="node">
+<title>proc~ido</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node6"><a xlink:href="../proc/ido.html" xlink:title="ido">
+<polygon fill="#d9534f" stroke="#d9534f" points="531,-230 477,-230 477,-206 531,-206 531,-230"/>
+<text text-anchor="middle" x="504" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ido</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~ido -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge5" class="edge">
+<title>proc~dsm&#45;&gt;proc~ido</title>
+<path fill="none" stroke="#000000" d="M355.64,-138.76C379.14,-140.38 414,-145.17 441,-159 443.58,-160.32 466.06,-181.97 483.22,-198.66"/>
+<polygon fill="#000000" stroke="#000000" points="481.03,-201.42 490.64,-205.89 485.92,-196.4 481.03,-201.42"/>
+</g>
+<!-- proc~numsrt -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node7" class="node">
+<title>proc~numsrt</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node7"><a xlink:href="../proc/numsrt.html" xlink:title="numsrt">
+<polygon fill="#d9534f" stroke="#d9534f" points="621,-210 567,-210 567,-186 621,-186 621,-210"/>
+<text text-anchor="middle" x="594" y="-195.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numsrt</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~numsrt -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge6" class="edge">
+<title>proc~dsm&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M355.73,-142.44C378.39,-146.4 411.96,-152.55 441,-159 480.9,-167.87 526.24,-179.74 556.94,-188.04"/>
+<polygon fill="#000000" stroke="#000000" points="556.2,-191.47 566.76,-190.71 558.03,-184.71 556.2,-191.47"/>
+</g>
+<!-- proc~seq -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node8" class="node">
+<title>proc~seq</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node8"><a xlink:href="../proc/seq.html" xlink:title="seq">
+<polygon fill="#d9534f" stroke="#d9534f" points="531,-150 477,-150 477,-126 531,-126 531,-150"/>
+<text text-anchor="middle" x="504" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">seq</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~seq -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge7" class="edge">
+<title>proc~dsm&#45;&gt;proc~seq</title>
+<path fill="none" stroke="#000000" d="M355.85,-138C385.45,-138 433.66,-138 466.79,-138"/>
+<polygon fill="#000000" stroke="#000000" points="466.97,-141.5 476.97,-138 466.97,-134.5 466.97,-141.5"/>
+</g>
+<!-- proc~setr -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node9" class="node">
+<title>proc~setr</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node9"><a xlink:href="../proc/setr.html" xlink:title="setr">
+<polygon fill="#d9534f" stroke="#d9534f" points="531,-108 477,-108 477,-84 531,-84 531,-108"/>
+<text text-anchor="middle" x="504" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">setr</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~setr -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge8" class="edge">
+<title>proc~dsm&#45;&gt;proc~setr</title>
+<path fill="none" stroke="#000000" d="M355.86,-134.11C378.61,-130.49 412.23,-124.54 441,-117 449.53,-114.76 458.59,-111.95 467.07,-109.12"/>
+<polygon fill="#000000" stroke="#000000" points="468.37,-112.37 476.7,-105.82 466.1,-105.75 468.37,-112.37"/>
+</g>
+<!-- proc~slo -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node10" class="node">
+<title>proc~slo</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node10"><a xlink:href="../proc/slo.html" xlink:title="slo">
+<polygon fill="#d9534f" stroke="#d9534f" points="531,-66 477,-66 477,-42 531,-42 531,-66"/>
+<text text-anchor="middle" x="504" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slo</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~slo -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge9" class="edge">
+<title>proc~dsm&#45;&gt;proc~slo</title>
+<path fill="none" stroke="#000000" d="M355.53,-137.91C379.27,-136.76 414.57,-132.28 441,-117 462.28,-104.7 459.36,-92.13 477,-75 477.67,-74.35 478.37,-73.69 479.07,-73.04"/>
+<polygon fill="#000000" stroke="#000000" points="481.67,-75.41 486.93,-66.21 477.09,-70.13 481.67,-75.41"/>
+</g>
+<!-- proc~srtdat -->
+<g id="proc~~dsm_wrapper~~CallsGraph_node11" class="node">
+<title>proc~srtdat</title>
+<g id="a_proc~~dsm_wrapper~~CallsGraph_node11"><a xlink:href="../proc/srtdat.html" xlink:title="srtdat">
+<polygon fill="#d9534f" stroke="#d9534f" points="531,-24 477,-24 477,0 531,0 531,-24"/>
+<text text-anchor="middle" x="504" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srtdat</text>
+</a>
+</g>
+</g>
+<!-- proc~dsm&#45;&gt;proc~srtdat -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge10" class="edge">
+<title>proc~dsm&#45;&gt;proc~srtdat</title>
+<path fill="none" stroke="#000000" d="M355.8,-139.69C380.4,-139.86 416.88,-136.35 441,-117 472.68,-91.59 452.48,-65.38 477,-33 477.46,-32.39 477.94,-31.79 478.44,-31.2"/>
+<polygon fill="#000000" stroke="#000000" points="481.03,-33.56 485.65,-24.02 476.1,-28.6 481.03,-33.56"/>
+</g>
+<!-- proc~ido&#45;&gt;proc~numsrt -->
+<g id="proc~~dsm_wrapper~~CallsGraph_edge11" class="edge">
+<title>proc~ido&#45;&gt;proc~numsrt</title>
+<path fill="none" stroke="#000000" d="M531.4,-212C539.48,-210.16 548.51,-208.11 557.1,-206.16"/>
+<polygon fill="#000000" stroke="#000000" points="557.94,-209.56 566.92,-203.93 556.39,-202.73 557.94,-209.56"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~dsm_wrapper~~CalledByGraph Pages: 1 -->
+<svg id="procdsm_wrapperCalledByGraph" width="423pt" height="116pt"
+ viewBox="0.00 0.00 423.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~dsm_wrapper~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>proc~~dsm_wrapper~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 419,-112 419,4 -4,4"/>
+<!-- proc~dsm_wrapper -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_node1" class="node">
+<title>proc~dsm_wrapper</title>
+<polygon fill="none" stroke="black" points="415,-66 235,-66 235,-42 415,-42 415,-66"/>
+<text text-anchor="middle" x="325" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">sparsity_pattern%dsm_wrapper</text>
+</g>
+<!-- proc~compute_sparsity_random -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_node2" class="node">
+<title>proc~compute_sparsity_random</title>
+<g id="a_proc~~dsm_wrapper~~CalledByGraph_node2"><a xlink:href="../proc/compute_sparsity_random.html" xlink:title="compute_sparsity_random">
+<polygon fill="#d9534f" stroke="#d9534f" points="176.5,-108 22.5,-108 22.5,-84 176.5,-84 176.5,-108"/>
+<text text-anchor="middle" x="99.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_edge1" class="edge">
+<title>proc~compute_sparsity_random&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M164.55,-83.96C191.2,-78.96 222.31,-73.11 249.94,-67.92"/>
+<polygon fill="#000000" stroke="#000000" points="250.76,-71.32 259.94,-66.04 249.47,-64.44 250.76,-71.32"/>
+</g>
+<!-- proc~compute_sparsity_random_2 -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_node3" class="node">
+<title>proc~compute_sparsity_random_2</title>
+<g id="a_proc~~dsm_wrapper~~CalledByGraph_node3"><a xlink:href="../proc/compute_sparsity_random_2.html" xlink:title="compute_sparsity_random_2">
+<polygon fill="#d9534f" stroke="#d9534f" points="182.5,-66 16.5,-66 16.5,-42 182.5,-42 182.5,-66"/>
+<text text-anchor="middle" x="99.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_sparsity_random_2</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_sparsity_random_2&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_edge2" class="edge">
+<title>proc~compute_sparsity_random_2&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M182.77,-54C196.39,-54 210.64,-54 224.63,-54"/>
+<polygon fill="#000000" stroke="#000000" points="224.76,-57.5 234.76,-54 224.76,-50.5 224.76,-57.5"/>
+</g>
+<!-- proc~set_sparsity_pattern -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_node4" class="node">
+<title>proc~set_sparsity_pattern</title>
+<g id="a_proc~~dsm_wrapper~~CalledByGraph_node4"><a xlink:href="../proc/set_sparsity_pattern.html" xlink:title="numdiff_type%set_sparsity_pattern">
+<polygon fill="#d9534f" stroke="#d9534f" points="199,-24 0,-24 0,0 199,0 199,-24"/>
+<text text-anchor="middle" x="99.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%set_sparsity_pattern</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_pattern&#45;&gt;proc~dsm_wrapper -->
+<g id="proc~~dsm_wrapper~~CalledByGraph_edge3" class="edge">
+<title>proc~set_sparsity_pattern&#45;&gt;proc~dsm_wrapper</title>
+<path fill="none" stroke="#000000" d="M164.55,-24.04C191.2,-29.04 222.31,-34.89 249.94,-40.08"/>
+<polygon fill="#000000" stroke="#000000" points="249.47,-43.56 259.94,-41.96 250.76,-36.68 249.47,-43.56"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">dsm_wrapper</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">info</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">sparsity_pattern</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">     </span><span class="c">!! number of columns of jacobian matrix</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w">     </span><span class="c">!! number of rows of jacobian matrix</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">info</span><span class="w">  </span><span class="c">!! status output from [[dsm]]</span>
+
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mingrp</span><span class="w"> </span><span class="c">!! for call to [[dsm]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ipntr</span><span class="w">  </span><span class="c">!! for call to [[dsm]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jpntr</span><span class="w">  </span><span class="c">!! for call to [[dsm]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">irow</span><span class="w">   </span><span class="c">!! for call to [[dsm]]</span>
+<span class="w">                                               </span><span class="c">!! (temp copy since [[dsm]]</span>
+<span class="w">                                               </span><span class="c">!! will modify it)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">icol</span><span class="w">   </span><span class="c">!! for call to [[dsm]]</span>
+<span class="w">                                               </span><span class="c">!! (temp copy since [[dsm]]</span>
+<span class="w">                                               </span><span class="c">!! will modify it)</span>
+
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">ipntr</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">jpntr</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">ngrp</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">ngrp</span><span class="p">)</span>
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">ngrp</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">get_partition_pattern</span><span class="p">(</span><span class="n">irow</span><span class="p">,</span><span class="n">icol</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">irow</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! no elements (e.g., the functions do not depend on x),</span>
+<span class="w">        </span><span class="c">! so all the columns can be in one group:</span>
+<span class="w">        </span><span class="c">! [dsm does not accept an empty pattern]</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">maxgrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">ngrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_group_index</span><span class="p">()</span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span>
+
+<span class="k">    call </span><span class="n">dsm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">irow</span><span class="p">),&amp;</span>
+<span class="w">             </span><span class="n">irow</span><span class="p">,</span><span class="n">icol</span><span class="p">,&amp;</span>
+<span class="w">             </span><span class="n">me</span><span class="p">%</span><span class="n">ngrp</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">maxgrp</span><span class="p">,&amp;</span>
+<span class="w">             </span><span class="n">mingrp</span><span class="p">,</span><span class="n">info</span><span class="p">,</span><span class="n">ipntr</span><span class="p">,</span><span class="n">jpntr</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">info</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">compute_group_index</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">dsm_wrapper</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

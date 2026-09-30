@@ -1,0 +1,1399 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="NumDiff -- Numerical Differentiation Library">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>initialize_numdiff &ndash; NumDiff</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">NumDiff </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>initialize_numdiff
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 4.3% of total for procedures.">142 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/numerical_differentiation_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/numerical_differentiation_module.f90.html'>numerical_differentiation_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/numerical_differentiation_module.html'>numerical_differentiation_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">initialize_numdiff</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/initialize_numdiff.html#src">initialize_numdiff</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine initialize_numdiff(me, n, m, xlow, xhigh, perturb_mode, dpert, problem_func, sparsity_mode, jacobian_method, jacobian_methods, class, classes, info, chunk_size, partition_sparsity_pattern, cache_size, xlow_for_sparsity, xhigh_for_sparsity, dpert_for_sparsity, sparsity_perturb_mode, linear_sparsity_tol, function_precision_tol, num_sparsity_points)  
+</h2>
+    
+
+    <p>Initialize a <a href="../type/numdiff_type.html">numdiff_type</a> class. This must be called first.</p>
+<div class="alert alert-info">
+<p class="alert-title h4">Note</p>
+<p>Only one of the following inputs can be used: <code>jacobian_method</code>,
+      <code>jacobian_methods</code>, <code>class</code>, or <code>classes</code>.</p>
+</div>
+<p>the distinct values in <code>classes</code>
+ the methods for one class
+ counter</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/numdiff_type.html'>numdiff_type</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~17"></span>
+              class(<a href='../type/numdiff_type.html'>numdiff_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~8"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+                <p>number of <code>x</code> variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>m</strong></td>
+            <td>
+                <p>number of <code>f</code> functions</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xlow~7"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xlow</strong></td>
+            <td>
+                <p>lower bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xhigh~7"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh</strong></td>
+            <td>
+                <p>upper bounds on <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-perturb_mode~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>perturb_mode</strong></td>
+            <td>
+                <p>perturbation mode:
+<strong>1</strong> - perturbation is <code>dx=dpert</code>,
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dpert~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>dpert</strong></td>
+            <td>
+                <p>perturbation vector for <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-problem_func~3"></span>
+              procedure(<a href='../interface/func.html'>func</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>problem_func</strong></td>
+            <td>
+                <p>the user function that defines the problem
+(returns <code>m</code> functions)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sparsity_mode~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_mode</strong></td>
+            <td>
+                <p>the sparsity computation method:
+<strong>1</strong> - assume dense,
+<strong>2</strong> - three-point simple method,
+<strong>3</strong> - will be specified by the user in
+a subsequent call to <a href="../proc/set_sparsity_pattern.html">set_sparsity_pattern</a>.
+<strong>4</strong> - computes a two-point jacobian
+at <code>num_sparsity_points</code> points.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jacobian_method"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>jacobian_method</strong></td>
+            <td>
+                <p><code>id</code> code for the finite difference method
+to use for all <code>n</code> variables.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-jacobian_methods"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>jacobian_methods</strong></td>
+            <td>
+                <p><code>id</code> codes for the finite difference method
+to use for each variable.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-class~5"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>class</strong></td>
+            <td>
+                <p>method class for the finite difference method
+to use for all <code>n</code> variables.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-classes"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>classes</strong></td>
+            <td>
+                <p>method class for the finite difference methods
+to use for each variable.
+see <a href="../proc/get_finite_difference_method.html">get_finite_difference_method</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-info~2"></span>
+              procedure(<a href='../interface/info_f.html'>info_f</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>info</strong></td>
+            <td>
+                <p>a function the user can define
+which is called when each column
+of the jacobian is computed.
+It can be used to perform any
+setup operations.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-chunk_size~7"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>chunk_size</strong></td>
+            <td>
+                <p>chunk size for allocating the arrays
+(the absolute value is used, and values &lt;1 are treated as 1) [default is 100]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-partition_sparsity_pattern~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>partition_sparsity_pattern</strong></td>
+            <td>
+                <p>if the sparisty pattern is to
+be partitioned using <a href="../proc/dsm.html">dsm</a>
+[default is False]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cache_size~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cache_size</strong></td>
+            <td>
+                <p>if present, this is the cache size
+for the function cache
+(default is not to enable cache)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xlow_for_sparsity~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xlow_for_sparsity</strong></td>
+            <td>
+                <p>lower bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xlow</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xhigh_for_sparsity~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xhigh_for_sparsity</strong></td>
+            <td>
+                <p>upper bounds on <code>x</code> used for
+sparsity computation (when
+<code>sparsity_mode</code> is 2). If not
+present, then <code>xhigh</code> is used.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dpert_for_sparsity~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>dpert_for_sparsity</strong></td>
+            <td>
+                <p>for <code>sparsity_mode=4</code>, the perturbation</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sparsity_perturb_mode~3"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sparsity_perturb_mode</strong></td>
+            <td>
+                <p>perturbation mode (required if <code>sparsity_mode=4</code>):
+<strong>1</strong> - perturbation is <code>dx=dpert</code>,
+<strong>2</strong> - perturbation is <code>dx=dpert*x</code>,
+<strong>3</strong> - perturbation is <code>dx=dpert*(1+x)</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_sparsity_tol~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>linear_sparsity_tol</strong></td>
+            <td>
+                <p>the equality tolerance for derivatives to
+indicate a constant jacobian element (linear sparsity)
+(relative to the largest derivative magnitude)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-function_precision_tol~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>function_precision_tol</strong></td>
+            <td>
+                <p>the relative function precision. two function values
+that are the same to within this relative tolerance
+are considered the same value. This is used
+when estimating the sparsity pattern when
+<code>sparsity_mode=2</code> in <a href="../proc/compute_sparsity_random.html">compute_sparsity_random</a>
+or <code>sparsity_mode=4</code> in <a href="../proc/compute_sparsity_random_2.html">compute_sparsity_random_2</a></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-num_sparsity_points~4"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_sparsity_points</strong></td>
+            <td>
+                <p>for <code>sparsity_mode=4</code>, the number of jacobian
+evaluations used to estimate the sparsity pattern.
+must be in the range <code>[1, max_num_sparsity_points]</code> (default is 3).</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~initialize_numdiff~~CallsGraph Pages: 1 -->
+<svg id="procinitialize_numdiffCallsGraph" width="641pt" height="254pt"
+ viewBox="0.00 0.00 641.00 253.91" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~initialize_numdiff~~CallsGraph" class="graph" transform="scale(0.5 0.5) rotate(0) translate(4 505)">
+<title>proc~~initialize_numdiff~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-505 1281,-505 1281,4 -4,4"/>
+<!-- proc~initialize_numdiff -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node1" class="node">
+<title>proc~initialize_numdiff</title>
+<polygon fill="none" stroke="black" points="183,-247 0,-247 0,-223 183,-223 183,-247"/>
+<text text-anchor="middle" x="91.5" y="-232.6" font-family="Helvetica,sans-Serif" font-size="10.50">numdiff_type%initialize_numdiff</text>
+</g>
+<!-- interface~unique -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node2" class="node">
+<title>interface~unique</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node2"><a xlink:href="../interface/unique.html" xlink:title="unique">
+<polygon fill="#a7506f" stroke="#a7506f" points="356.5,-426 302.5,-426 302.5,-402 356.5,-402 356.5,-426"/>
+<text text-anchor="middle" x="329.5" y="-411.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;interface~unique -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge1" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;interface~unique</title>
+<path fill="none" stroke="#000000" d="M98.88,-247.21C114.86,-276.49 159.59,-351.04 219,-388 241.06,-401.72 269.74,-408.2 292.21,-411.26"/>
+<polygon fill="#000000" stroke="#000000" points="292.03,-414.77 302.37,-412.48 292.86,-407.82 292.03,-414.77"/>
+</g>
+<!-- proc~destroy_cache -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node3" class="node">
+<title>proc~destroy_cache</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node3"><a xlink:href="../proc/destroy_cache.html" xlink:title="function_cache%destroy_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="688.5,-357 508.5,-357 508.5,-333 688.5,-333 688.5,-357"/>
+<text text-anchor="middle" x="598.5" y="-342.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">function_cache%destroy_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~destroy_cache -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge2" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~destroy_cache</title>
+<path fill="none" stroke="#000000" d="M100.46,-247.27C118.1,-273.15 163.33,-332.79 219,-355 327.54,-398.29 467.85,-376.64 543.47,-359.36"/>
+<polygon fill="#000000" stroke="#000000" points="544.32,-362.76 553.26,-357.06 542.72,-355.94 544.32,-362.76"/>
+</g>
+<!-- proc~get_all_methods_in_class -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node4" class="node">
+<title>proc~get_all_methods_in_class</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node4"><a xlink:href="../proc/get_all_methods_in_class.html" xlink:title="get_all_methods_in_class">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="671.5,-267 525.5,-267 525.5,-243 671.5,-243 671.5,-267"/>
+<text text-anchor="middle" x="598.5" y="-252.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_all_methods_in_class</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge3" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M183.08,-238.59C277.46,-242.33 424.06,-248.13 515.23,-251.74"/>
+<polygon fill="#000000" stroke="#000000" points="515.12,-255.24 525.25,-252.14 515.39,-248.25 515.12,-255.24"/>
+</g>
+<!-- proc~get_finite_difference_method -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node5" class="node">
+<title>proc~get_finite_difference_method</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node5"><a xlink:href="../proc/get_finite_difference_method.html" xlink:title="get_finite_difference_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="928.5,-287 760.5,-287 760.5,-263 928.5,-263 928.5,-287"/>
+<text text-anchor="middle" x="844.5" y="-272.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_finite_difference_method</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge4" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M151.18,-247.06C172.46,-251.06 196.74,-255.21 219,-258 406.36,-281.52 627.73,-280.91 750.18,-278.12"/>
+<polygon fill="#000000" stroke="#000000" points="750.36,-281.61 760.27,-277.87 750.19,-274.61 750.36,-281.61"/>
+</g>
+<!-- proc~initialize_cache -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node6" class="node">
+<title>proc~initialize_cache</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node6"><a xlink:href="../proc/initialize_cache.html" xlink:title="function_cache%initialize_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="422,-346 237,-346 237,-322 422,-322 422,-346"/>
+<text text-anchor="middle" x="329.5" y="-331.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">function_cache%initialize_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~initialize_cache -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge5" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~initialize_cache</title>
+<path fill="none" stroke="#000000" d="M109.69,-247.1C133.29,-263.2 177.53,-291.52 219,-308 230.06,-312.4 242.07,-316.17 253.93,-319.38"/>
+<polygon fill="#000000" stroke="#000000" points="253.29,-322.82 263.84,-321.93 255.03,-316.05 253.29,-322.82"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node7" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node7"><a xlink:href="../proc/raise_exception.html" xlink:title="numdiff_type%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="932,-147 757,-147 757,-123 932,-123 932,-147"/>
+<text text-anchor="middle" x="844.5" y="-132.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~raise_exception -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge6" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M124.86,-222.94C150.18,-213.88 186.44,-201.76 219,-194 402.15,-150.36 622.76,-138.75 746.69,-135.82"/>
+<polygon fill="#000000" stroke="#000000" points="746.99,-139.31 756.91,-135.59 746.83,-132.31 746.99,-139.31"/>
+</g>
+<!-- proc~set_num_sparsity_points -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node8" class="node">
+<title>proc~set_num_sparsity_points</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node8"><a xlink:href="../proc/set_num_sparsity_points.html" xlink:title="numdiff_type%set_num_sparsity_points">
+<polygon fill="#d9534f" stroke="#d9534f" points="440,-108 219,-108 219,-84 440,-84 440,-108"/>
+<text text-anchor="middle" x="329.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%set_num_sparsity_points</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~set_num_sparsity_points -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge7" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~set_num_sparsity_points</title>
+<path fill="none" stroke="#000000" d="M102.25,-222.98C121.82,-199.7 168.36,-148.44 219,-122 227.36,-117.64 236.45,-114 245.71,-110.96"/>
+<polygon fill="#000000" stroke="#000000" points="246.85,-114.27 255.39,-108.01 244.81,-107.58 246.85,-114.27"/>
+</g>
+<!-- proc~set_numdiff_bounds -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node9" class="node">
+<title>proc~set_numdiff_bounds</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node9"><a xlink:href="../proc/set_numdiff_bounds.html" xlink:title="numdiff_type%set_numdiff_bounds">
+<polygon fill="#d9534f" stroke="#d9534f" points="429,-66 230,-66 230,-42 429,-42 429,-66"/>
+<text text-anchor="middle" x="329.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%set_numdiff_bounds</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~set_numdiff_bounds -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge8" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~set_numdiff_bounds</title>
+<path fill="none" stroke="#000000" d="M98.17,-222.97C113.16,-192.61 156.95,-112.67 219,-75 221.99,-73.19 225.1,-71.53 228.3,-70"/>
+<polygon fill="#000000" stroke="#000000" points="229.7,-73.21 237.53,-66.07 226.96,-66.77 229.7,-73.21"/>
+</g>
+<!-- proc~set_sparsity_mode -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node10" class="node">
+<title>proc~set_sparsity_mode</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node10"><a xlink:href="../proc/set_sparsity_mode.html" xlink:title="numdiff_type%set_sparsity_mode">
+<polygon fill="#d9534f" stroke="#d9534f" points="424.5,-227 234.5,-227 234.5,-203 424.5,-203 424.5,-227"/>
+<text text-anchor="middle" x="329.5" y="-212.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%set_sparsity_mode</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;proc~set_sparsity_mode -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge9" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;proc~set_sparsity_mode</title>
+<path fill="none" stroke="#000000" d="M183.07,-227.32C196.43,-226.19 210.29,-225.02 223.91,-223.86"/>
+<polygon fill="#000000" stroke="#000000" points="224.59,-227.32 234.26,-222.99 224,-220.34 224.59,-227.32"/>
+</g>
+<!-- unique_classes -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node11" class="node">
+<title>unique_classes</title>
+<polygon fill="#777777" stroke="#777777" points="376,-24 283,-24 283,0 376,0 376,-24"/>
+<text text-anchor="middle" x="329.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_classes</text>
+</g>
+<!-- proc~initialize_numdiff&#45;&gt;unique_classes -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge10" class="edge">
+<title>proc~initialize_numdiff&#45;&gt;unique_classes</title>
+<path fill="none" stroke="#000000" d="M96.26,-222.79C107.92,-187.07 147.13,-82.21 219,-33 234.7,-22.25 254.49,-16.66 272.91,-13.85"/>
+<polygon fill="#000000" stroke="#000000" points="273.49,-17.3 282.97,-12.56 272.6,-10.36 273.49,-17.3"/>
+</g>
+<!-- proc~unique_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node14" class="node">
+<title>proc~unique_int</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node14"><a xlink:href="../proc/unique_int.html" xlink:title="unique_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="632.5,-459 564.5,-459 564.5,-435 632.5,-435 632.5,-459"/>
+<text text-anchor="middle" x="598.5" y="-444.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_int</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge11" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M356.59,-417.22C402.54,-422.9 498.34,-434.74 554.3,-441.66"/>
+<polygon fill="#000000" stroke="#000000" points="553.91,-445.14 564.26,-442.89 554.77,-438.19 553.91,-445.14"/>
+</g>
+<!-- proc~unique_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node15" class="node">
+<title>proc~unique_real</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node15"><a xlink:href="../proc/unique_real.html" xlink:title="unique_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="636,-417 561,-417 561,-393 636,-393 636,-417"/>
+<text text-anchor="middle" x="598.5" y="-402.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique_real</text>
+</a>
+</g>
+</g>
+<!-- interface~unique&#45;&gt;proc~unique_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge12" class="edge">
+<title>interface~unique&#45;&gt;proc~unique_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M356.59,-413.12C401.55,-411.6 494.24,-408.48 550.63,-406.58"/>
+<polygon fill="#000000" stroke="#000000" points="550.84,-410.07 560.72,-406.24 550.61,-403.08 550.84,-410.07"/>
+</g>
+<!-- proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge13" class="edge">
+<title>proc~get_all_methods_in_class&#45;&gt;proc~get_finite_difference_method</title>
+<path fill="none" stroke="#000000" d="M671.72,-260.92C696.28,-262.93 724.09,-265.21 750.08,-267.34"/>
+<polygon fill="#000000" stroke="#000000" points="750.06,-270.85 760.31,-268.18 750.63,-263.88 750.06,-270.85"/>
+</g>
+<!-- proc~initialize_cache&#45;&gt;proc~destroy_cache -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge14" class="edge">
+<title>proc~initialize_cache&#45;&gt;proc~destroy_cache</title>
+<path fill="none" stroke="#000000" d="M422.01,-337.77C446.56,-338.78 473.21,-339.88 498.16,-340.91"/>
+<polygon fill="#000000" stroke="#000000" points="498.23,-344.41 508.36,-341.33 498.52,-337.42 498.23,-344.41"/>
+</g>
+<!-- proc~set_num_sparsity_points&#45;&gt;proc~raise_exception -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge16" class="edge">
+<title>proc~set_num_sparsity_points&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M440.02,-101.55C518.36,-105.87 626.27,-112.56 721,-121 729.35,-121.74 738.02,-122.59 746.7,-123.48"/>
+<polygon fill="#000000" stroke="#000000" points="746.58,-126.99 756.89,-124.56 747.31,-120.03 746.58,-126.99"/>
+</g>
+<!-- proc~integer_to_string -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node12" class="node">
+<title>proc~integer_to_string</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node12"><a xlink:href="../proc/integer_to_string.html" xlink:title="integer_to_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="649.5,-69 547.5,-69 547.5,-45 649.5,-45 649.5,-69"/>
+<text text-anchor="middle" x="598.5" y="-54.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">integer_to_string</text>
+</a>
+</g>
+</g>
+<!-- proc~set_num_sparsity_points&#45;&gt;proc~integer_to_string -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge15" class="edge">
+<title>proc~set_num_sparsity_points&#45;&gt;proc~integer_to_string</title>
+<path fill="none" stroke="#000000" d="M412.79,-83.98C452.98,-78.11 500.48,-71.17 537.25,-65.8"/>
+<polygon fill="#000000" stroke="#000000" points="537.93,-69.24 547.31,-64.33 536.91,-62.31 537.93,-69.24"/>
+</g>
+<!-- proc~set_numdiff_bounds&#45;&gt;proc~raise_exception -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge18" class="edge">
+<title>proc~set_numdiff_bounds&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M421.22,-41.98C519.02,-30.41 667.81,-17.19 721,-36 765.28,-51.66 805.28,-90.86 826.82,-114.98"/>
+<polygon fill="#000000" stroke="#000000" points="824.43,-117.57 833.64,-122.81 829.71,-112.97 824.43,-117.57"/>
+</g>
+<!-- proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge17" class="edge">
+<title>proc~set_numdiff_bounds&#45;&gt;proc~integer_to_string</title>
+<path fill="none" stroke="#000000" d="M429.16,-55.11C465.49,-55.52 505.51,-55.97 537.42,-56.32"/>
+<polygon fill="#000000" stroke="#000000" points="537.44,-59.83 547.48,-56.44 537.52,-52.83 537.44,-59.83"/>
+</g>
+<!-- proc~set_sparsity_mode&#45;&gt;proc~get_all_methods_in_class -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge19" class="edge">
+<title>proc~set_sparsity_mode&#45;&gt;proc~get_all_methods_in_class</title>
+<path fill="none" stroke="#000000" d="M410.61,-227C443.6,-231.94 481.8,-237.67 515.03,-242.65"/>
+<polygon fill="#000000" stroke="#000000" points="514.77,-246.14 525.18,-244.17 515.81,-239.22 514.77,-246.14"/>
+</g>
+<!-- proc~set_sparsity_mode&#45;&gt;proc~raise_exception -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge20" class="edge">
+<title>proc~set_sparsity_mode&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M424.84,-221.14C504.96,-223.82 622.32,-221.76 721,-196 756.06,-186.85 792.82,-166.95 816.82,-152.36"/>
+<polygon fill="#000000" stroke="#000000" points="818.71,-155.31 825.36,-147.06 815.02,-149.36 818.71,-155.31"/>
+</g>
+<!-- proc~set_numdiff_sparsity_bounds -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node13" class="node">
+<title>proc~set_numdiff_sparsity_bounds</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node13"><a xlink:href="../proc/set_numdiff_sparsity_bounds.html" xlink:title="numdiff_type%set_numdiff_sparsity_bounds">
+<polygon fill="#d9534f" stroke="#d9534f" points="721,-187 476,-187 476,-163 721,-163 721,-187"/>
+<text text-anchor="middle" x="598.5" y="-172.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numdiff_type%set_numdiff_sparsity_bounds</text>
+</a>
+</g>
+</g>
+<!-- proc~set_sparsity_mode&#45;&gt;proc~set_numdiff_sparsity_bounds -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge21" class="edge">
+<title>proc~set_sparsity_mode&#45;&gt;proc~set_numdiff_sparsity_bounds</title>
+<path fill="none" stroke="#000000" d="M410.61,-203C440.96,-198.45 475.73,-193.24 506.97,-188.56"/>
+<polygon fill="#000000" stroke="#000000" points="507.62,-192 516.99,-187.06 506.58,-185.08 507.62,-192"/>
+</g>
+<!-- proc~set_numdiff_sparsity_bounds&#45;&gt;proc~raise_exception -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge22" class="edge">
+<title>proc~set_numdiff_sparsity_bounds&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M672.71,-163C700.21,-158.49 731.67,-153.33 760.03,-148.68"/>
+<polygon fill="#000000" stroke="#000000" points="760.62,-152.13 769.92,-147.06 759.49,-145.23 760.62,-152.13"/>
+</g>
+<!-- interface~expand_vector -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node16" class="node">
+<title>interface~expand_vector</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node16"><a xlink:href="../interface/expand_vector.html" xlink:title="expand_vector">
+<polygon fill="#a7506f" stroke="#a7506f" points="890,-459 799,-459 799,-435 890,-435 890,-459"/>
+<text text-anchor="middle" x="844.5" y="-444.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~expand_vector -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge23" class="edge">
+<title>proc~unique_int&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M632.66,-447C672.72,-447 740.69,-447 788.61,-447"/>
+<polygon fill="#000000" stroke="#000000" points="788.82,-450.5 798.82,-447 788.82,-443.5 788.82,-450.5"/>
+</g>
+<!-- interface~sort_ascending -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node17" class="node">
+<title>interface~sort_ascending</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node17"><a xlink:href="../interface/sort_ascending.html" xlink:title="sort_ascending">
+<polygon fill="#a7506f" stroke="#a7506f" points="891,-417 798,-417 798,-393 891,-393 891,-417"/>
+<text text-anchor="middle" x="844.5" y="-402.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending</text>
+</a>
+</g>
+</g>
+<!-- proc~unique_int&#45;&gt;interface~sort_ascending -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge24" class="edge">
+<title>proc~unique_int&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M632.66,-441.29C672.56,-434.42 740.15,-422.79 788.04,-414.55"/>
+<polygon fill="#000000" stroke="#000000" points="788.68,-417.99 797.94,-412.84 787.49,-411.09 788.68,-417.99"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~expand_vector -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge25" class="edge">
+<title>proc~unique_real&#45;&gt;interface~expand_vector</title>
+<path fill="none" stroke="#000000" d="M636.03,-411.29C676.53,-418.26 742.29,-429.58 788.91,-437.6"/>
+<polygon fill="#000000" stroke="#000000" points="788.39,-441.07 798.84,-439.31 789.58,-434.17 788.39,-441.07"/>
+</g>
+<!-- proc~unique_real&#45;&gt;interface~sort_ascending -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge26" class="edge">
+<title>proc~unique_real&#45;&gt;interface~sort_ascending</title>
+<path fill="none" stroke="#000000" d="M636.03,-405C676.2,-405 741.21,-405 787.76,-405"/>
+<polygon fill="#000000" stroke="#000000" points="787.98,-408.5 797.98,-405 787.98,-401.5 787.98,-408.5"/>
+</g>
+<!-- proc~expand_vector_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node18" class="node">
+<title>proc~expand_vector_int</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node18"><a xlink:href="../proc/expand_vector_int.html" xlink:title="expand_vector_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1081.5,-501 972.5,-501 972.5,-477 1081.5,-477 1081.5,-501"/>
+<text text-anchor="middle" x="1027" y="-486.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_int</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge27" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M890.12,-457.38C912.51,-462.59 939.98,-468.98 964.35,-474.65"/>
+<polygon fill="#000000" stroke="#000000" points="963.69,-478.09 974.22,-476.95 965.28,-471.28 963.69,-478.09"/>
+</g>
+<!-- proc~expand_vector_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node19" class="node">
+<title>proc~expand_vector_real</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node19"><a xlink:href="../proc/expand_vector_real.html" xlink:title="expand_vector_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1085,-459 969,-459 969,-435 1085,-435 1085,-459"/>
+<text text-anchor="middle" x="1027" y="-444.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expand_vector_real</text>
+</a>
+</g>
+</g>
+<!-- interface~expand_vector&#45;&gt;proc~expand_vector_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge28" class="edge">
+<title>interface~expand_vector&#45;&gt;proc~expand_vector_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M890.12,-447C910.85,-447 935.95,-447 958.9,-447"/>
+<polygon fill="#000000" stroke="#000000" points="958.93,-450.5 968.93,-447 958.93,-443.5 958.93,-450.5"/>
+</g>
+<!-- proc~sort_ascending_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node20" class="node">
+<title>proc~sort_ascending_int</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node20"><a xlink:href="../proc/sort_ascending_int.html" xlink:title="sort_ascending_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1083,-417 971,-417 971,-393 1083,-393 1083,-417"/>
+<text text-anchor="middle" x="1027" y="-402.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_int</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge29" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M891.05,-405C912.15,-405 937.62,-405 960.72,-405"/>
+<polygon fill="#000000" stroke="#000000" points="960.8,-408.5 970.8,-405 960.8,-401.5 960.8,-408.5"/>
+</g>
+<!-- proc~sort_ascending_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node21" class="node">
+<title>proc~sort_ascending_real</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node21"><a xlink:href="../proc/sort_ascending_real.html" xlink:title="sort_ascending_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1086,-375 968,-375 968,-351 1086,-351 1086,-375"/>
+<text text-anchor="middle" x="1027" y="-360.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sort_ascending_real</text>
+</a>
+</g>
+</g>
+<!-- interface~sort_ascending&#45;&gt;proc~sort_ascending_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge30" class="edge">
+<title>interface~sort_ascending&#45;&gt;proc~sort_ascending_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M891.05,-394.4C913.35,-389.21 940.53,-382.89 964.64,-377.28"/>
+<polygon fill="#000000" stroke="#000000" points="965.46,-380.68 974.4,-375.01 963.87,-373.86 965.46,-380.68"/>
+</g>
+<!-- interface~swap -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node22" class="node">
+<title>interface~swap</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node22"><a xlink:href="../interface/swap.html" xlink:title="swap">
+<polygon fill="#a7506f" stroke="#a7506f" points="1176,-396 1122,-396 1122,-372 1176,-372 1176,-396"/>
+<text text-anchor="middle" x="1149" y="-381.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap</text>
+</a>
+</g>
+</g>
+<!-- proc~sort_ascending_int&#45;&gt;interface~swap -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge31" class="edge">
+<title>proc~sort_ascending_int&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1083.08,-395.36C1092.93,-393.64 1102.96,-391.88 1112.09,-390.28"/>
+<polygon fill="#000000" stroke="#000000" points="1112.72,-393.73 1121.97,-388.56 1111.51,-386.83 1112.72,-393.73"/>
+</g>
+<!-- proc~sort_ascending_real&#45;&gt;interface~swap -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge32" class="edge">
+<title>proc~sort_ascending_real&#45;&gt;interface~swap</title>
+<path fill="none" stroke="#000000" d="M1086.24,-373.19C1095.06,-374.74 1103.93,-376.29 1112.08,-377.71"/>
+<polygon fill="#000000" stroke="#000000" points="1111.52,-381.17 1121.98,-379.45 1112.73,-374.27 1111.52,-381.17"/>
+</g>
+<!-- proc~swap_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node23" class="node">
+<title>proc~swap_int</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node23"><a xlink:href="../proc/swap_int.html" xlink:title="swap_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="1273.5,-417 1215.5,-417 1215.5,-393 1273.5,-393 1273.5,-417"/>
+<text text-anchor="middle" x="1244.5" y="-402.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_int</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_int -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge33" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1176.04,-389.85C1185.11,-391.89 1195.47,-394.21 1205.31,-396.42"/>
+<polygon fill="#000000" stroke="#000000" points="1204.78,-399.89 1215.3,-398.67 1206.31,-393.06 1204.78,-399.89"/>
+</g>
+<!-- proc~swap_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_node24" class="node">
+<title>proc~swap_real</title>
+<g id="a_proc~~initialize_numdiff~~CallsGraph_node24"><a xlink:href="../proc/swap_real.html" xlink:title="swap_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="1277,-375 1212,-375 1212,-351 1277,-351 1277,-375"/>
+<text text-anchor="middle" x="1244.5" y="-360.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swap_real</text>
+</a>
+</g>
+</g>
+<!-- interface~swap&#45;&gt;proc~swap_real -->
+<g id="proc~~initialize_numdiff~~CallsGraph_edge34" class="edge">
+<title>interface~swap&#45;&gt;proc~swap_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M1176.04,-378.15C1184.13,-376.33 1193.26,-374.28 1202.12,-372.29"/>
+<polygon fill="#000000" stroke="#000000" points="1202.96,-375.69 1211.94,-370.09 1201.42,-368.86 1202.96,-375.69"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocinitialize_numdiffCallsGraph = svgPanZoom('#procinitialize_numdiffCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">initialize_numdiff</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">xlow</span><span class="p">,</span><span class="n">xhigh</span><span class="p">,</span><span class="n">perturb_mode</span><span class="p">,</span><span class="n">dpert</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">problem_func</span><span class="p">,</span><span class="n">sparsity_mode</span><span class="p">,</span><span class="n">jacobian_method</span><span class="p">,</span><span class="n">jacobian_methods</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="k">class</span><span class="p">,</span><span class="n">classes</span><span class="p">,</span><span class="n">info</span><span class="p">,</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">partition_sparsity_pattern</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">cache_size</span><span class="p">,</span><span class="n">xlow_for_sparsity</span><span class="p">,</span><span class="n">xhigh_for_sparsity</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">dpert_for_sparsity</span><span class="p">,</span><span class="n">sparsity_perturb_mode</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">linear_sparsity_tol</span><span class="p">,</span><span class="n">function_precision_tol</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">num_sparsity_points</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">numdiff_type</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">               </span><span class="c">!! number of `x` variables</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="w">               </span><span class="c">!! number of `f` functions</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">xlow</span><span class="w">            </span><span class="c">!! lower bounds on `x`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">xhigh</span><span class="w">           </span><span class="c">!! upper bounds on `x`</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">perturb_mode</span><span class="w">    </span><span class="c">!! perturbation mode:</span>
+<span class="w">                                                           </span><span class="c">!! **1** - perturbation is `dx=dpert`,</span>
+<span class="w">                                                           </span><span class="c">!! **2** - perturbation is `dx=dpert*x`,</span>
+<span class="w">                                                           </span><span class="c">!! **3** - perturbation is `dx=dpert*(1+x)`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">dpert</span><span class="w">           </span><span class="c">!! perturbation vector for `x`</span>
+<span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">problem_func</span><span class="w">    </span><span class="c">!! the user function that defines the problem</span>
+<span class="w">                                                           </span><span class="c">!! (returns `m` functions)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">sparsity_mode</span><span class="w">   </span><span class="c">!! the sparsity computation method:</span>
+<span class="w">                                                           </span><span class="c">!! **1** - assume dense,</span>
+<span class="w">                                                           </span><span class="c">!! **2** - three-point simple method,</span>
+<span class="w">                                                           </span><span class="c">!! **3** - will be specified by the user in</span>
+<span class="w">                                                           </span><span class="c">!! a subsequent call to [[set_sparsity_pattern]].</span>
+<span class="w">                                                           </span><span class="c">!! **4** - computes a two-point jacobian</span>
+<span class="w">                                                           </span><span class="c">!! at `num_sparsity_points` points.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">jacobian_method</span><span class="w"> </span><span class="c">!! `id` code for the finite difference method</span>
+<span class="w">                                                           </span><span class="c">!! to use for all `n` variables.</span>
+<span class="w">                                                           </span><span class="c">!! see [[get_finite_difference_method]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">jacobian_methods</span><span class="w"> </span><span class="c">!! `id` codes for the finite difference method</span>
+<span class="w">                                                                 </span><span class="c">!! to use for each variable.</span>
+<span class="w">                                                                 </span><span class="c">!! see [[get_finite_difference_method]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">class</span><span class="w">  </span><span class="c">!! method class for the finite difference method</span>
+<span class="w">                                          </span><span class="c">!! to use for all `n` variables.</span>
+<span class="w">                                          </span><span class="c">!! see [[get_finite_difference_method]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">classes</span><span class="w">   </span><span class="c">!! method class for the finite difference methods</span>
+<span class="w">                                                          </span><span class="c">!! to use for each variable.</span>
+<span class="w">                                                          </span><span class="c">!! see [[get_finite_difference_method]]</span>
+<span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">info_f</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">info</span><span class="w">  </span><span class="c">!! a function the user can define</span>
+<span class="w">                                        </span><span class="c">!! which is called when each column</span>
+<span class="w">                                        </span><span class="c">!! of the jacobian is computed.</span>
+<span class="w">                                        </span><span class="c">!! It can be used to perform any</span>
+<span class="w">                                        </span><span class="c">!! setup operations.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">chunk_size</span><span class="w">  </span><span class="c">!! chunk size for allocating the arrays</span>
+<span class="w">                                               </span><span class="c">!! (the absolute value is used, and values &lt;1 are treated as 1) [default is 100]</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">partition_sparsity_pattern</span><span class="w">  </span><span class="c">!! if the sparisty pattern is to</span>
+<span class="w">                                                               </span><span class="c">!! be partitioned using [[DSM]]</span>
+<span class="w">                                                               </span><span class="c">!! [default is False]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cache_size</span><span class="w">    </span><span class="c">!! if present, this is the cache size</span>
+<span class="w">                                                 </span><span class="c">!! for the function cache</span>
+<span class="w">                                                 </span><span class="c">!! (default is not to enable cache)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xlow_for_sparsity</span><span class="w">   </span><span class="c">!! lower bounds on `x` used for</span>
+<span class="w">                                                                     </span><span class="c">!! sparsity computation (when</span>
+<span class="w">                                                                     </span><span class="c">!! `sparsity_mode` is 2). If not</span>
+<span class="w">                                                                     </span><span class="c">!! present, then `xlow` is used.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xhigh_for_sparsity</span><span class="w">  </span><span class="c">!! upper bounds on `x` used for</span>
+<span class="w">                                                                     </span><span class="c">!! sparsity computation (when</span>
+<span class="w">                                                                     </span><span class="c">!! `sparsity_mode` is 2). If not</span>
+<span class="w">                                                                     </span><span class="c">!! present, then `xhigh` is used.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dpert_for_sparsity</span><span class="w">  </span><span class="c">!! for `sparsity_mode=4`, the perturbation</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sparsity_perturb_mode</span><span class="w">   </span><span class="c">!! perturbation mode (required if `sparsity_mode=4`):</span>
+<span class="w">                                                           </span><span class="c">!! **1** - perturbation is `dx=dpert`,</span>
+<span class="w">                                                           </span><span class="c">!! **2** - perturbation is `dx=dpert*x`,</span>
+<span class="w">                                                           </span><span class="c">!! **3** - perturbation is `dx=dpert*(1+x)`</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">linear_sparsity_tol</span><span class="w"> </span><span class="c">!! the equality tolerance for derivatives to</span>
+<span class="w">                                                        </span><span class="c">!! indicate a constant jacobian element (linear sparsity)</span>
+<span class="w">                                                        </span><span class="c">!! (relative to the largest derivative magnitude)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">function_precision_tol</span><span class="w">  </span><span class="c">!! the relative function precision. two function values</span>
+<span class="w">                                                            </span><span class="c">!! that are the same to within this relative tolerance</span>
+<span class="w">                                                            </span><span class="c">!! are considered the same value. This is used</span>
+<span class="w">                                                            </span><span class="c">!! when estimating the sparsity pattern when</span>
+<span class="w">                                                            </span><span class="c">!! `sparsity_mode=2` in [[compute_sparsity_random]]</span>
+<span class="w">                                                            </span><span class="c">!! or `sparsity_mode=4` in [[compute_sparsity_random_2]]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">num_sparsity_points</span><span class="w">  </span><span class="c">!! for `sparsity_mode=4`, the number of jacobian</span>
+<span class="w">                                                        </span><span class="c">!! evaluations used to estimate the sparsity pattern.</span>
+<span class="w">                                                        </span><span class="c">!! must be in the range `[1, max_num_sparsity_points]` (default is 3).</span>
+
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w">      </span><span class="c">!! counter</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">found</span><span class="w">  </span><span class="c">!! flag for [[get_finite_difference_method]]</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cache</span><span class="w">  </span><span class="c">!! if the cache is to be used</span>
+
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">use_diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">    </span><span class="c">! cache:</span>
+<span class="w">    </span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">cache_size</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cache</span><span class="p">)</span><span class="w"> </span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cache_size</span><span class="o">&gt;</span><span class="mi">0</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cache</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">compute_function</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">compute_function_with_cache</span>
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">cache</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">cache_size</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">compute_function</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">problem_func</span>
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">cache</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="w">    </span><span class="c">! functions:</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">problem_func</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">problem_func</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">partition_sparsity_pattern</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">partition_sparsity_pattern</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="w">    </span><span class="c">! method:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w">      </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_method</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_methods</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">        </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="k">class</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! use the same for all variable</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">        </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span>
+<span class="w">            </span><span class="k">call </span><span class="n">get_finite_difference_method</span><span class="p">(</span><span class="n">jacobian_method</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">found</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">found</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                          </span><span class="s1">'invalid jacobian_method'</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="k">            end if</span>
+<span class="k">        end do</span>
+<span class="k">    elseif</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_method</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_methods</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="k">class</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! specify a separate method for each variable</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">        </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span>
+<span class="w">            </span><span class="k">call </span><span class="n">get_finite_difference_method</span><span class="p">(</span><span class="n">jacobian_methods</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">me</span><span class="p">%</span><span class="n">meth</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">found</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">found</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                          </span><span class="s1">'invalid jacobian_methods'</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="k">            end if</span>
+<span class="k">        end do</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                        </span><span class="s1">'when using partitioned sparsity pattern, '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                        </span><span class="s1">'all columns must use the same '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                        </span><span class="s1">'finite diff method.'</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+<span class="k">    elseif</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_method</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_methods</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                  </span><span class="nb">present</span><span class="p">(</span><span class="k">class</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! use the class for all variables</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">        </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">class</span>
+<span class="k">        allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_all_methods_in_class</span><span class="p">(</span><span class="k">class</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="c">! just copy them over</span>
+<span class="w">    </span><span class="k">elseif</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_method</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">jacobian_methods</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="k">class</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c">! specify a separate class for each variable</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classes</span>
+<span class="w">        </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">        </span><span class="c">! look up each distinct class only once:</span>
+<span class="w">        </span><span class="k">block</span>
+<span class="k">            </span><span class="kt">integer</span><span class="p">,</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unique_classes</span><span class="w"> </span><span class="c">!! the distinct values in `classes`</span>
+<span class="w">            </span><span class="k">type</span><span class="p">(</span><span class="n">meth_array</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">meths</span><span class="w"> </span><span class="c">!! the methods for one class</span>
+<span class="w">            </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="c">!! counter</span>
+<span class="w">            </span><span class="n">unique_classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="p">,</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="w">            </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">)</span>
+<span class="w">                </span><span class="n">meths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_all_methods_in_class</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="w">                </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="k">class</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">==</span><span class="n">unique_classes</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">class_meths</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">meths</span>
+<span class="w">                </span><span class="k">end do</span>
+<span class="k">            end do</span>
+<span class="k">        end block</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                        </span><span class="s1">'when using partitioned sparsity pattern, '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                        </span><span class="s1">'all columns must use the same '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                        </span><span class="s1">'finite diff method.'</span><span class="p">)</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    else</span>
+<span class="k">        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                    </span><span class="s1">'must specify one of either '</span><span class="o">//</span><span class="p">&amp;</span>
+<span class="w">                                    </span><span class="s1">'jacobian_method, jacobian_methods, class, or classes.'</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="w">    </span><span class="c">! size of the problem:</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span>
+
+<span class="w">    </span><span class="c">! input variable bounds:</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">set_numdiff_bounds</span><span class="p">(</span><span class="n">xlow</span><span class="p">,</span><span class="n">xhigh</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! perturbation options:</span>
+<span class="w">    </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">perturb_mode</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">perturb_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">perturb_mode</span>
+<span class="w">    </span><span class="k">case </span><span class="n">default</span>
+<span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                   </span><span class="s1">'perturb_mode must be 1, 2, or 3.'</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end select</span>
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dpert</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dpert</span><span class="p">)</span>
+<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dpert</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">dpert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">dpert</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c">! optional:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">info</span><span class="p">))</span><span class="w">       </span><span class="n">me</span><span class="p">%</span><span class="n">info_function</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">info</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">))</span>
+
+<span class="w">    </span><span class="c">! set the jacobian function, depending on the options:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">partition_sparsity_pattern</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">jacobian_function</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">compute_jacobian_partitioned</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">jacobian_function</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">compute_jacobian_standard</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="w">    </span><span class="c">! set the sparsity function</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">set_sparsity_mode</span><span class="p">(</span><span class="n">sparsity_mode</span><span class="p">,</span><span class="n">xlow_for_sparsity</span><span class="p">,</span><span class="n">xhigh_for_sparsity</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">linear_sparsity_tol</span><span class="p">))</span><span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">linear_sparsity_tol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">linear_sparsity_tol</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">function_precision_tol</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">function_precision_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function_precision_tol</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">num_sparsity_points</span><span class="p">))</span><span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">set_num_sparsity_points</span><span class="p">(</span><span class="n">num_sparsity_points</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpert_for_sparsity</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">dpert_for_sparsity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">dpert_for_sparsity</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">dpert_for_sparsity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dpert</span><span class="w"> </span><span class="c">! use the same dpert as the jacobian</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">sparsity_perturb_mode</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        select case</span><span class="w"> </span><span class="p">(</span><span class="n">sparsity_perturb_mode</span><span class="p">)</span>
+<span class="w">        </span><span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity_perturb_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sparsity_perturb_mode</span>
+<span class="w">        </span><span class="k">case </span><span class="n">default</span>
+<span class="w">            </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="s1">'initialize_numdiff'</span><span class="p">,&amp;</span>
+<span class="w">                                       </span><span class="s1">'sparsity_perturb_mode must be 1, 2, or 3.'</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end select</span>
+<span class="k">    else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">sparsity_perturb_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">perturb_mode</span><span class="w"> </span><span class="c">! use the same perturb mode as the jacobian</span>
+<span class="w">    </span><span class="k">end if</span>
+
+<span class="k">    end subroutine </span><span class="n">initialize_numdiff</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              NumDiff
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
