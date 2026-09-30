@@ -103,6 +103,8 @@
         procedure :: dsm_wrapper
         procedure :: compute_indices
         procedure :: compute_group_index
+        procedure :: get_partition_pattern
+        procedure :: partition_is_consistent
         procedure,public :: destroy => destroy_sparsity
         procedure,public :: print => print_sparsity
         procedure,public :: columns_in_partition_group
@@ -1645,11 +1647,11 @@
 
     allocate(ipntr(m+1))
     allocate(jpntr(n+1))
+    if (allocated(me%ngrp)) deallocate(me%ngrp)
     allocate(me%ngrp(n))
-    irow = me%irow
-    icol = me%icol
+    call me%get_partition_pattern(irow,icol)
 
-    call dsm(m,n,me%num_nonzero_elements,&
+    call dsm(m,n,size(irow),&
              irow,icol,&
              me%ngrp,me%maxgrp,&
              mingrp,info,ipntr,jpntr)
@@ -1657,6 +1659,95 @@
     if (info==1) call me%compute_group_index()
 
     end subroutine dsm_wrapper
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns the pattern that the columns must be partitioned on: the nonlinear
+!  elements plus the linear (constant) elements. The linear elements must be
+!  included, since the function still depends on those variables: two columns
+!  that share a row through a linear element cannot be perturbed together.
+
+    subroutine get_partition_pattern(me,irow,icol)
+
+    implicit none
+
+    class(sparsity_pattern),intent(in) :: me
+    integer,dimension(:),allocatable,intent(out) :: irow  !! rows of the elements
+    integer,dimension(:),allocatable,intent(out) :: icol  !! columns of the elements
+
+    if (allocated(me%irow)) then
+        irow = me%irow
+        icol = me%icol
+    else
+        allocate(irow(0), icol(0))
+    end if
+    if (me%linear_sparsity_computed .and. allocated(me%linear_irow)) then
+        irow = [irow, me%linear_irow]
+        icol = [icol, me%linear_icol]
+    end if
+
+    end subroutine get_partition_pattern
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Returns true if the partition (`ngrp`, `maxgrp`) is consistent with the
+!  sparsity pattern (including the linear elements): no two columns in the
+!  same group may have an element in the same row.
+
+    function partition_is_consistent(me,m) result(consistent)
+
+    implicit none
+
+    class(sparsity_pattern),intent(in) :: me
+    integer,intent(in) :: m  !! number of rows of the jacobian
+    logical :: consistent
+
+    integer,dimension(:),allocatable :: irow, icol  !! the pattern to check
+    integer,dimension(:),allocatable :: row_ptr     !! row pointers into `by_row`
+    integer,dimension(:),allocatable :: by_row      !! element indices, sorted by row
+    integer,dimension(:),allocatable :: next        !! next free position for each row
+    integer,dimension(:),allocatable :: group_row   !! last row in which each group was seen
+    integer,dimension(:),allocatable :: group_col   !! the column in that row for each group
+    integer :: k, r, j, c, g
+
+    consistent = .false.
+    if (.not. allocated(me%ngrp) .or. me%maxgrp<1) return
+    call me%get_partition_pattern(irow,icol)
+
+    ! sort the elements by row (counting sort):
+    allocate(row_ptr(m+1), by_row(size(irow)))
+    row_ptr = 0
+    do k = 1, size(irow)
+        row_ptr(irow(k)+1) = row_ptr(irow(k)+1) + 1
+    end do
+    row_ptr(1) = 1
+    do r = 1, m
+        row_ptr(r+1) = row_ptr(r+1) + row_ptr(r)
+    end do
+    next = row_ptr(1:m)
+    do k = 1, size(irow)
+        by_row(next(irow(k))) = k
+        next(irow(k)) = next(irow(k)) + 1
+    end do
+
+    ! in each row, each group may only appear for one column:
+    allocate(group_row(me%maxgrp), group_col(me%maxgrp))
+    group_row = 0
+    group_col = 0
+    do r = 1, m
+        do j = row_ptr(r), row_ptr(r+1)-1
+            c = icol(by_row(j))
+            g = me%ngrp(c)
+            if (group_row(g)==r .and. group_col(g)/=c) return ! two columns of group g in row r
+            group_row(g) = r
+            group_col(g) = c
+        end do
+    end do
+    consistent = .true.
+
+    end function partition_is_consistent
 !*******************************************************************************
 
 !*******************************************************************************
@@ -1859,44 +1950,21 @@
         call me%raise_exception(15,'set_sparsity_pattern',&
                                    'invalid inputs')
         return
-    else
-
-        me%sparsity%sparsity_computed = .true.
-        me%sparsity%num_nonzero_elements = size(irow)
-        me%sparsity%irow = irow
-        me%sparsity%icol = icol
-
-        call me%sparsity%compute_indices(me%n)
-        if (me%partition_sparsity_pattern) then
-            if (present(maxgrp) .and. present(ngrp)) then
-                ! use the user-input partition:
-                if (maxgrp>0 .and. all(ngrp>=1 .and. ngrp<=maxgrp) .and. size(ngrp)==me%n) then
-                    me%sparsity%maxgrp = maxgrp
-                    me%sparsity%ngrp   = ngrp
-                    call me%sparsity%compute_group_index()
-                else
-                    call me%raise_exception(28,'set_sparsity_pattern',&
-                                            'invalid sparsity partition inputs.')
-                    return
-                end if
-            else
-                call me%sparsity%dsm_wrapper(me%n,me%m,info)
-                if (info/=1) then
-                    call me%raise_exception(16,'set_sparsity_pattern',&
-                                            'error partitioning sparsity pattern.')
-                    return
-                end if
-            end if
-        end if
-
     end if
 
-    ! linear pattern:
+    me%sparsity%sparsity_computed = .true.
+    me%sparsity%num_nonzero_elements = size(irow)
+    me%sparsity%irow = irow
+    me%sparsity%icol = icol
+    call me%sparsity%compute_indices(me%n)
+
+    ! linear pattern (this must be set before the partition is computed,
+    ! since the partition must also account for the linear elements):
     if (present(linear_irow) .and. present(linear_icol) .and. present(linear_vals)) then
         if (size(linear_irow)/=size(linear_icol) .or. &
             size(linear_vals)/=size(linear_icol) .or. &
-            any(linear_irow>me%m) .or. &
-            any(linear_icol>me%n)) then
+            any(linear_irow<1) .or. any(linear_irow>me%m) .or. &
+            any(linear_icol<1) .or. any(linear_icol>me%n)) then
             call me%raise_exception(17,'set_sparsity_pattern',&
                                        'invalid linear sparsity pattern')
             return
@@ -1906,6 +1974,35 @@
             me%sparsity%linear_vals = linear_vals
             me%sparsity%linear_sparsity_computed = .true.
             me%sparsity%num_nonzero_linear_elements = size(linear_irow)
+        end if
+    end if
+
+    if (me%partition_sparsity_pattern) then
+        if (present(maxgrp) .and. present(ngrp)) then
+            ! use the user-input partition:
+            if (maxgrp>0 .and. size(ngrp)==me%n .and. all(ngrp>=1 .and. ngrp<=maxgrp)) then
+                me%sparsity%maxgrp = maxgrp
+                me%sparsity%ngrp   = ngrp
+                if (.not. me%sparsity%partition_is_consistent(me%m)) then
+                    call me%raise_exception(33,'set_sparsity_pattern',&
+                                            'the sparsity partition is not consistent with the '//&
+                                            'sparsity pattern (two columns in the same group '//&
+                                            'have an element in the same row).')
+                    return
+                end if
+                call me%sparsity%compute_group_index()
+            else
+                call me%raise_exception(28,'set_sparsity_pattern',&
+                                        'invalid sparsity partition inputs.')
+                return
+            end if
+        else
+            call me%sparsity%dsm_wrapper(me%n,me%m,info)
+            if (info/=1) then
+                call me%raise_exception(16,'set_sparsity_pattern',&
+                                        'error partitioning sparsity pattern.')
+                return
+            end if
         end if
     end if
 
