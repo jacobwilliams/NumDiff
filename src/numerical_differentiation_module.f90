@@ -306,7 +306,7 @@
             integer,intent(in) :: i                   !! perturbing these columns for the `i`th time (1,2,...)
             real(wp),dimension(:),intent(in)  :: x    !! the nominal variable vector
         end subroutine info_f
-        subroutine jacobian_f(me,x,dx,jac)
+        subroutine jacobian_f(me,x,dx,jac,fx)
             !! Actual function for computing the Jacobian
             !! called by [[compute_jacobian]].
             import :: numdiff_type,wp
@@ -315,6 +315,7 @@
             real(wp),dimension(:),intent(in)    :: x    !! vector of variables (size `n`)
             real(wp),dimension(me%n),intent(in) :: dx   !! absolute perturbation (>0) for each variable
             real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size `num_nonzero_elements`)
+            real(wp),dimension(me%m),intent(in),optional :: fx !! function value at `x`, if already known
         end subroutine jacobian_f
     end interface
 
@@ -2125,6 +2126,9 @@
     real(wp) :: dfdx3 !! for linear sparsity estimation
     real(wp) :: dfdx  !! for linear sparsity estimation
     integer :: info !! status output form [[dsm]]
+    real(wp) :: tol   !! `function_precision_tol`
+    logical,dimension(me%m) :: changed  !! rows that are known to be nonzero from `f1` and `f2` alone
+    integer,dimension(:),allocatable :: idx3  !! the rows to compute at `x3`
 
     real(wp),dimension(4),parameter :: coeffs = [0.20123456787654321_wp,&
                                                  0.40123456787654321_wp,&
@@ -2176,22 +2180,41 @@
             if (me%exception_raised) return ! check for exceptions
         end if
 
+        tol = abs(me%function_precision_tol)
+
         do i = 1, me%n  ! columns of Jacobian
 
             ! restore nominal:
             x1 = x2
-            x3 = x2
-
             x1(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(1)
-            x3(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(3)
-
             call me%compute_function(x1,f1,idx)
             if (me%exception_raised) return ! check for exceptions
-            call me%compute_function(x3,f3,idx)
-            if (me%exception_raised) return ! check for exceptions
+
+            ! if f1 and f2 already differ, the element is nonzero whatever f3 is,
+            ! so f3 is only needed for the other rows. `equal_within_tol` scales
+            ! the tolerance by max(|f1|,|f2|,|f3|), which is at most max(|f1|,|f2|)/(1-tol)
+            ! if the three are equal, so this test (with a factor of 2 for safety)
+            ! never marks a row that the three-point test would find to be zero.
+            ! [the linear pattern needs f3 for every nonzero row]
+            if (me%compute_linear_sparsity_pattern .or. tol >= 0.5_wp) then
+                changed = .false.
+            else
+                changed = abs(f1-f2) > 2.0_wp*tol*max(abs(f1),abs(f2))/(1.0_wp-tol)
+            end if
+            idx3 = pack(idx, mask=.not. changed)
+            if (size(idx3)>0) then
+                x3 = x2
+                x3(i) = xlow(i) + (xhigh(i)-xlow(i))*coeffs(3)
+                call me%compute_function(x3,f3,idx3)
+                if (me%exception_raised) return ! check for exceptions
+            end if
 
             do j = 1, me%m ! each function (rows of Jacobian)
-                if (equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol, relative=.true.)) then
+                if (changed(j)) then
+                    ! nonzero (f3 was not computed for this row)
+                    call expand_vector(me%sparsity%icol,n_icol,me%chunk_size,val=i)
+                    call expand_vector(me%sparsity%irow,n_irow,me%chunk_size,val=j)
+                else if (equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol, relative=.true.)) then
                     ! no change in the function, so no sparsity element here.
                     cycle
                 else
@@ -2326,6 +2349,8 @@
     logical,dimension(:),allocatable :: f0_computed !! if `f0` has been computed for each point
     real(wp),dimension(:),allocatable :: dx_col !! the perturbation used for the current
                                                 !! column at each point
+    logical,dimension(me%m) :: nonzero_row  !! rows found to be nonzero (at any point so far)
+                                            !! in the current column
 
     ! initialize:
     call me%destroy_sparsity_pattern()
@@ -2382,31 +2407,36 @@
         if (allocated(jac_array)) deallocate(jac_array)
         allocate(jac_array(me%num_sparsity_points))
 
-        ! compute the ith column of the jacobian:
+        ! compute the ith column of the jacobian at each point.
+        ! the element is zero if, at every point, the change in the function
+        ! caused by the perturbation is within the relative function precision.
+        ! [note: the 2-point methods always evaluate f(x), so f0 is available]
         me%sparsity%icol = [(icol, j=1,me%m)]
+        nonzero_row = .false.
         do i = 1, me%num_sparsity_points
             call me%compute_jacobian_for_sparsity( icol, xp(:,i), jac_array(i)%jac, &
                                                    f0(:,i), f0_computed(i), dx_col(i) )
             if (me%exception_raised) return ! check for exceptions
+            nonzero_row = nonzero_row .or. .not. &
+                (abs(jac_array(i)%jac)*dx_col(i) <= me%function_precision_tol*abs(f0(:,i)))
+            ! once every row is known to be nonzero, the remaining points
+            ! are not needed (unless they are needed for the linear pattern):
+            if (all(nonzero_row) .and. .not. me%compute_linear_sparsity_pattern) exit
         end do
 
         ! check each row:
         do irow = 1, me%m
 
-            ! get the jacobian values for this row,col for all the points:
-            do j = 1, me%num_sparsity_points
-                jac(j) = jac_array(j)%jac(irow)
-            end do
-
             ! put the results into the tmp_sparsity_pattern.
-            ! the element is zero if, at every point, the change in the function
-            ! caused by the perturbation is within the relative function precision.
-            ! [note: the 2-point methods always evaluate f(x), so f0 is available]
-            if (all(abs(jac)*dx_col <= me%function_precision_tol*abs(f0(irow,:)))) then
+            if (.not. nonzero_row(irow)) then
                 ! they are all zero
                 cycle
             else
                 if (me%compute_linear_sparsity_pattern) then
+                    ! get the jacobian values for this row,col for all the points:
+                    do j = 1, me%num_sparsity_points
+                        jac(j) = jac_array(j)%jac(irow)
+                    end do
                     if (equal_within_tol(jac,me%linear_sparsity_tol,relative=.true.)) then
                         ! this is a linear element (constant value)
                         dfdx = sum(jac) / me%num_sparsity_points ! just take the average and use that
@@ -2530,13 +2560,19 @@
 !
 !@note This one will include the constant elements if the linear pattern is available.
 
-    subroutine compute_jacobian_dense(me,x,jac)
+    subroutine compute_jacobian_dense(me,x,jac,fx)
 
     implicit none
 
     class(numdiff_type),intent(inout) :: me
     real(wp),dimension(:),intent(in) :: x !! vector of variables (size `n`)
     real(wp),dimension(:,:),allocatable,intent(out) :: jac !! the jacobian matrix
+    real(wp),dimension(me%m),intent(in),optional :: fx !! the function value at `x` (size `m`), if it
+                                                       !! is already known. if present, it is used instead
+                                                       !! of calling the function at `x` (which saves one
+                                                       !! function evaluation for methods that use \( f(x) \),
+                                                       !! such as forward differences). all the rows in the
+                                                       !! sparsity pattern must be set.
 
     real(wp),dimension(:),allocatable :: jac_vec  !! sparse jacobian representation
     integer :: i !! counter
@@ -2550,7 +2586,7 @@
     jac = zero
 
     ! compute sparse form of jacobian:
-    call me%compute_jacobian(x,jac_vec)
+    call me%compute_jacobian(x,jac_vec,fx)
     if (me%exception_raised) return ! check for exceptions
 
     if (allocated(jac_vec)) then
@@ -2677,7 +2713,7 @@
 !
 !@note This one will include the constant elements if the linear pattern is available.
 
-    subroutine compute_jacobian_times_vector(me,x,v,z)
+    subroutine compute_jacobian_times_vector(me,x,v,z,fx)
 
     implicit none
 
@@ -2685,6 +2721,12 @@
     real(wp),dimension(:),intent(in)  :: x    !! vector of variables (size `n`)
     real(wp),dimension(:),intent(in)  :: v    !! vector (size `n`)
     real(wp),dimension(:),intent(out) :: z    !! The product `J*v` (size `m`)
+    real(wp),dimension(me%m),intent(in),optional :: fx !! the function value at `x` (size `m`), if it
+                                                       !! is already known. if present, it is used instead
+                                                       !! of calling the function at `x` (which saves one
+                                                       !! function evaluation for methods that use \( f(x) \),
+                                                       !! such as forward differences). all the rows in the
+                                                       !! sparsity pattern must be set.
 
     real(wp),dimension(:),allocatable :: jac !! sparse jacobian vector
     integer :: i !! counter
@@ -2694,7 +2736,7 @@
     if (me%exception_raised) return ! check for exceptions
 
     ! first compute the jacobian in sparse vector form:
-    call me%compute_jacobian(x,jac)
+    call me%compute_jacobian(x,jac,fx)
     if (me%exception_raised) return ! check for exceptions
 
     ! initialize output vector:
@@ -2739,13 +2781,19 @@
 !      pattern is available), then those elements can be obtained by
 !      calling `get_sparsity_pattern` if required.
 
-    subroutine compute_jacobian(me,x,jac)
+    subroutine compute_jacobian(me,x,jac,fx)
 
     implicit none
 
     class(numdiff_type),intent(inout)             :: me
     real(wp),dimension(:),intent(in)              :: x    !! vector of variables (size `n`)
     real(wp),dimension(:),allocatable,intent(out) :: jac  !! sparse jacobian vector
+    real(wp),dimension(me%m),intent(in),optional :: fx !! the function value at `x` (size `m`), if it
+                                                       !! is already known. if present, it is used instead
+                                                       !! of calling the function at `x` (which saves one
+                                                       !! function evaluation for methods that use \( f(x) \),
+                                                       !! such as forward differences). all the rows in the
+                                                       !! sparsity pattern must be set.
 
     real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
 
@@ -2777,7 +2825,7 @@
 
     ! compute the jacobian:
     if (associated(me%jacobian_function)) then
-        call me%jacobian_function(x,dx,jac)
+        call me%jacobian_function(x,dx,jac,fx)
     else
         call me%raise_exception(22,'compute_jacobian',&
                                    'jacobian_function has not been associated.')
@@ -2880,7 +2928,7 @@
 !  Compute the Jacobian using finite differences.
 !  (one column at a time)
 
-    subroutine compute_jacobian_standard(me,x,dx,jac)
+    subroutine compute_jacobian_standard(me,x,dx,jac,fx)
 
     implicit none
 
@@ -2890,6 +2938,7 @@
                                                 !! for each variable
     real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size
                                                 !! `num_nonzero_elements`)
+    real(wp),dimension(me%m),intent(in),optional :: fx !! function value at `x`, if already known
 
     integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
                                                                  !! nonzero Jacobian
@@ -2908,7 +2957,8 @@
 
     ! initialize:
     jac = zero
-    f0_computed = .false.
+    f0_computed = present(fx)
+    if (f0_computed) f0 = fx
 
     if (.not. allocated(me%sparsity%col_ptr)) then
         call me%raise_exception(31,'compute_jacobian_standard',&
@@ -2996,7 +3046,7 @@
 !  algorithm [[diff]]. This takes a very large number of function evaluations,
 !  but should give a very accurate answer.
 
-    subroutine compute_jacobian_with_diff(me,x,dx,jac)
+    subroutine compute_jacobian_with_diff(me,x,dx,jac,fx)
 
     implicit none
 
@@ -3006,6 +3056,7 @@
                                                 !! for each variable
     real(wp),dimension(:),intent(out)   :: jac  !! sparse jacobian vector (size
                                                 !! `num_nonzero_elements`)
+    real(wp),dimension(me%m),intent(in),optional :: fx !! function value at `x` (not used by [[diff]])
 
     integer,parameter  :: iord  = 1  !! tells [[diff]] to compute first derivative
 
@@ -3119,7 +3170,7 @@
 !  (using the partitioned sparsity pattern to compute multiple columns
 !  at a time).
 
-    subroutine compute_jacobian_partitioned(me,x,dx,jac)
+    subroutine compute_jacobian_partitioned(me,x,dx,jac,fx)
 
     implicit none
 
@@ -3127,6 +3178,7 @@
     real(wp),dimension(:),intent(in)     :: x    !! vector of variables (size `n`)
     real(wp),dimension(me%n),intent(in)  :: dx   !! absolute perturbation (>0) for each variable
     real(wp),dimension(:),intent(out)    :: jac  !! sparse jacobian vector
+    real(wp),dimension(me%m),intent(in),optional :: fx !! function value at `x`, if already known
 
     integer                          :: i             !! column counter
     integer                          :: j             !! function evaluation counter
@@ -3147,7 +3199,8 @@
 
     ! initialize:
     jac = zero
-    f0_computed = .false.
+    f0_computed = present(fx)
+    if (f0_computed) f0 = fx
 
     ! df is only cleared once. after each group, only the rows
     ! used by that group are reset (to avoid an O(m) reset per group)
