@@ -127,6 +127,10 @@
         real(wp),dimension(:),allocatable :: xlow  !! lower bounds on `x`
         real(wp),dimension(:),allocatable :: xhigh !! upper bounds on `x`
 
+        real(wp),dimension(:),allocatable :: xwork !! work copy of `x` used by the perturbation routines.
+                                                   !! it is set to `x` once per Jacobian and each
+                                                   !! perturbation is restored after the function call.
+
         logical :: print_messages = .true. !! if true, warning messages are printed
                                            !! to the `error_unit` for any errors.
 
@@ -255,6 +259,7 @@
         procedure :: perturb_x_and_compute_f
         procedure :: perturb_x_and_compute_f_partitioned
         procedure :: compute_nominal_function
+        procedure :: init_xwork
         procedure :: set_numdiff_sparsity_bounds
         procedure :: set_sparsity_mode
         procedure :: set_num_sparsity_points
@@ -2593,7 +2598,6 @@
     logical,intent(inout),optional :: f0_computed  !! if `f0` has already been computed.
                                                    !! must be set to false before the first call.
 
-    real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
     if (me%exception_raised) return ! check for exceptions
@@ -2609,13 +2613,37 @@
         return
     end if
 
-    xp = x
-    if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
-    call me%compute_function(xp,f,idx)
+    ! note: me%xwork must equal x on entry (see [[init_xwork]]).
+    ! only the perturbed element is changed, and it is restored after the call.
+    if (dx_factor/=zero) me%xwork(column) = x(column) + dx_factor * dx(column)
+    call me%compute_function(me%xwork,f,idx)
+    me%xwork(column) = x(column)
     if (me%exception_raised) return ! check for exceptions
     df(idx) = df(idx) + df_factor * f(idx)
 
     end subroutine perturb_x_and_compute_f
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Set the work vector used by [[perturb_x_and_compute_f]] and
+!  [[perturb_x_and_compute_f_partitioned]] to the nominal `x`.
+!  This must be called before a sequence of calls to those routines.
+
+    subroutine init_xwork(me,x)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    real(wp),dimension(:),intent(in)  :: x   !! nominal variable vector
+
+    if (allocated(me%xwork)) then
+        if (size(me%xwork)/=size(x)) deallocate(me%xwork)
+    end if
+    if (.not. allocated(me%xwork)) allocate(me%xwork(size(x)))
+    me%xwork = x
+
+    end subroutine init_xwork
 !*******************************************************************************
 
 !*******************************************************************************
@@ -2825,6 +2853,7 @@
         end if
 
         ! compute this column of the Jacobian:
+        call me%init_xwork(x)
         df = zero
         do j = 1, size(fd%dx_factors)
             if (associated(me%info_function)) call me%info_function([i],j,x)
@@ -2887,6 +2916,11 @@
         return
     end if
 
+    ! df is only cleared once. after each column, only the rows
+    ! used by that column are reset (to avoid an O(m) reset per column)
+    df = zero
+    call me%init_xwork(x)
+
     ! compute Jacobian matrix column-by-column:
     do i=1,me%n
 
@@ -2902,7 +2936,6 @@
             case(1) ! use the specified methods
 
                 ! compute this column of the Jacobian:
-                df = zero
                 do j = 1, size(me%meth(i)%dx_factors)
                     if (associated(me%info_function)) call me%info_function([i],j,x)
                     call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
@@ -2927,7 +2960,6 @@
                 end if
 
                 ! compute this column of the Jacobian:
-                df = zero
                 do j = 1, size(fd%dx_factors)
                     if (associated(me%info_function)) call me%info_function([i],j,x)
                     call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
@@ -2947,6 +2979,7 @@
 
             ! put result into the output vector:
             jac(col_indices) = df(nonzero_elements_in_col)
+            df(nonzero_elements_in_col) = zero ! reset for the next column
 
         end if
 
@@ -3002,6 +3035,10 @@
 
     ! set the function for diff:
     call d%set_function(dfunc)
+
+    ! work vector for dfunc. only element ic is changed,
+    ! and it is restored after each function call.
+    xp = x
 
     ! each element is computed one by one
     do i = 1, me%sparsity%num_nonzero_elements
@@ -3061,9 +3098,9 @@
             end if
         end if
 
-        xp = x
         xp(ic) = xval
         call me%compute_function(xp,fvec,funcs_to_compute=[ir])
+        xp(ic) = x(ic)
 
         if (me%exception_raised) then ! check for exceptions
             call this%terminate() ! stop diff (it will return ifail=-1)
@@ -3112,6 +3149,11 @@
     jac = zero
     f0_computed = .false.
 
+    ! df is only cleared once. after each group, only the rows
+    ! used by that group are reset (to avoid an O(m) reset per group)
+    df = zero
+    call me%init_xwork(x)
+
     ! compute by group:
     do igroup = 1, me%sparsity%maxgrp
 
@@ -3134,7 +3176,6 @@
                     ! note: all the methods must be the same within a group
 
                     ! compute the columns of the Jacobian in this group:
-                    df = zero
                     do j = 1, size(me%meth(1)%dx_factors)
                          if (associated(me%info_function)) call me%info_function(cols,j,x)
                          call me%perturb_x_and_compute_f_partitioned(x,me%meth(1)%dx_factors(j),&
@@ -3171,7 +3212,6 @@
                     end if
 
                     ! compute the columns of the Jacobian in this group:
-                    df = zero
                     do j = 1, size(fd%dx_factors)
                         if (associated(me%info_function)) call me%info_function(cols,j,x)
                         call me%perturb_x_and_compute_f_partitioned(x,fd%dx_factors(j),&
@@ -3195,6 +3235,7 @@
 
                 ! put result into the output vector:
                 jac(indices) = df(nonzero_rows)
+                df(nonzero_rows) = zero ! reset for the next group
 
             end if
 
@@ -3234,7 +3275,6 @@
     logical,intent(inout),optional :: f0_computed  !! if `f0` has already been computed.
                                                    !! must be set to false before the first call.
 
-    real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
     if (me%exception_raised) return ! check for exceptions
@@ -3250,9 +3290,11 @@
         return
     end if
 
-    xp = x
-    if (dx_factor/=zero) xp(columns) = xp(columns) + dx_factor * dx(columns)
-    call me%compute_function(xp,f,idx)
+    ! note: me%xwork must equal x on entry (see [[init_xwork]]).
+    ! only the perturbed elements are changed, and they are restored after the call.
+    if (dx_factor/=zero) me%xwork(columns) = x(columns) + dx_factor * dx(columns)
+    call me%compute_function(me%xwork,f,idx)
+    me%xwork(columns) = x(columns)
     if (me%exception_raised) return ! check for exceptions
     df(idx) = df(idx) + df_factor * f(idx)
 
