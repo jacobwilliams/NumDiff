@@ -50,7 +50,8 @@
     integer,intent(inout)       :: n           !! counter for last element added to `vec`.
                                                !! must be initialized to `size(vec)`
                                                !! (or 0 if not allocated) before first call
-    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size (>0)
+    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size
+                                               !! (values <1 are treated as 1)
     integer,intent(in),optional :: val         !! the value to add to `vec`
     logical,intent(in),optional :: finished    !! set to true to return `vec`
                                                !! as its correct size (`n`)
@@ -61,14 +62,14 @@
         if (allocated(vec)) then
             if (n==size(vec)) then
                 ! have to add another chunk:
-                allocate(tmp(size(vec)+chunk_size))
+                allocate(tmp(size(vec)+max(1,chunk_size)))
                 tmp(1:size(vec)) = vec
                 call move_alloc(tmp,vec)
             end if
             n = n + 1
         else
             ! the first element:
-            allocate(vec(chunk_size))
+            allocate(vec(max(1,chunk_size)))
             n = 1
         end if
         vec(n) = val
@@ -99,7 +100,8 @@
     integer,intent(inout)       :: n           !! counter for last element added to `vec`.
                                                !! must be initialized to `size(vec)`
                                                !! (or 0 if not allocated) before first call
-    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size (>0)
+    integer,intent(in)          :: chunk_size  !! allocate `vec` in blocks of this size
+                                               !! (values <1 are treated as 1)
     real(wp),intent(in),optional :: val        !! the value to add to `vec`
     logical,intent(in),optional :: finished    !! set to true to return `vec`
                                                !! as its correct size (`n`)
@@ -110,14 +112,14 @@
         if (allocated(vec)) then
             if (n==size(vec)) then
                 ! have to add another chunk:
-                allocate(tmp(size(vec)+chunk_size))
+                allocate(tmp(size(vec)+max(1,chunk_size)))
                 tmp(1:size(vec)) = vec
                 call move_alloc(tmp,vec)
             end if
             n = n + 1
         else
             ! the first element:
-            allocate(vec(chunk_size))
+            allocate(vec(max(1,chunk_size)))
             n = 1
         end if
         vec(n) = val

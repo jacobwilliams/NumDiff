@@ -130,7 +130,7 @@
         logical :: print_messages = .true. !! if true, warning messages are printed
                                            !! to the `error_unit` for any errors.
 
-        integer :: chunk_size = 100  !! chuck size for allocating the arrays (>0)
+        integer :: chunk_size = 100  !! chunk size for allocating the arrays (>0)
 
         integer :: perturb_mode = 1  !! perturbation mode:
                                      !!
@@ -1034,7 +1034,7 @@
                                                       !! It can be used to perform any
                                                       !! setup operations.
     integer,intent(in),optional      :: chunk_size    !! chunk size for allocating the arrays
-                                                      !! (must be >0) [default is 100]
+                                                      !! (the absolute value is used, and values <1 are treated as 1) [default is 100]
     real(wp),intent(in),optional     :: eps           !! tolerance parameter for [[diff]]
                                                       !! if not present, default is `1.0e-9_wp`
     real(wp),intent(in),optional     :: acc           !! tolerance parameter for [[diff]]
@@ -1125,7 +1125,7 @@
     if (present(num_sparsity_points))    call me%set_num_sparsity_points(num_sparsity_points)
 
     ! optional:
-    if (present(chunk_size))     me%chunk_size = abs(chunk_size)
+    if (present(chunk_size))     me%chunk_size = max(1,abs(chunk_size))
     if (present(eps))            me%eps = eps
     if (present(acc))            me%acc = acc
     if (present(info))           me%info_function => info
@@ -1399,7 +1399,7 @@
                                         !! It can be used to perform any
                                         !! setup operations.
     integer,intent(in),optional :: chunk_size  !! chunk size for allocating the arrays
-                                               !! (must be >0) [default is 100]
+                                               !! (the absolute value is used, and values <1 are treated as 1) [default is 100]
     logical,intent(in),optional :: partition_sparsity_pattern  !! if the sparisty pattern is to
                                                                !! be partitioned using [[DSM]]
                                                                !! [default is False]
@@ -1558,7 +1558,7 @@
 
     ! optional:
     if (present(info))       me%info_function => info
-    if (present(chunk_size)) me%chunk_size = abs(chunk_size)
+    if (present(chunk_size)) me%chunk_size = max(1,abs(chunk_size))
 
     ! set the jacobian function, depending on the options:
     if (me%partition_sparsity_pattern) then

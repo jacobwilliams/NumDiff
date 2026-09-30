@@ -70,7 +70,7 @@
     me%m = m
 
     if (present(chunk_size)) then
-        me%chunk_size = chunk_size
+        me%chunk_size = max(1,chunk_size)
     else
         me%chunk_size = 100
     end if
