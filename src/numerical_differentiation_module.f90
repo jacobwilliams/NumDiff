@@ -83,10 +83,22 @@
                                                  !! column `jcol` belongs to group `ngrp(jcol)`.
                                                  !! `size(n)`
 
+        integer,dimension(:),allocatable :: col_ptr  !! column pointers into `col_idx` (size `n+1`).
+                                                     !! the elements in column `j` are
+                                                     !! `col_idx(col_ptr(j):col_ptr(j+1)-1)`
+        integer,dimension(:),allocatable :: col_idx  !! indices of the nonzero elements (into `irow`,
+                                                     !! `icol`, and `jac`), sorted by column
+                                                     !! (size `num_nonzero_elements`)
+        integer,dimension(:),allocatable :: grp_ptr  !! group pointers into `grp_cols` (size `maxgrp+1`).
+                                                     !! the columns in group `g` are
+                                                     !! `grp_cols(grp_ptr(g):grp_ptr(g+1)-1)`
+        integer,dimension(:),allocatable :: grp_cols !! the columns, sorted by partition group (size `n`)
+
         contains
         private
         procedure :: dsm_wrapper
         procedure :: compute_indices
+        procedure :: compute_group_index
         procedure,public :: destroy => destroy_sparsity
         procedure,public :: print => print_sparsity
         procedure,public :: columns_in_partition_group
@@ -1580,6 +1592,8 @@
              me%ngrp,me%maxgrp,&
              mingrp,info,ipntr,jpntr)
 
+    if (info==1) call me%compute_group_index()
+
     end subroutine dsm_wrapper
 !*******************************************************************************
 
@@ -1604,54 +1618,41 @@
     logical,intent(out)                          :: status_ok    !! true if the partition is valid
 
     integer :: i  !! counter
-    integer :: num_nonzero_elements_in_col          !! number of nonzero elements in a column
-    integer :: num_nonzero_elements_in_group        !! number of nonzero elements in a group
-    integer,dimension(:),allocatable :: col_indices !! nonzero indices in `jac` for a column
+    integer :: c  !! column number
+    integer :: k  !! counter for the nonzero elements in the group
+    integer :: nnz_col !! number of nonzero elements in a column
+    integer :: num_nonzero_elements_in_group  !! number of nonzero elements in a group
 
-    if (me%maxgrp>0 .and. allocated(me%ngrp)) then
-
-        status_ok = .true.
-
-        n_cols = count(me%ngrp==igroup)
-        if (n_cols>0) then
-            allocate(cols(n_cols))
-            cols = pack([(i,i=1,size(me%ngrp))],mask=me%ngrp==igroup)
-        end if
-
-        ! get all the non-zero elements in each column:
-        num_nonzero_elements_in_group = 0  ! initialize
-        do i = 1, n_cols
-            num_nonzero_elements_in_col = count(me%icol==cols(i))
-            if (num_nonzero_elements_in_col/=0) then ! there are functions to
-                                                     ! compute in this column
-                num_nonzero_elements_in_group = num_nonzero_elements_in_group + &
-                                                num_nonzero_elements_in_col
-                if (allocated(col_indices)) deallocate(col_indices)
-                allocate(col_indices(num_nonzero_elements_in_col))
-                !col_indices = pack(me%indices,mask=me%icol==cols(i))
-                block
-                    integer :: j,n
-                    n = 0
-                    do j = 1, size(me%icol)
-                        if (me%icol(j)==cols(i)) then
-                            n = n + 1
-                            col_indices(n) = j
-                        end if
-                    end do
-                end block
-                if (allocated(nonzero_rows)) then
-                    nonzero_rows = [nonzero_rows,me%irow(col_indices)]
-                    indices = [indices,col_indices]
-                else
-                    nonzero_rows = me%irow(col_indices)
-                    indices = col_indices
-                end if
-            end if
-        end do
-
-    else
-        status_ok = .false.
+    status_ok = me%maxgrp>0 .and. allocated(me%ngrp) .and. &
+                allocated(me%grp_ptr) .and. allocated(me%col_ptr)
+    if (status_ok) status_ok = igroup>=1 .and. igroup<=me%maxgrp
+    if (.not. status_ok) then
+        n_cols = 0
+        return
     end if
+
+    n_cols = me%grp_ptr(igroup+1) - me%grp_ptr(igroup)
+    if (n_cols==0) return
+    cols = me%grp_cols(me%grp_ptr(igroup):me%grp_ptr(igroup+1)-1)
+
+    ! get all the non-zero elements in each column:
+    num_nonzero_elements_in_group = 0
+    do i = 1, n_cols
+        c = cols(i)
+        num_nonzero_elements_in_group = num_nonzero_elements_in_group + &
+                                        me%col_ptr(c+1) - me%col_ptr(c)
+    end do
+    if (num_nonzero_elements_in_group==0) return ! no functions to compute in this group
+
+    allocate(indices(num_nonzero_elements_in_group))
+    k = 0
+    do i = 1, n_cols
+        c = cols(i)
+        nnz_col = me%col_ptr(c+1) - me%col_ptr(c)
+        indices(k+1:k+nnz_col) = me%col_idx(me%col_ptr(c):me%col_ptr(c+1)-1)
+        k = k + nnz_col
+    end do
+    nonzero_rows = me%irow(indices)
 
     end subroutine columns_in_partition_group
 !*******************************************************************************
@@ -1673,23 +1674,94 @@
 
 !*******************************************************************************
 !>
-!  Computes the `indices` vector in the class.
+!  Computes the `indices` vector in the class, and the column index
+!  (`col_ptr`, `col_idx`) of the sparsity pattern.
+!
+!@note The column index is only computed if `icol` has been populated
+!      (or there are no nonzero elements). It must be called again
+!      if `icol` is changed.
 
-    subroutine compute_indices(me)
+    subroutine compute_indices(me,n)
+
+    implicit none
+
+    class(sparsity_pattern),intent(inout) :: me
+    integer,intent(in) :: n  !! number of columns in the jacobian
+
+    integer :: i !! counter
+    integer :: j !! column number
+    integer,dimension(:),allocatable :: next !! next free position in `col_idx` for each column
+
+    if (allocated(me%indices)) deallocate(me%indices)
+    allocate(me%indices(me%num_nonzero_elements))
+    do i = 1, me%num_nonzero_elements
+        me%indices(i) = i
+    end do
+
+    ! column index (a stable counting sort of the elements by column,
+    ! so the elements in each column stay in their original order):
+    if (allocated(me%col_ptr)) deallocate(me%col_ptr)
+    if (allocated(me%col_idx)) deallocate(me%col_idx)
+    if (.not. allocated(me%icol) .and. me%num_nonzero_elements>0) return
+    allocate(me%col_ptr(n+1))
+    allocate(me%col_idx(me%num_nonzero_elements))
+    me%col_ptr = 0
+    do i = 1, me%num_nonzero_elements
+        j = me%icol(i)
+        me%col_ptr(j+1) = me%col_ptr(j+1) + 1
+    end do
+    me%col_ptr(1) = 1
+    do j = 1, n
+        me%col_ptr(j+1) = me%col_ptr(j+1) + me%col_ptr(j)
+    end do
+    next = me%col_ptr(1:n)
+    do i = 1, me%num_nonzero_elements
+        j = me%icol(i)
+        me%col_idx(next(j)) = i
+        next(j) = next(j) + 1
+    end do
+
+    end subroutine compute_indices
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Computes the group index (`grp_ptr`, `grp_cols`) of the sparsity
+!  partition. Must be called whenever `ngrp` or `maxgrp` is changed.
+
+    subroutine compute_group_index(me)
 
     implicit none
 
     class(sparsity_pattern),intent(inout) :: me
 
-    integer :: i !! counter
+    integer :: j !! column number
+    integer :: g !! group number
+    integer,dimension(:),allocatable :: next !! next free position in `grp_cols` for each group
 
-    allocate(me%indices(me%num_nonzero_elements))
-    !me%indices = [(i,i=1,me%num_nonzero_elements)]
-    do i = 1, me%num_nonzero_elements
-        me%indices(i) = i
+    if (allocated(me%grp_ptr))  deallocate(me%grp_ptr)
+    if (allocated(me%grp_cols)) deallocate(me%grp_cols)
+    if (.not. allocated(me%ngrp) .or. me%maxgrp<1) return
+
+    allocate(me%grp_ptr(me%maxgrp+1))
+    allocate(me%grp_cols(size(me%ngrp)))
+    me%grp_ptr = 0
+    do j = 1, size(me%ngrp)
+        g = me%ngrp(j)
+        me%grp_ptr(g+1) = me%grp_ptr(g+1) + 1
+    end do
+    me%grp_ptr(1) = 1
+    do g = 1, me%maxgrp
+        me%grp_ptr(g+1) = me%grp_ptr(g+1) + me%grp_ptr(g)
+    end do
+    next = me%grp_ptr(1:me%maxgrp)
+    do j = 1, size(me%ngrp)
+        g = me%ngrp(j)
+        me%grp_cols(next(g)) = j
+        next(g) = next(g) + 1
     end do
 
-    end subroutine compute_indices
+    end subroutine compute_group_index
 !*******************************************************************************
 
 !*******************************************************************************
@@ -1720,7 +1792,8 @@
 
     if (me%exception_raised) return ! check for exceptions
 
-    if (size(irow)/=size(icol) .or. any(irow>me%m) .or. any(icol>me%n)) then
+    if (size(irow)/=size(icol) .or. any(irow<1) .or. any(irow>me%m) .or. &
+        any(icol<1) .or. any(icol>me%n)) then
         call me%raise_exception(15,'set_sparsity_pattern',&
                                    'invalid inputs')
         return
@@ -1731,13 +1804,14 @@
         me%sparsity%irow = irow
         me%sparsity%icol = icol
 
-        call me%sparsity%compute_indices()
+        call me%sparsity%compute_indices(me%n)
         if (me%partition_sparsity_pattern) then
             if (present(maxgrp) .and. present(ngrp)) then
                 ! use the user-input partition:
                 if (maxgrp>0 .and. all(ngrp>=1 .and. ngrp<=maxgrp) .and. size(ngrp)==me%n) then
                     me%sparsity%maxgrp = maxgrp
                     me%sparsity%ngrp   = ngrp
+                    call me%sparsity%compute_group_index()
                 else
                     call me%raise_exception(28,'set_sparsity_pattern',&
                                             'invalid sparsity partition inputs.')
@@ -1799,8 +1873,6 @@
     allocate(me%sparsity%irow(me%sparsity%num_nonzero_elements))
     allocate(me%sparsity%icol(me%sparsity%num_nonzero_elements))
 
-    call me%sparsity%compute_indices()
-
     ! create the dense matrix:
     i = 0
     do c = 1, me%n
@@ -1810,6 +1882,8 @@
             me%sparsity%icol(i) = c
         end do
     end do
+
+    call me%sparsity%compute_indices(me%n)
 
     ! No real need for this, since it can't be partitioned (all elements are true)
     if (me%partition_sparsity_pattern) call me%generate_dense_sparsity_partition()
@@ -1836,6 +1910,7 @@
     me%sparsity%maxgrp = me%n
     allocate(me%sparsity%ngrp(me%n))
     me%sparsity%ngrp = [(i, i=1,me%n)]
+    call me%sparsity%compute_group_index()
 
     end subroutine generate_dense_sparsity_partition
 !*******************************************************************************
@@ -1975,7 +2050,7 @@
 
     end associate
 
-    call me%sparsity%compute_indices()
+    call me%sparsity%compute_indices(me%n)
     if (me%partition_sparsity_pattern) then
         call me%sparsity%dsm_wrapper(me%n,me%m,info)
         if (info/=1) then
@@ -2099,7 +2174,7 @@
     me%sparsity%irow = [(irow,irow=1,me%m)]
     me%sparsity%sparsity_computed = .true.
     me%sparsity%num_nonzero_elements = me%m
-    call me%sparsity%compute_indices()
+    call me%sparsity%compute_indices(me%n)
     if (me%partition_sparsity_pattern) call me%generate_dense_sparsity_partition()
     n_icol = 0
     n_irow = 0
@@ -2179,7 +2254,7 @@
     call me%resize_sparsity_vectors(n_icol,n_irow,n_linear_icol,&
                                         n_linear_irow,n_linear_vals)
 
-    call me%sparsity%compute_indices()
+    call me%sparsity%compute_indices(me%n)
     if (me%partition_sparsity_pattern) then
         call me%sparsity%dsm_wrapper(me%n,me%m,info)
         if (info/=1) then
@@ -2624,14 +2699,22 @@
     jac = zero
     f0_computed = .false.
 
+    if (.not. allocated(me%sparsity%col_ptr)) then
+        call me%raise_exception(31,'compute_jacobian_standard',&
+                                   'the sparsity column index has not been computed.')
+        return
+    end if
+
     ! compute Jacobian matrix column-by-column:
     do i=1,me%n
 
         ! determine functions to compute for this column:
-        num_nonzero_elements_in_col = count(me%sparsity%icol==i)
+        associate (col_indices => me%sparsity%col_idx(me%sparsity%col_ptr(i):me%sparsity%col_ptr(i+1)-1))
+
+        num_nonzero_elements_in_col = size(col_indices)
         if (num_nonzero_elements_in_col/=0) then ! there are functions to compute
 
-            nonzero_elements_in_col = pack(me%sparsity%irow,mask=me%sparsity%icol==i)
+            nonzero_elements_in_col = me%sparsity%irow(col_indices)
 
             select case (me%mode)
             case(1) ! use the specified methods
@@ -2681,10 +2764,11 @@
             end select
 
             ! put result into the output vector:
-            jac(pack(me%sparsity%indices,mask=me%sparsity%icol==i)) = &
-                df(nonzero_elements_in_col)
+            jac(col_indices) = df(nonzero_elements_in_col)
 
         end if
+
+        end associate
 
     end do
 
@@ -2828,13 +2912,11 @@
     integer,dimension(:),allocatable :: nonzero_rows  !! the indices of the nonzero Jacobian
                                                       !! elementes (row numbers) in a group
     integer,dimension(:),allocatable :: indices       !! nonzero indices in `jac` for a group
-    integer,dimension(:),allocatable :: col_indices   !! nonzero indices in `jac` for a column
     real(wp),dimension(me%m)         :: df            !! accumulated function
     type(finite_diff_method)         :: fd            !! a finite different method (when
                                                       !! specifying class rather than the method)
     logical                          :: status_ok     !! error flag
-    integer                          :: num_nonzero_elements_in_col
-    real(wp),dimension(me%m)         :: f0            !! function value at the nominal `x`
+    real(wp),dimension(me%m)         :: f0           !! function value at the nominal `x`
     logical                          :: f0_computed   !! if `f0` has been computed
 
     if (me%exception_raised) return ! check for exceptions
@@ -2876,23 +2958,10 @@
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
-                        num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
-                        if (allocated(col_indices)) deallocate(col_indices)
-                        allocate(col_indices(num_nonzero_elements_in_col))
-                        ! col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
-                        block
-                            integer :: j,n
-                            n = 0
-                            do j = 1, size(me%sparsity%icol)
-                                if (me%sparsity%icol(j)==cols(i)) then
-                                    n = n + 1
-                                    col_indices(n) = j
-                                end if
-                            end do
-                        end block
-
-                        df(me%sparsity%irow(col_indices)) = df(me%sparsity%irow(col_indices)) / &
-                                                            (me%meth(1)%df_den_factor*dx(cols(i)))
+                        associate (rows => me%sparsity%irow(me%sparsity%col_idx(&
+                                            me%sparsity%col_ptr(cols(i)):me%sparsity%col_ptr(cols(i)+1)-1)))
+                            df(rows) = df(rows) / (me%meth(1)%df_den_factor*dx(cols(i)))
+                        end associate
                     end do
 
                 case(2) ! select the method from the class so as not to violate
@@ -2926,12 +2995,10 @@
                     end do
                     ! divide by the denominator, which can be different for each column:
                     do i = 1, n_cols
-                        num_nonzero_elements_in_col = count(me%sparsity%icol==cols(i))
-                        if (allocated(col_indices)) deallocate(col_indices)
-                        allocate(col_indices(num_nonzero_elements_in_col))
-                        col_indices = pack(me%sparsity%indices,mask=me%sparsity%icol==cols(i))
-                        df(me%sparsity%irow(col_indices)) = df(me%sparsity%irow(col_indices)) / &
-                                                            (fd%df_den_factor*dx(cols(i)))
+                        associate (rows => me%sparsity%irow(me%sparsity%col_idx(&
+                                            me%sparsity%col_ptr(cols(i)):me%sparsity%col_ptr(cols(i)+1)-1)))
+                            df(rows) = df(rows) / (fd%df_den_factor*dx(cols(i)))
+                        end associate
                     end do
 
                 case default
