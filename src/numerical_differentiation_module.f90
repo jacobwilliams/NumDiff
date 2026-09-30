@@ -397,6 +397,11 @@
     integer :: i !! index in the cache
     logical,dimension(size(funcs_to_compute)) :: ffound  !! functions found in the cache
     logical :: xfound  !! if `x` was found in the cache
+    integer,dimension(:),allocatable :: missing  !! the functions not found in the cache
+    real(wp),dimension(size(f)) :: ftmp  !! the missing functions. these are computed into
+                                         !! a separate array, since `f` is `intent(out)`
+                                         !! in the user function and would otherwise
+                                         !! lose the values found in the cache.
 
     if (me%exception_raised) return ! check for exceptions
 
@@ -409,13 +414,17 @@
 
         ! compute the ones that weren't found,
         ! and add them to the cache:
-        call me%problem_func(x,f,pack(funcs_to_compute,mask=(.not. ffound)))
-        call me%cache%put(i,x,f,pack(funcs_to_compute,mask=(.not. ffound)))
+        missing = pack(funcs_to_compute,mask=(.not. ffound))
+        call me%problem_func(x,ftmp,missing)
+        if (me%exception_raised) return ! check for exceptions
+        f(missing) = ftmp(missing)
+        call me%cache%put(i,x,ftmp,missing)
 
     else
 
         ! compute the function and add it to the cache:
         call me%problem_func(x,f,funcs_to_compute)
+        if (me%exception_raised) return ! check for exceptions
         call me%cache%put(i,x,f,funcs_to_compute)
 
     end if
