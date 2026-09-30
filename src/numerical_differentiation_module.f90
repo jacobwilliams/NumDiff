@@ -21,6 +21,10 @@
 
     real(wp),parameter :: zero = 0.0_wp
 
+    integer,parameter,public :: max_num_sparsity_points = 50 !! the maximum allowed value of
+                                                             !! `num_sparsity_points`. Larger values would
+                                                             !! produce duplicate points in [[divide_interval]].
+
     type,public :: finite_diff_method
 
         !! defines the finite difference method
@@ -249,6 +253,7 @@
         procedure :: compute_nominal_function
         procedure :: set_numdiff_sparsity_bounds
         procedure :: set_sparsity_mode
+        procedure :: set_num_sparsity_points
         procedure :: generate_dense_sparsity_partition
         procedure :: compute_jacobian_for_sparsity
         procedure :: resize_sparsity_vectors
@@ -1049,6 +1054,7 @@
                                                            !! **3** - perturbation is `dx=dpert*(1+x)`
     integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
                                                         !! evaluations used to estimate the sparsity pattern.
+                                                        !! must be in the range `[1, max_num_sparsity_points]` (default is 3).
     real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
                                                         !! indicate a constant jacobian element (linear sparsity)
     real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
@@ -1110,7 +1116,7 @@
     ! if these aren't present, they will just keep the defaults:
     if (present(linear_sparsity_tol))    me%linear_sparsity_tol    = linear_sparsity_tol
     if (present(function_precision_tol)) me%function_precision_tol = function_precision_tol
-    if (present(num_sparsity_points))    me%num_sparsity_points    = num_sparsity_points
+    if (present(num_sparsity_points))    call me%set_num_sparsity_points(num_sparsity_points)
 
     ! optional:
     if (present(chunk_size))     me%chunk_size = abs(chunk_size)
@@ -1310,6 +1316,31 @@
 
 !*******************************************************************************
 !>
+!  Set the number of points used to estimate the sparsity pattern
+!  when `sparsity_mode=4`. Must be in the range `[1, max_num_sparsity_points]`.
+
+    subroutine set_num_sparsity_points(me,num_sparsity_points)
+
+    implicit none
+
+    class(numdiff_type),intent(inout) :: me
+    integer,intent(in) :: num_sparsity_points !! number of points
+
+    if (me%exception_raised) return ! check for exceptions
+
+    if (num_sparsity_points<1 .or. num_sparsity_points>max_num_sparsity_points) then
+        call me%raise_exception(32,'set_num_sparsity_points',&
+                                   'num_sparsity_points must be between 1 and '//&
+                                   integer_to_string(max_num_sparsity_points)//'.')
+    else
+        me%num_sparsity_points = num_sparsity_points
+    end if
+
+    end subroutine set_num_sparsity_points
+!*******************************************************************************
+
+!*******************************************************************************
+!>
 !  Initialize a [[numdiff_type]] class. This must be called first.
 !
 !@note Only one of the following inputs can be used: `jacobian_method`,
@@ -1391,6 +1422,7 @@
                                                             !! `sparsity_mode=2` in [[compute_sparsity_random]]
     integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
                                                         !! evaluations used to estimate the sparsity pattern.
+                                                        !! must be in the range `[1, max_num_sparsity_points]` (default is 3).
 
     integer :: i      !! counter
     logical :: found  !! flag for [[get_finite_difference_method]]
@@ -1532,7 +1564,7 @@
 
     if (present(linear_sparsity_tol))    me%linear_sparsity_tol    = linear_sparsity_tol
     if (present(function_precision_tol)) me%function_precision_tol = function_precision_tol
-    if (present(num_sparsity_points))    me%num_sparsity_points    = num_sparsity_points
+    if (present(num_sparsity_points))    call me%set_num_sparsity_points(num_sparsity_points)
 
     if (present(dpert_for_sparsity)) then
         me%dpert_for_sparsity = abs(dpert_for_sparsity)

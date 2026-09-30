@@ -446,6 +446,11 @@
 !         1   2   3
 !```
 !  returns: `[0.25308641972530865, 0.5061728394506173, 0.759259259175926]`.
+!
+!@note For `num_points` greater than about 80, the largest points are
+!      clamped to the upper bound, and the duplicates are removed, so
+!      fewer than `num_points` points are returned.
+!      [[numdiff_type]] limits `num_sparsity_points` to 50 for this reason.
 
     function divide_interval(num_points) result(points)
 
