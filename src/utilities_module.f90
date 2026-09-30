@@ -417,18 +417,31 @@
 !*******************************************************************************
 !>
 !  Returns true if the values in the array are the same
-!  (to within the specified absolute tolerance).
+!  (to within the specified absolute or relative tolerance).
+!
+!  For the relative test, the tolerance is scaled by the largest
+!  magnitude in `vals`, so a set of zeros is equal, and (for `tol<1`)
+!  any set containing both zero and a nonzero value is not.
 
-    pure function equal_within_tol(vals,tol) result (equal)
+    pure function equal_within_tol(vals,tol,relative) result (equal)
 
     implicit none
 
-    real(wp),dimension(:),intent(in) :: vals  !! a set of values
-    real(wp),intent(in)              :: tol   !! a positive tolerance value
-    logical                          :: equal !! true if they are equal
-                                              !! within the tolerance
+    real(wp),dimension(:),intent(in) :: vals     !! a set of values
+    real(wp),intent(in)              :: tol      !! a positive tolerance value
+    logical,intent(in),optional      :: relative !! if true, `tol` is relative
+                                                 !! [default is false: absolute]
+    logical                          :: equal    !! true if they are equal
+                                                 !! within the tolerance
 
-    equal = all ( abs(vals - vals(1)) <= abs(tol) )
+    real(wp) :: scale !! scale factor for the tolerance
+
+    scale = 1.0_wp
+    if (present(relative)) then
+        if (relative) scale = maxval(abs(vals))
+    end if
+
+    equal = all ( abs(vals - vals(1)) <= abs(tol)*scale )
 
     end function equal_within_tol
 !*******************************************************************************

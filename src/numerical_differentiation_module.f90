@@ -158,11 +158,13 @@
         logical :: compute_linear_sparsity_pattern = .false.  !! to also compute the linear sparsity pattern
         real(wp) :: linear_sparsity_tol = epsilon(1.0_wp)    !! the equality tolerance for derivatives to
                                                              !! indicate a constant jacobian element (linear sparsity)
-        real(wp) :: function_precision_tol = epsilon(1.0_wp) !! the function precision. two functions values
-                                                             !! that are the within this tolerance are
-                                                             !! considered the same value. This is used
+                                                             !! (relative to the largest derivative magnitude)
+        real(wp) :: function_precision_tol = epsilon(1.0_wp) !! the relative function precision. two function values
+                                                             !! that are the same to within this relative tolerance
+                                                             !! are considered the same value. This is used
                                                              !! when estimating the sparsity pattern when
                                                              !! `sparsity_mode=2` in [[compute_sparsity_random]]
+                                                             !! or `sparsity_mode=4` in [[compute_sparsity_random_2]]
 
         integer :: mode = 1 !! **1** = use `meth` (specified methods),
                             !! **2** = use `class` (specified class, method is selected on-the-fly).
@@ -1057,11 +1059,13 @@
                                                         !! must be in the range `[1, max_num_sparsity_points]` (default is 3).
     real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
                                                         !! indicate a constant jacobian element (linear sparsity)
-    real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
-                                                            !! that are the within this tolerance are
-                                                            !! considered the same value. This is used
+                                                        !! (relative to the largest derivative magnitude)
+    real(wp),intent(in),optional :: function_precision_tol  !! the relative function precision. two function values
+                                                            !! that are the same to within this relative tolerance
+                                                            !! are considered the same value. This is used
                                                             !! when estimating the sparsity pattern when
                                                             !! `sparsity_mode=2` in [[compute_sparsity_random]]
+                                                            !! or `sparsity_mode=4` in [[compute_sparsity_random_2]]
     logical,intent(in),optional :: print_messages !! if true, print error messages to `error_unit`.
                                                   !! default is True.
 
@@ -1415,11 +1419,13 @@
                                                            !! **3** - perturbation is `dx=dpert*(1+x)`
     real(wp),intent(in),optional :: linear_sparsity_tol !! the equality tolerance for derivatives to
                                                         !! indicate a constant jacobian element (linear sparsity)
-    real(wp),intent(in),optional :: function_precision_tol  !! the function precision. two functions values
-                                                            !! that are the within this tolerance are
-                                                            !! considered the same value. This is used
+                                                        !! (relative to the largest derivative magnitude)
+    real(wp),intent(in),optional :: function_precision_tol  !! the relative function precision. two function values
+                                                            !! that are the same to within this relative tolerance
+                                                            !! are considered the same value. This is used
                                                             !! when estimating the sparsity pattern when
                                                             !! `sparsity_mode=2` in [[compute_sparsity_random]]
+                                                            !! or `sparsity_mode=4` in [[compute_sparsity_random_2]]
     integer,intent(in),optional :: num_sparsity_points  !! for `sparsity_mode=4`, the number of jacobian
                                                         !! evaluations used to estimate the sparsity pattern.
                                                         !! must be in the range `[1, max_num_sparsity_points]` (default is 3).
@@ -2072,7 +2078,7 @@
             if (me%exception_raised) return ! check for exceptions
 
             do j = 1, me%m ! each function (rows of Jacobian)
-                if (equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol)) then
+                if (equal_within_tol([f1(j),f2(j),f3(j)], me%function_precision_tol, relative=.true.)) then
                     ! no change in the function, so no sparsity element here.
                     cycle
                 else
@@ -2083,7 +2089,7 @@
                         dfdx1 = (f1(j)-f2(j)) / (x1(i)-x2(i)) ! slope of line from 1->2
                         dfdx2 = (f1(j)-f3(j)) / (x1(i)-x3(i)) ! slope of line from 1->3
                         dfdx3 = (f1(j)-f4(j)) / (x1(i)-x4(i)) ! slope of line from 1->4
-                        if (equal_within_tol([dfdx1,dfdx2,dfdx3],me%linear_sparsity_tol)) then
+                        if (equal_within_tol([dfdx1,dfdx2,dfdx3],me%linear_sparsity_tol,relative=.true.)) then
                             ! this is a linear element (constant value)
                             dfdx = (dfdx1 + dfdx2 + dfdx3) / 3.0_wp ! just take the average and use that
                             call expand_vector(me%sparsity%linear_icol,n_linear_icol,me%chunk_size,val=i)
@@ -2205,6 +2211,8 @@
     real(wp),dimension(:,:),allocatable :: f0 !! function value at each `xp` point
                                               !! (size `m,num_sparsity_points`)
     logical,dimension(:),allocatable :: f0_computed !! if `f0` has been computed for each point
+    real(wp),dimension(:),allocatable :: dx_col !! the perturbation used for the current
+                                                !! column at each point
 
     ! initialize:
     call me%destroy_sparsity_pattern()
@@ -2253,6 +2261,7 @@
     allocate(f0(me%m,me%num_sparsity_points))
     allocate(f0_computed(me%num_sparsity_points))
     f0_computed = .false.
+    allocate(dx_col(me%num_sparsity_points))
 
     do icol = 1, me%n  ! column loop
 
@@ -2264,7 +2273,7 @@
         me%sparsity%icol = [(icol, j=1,me%m)]
         do i = 1, me%num_sparsity_points
             call me%compute_jacobian_for_sparsity( icol, xp(:,i), jac_array(i)%jac, &
-                                                   f0(:,i), f0_computed(i) )
+                                                   f0(:,i), f0_computed(i), dx_col(i) )
             if (me%exception_raised) return ! check for exceptions
         end do
 
@@ -2276,13 +2285,16 @@
                 jac(j) = jac_array(j)%jac(irow)
             end do
 
-            ! put the results into the tmp_sparsity_pattern
-            if (equal_within_tol([0.0_wp,jac],me%linear_sparsity_tol)) then
+            ! put the results into the tmp_sparsity_pattern.
+            ! the element is zero if, at every point, the change in the function
+            ! caused by the perturbation is within the relative function precision.
+            ! [note: the 2-point methods always evaluate f(x), so f0 is available]
+            if (all(abs(jac)*dx_col <= me%function_precision_tol*abs(f0(irow,:)))) then
                 ! they are all zero
                 cycle
             else
                 if (me%compute_linear_sparsity_pattern) then
-                    if (equal_within_tol(jac,me%linear_sparsity_tol)) then
+                    if (equal_within_tol(jac,me%linear_sparsity_tol,relative=.true.)) then
                         ! this is a linear element (constant value)
                         dfdx = sum(jac) / me%num_sparsity_points ! just take the average and use that
                         call expand_vector(tmp_sparsity_pattern%linear_icol,n_linear_icol,me%chunk_size,val=icol)
@@ -2649,7 +2661,7 @@
 !      greatly simplified, since we realdy know we are computed all the
 !      elements in one column.
 
-    subroutine compute_jacobian_for_sparsity(me,i,x,jac,f0,f0_computed)
+    subroutine compute_jacobian_for_sparsity(me,i,x,jac,f0,f0_computed,dx_col)
 
     implicit none
 
@@ -2661,6 +2673,7 @@
                                                                  !! (computed on first use and
                                                                  !! reused for subsequent columns)
     logical,intent(inout)                         :: f0_computed !! if `f0` has been computed
+    real(wp),intent(out)                          :: dx_col      !! the perturbation used for column `i`
 
     real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
     integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
@@ -2683,6 +2696,7 @@
     ! compute the perturbation vector (really we only need dx(i)):
     call me%compute_sparsity_perturbation_vector(x,dx)
     if (me%exception_raised) return ! check for exceptions
+    dx_col = dx(i)
 
     ! initialize:
     jac = zero
