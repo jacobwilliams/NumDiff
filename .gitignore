@@ -46,3 +46,7 @@ x64
 # test artifacts:
 /*.pdf
 /*.py
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml

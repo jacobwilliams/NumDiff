@@ -7,6 +7,8 @@
 
     use numdiff_kinds_module
 
+    implicit none
+
     integer,parameter :: max_size_for_insertion_sort = 20 !! max size for using insertion sort.
 
     private
@@ -394,7 +396,7 @@
 
 !*******************************************************************************
 !>
-!  Swap two integer values.
+!  Swap two real values.
 
     pure elemental subroutine swap_real(i1,i2)
 

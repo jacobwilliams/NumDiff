@@ -231,6 +231,7 @@
         procedure :: compute_sparsity_perturbation_vector
         procedure :: perturb_x_and_compute_f
         procedure :: perturb_x_and_compute_f_partitioned
+        procedure :: compute_nominal_function
         procedure :: set_numdiff_sparsity_bounds
         procedure :: set_sparsity_mode
         procedure :: generate_dense_sparsity_partition
@@ -2071,6 +2072,9 @@
     type(meth_array) :: class_meths  !! set of finite diff methods to use
     real(wp),dimension(:),allocatable :: jac !! array of jacobian element values
     integer :: info !! status output form [[dsm]]
+    real(wp),dimension(:,:),allocatable :: f0 !! function value at each `xp` point
+                                              !! (size `m,num_sparsity_points`)
+    logical,dimension(:),allocatable :: f0_computed !! if `f0` has been computed for each point
 
     ! initialize:
     call me%destroy_sparsity_pattern()
@@ -2114,6 +2118,12 @@
         xp(:,i) = me%xlow_for_sparsity + (me%xhigh_for_sparsity-me%xlow_for_sparsity)*coeffs(i)
     end do
 
+    ! the nominal function values at each point are
+    ! computed once and reused for all the columns:
+    allocate(f0(me%m,me%num_sparsity_points))
+    allocate(f0_computed(me%num_sparsity_points))
+    f0_computed = .false.
+
     ! we will use 2-point methods (simple differences):
     class_meths = get_all_methods_in_class(2)
 
@@ -2126,7 +2136,8 @@
         ! compute the ith column of the jacobian:
         me%sparsity%icol = [(icol, j=1,me%m)]
         do i = 1, me%num_sparsity_points
-            call me%compute_jacobian_for_sparsity( icol, class_meths, xp(:,i), jac_array(i)%jac )
+            call me%compute_jacobian_for_sparsity( icol, class_meths, xp(:,i), jac_array(i)%jac, &
+                                                   f0(:,i), f0_computed(i) )
             if (me%exception_raised) return ! check for exceptions
         end do
 
@@ -2313,7 +2324,7 @@
 !  evaluation is done, to avoid having to allocate more temporary storage.
 
     subroutine perturb_x_and_compute_f(me,x,dx_factor,dx,&
-                                       df_factor,column,idx,df)
+                                       df_factor,column,idx,df,f0,f0_computed)
 
     implicit none
 
@@ -2329,11 +2340,27 @@
     real(wp),dimension(me%m),intent(inout) :: df   !! the accumulated function value
                                                    !! note: for the first call, this
                                                    !! should be set to zero
+    real(wp),dimension(me%m),intent(inout),optional :: f0 !! function value at the nominal `x`,
+                                                          !! reused when `dx_factor=0`
+                                                          !! (see [[compute_nominal_function]])
+    logical,intent(inout),optional :: f0_computed  !! if `f0` has already been computed.
+                                                   !! must be set to false before the first call.
 
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
     if (me%exception_raised) return ! check for exceptions
+
+    if (dx_factor==zero .and. present(f0) .and. present(f0_computed)) then
+        ! reuse the nominal function value:
+        if (.not. f0_computed) then
+            call me%compute_nominal_function(x,f0)
+            if (me%exception_raised) return ! check for exceptions
+            f0_computed = .true.
+        end if
+        df(idx) = df(idx) + df_factor * f0(idx)
+        return
+    end if
 
     xp = x
     if (dx_factor/=zero) xp(column) = xp(column) + dx_factor * dx(column)
@@ -2342,6 +2369,30 @@
     df(idx) = df(idx) + df_factor * f(idx)
 
     end subroutine perturb_x_and_compute_f
+!*******************************************************************************
+
+!*******************************************************************************
+!>
+!  Compute the function at the nominal (unperturbed) `x` for all the rows
+!  in the sparsity pattern. This is done once per Jacobian evaluation
+!  so it can be reused by every column (or group) whose finite difference
+!  formula includes \( f(x) \).
+
+    subroutine compute_nominal_function(me,x,f0)
+
+    implicit none
+
+    class(numdiff_type),intent(inout)     :: me
+    real(wp),dimension(:),intent(in)      :: x   !! nominal variable vector
+    real(wp),dimension(me%m),intent(out)  :: f0  !! function value at `x`
+                                                 !! (only the rows in the
+                                                 !! sparsity pattern are computed)
+
+    if (me%exception_raised) return ! check for exceptions
+
+    call me%compute_function(x,f0,unique(me%sparsity%irow,chunk_size=me%chunk_size))
+
+    end subroutine compute_nominal_function
 !*******************************************************************************
 
 !*******************************************************************************
@@ -2462,7 +2513,7 @@
 !      greatly simplified, since we realdy know we are computed all the
 !      elements in one column.
 
-    subroutine compute_jacobian_for_sparsity(me,i,class_meths,x,jac)
+    subroutine compute_jacobian_for_sparsity(me,i,class_meths,x,jac,f0,f0_computed)
 
     implicit none
 
@@ -2471,6 +2522,10 @@
     type(meth_array),intent(in)                   :: class_meths !! set of finite diff methods to use
     real(wp),dimension(:),intent(in)              :: x           !! vector of variables (size `n`)
     real(wp),dimension(:),allocatable,intent(out) :: jac         !! sparse jacobian vector
+    real(wp),dimension(me%m),intent(inout)        :: f0          !! function value at `x`
+                                                                 !! (computed on first use and
+                                                                 !! reused for subsequent columns)
+    logical,intent(inout)                         :: f0_computed !! if `f0` has been computed
 
     real(wp),dimension(me%n) :: dx  !! absolute perturbation (>0) for each variable
     integer,dimension(:),allocatable :: nonzero_elements_in_col  !! the indices of the
@@ -2518,7 +2573,8 @@
             if (associated(me%info_function)) call me%info_function([i],j,x)
             call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
                                             dx,fd%df_factors(j),&
-                                            i,nonzero_elements_in_col,df)
+                                            i,nonzero_elements_in_col,df,&
+                                            f0,f0_computed)
             if (me%exception_raised) return ! check for exceptions
         end do
         df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
@@ -2559,11 +2615,14 @@
                                     !! specifying class rather than the method)
     logical :: status_ok   !! error flag
     integer :: num_nonzero_elements_in_col  !! number of nonzero elements in a column
+    real(wp),dimension(me%m) :: f0  !! function value at the nominal `x`
+    logical :: f0_computed  !! if `f0` has been computed
 
     if (me%exception_raised) return ! check for exceptions
 
     ! initialize:
     jac = zero
+    f0_computed = .false.
 
     ! compute Jacobian matrix column-by-column:
     do i=1,me%n
@@ -2583,7 +2642,8 @@
                     if (associated(me%info_function)) call me%info_function([i],j,x)
                     call me%perturb_x_and_compute_f(x,me%meth(i)%dx_factors(j),&
                                                     dx,me%meth(i)%df_factors(j),&
-                                                    i,nonzero_elements_in_col,df)
+                                                    i,nonzero_elements_in_col,df,&
+                                                    f0,f0_computed)
                     if (me%exception_raised) return ! check for exceptions
                 end do
 
@@ -2607,7 +2667,8 @@
                     if (associated(me%info_function)) call me%info_function([i],j,x)
                     call me%perturb_x_and_compute_f(x,fd%dx_factors(j),&
                                                     dx,fd%df_factors(j),&
-                                                    i,nonzero_elements_in_col,df)
+                                                    i,nonzero_elements_in_col,df,&
+                                                    f0,f0_computed)
                     if (me%exception_raised) return ! check for exceptions
                 end do
                 df(nonzero_elements_in_col) = df(nonzero_elements_in_col) / &
@@ -2773,11 +2834,14 @@
                                                       !! specifying class rather than the method)
     logical                          :: status_ok     !! error flag
     integer                          :: num_nonzero_elements_in_col
+    real(wp),dimension(me%m)         :: f0            !! function value at the nominal `x`
+    logical                          :: f0_computed   !! if `f0` has been computed
 
     if (me%exception_raised) return ! check for exceptions
 
     ! initialize:
     jac = zero
+    f0_computed = .false.
 
     ! compute by group:
     do igroup = 1, me%sparsity%maxgrp
@@ -2806,7 +2870,8 @@
                          if (associated(me%info_function)) call me%info_function(cols,j,x)
                          call me%perturb_x_and_compute_f_partitioned(x,me%meth(1)%dx_factors(j),&
                                                          dx,me%meth(1)%df_factors(j),&
-                                                         cols,nonzero_rows,df)
+                                                         cols,nonzero_rows,df,&
+                                                         f0,f0_computed)
                          if (me%exception_raised) return ! check for exceptions
                     end do
                     ! divide by the denominator, which can be different for each column:
@@ -2855,7 +2920,8 @@
                         if (associated(me%info_function)) call me%info_function(cols,j,x)
                         call me%perturb_x_and_compute_f_partitioned(x,fd%dx_factors(j),&
                                                         dx,fd%df_factors(j),&
-                                                        cols,nonzero_rows,df)
+                                                        cols,nonzero_rows,df,&
+                                                        f0,f0_computed)
                         if (me%exception_raised) return ! check for exceptions
                     end do
                     ! divide by the denominator, which can be different for each column:
@@ -2892,7 +2958,7 @@
 !  evaluation is done, to avoid having to allocate more temporary storage.
 
     subroutine perturb_x_and_compute_f_partitioned(me,x,dx_factor,dx,&
-                                       df_factor,columns,idx,df)
+                                       df_factor,columns,idx,df,f0,f0_computed)
 
     implicit none
 
@@ -2908,11 +2974,27 @@
     real(wp),dimension(me%m),intent(inout) :: df   !! the accumulated function value
                                                    !! note: for the first call, this
                                                    !! should be set to zero
+    real(wp),dimension(me%m),intent(inout),optional :: f0 !! function value at the nominal `x`,
+                                                          !! reused when `dx_factor=0`
+                                                          !! (see [[compute_nominal_function]])
+    logical,intent(inout),optional :: f0_computed  !! if `f0` has already been computed.
+                                                   !! must be set to false before the first call.
 
     real(wp),dimension(me%n) :: xp  !! the perturbed variable vector
     real(wp),dimension(me%m) :: f   !! function evaluation
 
     if (me%exception_raised) return ! check for exceptions
+
+    if (dx_factor==zero .and. present(f0) .and. present(f0_computed)) then
+        ! reuse the nominal function value:
+        if (.not. f0_computed) then
+            call me%compute_nominal_function(x,f0)
+            if (me%exception_raised) return ! check for exceptions
+            f0_computed = .true.
+        end if
+        df(idx) = df(idx) + df_factor * f0(idx)
+        return
+    end if
 
     xp = x
     if (dx_factor/=zero) xp(columns) = xp(columns) + dx_factor * dx(columns)
